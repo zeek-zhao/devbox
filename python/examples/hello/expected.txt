@@ -1,0 +1,4 @@
+[hello] Python from devbox
+major.minor = 3.12
+dist = 5
+sum(1..100) = 5050

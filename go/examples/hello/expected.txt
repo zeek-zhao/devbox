@@ -1,0 +1,3 @@
+[hello] Go from devbox
+goroutines = 3
+sum(1..100) = 5050

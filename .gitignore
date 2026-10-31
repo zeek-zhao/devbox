@@ -1,0 +1,43 @@
+# ---- 通用 ----
+.DS_Store
+Thumbs.db
+*.swp
+*.log
+*.tmp
+
+# ---- 构建产物 ----
+build/
+dist/
+out/
+target/
+node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.o
+*.a
+*.so
+*.gcda
+*.gcno
+*.gcov
+coverage.*
+.vscode/
+.idea/
+
+# ---- Go ----
+go/bin/
+go/pkg/
+
+# ---- Java ----
+*.class
+.m2/
+.gradle/
+
+# ---- 本地覆盖 ----
+versions.local.env
+*.local.env
+
+# ---- 进度看板（生成物，不提交）----
+docs/progress.html

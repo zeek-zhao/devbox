@@ -1,0 +1,199 @@
+name: images
+
+# ==================================================================
+# 镜像构建流水线
+# ------------------------------------------------------------------
+# 分 job 并行的正确形态（这一点很容易写错）：
+#   1) base+tool 一个 job 先出，tag 用「本次 commit 的 sha」
+#   2) 6 个语言 job needs 上面，并行构建，FROM tool:<sha>
+#   3) all / runtime 最后收口
+# 严禁让语言 job FROM tool:latest —— 那样改了 tool 层，
+# 语言镜像还在用上次 CI 留下的旧层，镜像里两个版本的工具并存且不报错。
+# ==================================================================
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'images/**'
+      - '.github/workflows/images.yml'
+  workflow_dispatch:
+    inputs:
+      push_latest:
+        description: '同时打 latest tag'
+        type: boolean
+        default: true
+
+concurrency:
+  group: images-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  REGISTRY: ghcr.io/${{ github.repository_owner }}
+  IMAGE_TAG: sha-${{ github.sha }}
+
+jobs:
+  base-tool:
+    name: base + tool
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 缩短 tag 并打印版本真本
+        run: |
+          echo "IMAGE_TAG=sha-$(echo '${{ github.sha }}' | cut -c1-7)" >> "$GITHUB_ENV"
+          echo "=== images/versions.env ===" 
+          grep -v '^\s*#' images/versions.env | grep -v '^\s*$' || true
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: build base
+        run: |
+          docker buildx build --load \
+            --file images/base/Dockerfile \
+            --build-arg-file images/versions.env \
+            --tag "$REGISTRY/devbox-base:$IMAGE_TAG" \
+            --cache-from "type=gha,scope=base" \
+            --cache-to "type=gha,mode=max,scope=base" \
+            .
+          docker run --rm "$REGISTRY/devbox-base:$IMAGE_TAG" bash -lc 'echo base-ok'
+          docker push "$REGISTRY/devbox-base:$IMAGE_TAG"
+
+      - name: build tool
+        run: |
+          docker buildx build --load \
+            --file images/tool/Dockerfile \
+            --build-arg "BASE_IMAGE=$REGISTRY/devbox-base:$IMAGE_TAG" \
+            --build-arg-file images/versions.env \
+            --tag "$REGISTRY/devbox-tool:$IMAGE_TAG" \
+            --cache-from "type=gha,scope=tool" \
+            --cache-to "type=gha,mode=max,scope=tool" \
+            .
+          docker run --rm "$REGISTRY/devbox-tool:$IMAGE_TAG" bash -lc 'gdb --version | head -1'
+          docker push "$REGISTRY/devbox-tool:$IMAGE_TAG"
+
+      - name: 记录体积
+        run: |
+          mkdir -p metrics
+          printf 'layer\tsize_bytes\n' > metrics/images-$IMAGE_TAG.tsv
+          for l in base tool; do
+            s=$(docker image inspect "$REGISTRY/devbox-$l:$IMAGE_TAG" --format '{{.Size}}')
+            printf '%s\t%s\n' "$l" "$s" >> metrics/images-$IMAGE_TAG.tsv
+          done
+          column -t metrics/images-$IMAGE_TAG.tsv
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: image-sizes-base-tool
+          path: metrics/images-*.tsv
+
+  lang:
+    name: lang-${{ matrix.lang }}
+    needs: base-tool
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        lang: [cpp, go, rust, shell, python, java]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 计算 tag
+        run: echo "IMAGE_TAG=sha-$(echo '${{ github.sha }}' | cut -c1-7)" >> "$GITHUB_ENV"
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: build ${{ matrix.lang }}
+        run: |
+          docker buildx build --load \
+            --file "images/${{ matrix.lang }}/Dockerfile" \
+            --build-arg "BASE_IMAGE=$REGISTRY/devbox-tool:$IMAGE_TAG" \
+            --build-arg-file images/versions.env \
+            --tag "$REGISTRY/devbox-${{ matrix.lang }}:$IMAGE_TAG" \
+            --cache-from "type=gha,scope=${{ matrix.lang }}" \
+            --cache-to "type=gha,mode=max,scope=${{ matrix.lang }}" \
+            .
+
+      # 关键门禁：镜像必须能真跑 hello 用例，静态检查全绿不算数
+      - name: smoke test（真跑 hello 用例）
+        run: |
+          IMG="$REGISTRY/devbox-${{ matrix.lang }}:$IMAGE_TAG"
+          docker run --rm -v "$PWD:/work" -w "/work/${{ matrix.lang }}/examples/hello" "$IMG" bash run.sh
+
+      - name: 记录体积 + 推送
+        run: |
+          IMG="$REGISTRY/devbox-${{ matrix.lang }}:$IMAGE_TAG"
+          s=$(docker image inspect "$IMG" --format '{{.Size}}')
+          mkdir -p metrics
+          { printf 'layer\tsize_bytes\n'; printf '%s\t%s\n' "${{ matrix.lang }}" "$s"; } \
+            > "metrics/images-${{ matrix.lang }}-$IMAGE_TAG.tsv"
+          column -t "metrics/images-${{ matrix.lang }}-$IMAGE_TAG.tsv"
+          docker push "$IMG"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: image-sizes-${{ matrix.lang }}
+          path: metrics/images-*.tsv
+
+  aggregate:
+    name: all + runtime
+    needs: [base-tool, lang]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 计算 tag
+        run: echo "IMAGE_TAG=sha-$(echo '${{ github.sha }}' | cut -c1-7)" >> "$GITHUB_ENV"
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: build runtime
+        run: |
+          docker buildx build --load \
+            --file images/runtime/Dockerfile \
+            --build-arg-file images/versions.env \
+            --tag "$REGISTRY/devbox-runtime:$IMAGE_TAG" \
+            --cache-from "type=gha,scope=runtime" \
+            --cache-to "type=gha,mode=max,scope=runtime" \
+            .
+          docker run --rm "$REGISTRY/devbox-runtime:$IMAGE_TAG"
+          docker push "$REGISTRY/devbox-runtime:$IMAGE_TAG"
+
+      - name: build all（六语言总环境）
+        run: |
+          docker buildx build --load \
+            --file images/all/Dockerfile \
+            --build-arg "BASE_IMAGE=$REGISTRY/devbox-tool:$IMAGE_TAG" \
+            --build-arg-file images/versions.env \
+            --tag "$REGISTRY/devbox-all:$IMAGE_TAG" \
+            --cache-from "type=gha,scope=all" \
+            --cache-to "type=gha,mode=max,scope=all" \
+            .
+          docker push "$REGISTRY/devbox-all:$IMAGE_TAG"

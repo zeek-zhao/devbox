@@ -1,0 +1,99 @@
+name: ci
+
+# ==================================================================
+# 用例与门禁流水线（不构建镜像，只消费 images workflow 推上去的镜像）
+# ------------------------------------------------------------------
+# 分工：
+#   images.yml -> 证明「镜像能构建出来，并且能跑一个 hello」
+#   ci.yml     -> 证明「代码与用例是对的，覆盖表是自洽的」
+# 两件事分开，改用例不必重建镜像，改镜像不必重跑 330 个用例。
+# ==================================================================
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  REGISTRY: ghcr.io/${{ github.repository_owner }}
+  # 用例跑的是上一次 images workflow 推上来的 latest；
+  # 改了 Dockerfile 时先等 images 跑完再手动触发，见 docs/01-镜像体系.md
+  IMAGE_TAG: latest
+
+jobs:
+  static:
+    name: 静态检查
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: shellcheck（脚本层）
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq shellcheck
+          shellcheck -S warning scripts/*.sh shared/lib/*.sh images/scripts/*.sh images/scripts/install/*.sh
+
+      - name: 用例契约完整性（每个用例必须有 run.sh，有输出就必须有 expected.txt）
+        run: |
+          fail=0
+          while IFS= read -r d; do
+            id="$(basename "$d")"
+            if [ ! -f "$d/run.sh" ]; then
+              echo "FAIL: $d 缺 run.sh"; fail=1
+            fi
+            chmod +x "$d/run.sh" 2>/dev/null || true
+          done < <(find . -path './*/examples/*' -mindepth 3 -maxdepth 3 -type d)
+          [ "$fail" -eq 0 ] && echo "用例契约 OK"
+          exit $fail
+
+      - name: 版本真本自洽（Dockerfile 里不许写死版本号）
+        run: |
+          fail=0
+          # 允许出现形如 24.04 / 14 / 18 的 ARG 默认值，但不允许出现具体补丁号直接写死
+          if grep -rnE 'FROM .*:[0-9]+\.[0-9]+\.[0-9]+' images/ ; then
+            echo "FAIL: Dockerfile 里写死了镜像 tag"; fail=1
+          fi
+          if grep -rnE '(gcc|clang|go|rust|python|java)[-_]?[0-9]+\.[0-9]+\.[0-9]+' images/*/Dockerfile ; then
+            echo "FAIL: Dockerfile 里写死了具体版本号，应走 versions.env"; fail=1
+          fi
+          exit $fail
+
+  coverage:
+    name: COVERAGE 校验
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: 校验用例覆盖表
+        run: bash scripts/coverage-check.sh
+
+  examples:
+    name: 用例-${{ matrix.lang }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
+    needs: [static, coverage]
+    strategy:
+      fail-fast: false
+      matrix:
+        lang: [cpp, go, rust, shell, python, java]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 拉取语言镜像
+        run: docker pull "$REGISTRY/devbox-${{ matrix.lang }}:$IMAGE_TAG"
+
+      - name: 跑该语言全部用例
+        run: bash scripts/run-example.sh ${{ matrix.lang }} --all

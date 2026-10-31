@@ -1,0 +1,3 @@
+[hello] Rust from devbox
+sum(1..=100) = 5050
+chars = 6

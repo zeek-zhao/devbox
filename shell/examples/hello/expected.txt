@@ -1,0 +1,4 @@
+[hello] Shell from devbox
+array_len = 3
+sum(1..100) = 5050
+status = 0

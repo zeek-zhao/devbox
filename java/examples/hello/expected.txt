@@ -1,0 +1,4 @@
+[hello] Java from devbox
+java feature = 21
+dist = 5
+sum(1..100) = 5050
