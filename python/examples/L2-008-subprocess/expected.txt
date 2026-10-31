@@ -1,0 +1,2 @@
+child output: alpha|two words
+nonzero status: caught

@@ -1,0 +1,3 @@
+protocol type check: passed
+protocol value: 7
+optional absent: True

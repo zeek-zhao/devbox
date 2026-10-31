@@ -1,0 +1,5 @@
+fib(8): 21
+cache hits: 7
+cache misses: 9
+unhashable argument: rejected
+cache cleared: True

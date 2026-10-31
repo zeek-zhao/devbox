@@ -1,0 +1,2 @@
+direct file execution: rejected
+module import: hello from package
