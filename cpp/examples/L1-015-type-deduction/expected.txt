@@ -1,0 +1,5 @@
+auto is int: true
+auto is reference: false
+auto is const: false
+const auto& is const reference: true
+decltype(auto) is const reference: true

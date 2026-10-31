@@ -1,0 +1,3 @@
+vector lookup: 20
+map lookup: 20
+results match: true
