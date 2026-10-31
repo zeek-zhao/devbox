@@ -63,6 +63,18 @@ declare -A TOOL=(
   [java]="google-java-format 1.22.0 --aosp（4 空格，见 install/java.sh）"
 )
 
+# 语言 -> 用来确认「镜像里真的有格式化器」的探针命令
+# 少了这一步，旧镜像会让 clang-format / gjf 直接 command not found，
+# 而 --check 会把它当成「格式有差异」—— 一个完全错误的判据。
+declare -A PROBE=(
+  [cpp]="clang-format"
+  [go]="gofmt"
+  [rust]="rustfmt"
+  [shell]="shfmt"
+  [python]="ruff"
+  [java]="gjf"
+)
+
 # 就地改写
 declare -A WRITE_CMD=(
   [cpp]='find . -type f \( -name "*.cpp" -o -name "*.hpp" -o -name "*.cc" -o -name "*.h" \) -print0 | xargs -0 -r clang-format -i'
@@ -128,6 +140,15 @@ for l in $LANGS; do
   image="${REGISTRY}/devbox-${l}:${TAG}"
   if ! docker image inspect "$image" >/dev/null 2>&1; then
     printf '  %-8s 失败：镜像不存在 %s\n' "$l" "$image" >&2
+    failed_langs+=("$l")
+    continue
+  fi
+
+  # 先确认镜像里真的有格式化器。不确认的话，旧镜像会让下面的命令
+  # command not found 并以非零退出，--check 模式下会被误报成「格式有差异」。
+  if ! docker run --rm "$image" bash -c "command -v ${PROBE[$l]}" >/dev/null 2>&1; then
+    printf '  %-8s 失败：镜像 %s 里没有 %s\n' "$l" "$image" "${PROBE[$l]}" >&2
+    printf '           这是引入格式化之前的旧镜像，需要重新构建该层\n' >&2
     failed_langs+=("$l")
     continue
   fi
