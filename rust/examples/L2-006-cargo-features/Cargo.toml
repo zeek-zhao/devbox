@@ -1,0 +1,9 @@
+[package]
+name = "cargo_features"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+diagnostics = []
+
+[dependencies]
