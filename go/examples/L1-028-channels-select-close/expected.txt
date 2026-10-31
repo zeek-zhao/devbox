@@ -1,0 +1,5 @@
+unbuffered: handshake
+closed range: count=2 total=11
+closed receive: value=0 ok=false
+select ready: queued
+select empty: default

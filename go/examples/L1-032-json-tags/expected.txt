@@ -1,0 +1,2 @@
+json: {"name":"Ada","count":3}
+round trip: name=Ada count=3 hidden-empty=true

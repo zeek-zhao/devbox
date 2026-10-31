@@ -1,0 +1,2 @@
+item="index" count=4
+joined: read -> parse -> write
