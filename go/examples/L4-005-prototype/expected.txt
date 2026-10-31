@@ -1,0 +1,4 @@
+same instance: false
+original: [circle square]
+clone: [triangle square]
+clone after original edit: [triangle square]

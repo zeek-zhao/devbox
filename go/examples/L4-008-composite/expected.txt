@@ -1,0 +1,6 @@
+dir:root
+  file:README
+  dir:src
+    file:main.go
+    dir:empty
+  file:go.mod
