@@ -1,0 +1,9 @@
+=== RUN   TestLookup
+=== RUN   TestLookup/first_record
+=== RUN   TestLookup/second_record
+=== RUN   TestLookup/missing_record
+--- PASS: TestLookup
+    --- PASS: TestLookup/first_record
+    --- PASS: TestLookup/second_record
+    --- PASS: TestLookup/missing_record
+PASS

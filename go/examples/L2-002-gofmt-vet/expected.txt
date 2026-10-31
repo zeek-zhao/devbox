@@ -1,0 +1,5 @@
+gofmt-detected-unformatted: true
+gofmt-clean: true
+go-vet: passed
+go-test: passed
+quality-gates: passed
