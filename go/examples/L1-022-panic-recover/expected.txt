@@ -1,0 +1,5 @@
+ordinary error: empty document
+boundary recovered: broken invariant
+main continued after boundary
+next task: indexed
+task completed

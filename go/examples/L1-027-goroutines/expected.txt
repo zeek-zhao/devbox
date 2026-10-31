@@ -1,0 +1,3 @@
+main: waiting for task
+task result: 6
+main: result received
