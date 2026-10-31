@@ -1,0 +1,4 @@
+render number: 42
+render text: 'python'
+measure number: digits=2
+measure text: length=6

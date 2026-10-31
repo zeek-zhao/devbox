@@ -1,0 +1,5 @@
+iter(it) is it: True
+tokens: ['alpha', 'beta', 'gamma']
+exhausted: StopIteration
+exhausted: StopIteration
+fresh iterator: ['alpha', 'beta', 'gamma']
