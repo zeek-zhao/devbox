@@ -1,6 +1,5 @@
 # L1-003-shared-borrows
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-03：同一 `String` 的两个 `&str` 只读借用可以同时存活，不转移所有权。

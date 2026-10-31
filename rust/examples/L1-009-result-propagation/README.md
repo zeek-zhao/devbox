@@ -1,6 +1,5 @@
 # L1-009-result-propagation
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-09：解析和调用层均返回 `Result`，通过 `?` 将可恢复错误传到边界。

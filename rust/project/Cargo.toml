@@ -1,0 +1,22 @@
+[package]
+name = "devbox-rust-project"
+version = "0.1.0"
+edition = "2024"
+
+[workspace]
+# L2-010-cargo-workspace
+members = ["."]
+resolver = "3"
+
+[lib]
+name = "devbox_rust_project"
+path = "src/lib.rs"
+
+[[bin]] # L2-001-cargo-lib-bin
+name = "devbox-rust-project"
+path = "src/main.rs"
+
+[features]
+# L2-006-cargo-features
+default = []
+strict-args = []

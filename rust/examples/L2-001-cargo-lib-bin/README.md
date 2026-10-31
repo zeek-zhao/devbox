@@ -1,6 +1,5 @@
 # L2-001-cargo-lib-bin
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L2-01：同一 package 同时提供库目标与二进制目标。

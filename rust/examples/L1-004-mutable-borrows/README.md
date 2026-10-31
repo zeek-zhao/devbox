@@ -1,6 +1,5 @@
 # L1-004-mutable-borrows
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-04：`&mut String` 能修改源值，但活跃写者必须独占访问。

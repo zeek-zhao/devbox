@@ -1,6 +1,5 @@
 # L2-006-cargo-features
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L2-06：在 manifest 声明 feature，并用同名 `cfg` 选择实现。

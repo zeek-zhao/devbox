@@ -1,6 +1,5 @@
 # L1-014-trait-implementations
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-14：定义 trait、实现必需方法，并复用 trait 的默认方法。

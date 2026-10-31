@@ -1,6 +1,5 @@
 # L1-006-return-lifetimes
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-06：`shorter<'a>` 用输入输出的 `'a` 关联返回切片与两个可能来源。

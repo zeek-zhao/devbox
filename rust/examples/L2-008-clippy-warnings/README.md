@@ -1,6 +1,5 @@
 # L2-008-clippy-warnings
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L2-08：使用 `cargo clippy --offline --all-targets -- -D warnings` 设立零告警门禁。

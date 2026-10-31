@@ -1,6 +1,5 @@
 # L1-033-integer-overflow
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-33：显式选择溢出检查策略，并处理窄化转换结果。

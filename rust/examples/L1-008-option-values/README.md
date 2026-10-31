@@ -1,6 +1,5 @@
 # L1-008-option-values
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-08：`Option<u32>` 明确区分存在的编号与缺失值。

@@ -1,6 +1,5 @@
 # L1-013-pattern-bindings
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-13：用 `if let`、`while let` 和 `@` 模式提取所需值。

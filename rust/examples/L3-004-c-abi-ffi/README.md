@@ -1,6 +1,5 @@
 # L3-004-c-abi-ffi
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L3-04：Rust 通过 `extern "C"` 调用独立编译并显式链接的 C 函数。

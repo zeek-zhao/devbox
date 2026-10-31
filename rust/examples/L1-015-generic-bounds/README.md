@@ -1,6 +1,5 @@
 # L1-015-generic-bounds
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-15：以 trait bound 和 `where` 子句约束泛型类型能力。

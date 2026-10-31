@@ -1,6 +1,5 @@
 # L1-025-rc-refcell
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-25：`Rc::clone` 只增加共享所有者，`RefCell` 在运行时检查内部借用。

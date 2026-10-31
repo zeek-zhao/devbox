@@ -1,6 +1,5 @@
 # L2-011-cargo-examples
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L2-11：将独立可执行示例放在 crate 根目录的 `examples/`。
