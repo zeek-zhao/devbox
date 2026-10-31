@@ -1,0 +1,5 @@
+C array length: 3
+sizeof C array: 12
+sizeof decayed parameter: 8
+std::array length: 3
+std::vector length: 4

@@ -1,0 +1,4 @@
+unsigned wraparound: 0
+signed addition overflow detected: true
+signed multiplication overflow detected: true
+-1 < 1u after unsigned conversion: false
