@@ -1,0 +1,2 @@
+bash executable found: true
+missing dependency rejected: true

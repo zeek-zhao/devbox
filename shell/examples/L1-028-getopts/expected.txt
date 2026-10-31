@@ -1,0 +1,6 @@
+option -a enabled: true
+option -b value: two words
+missing value for -b
+missing value rejected: true
+invalid option: -z
+invalid option rejected: true

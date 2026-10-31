@@ -1,0 +1,3 @@
+expected miss handled: true
+unhandled failure stops script: true
+undefined variable rejected: true
