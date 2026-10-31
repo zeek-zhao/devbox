@@ -1,0 +1,4 @@
+pending: waiting
+running: processing
+completed: available
+completed: available

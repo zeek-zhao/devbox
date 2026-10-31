@@ -1,0 +1,6 @@
+memory: prepare
+memory: execute
+memory: verify
+file: prepare
+file: execute
+file: verify

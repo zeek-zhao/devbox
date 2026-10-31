@@ -1,0 +1,3 @@
+INFO -> info-handler
+WARNING -> warning-handler
+ERROR -> error-handler
