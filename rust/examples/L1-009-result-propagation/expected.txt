@@ -1,0 +1,4 @@
+valid argument: 7
+invalid argument: invalid-digit
+same error after propagation: true
+boundary handled error: continued
