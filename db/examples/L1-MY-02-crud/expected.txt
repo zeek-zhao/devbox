@@ -1,0 +1,11 @@
+== 初始两行
+1	apple	3
+2	banana	5
+2
+== UPSERT：id=2 的 qty 从 5 改成 9（不新增行）
+1	apple	3
+2	banana	9
+2
+== DELETE：删掉 id=1
+2	banana	9
+1

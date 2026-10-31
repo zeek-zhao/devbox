@@ -1,0 +1,23 @@
+{
+  "name": "@zeek/release",
+  "version": "0.1.0",
+  "description": "基于 conventional commits 的版本管理工具：bump + changelog + tag，安全默认",
+  "type": "module",
+  "bin": {
+    "zeek-release": "./src/cli.js"
+  },
+  "scripts": {
+    "test": "node --test test/",
+    "check": "node --check src/cli.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "files": [
+    "src",
+    "release.config.js",
+    "README.md",
+    "docs"
+  ]
+}
