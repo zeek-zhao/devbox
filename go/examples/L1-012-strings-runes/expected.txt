@@ -1,0 +1,4 @@
+byte length: 5
+rune count: 3
+first rune: G
+first byte: 71

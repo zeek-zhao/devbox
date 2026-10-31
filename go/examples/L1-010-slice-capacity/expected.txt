@@ -1,0 +1,3 @@
+two-index append overwrote tail: added
+full-slice append preserved tail: tail
+appended value: added

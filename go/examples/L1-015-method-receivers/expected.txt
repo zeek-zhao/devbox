@@ -1,0 +1,3 @@
+value receiver result: 5
+after value receiver: 4
+after pointer receiver: 5
