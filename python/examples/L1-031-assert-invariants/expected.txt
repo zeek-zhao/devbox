@@ -1,0 +1,2 @@
+internal invariant: caught
+external input: rejected
