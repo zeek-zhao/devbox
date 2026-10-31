@@ -1,0 +1,7 @@
+same key, same instance: true
+different key, different instance: true
+creations: 2
+cpp@1
+cpp@8
+cpp@1
+patterns@2

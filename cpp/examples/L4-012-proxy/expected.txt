@@ -1,0 +1,5 @@
+before: constructions=0, calls=0
+real result
+first: constructions=1, calls=1
+real result
+second: constructions=1, calls=2

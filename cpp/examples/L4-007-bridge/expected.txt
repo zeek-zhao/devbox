@@ -1,0 +1,4 @@
+text/file
+text/memory
+json/file
+json/memory
