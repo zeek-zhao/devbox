@@ -1,0 +1,2 @@
+byte sum: 6
+null rejected: true
