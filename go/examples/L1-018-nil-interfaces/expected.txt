@@ -1,0 +1,3 @@
+interface is nil: false
+assertion succeeded: true
+recovered pointer is nil: true

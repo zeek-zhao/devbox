@@ -1,0 +1,2 @@
+Record implements Saver: false
+*Record implements Saver: true
