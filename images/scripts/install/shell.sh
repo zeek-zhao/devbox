@@ -7,12 +7,14 @@
 set -euo pipefail
 
 apt-get update
+# 注意：Ubuntu 24.04 里没有独立的 getopt 包（已被拆进 util-linux-extra），
+# 写 getopt 会直接 `E: Unable to locate package` 让整层构建失败。
 apt-get install -y --no-install-recommends \
   bats \
   shellcheck \
   shfmt \
   bash-completion \
-  bc time getopt \
+  bc time util-linux-extra \
   coreutils findutils grep sed gawk \
   curl jq
 apt-get clean
