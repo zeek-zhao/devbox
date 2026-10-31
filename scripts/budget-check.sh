@@ -9,6 +9,8 @@ METRICS=""
 REGISTRY="ghcr.io/zeek-zhao"
 TOL="15"
 EXPECTED_LAYERS=(base tool cpp go rust shell python java all runtime)
+LAYERS=""
+LAYERS_SET=0
 
 fail() {
   printf '配置/数据错误：%s\n' "$1" >&2
@@ -17,7 +19,7 @@ fail() {
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
-    --budgets|--metrics|--registry|--tol)
+    --budgets|--metrics|--registry|--tol|--layers)
       option="$1"
       if [ "$#" -lt 2 ] || [[ "$2" == --* ]]; then
         fail "$option 缺少参数"
@@ -28,6 +30,10 @@ while [ "$#" -gt 0 ]; do
         --metrics) METRICS="$value" ;;
         --registry) REGISTRY="$value" ;;
         --tol) TOL="$value" ;;
+        --layers)
+          LAYERS="$value"
+          LAYERS_SET=1
+          ;;
       esac
       shift 2
       ;;
@@ -40,6 +46,28 @@ done
 [[ "$TOL" =~ ^[0-9]+$ ]] || fail "--tol 必须是非负整数"
 [[ -n "$REGISTRY" ]] || fail "--registry 不能为空"
 REGISTRY="${REGISTRY%/}"
+CHECK_LAYERS=("${EXPECTED_LAYERS[@]}")
+if [ "$LAYERS_SET" -eq 1 ]; then
+  [ -n "$LAYERS" ] || fail "--layers 不能为空"
+  [[ "$LAYERS" != ,* && "$LAYERS" != *, && "$LAYERS" != *,,* ]] ||
+    fail "--layers 包含空层名"
+  IFS=',' read -r -a CHECK_LAYERS <<< "$LAYERS"
+  [ "${#CHECK_LAYERS[@]}" -gt 0 ] || fail "--layers 不能为空"
+  declare -A selected_layer_seen=()
+  for layer in "${CHECK_LAYERS[@]}"; do
+    [[ -n "$layer" ]] || fail "--layers 包含空层名"
+    [[ -n "${selected_layer_seen[$layer]+present}" ]] && fail "--layers 重复层：$layer"
+    selected_layer_seen["$layer"]=1
+    known_layer=0
+    for expected_layer in "${EXPECTED_LAYERS[@]}"; do
+      if [ "$layer" = "$expected_layer" ]; then
+        known_layer=1
+        break
+      fi
+    done
+    [ "$known_layer" -eq 1 ] || fail "--layers 包含未知层：$layer"
+  done
+fi
 [[ -f "$BUDGETS" ]] || fail "预算表不存在：$BUDGETS"
 if [ -n "$METRICS" ]; then
   [[ -f "$METRICS" ]] || fail "metrics 文件不存在：$METRICS"
@@ -93,7 +121,7 @@ if [ -n "$METRICS" ]; then
   done < "$METRICS"
   [ "$metrics_header_seen" -eq 1 ] || fail "metrics 文件缺少表头"
 else
-  for layer in "${EXPECTED_LAYERS[@]}"; do
+  for layer in "${CHECK_LAYERS[@]}"; do
     image="${REGISTRY}/devbox-${layer}:latest"
     if ! size="$(docker image inspect "$image" --format '{{.Size}}')"; then
       fail "无法读取镜像体积：$image"
@@ -106,7 +134,7 @@ fi
 printf '%-10s %16s %16s %10s  %s\n' "层" "实测（字节）" "预算（字节）" "余量%" "判定"
 failed=0
 missing=0
-for layer in "${EXPECTED_LAYERS[@]}"; do
+for layer in "${CHECK_LAYERS[@]}"; do
   if [[ -z "${size_by_layer[$layer]+present}" ]]; then
     printf '%-10s %16s %16s %10s  %s\n' "$layer" "-" "${budget_by_layer[$layer]}" "-" "缺少 metrics"
     missing=$((missing + 1))
