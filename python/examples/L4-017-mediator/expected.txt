@@ -1,0 +1,3 @@
+editor -> preview: document changed
+preview -> status: render complete
+status -> editor: saved
