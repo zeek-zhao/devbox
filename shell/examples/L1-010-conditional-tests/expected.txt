@@ -1,0 +1,3 @@
+double brackets: exact match
+double brackets: regex match
+single brackets: exact match

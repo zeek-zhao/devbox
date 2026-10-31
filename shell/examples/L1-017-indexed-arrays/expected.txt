@@ -1,0 +1,4 @@
+index 1: *.txt
+item count: 2
+item: <one two>
+item: <*.txt>
