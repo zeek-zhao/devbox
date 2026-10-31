@@ -1,0 +1,4 @@
+equal defaults: True
+independent lists: True
+field assignment rejected: true
+nested list remains mutable: ['urgent']

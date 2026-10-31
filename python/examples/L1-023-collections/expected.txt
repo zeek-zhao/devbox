@@ -1,0 +1,9 @@
+counts: [('apple', 1), ('pear', 2), ('plum', 1)]
+Counter missing count: 0
+Counter missing inserted: False
+defaultdict keys before: ['fruit']
+missing group: []
+defaultdict keys after: ['fruit', 'vegetable']
+deque left pop: left
+deque right pop: right
+deque remaining: ['middle']

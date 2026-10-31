@@ -1,0 +1,6 @@
+same member: True
+string is member: False
+name: RUNNING
+value: running
+boundary conversion: True
+invalid value rejected: True

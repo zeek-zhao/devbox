@@ -1,0 +1,2 @@
+import output empty: True
+entry: main

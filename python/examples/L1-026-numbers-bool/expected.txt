@@ -1,0 +1,5 @@
+True equals 1: True
+True is an int: True
+accepts True as count: False
+accepts 1 as count: True
+decimal sum is exact: True
