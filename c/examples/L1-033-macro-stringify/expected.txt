@@ -1,0 +1,4 @@
+STR=VALUE
+XSTR=42
+CAT=prefix
+XCAT=7
