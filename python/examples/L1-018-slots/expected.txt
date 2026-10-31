@@ -1,0 +1,3 @@
+slotted extra rejected: True
+subclass has dict: True
+subclass extra accepted: True

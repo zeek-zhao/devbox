@@ -1,0 +1,4 @@
+equal: True
+set size: 1
+dict lookup: matched
+mutable record hashable: False
