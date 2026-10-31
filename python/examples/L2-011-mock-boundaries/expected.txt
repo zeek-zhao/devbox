@@ -1,0 +1,3 @@
+mocked response: {"records": 2}
+external command calls: 1
+arguments verified: true

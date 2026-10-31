@@ -1,0 +1,2 @@
+input bytes: 6
+libc strlen: 6

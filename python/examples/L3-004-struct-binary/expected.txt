@@ -1,0 +1,3 @@
+bytes: 00000201fff4
+format length: 6
+round trip: True

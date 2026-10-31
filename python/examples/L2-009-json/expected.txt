@@ -1,0 +1,3 @@
+encoded: {"active":true,"name":"Ada","roles":["reader","writer"]}
+round trip: True
+object key order is semantic: False
