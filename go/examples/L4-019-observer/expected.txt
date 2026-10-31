@@ -1,0 +1,4 @@
+alice observed: ready
+bob observed: ready
+bob observed: done
+notification counts: alice=1 bob=2

@@ -1,0 +1,3 @@
+alice received: 2 [bob: hello carol: hello]
+bob received: 2 [alice: hello carol: hello]
+carol received: 2 [alice: hello bob: hello]
