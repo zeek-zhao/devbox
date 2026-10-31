@@ -1,0 +1,3 @@
+exclusive writer: doc1|doc2
+reader after writer: doc1|doc2
+owner after writes: doc1|doc2|doc3

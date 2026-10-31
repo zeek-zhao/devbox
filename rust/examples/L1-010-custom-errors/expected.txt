@@ -1,0 +1,5 @@
+record id: 7
+index error: document-id/invalid-digit
+source preserved: true
+index error: document-text/invalid-utf8
+source preserved: true

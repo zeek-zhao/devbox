@@ -1,0 +1,4 @@
+borrowed query: rust
+caller after borrow: rust
+callee owns query: rust index
+caller after move: ownership transferred
