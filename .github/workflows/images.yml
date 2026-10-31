@@ -213,3 +213,18 @@ jobs:
             --cache-to "type=gha,mode=max,scope=all" \
             .
           docker push "$REGISTRY/devbox-all:$IMAGE_TAG"
+
+      - name: 记录体积（all + runtime）
+        run: |
+          mkdir -p metrics
+          printf 'layer\tsize_bytes\n' > metrics/images-all-runtime-$IMAGE_TAG.tsv
+          for l in all runtime; do
+            s=$(docker image inspect "$REGISTRY/devbox-$l:$IMAGE_TAG" --format '{{.Size}}')
+            printf '%s\t%s\n' "$l" "$s" >> metrics/images-all-runtime-$IMAGE_TAG.tsv
+          done
+          column -t metrics/images-all-runtime-$IMAGE_TAG.tsv
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: image-sizes-all-runtime
+          path: metrics/images-*.tsv
