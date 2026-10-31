@@ -20,7 +20,7 @@ RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
       ca-certificates curl default-mysql-client postgresql-client redis-tools \
-      sqlite3 python3 python3-pip procps; \
+      sqlite3 python3 python3-pip procps openssl; \
     rm -rf /var/lib/apt/lists/*
 
 # 驱动：Mongo 没有稳定的 CLI 客户端包，统一用 pymongo；其余也用驱动做复杂断言
