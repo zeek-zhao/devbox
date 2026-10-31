@@ -1,0 +1,4 @@
+query: java/3/[title]
+after builder change: java/3/[title]
+immutable fields: UnsupportedOperationException
+missing term: IllegalStateException

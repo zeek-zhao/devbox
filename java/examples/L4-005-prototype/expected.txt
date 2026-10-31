@@ -1,0 +1,5 @@
+different objects: true
+different fields: true
+original: [java, patterns]
+copy: [java, patterns, copy-only]
+initializations: 1

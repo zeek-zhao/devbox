@@ -1,0 +1,6 @@
+same key: true
+different key: true
+java@1:2
+java@3:4
+patterns@5:6
+constructions: 2
