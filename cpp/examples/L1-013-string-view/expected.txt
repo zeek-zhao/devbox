@@ -1,0 +1,2 @@
+view: Query
+owned: query
