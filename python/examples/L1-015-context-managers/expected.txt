@@ -1,0 +1,2 @@
+normal: ['enter', 'normal body', 'exit: normal']
+exception: ['enter', 'exception body', 'exit: ValueError', 'caught: ValueError']

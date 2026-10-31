@@ -1,0 +1,5 @@
+after creation: 0
+first: ALPHA
+after first: 1
+remaining: ['BETA', 'GAMMA']
+after consume: 3

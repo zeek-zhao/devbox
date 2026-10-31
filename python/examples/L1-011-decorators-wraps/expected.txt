@@ -1,0 +1,3 @@
+name: greet
+doc: Return a greeting for a name.
+result: [audit] hello, Ada

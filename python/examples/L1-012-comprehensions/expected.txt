@@ -1,0 +1,7 @@
+list: [2, 4, 6]
+list records: [1, 2, 3]
+generator before next: []
+first: 2
+generator after next: [1]
+remaining: [4, 6]
+generator after consume: [1, 2, 3]
