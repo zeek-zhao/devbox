@@ -1,0 +1,4 @@
+list: ['alpha', 'beta', 'gamma']
+tuple: ('job-1', 'done')
+dict keys: ['name', 'role']
+sorted set: ['apple', 'pear']
