@@ -1,0 +1,2 @@
+parsed count: 42
+invalid input rejected: true
