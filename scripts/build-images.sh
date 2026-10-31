@@ -36,23 +36,15 @@ done
 REGISTRY="${REGISTRY:-$(grep -E '^REGISTRY=' "$BUILD_ARGS_FILE" | cut -d= -f2)}"
 PREFIX="${REGISTRY:+${REGISTRY}/}"
 
-# 不用 --build-arg-file：215 上的 buildx 版本偏旧不支持该 flag。
-# 自己把 KEY=VALUE 解析成 --build-arg 数组，兼容任何 docker 版本。
-# REGISTRY 不是 build arg，跳过（否则每次构建都刷一排 unused build arg 警告）。
+# 不用 --build-arg-file：215 与 GitHub runner 上的 buildx 插件版本都偏旧，
+# 该 flag 会直接报 `unknown flag`（exit 125）。
+# 统一交给 images/scripts/build-args.sh 解析，CI 用的是同一个脚本 —— 两边不会漂移。
 build_args=()
-while IFS= read -r line; do
-  case "$line" in
-    ''|\#*) continue ;;
-  esac
-  key="${line%%=*}"
-  val="${line#*=}"
-  case "$key" in
-    REGISTRY) continue ;;
-  esac
-  build_args+=(--build-arg "${key}=${val}")
-done < "$BUILD_ARGS_FILE"
+while IFS= read -r kv; do
+  [ -n "$kv" ] && build_args+=("$kv")
+done < <(bash images/scripts/build-args.sh "$BUILD_ARGS_FILE")
 
-echo "==> 版本参数 ${#build_args[@]} 项，来自 ${BUILD_ARGS_FILE}"
+echo "==> 版本参数 $((${#build_args[@]} / 2)) 项，来自 ${BUILD_ARGS_FILE}"
 
 mkdir -p metrics
 TSV="metrics/images.tsv"
