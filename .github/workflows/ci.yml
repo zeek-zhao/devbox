@@ -37,7 +37,8 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq shellcheck
-          shellcheck -S warning scripts/*.sh shared/lib/*.sh images/scripts/*.sh images/scripts/install/*.sh
+          # 只 lint 被 git 跟踪的脚本：写死 glob 会在目录/文件不存在时直接报错
+          git ls-files -z '*.sh' | xargs -0 shellcheck -S warning
 
       - name: 用例契约完整性（每个用例必须有 run.sh，有输出就必须有 expected.txt）
         run: |
@@ -72,13 +73,100 @@ jobs:
       - name: 校验用例覆盖表
         run: bash scripts/coverage-check.sh
 
+  # ------------------------------------------------------------------
+  # 门禁文件守卫（对应需求 R-A-06 / R-A-07）
+  # 关键点：清单读的是 **base 分支的版本**，不是 PR 里的版本。
+  # 否则 AI 可以先把自己加进白名单、或把清单删空，再动门禁文件——
+  # 那样这道闸就成了摆设。
+  # 例外：人工评审后给 PR 打 allow-gate-change 标签（这个标签只许人加）。
+  # ------------------------------------------------------------------
+  gate:
+    name: 门禁文件未被动
+    runs-on: ubuntu-24.04
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 用 base 版本的清单比对本次改动
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'allow-gate-change') }}
+        run: |
+          set -euo pipefail
+          base="origin/${{ github.base_ref }}"
+          git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+          if ! git cat-file -e "$base:scripts/gate-files.txt" 2>/dev/null; then
+            echo "::error::base 分支上没有 scripts/gate-files.txt，无法判定门禁"
+            exit 1
+          fi
+          git show "$base:scripts/gate-files.txt" > "$RUNNER_TEMP/gate-base.txt"
+
+          changed="$(git diff --name-only "$base"...HEAD)"
+          echo "改动文件："; echo "$changed"
+
+          hits=""
+          while IFS= read -r pat; do
+            case "$pat" in ''|'#'*) continue ;; esac
+            while IFS= read -r f; do
+              [ -z "$f" ] && continue
+              # shellcheck disable=SC2254  # 这里就是要用变量当 glob
+              case "$f" in $pat) hits="${hits}${f}"$'\n' ;; esac
+            done <<< "$changed"
+          done < "$RUNNER_TEMP/gate-base.txt"
+
+          if [ -n "$hits" ]; then
+            echo "::error::本 PR 触碰了门禁文件，自动合并必须被拒绝："
+            printf '  %s\n' $hits
+            echo "确需改动时，由人评审后在 PR 上打 allow-gate-change 标签。"
+            exit 1
+          fi
+          echo "未触碰门禁文件"
+
+  # ------------------------------------------------------------------
+  # 镜像可用性探测：M1 之前 GHCR 里还没有 devbox-* 镜像，
+  # 这时 examples 直接 pull 会红，把「镜像还没建」误报成「用例写错了」。
+  # 所以先探测，探测不到就跳过，但要求仓库变量 REQUIRE_IMAGES=true 时硬红。
+  # M1 完成的验收项之一：把 REQUIRE_IMAGES 设成 true（否则这道闸会一直软着）。
+  # ------------------------------------------------------------------
+  probe:
+    name: 镜像可用性
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
+    needs: [static, coverage]
+    outputs:
+      ready: ${{ steps.p.outputs.ready }}
+    steps:
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 探测 devbox-cpp 镜像是否存在
+        id: p
+        run: |
+          if docker manifest inspect "$REGISTRY/devbox-cpp:$IMAGE_TAG" > /dev/null 2>&1; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            echo "镜像已就绪：$REGISTRY/devbox-cpp:$IMAGE_TAG"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            if [ "${{ vars.REQUIRE_IMAGES }}" = "true" ]; then
+              echo "::error::镜像 $REGISTRY/devbox-cpp:$IMAGE_TAG 不存在，但仓库变量 REQUIRE_IMAGES=true。先跑 images workflow"
+              exit 1
+            fi
+            echo "::warning::镜像尚未构建，本次跳过用例执行。M1 完成后请把仓库变量 REQUIRE_IMAGES 设为 true"
+          fi
+
   examples:
     name: 用例-${{ matrix.lang }}
     runs-on: ubuntu-24.04
     permissions:
       contents: read
       packages: read
-    needs: [static, coverage]
+    needs: [probe]
+    if: needs.probe.outputs.ready == 'true'
     strategy:
       fail-fast: false
       matrix:

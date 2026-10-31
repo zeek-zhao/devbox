@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# ==================================================================
+# commit-msg —— 提交信息与身份约束
+# ------------------------------------------------------------------
+# 两条规则：
+#   1) 拒绝 AI 署名尾巴（Co-authored-by: Copilot / Claude / GPT …）
+#      理由：署名会让「这行代码谁负责」变模糊，历史里混进多种身份后
+#      git blame 与 author-fix 都会变成体力活。
+#   2) 拒绝空提交信息与「update」「fix」这类无信息量的标题。
+#
+# 身份（作者邮箱）不在钩子里强制——AI 与人在同一台机器上跑，
+# 强制成一个身份等于伪造。身份统一放到 wf4 的 commit 路径上做。
+# ==================================================================
+set -euo pipefail
+
+msg_file="${1:?missing commit message file}"
+msg="$(cat "$msg_file")"
+
+if [ -z "${msg//[[:space:]]/}" ]; then
+  echo "[commit-msg] 提交信息为空" >&2
+  exit 1
+fi
+
+if printf '%s' "$msg" | grep -qiE 'co-authored-by:.*(copilot|claude|anthropic|openai|gpt|codex|cursor|gemini)'; then
+  echo "[commit-msg] 拒绝 AI 署名尾巴（Co-authored-by），请删掉后重试" >&2
+  exit 1
+fi
+
+subject="$(printf '%s' "$msg" | head -1)"
+if printf '%s' "$subject" | grep -qiE '^(update|fix|fixup|wip|修改|更新)\.?$'; then
+  echo "[commit-msg] 提交标题没有信息量：$subject" >&2
+  echo "             写成「<type>: <做了什么>」，例如 feat: 补齐 cpp L1 用例 001-008" >&2
+  exit 1
+fi
+
+exit 0

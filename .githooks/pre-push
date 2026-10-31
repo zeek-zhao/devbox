@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# ==================================================================
+# pre-push —— 禁止直接推 main（本地最后一道闸）
+# ------------------------------------------------------------------
+# 为什么不用 GitHub 的分支保护：免费计划上私有仓的 rulesets 会 403，
+# 只能靠本地钩子 + CI 的 branch-guard 兜。
+#
+# 例外：人明确要直推时设 DEVBOX_ALLOW_MAIN_PUSH=1。
+#       AI 跑任务时不设这个变量，所以 AI 只能推 feat/* 分支。
+# ==================================================================
+set -euo pipefail
+
+remote="${1:-origin}"
+allow="${DEVBOX_ALLOW_MAIN_PUSH:-0}"
+
+rc=0
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main|refs/heads/dev)
+      if [ "$allow" != "1" ]; then
+        printf '\033[31m[pre-push]\033[0m 拒绝直接推送 %s（%s）\n' "$remote_ref" "$remote" >&2
+        printf '           改动请走 feat/<issue#>-<slug> 分支 + PR。\n' >&2
+        printf '           确需直推（仅限人）：DEVBOX_ALLOW_MAIN_PUSH=1 git push ...\n' >&2
+        rc=1
+      fi
+      ;;
+  esac
+done
+
+exit "$rc"

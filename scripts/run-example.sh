@@ -12,6 +12,7 @@
 #   scripts/run-example.sh cpp hello
 #   scripts/run-example.sh go --all
 #   scripts/run-example.sh rust --list
+#   scripts/run-example.sh cpp hello --keep        # 保留容器，便于 docker exec 进去复现
 #   scripts/run-example.sh python --all --update   # 用当前输出重写 expected.txt（仅限新写用例时）
 # ==================================================================
 set -euo pipefail
@@ -69,7 +70,18 @@ run_one() {
   local out err rc=0 start end dur
   out="$(mktemp)"; err="$(mktemp)"
   start="$(date +%s)"
-  if ! docker run --rm \
+
+  # --keep：保留容器便于进去复现（默认 --rm 一跑完就没了，调试只能靠加 printf）
+  local -a run_args=(run)
+  local cname="devbox-keep-${lang}-${id}"
+  if [ "$KEEP" = "1" ]; then
+    docker rm -f "$cname" >/dev/null 2>&1 || true
+    run_args+=(--name "$cname")
+  else
+    run_args+=(--rm)
+  fi
+
+  if ! docker "${run_args[@]}" \
         -v "$(host_path "$ROOT"):/work" \
         -w "/work/$dir" \
         -e "DEBIAN_FRONTEND=noninteractive" \
@@ -80,6 +92,7 @@ run_one() {
 
   if [ "$rc" -ne 0 ]; then
     printf '%-28s  FAIL (exit!=0, %ss)\n' "$lang/$id" "$dur"
+    if [ "$KEEP" = "1" ]; then printf '      容器保留：docker exec -it %s bash\n' "$cname"; fi
     sed 's/^/      | /' "$err" | head -20
     rm -f "$out" "$err"; return 1
   fi
