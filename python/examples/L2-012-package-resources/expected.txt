@@ -1,0 +1,2 @@
+template: summary
+page size: 25
