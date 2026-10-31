@@ -1,0 +1,3 @@
+same text: true
+same error value: false
+sentinel recognized: true

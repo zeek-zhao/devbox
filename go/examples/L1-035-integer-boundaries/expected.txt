@@ -1,0 +1,6 @@
+int8 minimum accepted: true
+int8 maximum accepted: true
+int8 overflow rejected: true
+checked conversion: 127
+safe unsigned difference: 2
+underflow rejected before subtraction: true
