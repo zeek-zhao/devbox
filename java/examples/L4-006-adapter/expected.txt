@@ -1,0 +1,3 @@
+object: legacy[java]
+class: legacy[java]
+same result: true

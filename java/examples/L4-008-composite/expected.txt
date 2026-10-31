@@ -1,0 +1,6 @@
+group: root
+  leaf: a
+  group: nested
+    leaf: b
+    leaf: c
+  leaf: d

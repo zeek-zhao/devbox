@@ -1,0 +1,3 @@
+parse: [patterns, java, java]
+index: [java, patterns]
+render: java|patterns

@@ -1,0 +1,3 @@
+same instance: true
+second value: shared
+reflection: IllegalAccessException
