@@ -20,7 +20,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-TAG="${TAG:-local}"
+TAG="${TAG:-${IMAGE_TAG:-local}}"
 REGISTRY="${REGISTRY:-$(grep -E '^REGISTRY=' images/versions.env 2>/dev/null | cut -d= -f2 || true)}"
 PREFIX="${REGISTRY:+${REGISTRY}/}"
 
