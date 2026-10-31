@@ -1,0 +1,5 @@
+mapped=GUIDE
+fallback=missing
+orElse-eager-calls=guide:1
+orElseGet-calls=guide:0
+empty-get=NoSuchElementException

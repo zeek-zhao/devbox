@@ -1,0 +1,5 @@
+body=completed
+normal-close-order=second,first
+primary=body-failure
+suppressed=second-close,first-close
+failure-close-order=second,first

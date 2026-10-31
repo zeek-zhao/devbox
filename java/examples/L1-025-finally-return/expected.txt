@@ -1,0 +1,4 @@
+overwritten-return=2
+exception-swallowed=true
+exception-preserved=IllegalStateException
+cleanup-ran=true

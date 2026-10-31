@@ -1,0 +1,4 @@
+equal=true
+same-hash=true
+tags-after-source-change=[java, guide]
+negative-pages=IllegalArgumentException
