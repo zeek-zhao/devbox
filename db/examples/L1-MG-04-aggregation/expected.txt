@@ -1,0 +1,4 @@
+cup	5	2
+tea	5	2
+facet_orders=3
+facet_customers=2

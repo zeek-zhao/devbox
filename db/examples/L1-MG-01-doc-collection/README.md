@@ -1,27 +1,22 @@
-# L1-MG-01-doc-collection · 文档与集合
-
 <!-- coverage: pending -->
 
+# L1-MG-01-doc-collection · 文档与集合
+
 ## 考点
+- 自动生成的 `_id` 是 ObjectId；打印其类型而不打印随机值。
+- 嵌套文档与引用字段分别保存内嵌结构和业务键。
+- capped 集合达到 `max=2` 后只保留最近两条文档。
 
-BSON 类型、嵌套文档 vs 引用、_id 生成、capped 集合
+## 为什么这么写
+使用 ObjectId 默认行为来展示 BSON 标识类型；查询显式投影并只输出业务字段，避免随机 `_id` 进入期望结果。capped 集合使用允许的最小固定空间并以 `max` 条数形成确定判据。
 
-## 判据（验收按这一条核对）
-
-输出插入后的 _id 类型与文档结构
+## 易错点
+- capped 集合的 `size` 必须足够大；只设置 `max` 不足以创建集合。
+- ObjectId 每次运行都变，不能将其值写入输出。
+- 引用示例使用 `team_id` 业务键，不要误称为自动关联或外键。
 
 ## 依赖服务
-
 `mongodb`
 
 ## 命名空间
-
-`l1_mg_01_doc_collection`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-MG-01-doc-collection --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l1_mg_01_doc_collection`

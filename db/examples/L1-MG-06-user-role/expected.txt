@@ -1,0 +1,2 @@
+roles=l1_mg_06_reader@db_l1_mg_06_user_role,read@db_l1_mg_06_user_role
+unauthorized_write=code-13

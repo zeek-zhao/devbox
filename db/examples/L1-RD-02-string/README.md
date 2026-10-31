@@ -1,27 +1,22 @@
-# L1-RD-02-string · 字符串
-
 <!-- coverage: pending -->
 
+# L1-RD-02-string · 字符串
+
 ## 考点
+- SETNX 的首次成功与重复失败、GETSET 返回旧值、INCR 更新计数。
+- APPEND 与 SETRANGE 修改字符串，并用 GETRANGE 检查最终字节区间。
+- SET 的 NX/XX 条件写分别覆盖“不存在才写”和“存在才写”。
 
-SETNX/GETSET/INCR/APPEND/SETRANGE、SET 的 EX/NX/XX
+## 为什么这么写
+所有 key 都带独立前缀，值和长度固定；输出客户端返回值与最终字符串，直接体现每种操作的效果。
 
-## 判据（验收按这一条核对）
-
-输出计数器与区间读取结果
+## 易错点
+- SETRANGE 的 offset 从 0 开始；替换位置算错会产生不同字符串。
+- APPEND 返回修改后的字节长度，不是追加片段的长度。
+- SETNX 条件不满足时返回 None，不能与字符串 `"None"` 混为一谈。
 
 ## 依赖服务
-
 `redis`
 
 ## 命名空间
-
-`l1_rd_02_string`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-RD-02-string --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`l1-rd-02:*`

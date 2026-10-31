@@ -1,8 +1,25 @@
 #!/usr/bin/env bash
-# L1-RD-03-list · 链表
-# TODO(卡片填写)：实现本用例。契约见同目录 README.md。
 set -euo pipefail
-cd "$(dirname "$0")/../.."
-. scripts/lib/common.sh
 
-die "尚未实现：L1-RD-03-list"
+HERE="$(cd "$(dirname "$0")" && pwd)"
+. "$HERE/../../scripts/lib/common.sh"
+cd "$HERE"
+
+py_file <(cat <<'PY'
+import redis
+
+PREFIX = "l1-rd-03:"
+r = redis.Redis(host="redis", port=6379, password="devbox", decode_responses=True)
+for key in r.scan_iter(match=PREFIX + "*"):
+    r.unlink(key)
+key = PREFIX + "items"
+r.lpush(key, "b", "a")
+r.rpush(key, "c", "d")
+print(f"initial={','.join(r.lrange(key, 0, -1))}")
+print(f"popped={r.lpop(key)}")
+r.linsert(key, "BEFORE", "c", "x")
+r.ltrim(key, 0, 2)
+print(f"trimmed={','.join(r.lrange(key, 0, -1))}")
+print(f"length={r.llen(key)}")
+PY
+)

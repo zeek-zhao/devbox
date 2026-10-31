@@ -1,0 +1,5 @@
+hgetall=city:Suzhou,name:Ada,visits:5
+hscan=city:Suzhou,name:Ada,visits:5
+encoding=listpack
+deleted=1
+fields_after_delete=2

@@ -1,27 +1,22 @@
-# L1-RD-08-pubsub · 发布订阅
-
 <!-- coverage: pending -->
 
+# L1-RD-08-pubsub · 发布订阅
+
 ## 考点
+- SUBSCRIBE 与 PSUBSCRIBE 均在发布前等待服务器订阅确认。
+- 顺序发布两条消息，验证频道订阅者与模式订阅者收到相同序列。
+- 同一前缀下写入 Redis Stream 并读回消息，体现 Stream 可保留消息而 Pub/Sub 不持久化。
 
-SUBSCRIBE/PUBLISH/PSUBSCRIBE、订阅者断线丢消息、与 Stream 差别
+## 为什么这么写
+订阅确认后才发布，避免靠固定 sleep 祈祷；每次读取均有超时并验证消息序列，异常时用例失败。
 
-## 判据（验收按这一条核对）
-
-输出订阅者收到的消息序列
+## 易错点
+- SUBSCRIBE/PSUBSCRIBE 的确认消息不是业务消息；必须先消费确认再统计 payload。
+- Pub/Sub 不缓存订阅者断线期间的消息，不能当作持久队列。
+- PSUBSCRIBE 会按模式收到频道消息；频道和模式输出分别采集，避免重复误计。
 
 ## 依赖服务
-
 `redis`
 
 ## 命名空间
-
-`l1_rd_08_pubsub`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-RD-08-pubsub --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`l1-rd-08:*`
