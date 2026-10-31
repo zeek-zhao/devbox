@@ -1,0 +1,4 @@
+parse: [go patterns]
+index: GO+PATTERNS
+render: result[GO+PATTERNS]
+facade: result[GO+PATTERNS]

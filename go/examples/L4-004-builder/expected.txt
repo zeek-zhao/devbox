@@ -1,0 +1,4 @@
+first: query=go limit=3
+second: query=patterns limit=5
+independent: true
+missing query: query is required

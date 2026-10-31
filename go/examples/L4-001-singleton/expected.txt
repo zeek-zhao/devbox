@@ -1,0 +1,3 @@
+same instance: true
+init calls: 1
+shared mode: production
