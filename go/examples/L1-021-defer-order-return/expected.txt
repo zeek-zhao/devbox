@@ -1,0 +1,4 @@
+body count: 5
+defer second registered, captured: 5
+defer first registered, argument: 2
+caller count: 6

@@ -1,0 +1,4 @@
+live after factory returned: 8
+snapshot after factory returned: 3
+live repeated: 8
+snapshot repeated: 3

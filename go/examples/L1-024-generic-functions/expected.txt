@@ -1,0 +1,5 @@
+inferred int: [6 4 2]
+explicit string: [query index]
+original int: [2 4 6]
+original string: [index query]
+explicit empty int length: 0

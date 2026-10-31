@@ -1,0 +1,10 @@
+slice index 0, changed copy: 11
+slice index 1, changed copy: 21
+slice after value changes: [10 20]
+slice after index changes: [11 21]
+array index 0, value: 4
+array index 1, value: 8
+string index 0, rune: g
+string index 1, rune: o
+map key index, value: 1
+map key query, value: 2
