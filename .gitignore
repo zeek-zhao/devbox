@@ -41,3 +41,6 @@ versions.local.env
 
 # ---- 进度看板（生成物，不提交）----
 docs/progress.html
+
+# ---- 本地临时脚本（构建/推送辅助，不入库）----
+.dev/
