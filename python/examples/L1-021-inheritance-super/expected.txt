@@ -1,0 +1,2 @@
+initialization MRO: Report then AuditMixin then LabelMixin then Base
+render MRO: Base then LabelMixin then AuditMixin then Report

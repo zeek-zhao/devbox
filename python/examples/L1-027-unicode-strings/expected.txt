@@ -1,0 +1,3 @@
+code point count: 2
+UTF-8 byte count: 6
+second character: 🙂
