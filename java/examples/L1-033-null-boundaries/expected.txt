@@ -1,0 +1,4 @@
+direct-call=null-rejected
+equals-null=true
+equals-value=false
+required-null=value is required

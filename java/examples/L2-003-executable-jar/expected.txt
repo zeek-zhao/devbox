@@ -1,0 +1,2 @@
+jar-contents=entry-and-helper
+jar-result=self-contained
