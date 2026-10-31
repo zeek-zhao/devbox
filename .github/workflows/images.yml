@@ -71,6 +71,9 @@ jobs:
             --cache-to "type=gha,mode=max,scope=base" \
             .
           docker run --rm "$REGISTRY/devbox-base:$IMAGE_TAG" bash -lc 'echo base-ok'
+          size="$(docker image inspect "$REGISTRY/devbox-base:$IMAGE_TAG" --format '{{.Size}}')"
+          printf 'layer\tsize_bytes\nbase\t%s\n' "$size" > /tmp/metrics-base.tsv
+          bash scripts/budget-check.sh --metrics /tmp/metrics-base.tsv --layers base
           docker push "$REGISTRY/devbox-base:$IMAGE_TAG"
           docker tag "$REGISTRY/devbox-base:$IMAGE_TAG" "$REGISTRY/devbox-base:latest"
           docker push "$REGISTRY/devbox-base:latest"
@@ -88,6 +91,9 @@ jobs:
             --cache-to "type=gha,mode=max,scope=tool" \
             .
           docker run --rm "$REGISTRY/devbox-tool:$IMAGE_TAG" bash -lc 'gdb --version | head -1'
+          size="$(docker image inspect "$REGISTRY/devbox-tool:$IMAGE_TAG" --format '{{.Size}}')"
+          printf 'layer\tsize_bytes\ntool\t%s\n' "$size" > /tmp/metrics-tool.tsv
+          bash scripts/budget-check.sh --metrics /tmp/metrics-tool.tsv --layers tool
           docker push "$REGISTRY/devbox-tool:$IMAGE_TAG"
           docker tag "$REGISTRY/devbox-tool:$IMAGE_TAG" "$REGISTRY/devbox-tool:latest"
           docker push "$REGISTRY/devbox-tool:latest"
@@ -159,6 +165,9 @@ jobs:
           { printf 'layer\tsize_bytes\n'; printf '%s\t%s\n' "${{ matrix.lang }}" "$s"; } \
             > "metrics/images-${{ matrix.lang }}-$IMAGE_TAG.tsv"
           column -t "metrics/images-${{ matrix.lang }}-$IMAGE_TAG.tsv"
+          bash scripts/budget-check.sh \
+            --metrics "metrics/images-${{ matrix.lang }}-$IMAGE_TAG.tsv" \
+            --layers "${{ matrix.lang }}"
           docker push "$IMG"
           docker tag "$IMG" "$REGISTRY/devbox-${{ matrix.lang }}:latest"
           docker push "$REGISTRY/devbox-${{ matrix.lang }}:latest"
@@ -204,6 +213,9 @@ jobs:
             --cache-to "type=gha,mode=max,scope=runtime" \
             .
           docker run --rm "$REGISTRY/devbox-runtime:$IMAGE_TAG"
+          size="$(docker image inspect "$REGISTRY/devbox-runtime:$IMAGE_TAG" --format '{{.Size}}')"
+          printf 'layer\tsize_bytes\nruntime\t%s\n' "$size" > /tmp/metrics-runtime.tsv
+          bash scripts/budget-check.sh --metrics /tmp/metrics-runtime.tsv --layers runtime
           docker push "$REGISTRY/devbox-runtime:$IMAGE_TAG"
           docker tag "$REGISTRY/devbox-runtime:$IMAGE_TAG" "$REGISTRY/devbox-runtime:latest"
           docker push "$REGISTRY/devbox-runtime:latest"
@@ -220,6 +232,9 @@ jobs:
             --cache-from "type=gha,scope=all" \
             --cache-to "type=gha,mode=max,scope=all" \
             .
+          size="$(docker image inspect "$REGISTRY/devbox-all:$IMAGE_TAG" --format '{{.Size}}')"
+          printf 'layer\tsize_bytes\nall\t%s\n' "$size" > /tmp/metrics-all.tsv
+          bash scripts/budget-check.sh --metrics /tmp/metrics-all.tsv --layers all
           docker push "$REGISTRY/devbox-all:$IMAGE_TAG"
           docker tag "$REGISTRY/devbox-all:$IMAGE_TAG" "$REGISTRY/devbox-all:latest"
           docker push "$REGISTRY/devbox-all:latest"
