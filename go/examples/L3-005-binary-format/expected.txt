@@ -1,0 +1,3 @@
+bytes: 01 01 02 03 04 00 07
+round-trip: true
+truncated-rejected: true
