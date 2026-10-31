@@ -1,0 +1,3 @@
+trace:value=1
+enabled_counter=1
+disabled_counter=0

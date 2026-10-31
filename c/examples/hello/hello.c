@@ -6,11 +6,11 @@ int main(void) {
     printf("[hello] C17 from devbox\n");
 
     /* 指针与字符串：C 没有 std::string_view，长度靠 strlen 走一遍 */
-    const char *name = "devbox";
+    const char* name = "devbox";
     printf("strlen = %zu\n", strlen(name));
 
     /* 手动内存管理：malloc / free 必须配对，这是 C 与 C++ 最大的分野 */
-    int *values = malloc(100 * sizeof(int));
+    int* values = malloc(100 * sizeof(int));
     if (values == NULL) {
         fprintf(stderr, "malloc failed\n");
         return 1;
