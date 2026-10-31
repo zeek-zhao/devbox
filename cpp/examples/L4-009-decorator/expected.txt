@@ -1,0 +1,4 @@
+before: result
+decorated: stats(cache(result))
+reversed: cache(stats(result))
+after: result
