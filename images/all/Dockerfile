@@ -22,6 +22,7 @@ ARG RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
 ARG PYTHON_VERSION=3.12
 ARG PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
 ARG JAVA_MAJOR=21
+ARG MAVEN_OPTS="-Dmaven.repo.local=/opt/m2 -Dfile.encoding=UTF-8"
 
 LABEL org.opencontainers.image.title="devbox-all" \
       org.opencontainers.image.description="C/C++ Go Rust Shell Python Java 六语言总环境" \
@@ -51,7 +52,7 @@ ENV CC=gcc \
     RUSTUP_DIST_SERVER=${RUSTUP_DIST_SERVER} \
     RUSTUP_UPDATE_ROOT=${RUSTUP_UPDATE_ROOT} \
     JAVA_HOME=/opt/java-home \
-    MAVEN_OPTS="-Dmaven.repo.local=/opt/m2 -Dfile.encoding=UTF-8" \
+    MAVEN_OPTS="${MAVEN_OPTS}" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_INDEX_URL=${PIP_INDEX_URL} \
