@@ -1,0 +1,2 @@
+deep OFFSET index scan actual rows=910
+keyset index scan actual rows=10

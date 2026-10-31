@@ -1,0 +1,1 @@
+active query captured from pg_stat_activity

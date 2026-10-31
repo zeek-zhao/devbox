@@ -1,14 +1,22 @@
-# L1-PG-06-savepoint · 事务与 savepoint
-
 <!-- coverage: pending -->
+
+# L1-PG-06-savepoint · 事务与 savepoint
 
 ## 考点
 
-BEGIN/SAVEPOINT/ROLLBACK TO、错误后事务失效、隔离级别
+- 唯一键冲突返回 SQLSTATE `23505`，并使当前事务进入失败状态。
+- 失败事务中的下一条语句返回 `25P02`，必须回滚到错误前的保存点才能继续。
+- 事务隔离级别可在事务开始时显式设置。
 
-## 判据（验收按这一条核对）
+## 为什么这么写
 
-输出回滚到保存点后剩余行数
+用 psycopg2 捕获真实数据库错误而不是伪造错误文本；捕获后立即探测失败事务状态，再回滚到保存点并验证原有行仍在。
+
+## 易错点
+
+- 捕获 Python 异常不会自动恢复 PostgreSQL 事务；直接执行后续查询仍会得到 `25P02`。
+- 必须在可能失败的语句之前建立保存点，才能回滚到该处。
+- 自增序列回滚语义不同，不能把本例的行事务回滚理解为序列值也会回退。
 
 ## 依赖服务
 
@@ -16,12 +24,4 @@ BEGIN/SAVEPOINT/ROLLBACK TO、错误后事务失效、隔离级别
 
 ## 命名空间
 
-`l1_pg_06_savepoint`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-PG-06-savepoint --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l1_pg_06_savepoint`
