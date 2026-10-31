@@ -1,0 +1,9 @@
+index write-width proxy:
+idx_status_tenant_day: parts=3
+idx_tenant_day_status_payload: parts=4
+idx_tenant_status_day: parts=3
+same query: tenant=1 status=open day=2026-01-03..2026-01-07
+idx_tenant_status_day: type=range key=idx_tenant_status_day key_len=41 rows=1 extra=Using index condition
+idx_status_tenant_day: type=range key=idx_status_tenant_day key_len=41 rows=1 extra=Using index condition
+idx_tenant_day_status_payload: type=range key=idx_tenant_day_status_payload key_len=41 rows=1 extra=Using where; Using index
+tenant-only left prefix: tenant-leading type=ref rows=12; status-leading type=index rows=120

@@ -1,27 +1,21 @@
-# L4-09-soft-delete · 软删除与历史追溯
-
 <!-- coverage: pending -->
 
+# L4-09-soft-delete · 软删除与历史追溯
+
 ## 考点
+- 对旧设计实际尝试复用软删除邮箱，捕获 MySQL 唯一键错误 1062。
+- 改为生成活动邮箱列并唯一约束，成功复用已删除邮箱，同时保留两条历史记录。
+- 固定删除时间并输出历史行数，不打印自增主键或运行时钟。
 
-软删标记、唯一键冲突、历史版本表、时态查询
+## 为什么这么写
+MySQL 的 `UNIQUE(email, deleted_at)` 允许多个 NULL，不能正确约束多条活动记录；生成列只对未删除记录暴露邮箱值，删除记录生成 NULL，因此活动值唯一且历史可复用。
 
-## 判据（验收按这一条核对）
-
-输出软删后唯一键可复用与历史查询结果
+## 易错点
+- 直接把可空 `deleted_at` 加到复合唯一键，可能让多个未删除行都通过唯一性检查。
+- 捕获重复键时只接受错误码 1062，其余数据库错误仍会失败，不会伪装成预期冲突。
 
 ## 依赖服务
-
 `mysql`
 
 ## 命名空间
-
-`l4_09_soft_delete`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L4-09-soft-delete --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l4_09_soft_delete`

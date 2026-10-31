@@ -1,27 +1,22 @@
-# L4-02-composite-index · 复合索引设计
-
 <!-- coverage: pending -->
 
+# L4-02-composite-index · 复合索引设计
+
 ## 考点
+- 同一过滤查询强制使用三个候选索引，对照访问类型、实际索引、估算扫描行数和额外操作。
+- `(tenant_id,status,event_day)` 先放等值条件，再放范围列；范围列之后的列不能继续缩小 B-tree 范围。
+- `(status,tenant_id,event_day)` 与 tenant 优先索引在此双等值查询下都可用，但前缀适配的其他查询不同。
+- 对 tenant-only 查询比较两种前缀：tenant 有 10 个取值、status 只有 2 个，tenant-leading 更有选择性；覆盖索引则以更宽索引换取少回表。
 
-最左前缀、区分度排序、覆盖索引、索引与写放大
+## 为什么这么写
+相同数据、相同日期范围并用 `FORCE INDEX` 隔离比较对象，避免优化器只挑一个索引而隐藏候选差别。输出索引列数作为写宽度代理；第三个索引把 `payload` 纳入索引，展示覆盖收益和更宽索引带来的写/存储代价。
 
-## 判据（验收按这一条核对）
-
-输出三个候选索引的执行计划对比
+## 易错点
+- `EXPLAIN rows` 是优化器估算值，不是精确实测耗时；此处比较访问计划，不把毫秒数作为判据。
+- 仅按单列区分度排序会忽略查询是否等值、范围以及覆盖需求。
 
 ## 依赖服务
-
 `mysql`
 
 ## 命名空间
-
-`l4_02_composite_index`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L4-02-composite-index --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l4_02_composite_index`

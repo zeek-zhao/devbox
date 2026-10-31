@@ -1,27 +1,21 @@
-# L4-07-doc-vs-relational · 文档 vs 关系建模
-
 <!-- coverage: pending -->
 
+# L4-07-doc-vs-relational · 文档 vs 关系建模
+
 ## 考点
+- 相同订单与两条明细分别落入 MySQL 规范化表和 MongoDB 内嵌文档。
+- 实际各执行一次 JOIN / 按业务键读取并输出往返次数与明细数。
+- 用例证明读聚合边界的差异，不把一种数据模型宣称为普遍更优。
 
-一对多/多对多的两种建模、聚合边界、跨文档事务
+## 为什么这么写
+MySQL 一条 JOIN 命令即可取齐订单与明细；Mongo 内嵌使聚合读取也只需一次请求，适用于明细规模受控且常随订单读取的场景。若明细独立增长/复用，Mongo 引用或 `$lookup` 可换取更灵活的更新边界。
 
-## 判据（验收按这一条核对）
-
-输出同一业务在两种建模下的查询代价
+## 易错点
+- 数据库内部 JOIN 不是客户端多次往返；本例按一次查询命令计为一次往返。
+- 内嵌数组无限增长会受文档大小上限和更新热点影响。
 
 ## 依赖服务
-
-`mysql,mongodb`
+`mysql`、`mongodb`
 
 ## 命名空间
-
-`l4_07_doc_vs_relational`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L4-07-doc-vs-relational --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+MySQL / MongoDB `db_l4_07_doc_vs_relational`

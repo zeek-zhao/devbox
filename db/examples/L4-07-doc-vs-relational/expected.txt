@@ -1,0 +1,2 @@
+MySQL normalized join: roundtrips=1 items=2
+Mongo embedded document: roundtrips=1 items=2
