@@ -1,27 +1,21 @@
-# L1-SQ-03-txn-wal · 事务与 WAL
-
 <!-- coverage: pending -->
 
+# L1-SQ-03-txn-wal · 事务与 WAL
+
 ## 考点
+- 查询实际启用的 WAL 模式，并展示 WAL 中 `BEGIN EXCLUSIVE` 可以取得写事务。
+- 在一个连接持有 `BEGIN IMMEDIATE` 时，第二写连接稳定得到 `database is locked`。
+- 用 SAVEPOINT 回滚局部插入，验证其余事务仍可提交。
 
-BEGIN IMMEDIATE/EXCLUSIVE、WAL 模式、busy_timeout、savepoint
+## 为什么这么写
+两个 Python SQLite 连接访问同一独立数据库文件；短 `busy_timeout` 让竞争结果可重复，不依赖手工调度或长时间等待。
 
-## 判据（验收按这一条核对）
-
-输出 journal_mode 与并发写失败的错误
+## 易错点
+- WAL 模式下 `BEGIN EXCLUSIVE` 与 `BEGIN IMMEDIATE` 的锁行为不同于 rollback journal 模式。
+- 只检查锁错误还不够，保存点回滚后的行数也用于证明外层事务成功提交。
 
 ## 依赖服务
-
 `toolbox`
 
 ## 命名空间
-
-`l1_sq_03_txn_wal`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-SQ-03-txn-wal --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`/tmp/l1-sq-03-txn-wal.db`

@@ -1,0 +1,6 @@
+indexed category lookup
+ref	idx_category_sku
+index disabled
+ALL	NULL
+leftmost prefix skipped
+ALL	NULL

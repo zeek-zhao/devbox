@@ -1,27 +1,21 @@
-# L1-MY-07-import-export · 导入导出
-
 <!-- coverage: pending -->
 
+# L1-MY-07-import-export · 导入导出
+
 ## 考点
+- 用 `mysqldump --no-data` 和 `--no-create-info` 分离导出结构与数据。
+- 统计数据 dump 中逐行 `INSERT` 语句数，并将两份文件导入新库。
+- 比较导出行数与回灌后的真实 `COUNT(*)`。
 
-SELECT INTO OUTFILE、LOAD DATA、mysqldump 结构与数据分离
+## 为什么这么写
+dump 文件存放在 toolbox 的 `/tmp`，避开 MySQL 服务端文件权限和 `secure_file_priv` 限制；恢复到独立库后直接验证数据可用。
 
-## 判据（验收按这一条核对）
-
-输出导出文件的行数与回灌后的 COUNT
+## 易错点
+- 不用 `SELECT ... INTO OUTFILE`：文件落在服务端容器，宿主无法直接读取。
+- `--skip-extended-insert` 保证每行数据对应一条 `INSERT`，行数可稳定统计；导入使用目标库，不污染源库。
 
 ## 依赖服务
-
 `mysql`
 
 ## 命名空间
-
-`l1_my_07_import_export`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-MY-07-import-export --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+源库 `db_l1_my_07_import_export`；恢复库 `db_l1_my_07_import_export_restore`

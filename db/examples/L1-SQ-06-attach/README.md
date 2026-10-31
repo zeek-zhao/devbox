@@ -1,27 +1,21 @@
-# L1-SQ-06-attach · 附加数据库
-
 <!-- coverage: pending -->
 
+# L1-SQ-06-attach · 附加数据库
+
 ## 考点
+- 用 `ATTACH` 将独立档案库挂载为 `archive`。
+- 显式限定 `main`/`archive` 表名进行跨库连接、分组和计数。
+- 以排序结果检查两个数据库之间的关联。
 
-ATTACH/DETACH、跨库 JOIN、main vs 附加库命名
+## 为什么这么写
+主库和附加库使用不同文件，JOIN 必须跨数据库边界完成；独立文件也让重复运行清理范围明确。
 
-## 判据（验收按这一条核对）
-
-输出跨库 JOIN 结果
+## 易错点
+- 附加数据库中的表要用 `archive.table` 标识，不能误读为 `main` 中的同名表。
+- 先删除归档文件再 ATTACH，否则重复执行会叠加旧数据。
 
 ## 依赖服务
-
 `toolbox`
 
 ## 命名空间
-
-`l1_sq_06_attach`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-SQ-06-attach --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`/tmp/l1-sq-06-attach.db` 与 `/tmp/l1-sq-06-attach-archive.db`
