@@ -1,0 +1,6 @@
+before: draft
+execute: review
+execute: published
+undo: review
+undo: draft
+restored: true
