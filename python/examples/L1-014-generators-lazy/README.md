@@ -1,6 +1,5 @@
 # L1-014-generators-lazy
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-14：生成器函数调用只创建生成器，`yield` 在消费时逐步推进计算。

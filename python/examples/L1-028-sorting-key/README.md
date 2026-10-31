@@ -1,6 +1,5 @@
 # L1-028-sorting-key
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-28：用显式 `key` 排序，并观察 `sorted()` 的稳定性与输入保留。

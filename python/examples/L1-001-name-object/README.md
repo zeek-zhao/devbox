@@ -1,6 +1,5 @@
 # L1-001-name-object
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-01：名称绑定对象，对象具有运行时类型。

@@ -1,6 +1,5 @@
 # L1-017-class-attributes
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-17：区分类属性共享状态与 `__init__` 中创建的实例状态。

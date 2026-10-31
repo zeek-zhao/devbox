@@ -1,6 +1,5 @@
 # L1-011-decorators-wraps
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-11：用带参数的装饰器包装函数并保留函数元信息。

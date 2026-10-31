@@ -1,6 +1,5 @@
 # L1-026-numbers-bool
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-26：观察布尔值与整数的相等及继承关系，并校验计数输入。

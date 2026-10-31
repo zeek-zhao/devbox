@@ -1,6 +1,5 @@
 # L1-022-dataclass
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-22：观察 dataclass 自动比较、冻结字段和 `default_factory`。

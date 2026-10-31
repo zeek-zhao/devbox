@@ -1,6 +1,5 @@
 # L1-030-main-guard
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-30：通过主入口守卫区分模块导入与脚本直接执行。

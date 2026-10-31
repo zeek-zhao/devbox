@@ -1,6 +1,5 @@
 # L1-018-slots
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-18：用 `__slots__` 限制实例属性，并检查子类继承中的声明。

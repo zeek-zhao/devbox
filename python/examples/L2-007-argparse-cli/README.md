@@ -1,6 +1,5 @@
 # L2-007-argparse-cli
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L2-07：由 `argparse` 统一处理位置参数、类型转换、帮助和错误分支。

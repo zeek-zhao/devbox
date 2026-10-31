@@ -1,6 +1,5 @@
 # L2-012-package-resources
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L2-12：通过 `importlib.resources` 从包中读取内置配置。

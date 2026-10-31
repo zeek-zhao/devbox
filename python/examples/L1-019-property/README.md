@@ -1,6 +1,5 @@
 # L1-019-property
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-19：通过 `property` 将校验后的状态作为普通属性读写。

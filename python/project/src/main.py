@@ -1,13 +1,6 @@
-"""devbox-python 毕业项目：数据处理与报表
+"""CSV processing CLI; importing this module never starts the command."""
 
-状态：阶段 0 骨架，实现见阶段 2
-已消费用例: hello
-"""
+from csv_report.cli import main
 
-
-def main() -> None:
-    print("[python-project] 骨架就位，实现见阶段 2")
-
-
-if __name__ == "__main__":
+if __name__ == "__main__":  # L1-030-main-guard
     main()

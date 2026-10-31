@@ -1,6 +1,5 @@
 # L3-001-asyncio-timeout
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L3-01：用 `gather` 并发等待并处理超时和取消。

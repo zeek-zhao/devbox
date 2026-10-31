@@ -1,6 +1,5 @@
 # L1-006-functions-return
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-06：通过函数参数接收输入，并用返回值传递计算结果。

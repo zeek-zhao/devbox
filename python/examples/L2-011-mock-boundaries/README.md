@@ -1,6 +1,5 @@
 # L2-011-mock-boundaries
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L2-11：用 `unittest.mock` 替换被测代码的外部命令边界。

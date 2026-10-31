@@ -1,6 +1,5 @@
 # L1-002-mutability-identity
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-02：区分身份、值相等与可变性。

@@ -1,6 +1,5 @@
 # L2-004-mypy-check
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L2-04：固定运行 mypy，并把类型错误转成可观察的门禁结果。
