@@ -1,6 +1,5 @@
 # L1-007-pointers
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-07：函数接收 `*Stats` 后修改调用方持有的对象。

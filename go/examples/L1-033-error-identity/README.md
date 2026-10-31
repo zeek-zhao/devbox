@@ -1,6 +1,5 @@
 # L1-033-error-identity
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-33，两次 errors.New 文本相同但错误值不同；包装后的哨兵仍可由 errors.Is 识别。

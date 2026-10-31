@@ -1,6 +1,5 @@
 # L2-005-go-benchmark
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L2-05：编写 Benchmark 开头的函数，并通过 go test -bench 执行。

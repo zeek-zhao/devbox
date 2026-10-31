@@ -1,6 +1,5 @@
 # L1-020-error-wrapping
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-20：用 %w 保留错误链，用 errors.Is 和 errors.As 查询原因。

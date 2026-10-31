@@ -1,6 +1,5 @@
 # L1-003-constants-iota
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-03：观察同一 const 组中的状态值递增，以及新组从零开始。

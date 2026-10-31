@@ -1,6 +1,5 @@
 # L3-001-worker-pool-shutdown
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L3-01：用 WaitGroup、Once 与 Mutex 协调 worker pool。

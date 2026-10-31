@@ -1,6 +1,5 @@
 # L1-022-panic-recover
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-22：只在任务边界的延迟函数中 recover，普通失败仍返回 error。

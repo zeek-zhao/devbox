@@ -1,6 +1,5 @@
 # L3-002-race-detector
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L3-02：普通运行成功并不能证明并发访问没有竞态。

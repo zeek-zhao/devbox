@@ -1,6 +1,5 @@
 # L2-010-os-exec
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L2-10：通过 os/exec 以可执行文件和参数启动子进程。

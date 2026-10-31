@@ -1,6 +1,5 @@
 # L1-035-integer-boundaries
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-35，int8 的上下界在转换前检查，边界值接受而越界值拒绝。

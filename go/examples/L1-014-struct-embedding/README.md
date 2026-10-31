@@ -1,6 +1,5 @@
 # L1-014-struct-embedding
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-14：验证嵌入字段的方法提升、同名遮蔽与显式限定调用。

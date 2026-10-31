@@ -1,6 +1,5 @@
 # L2-007-cross-compilation
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L2-07：使用 GOOS 和 GOARCH 为非宿主平台构建 Go 程序。

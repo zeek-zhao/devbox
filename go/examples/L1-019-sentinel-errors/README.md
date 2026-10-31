@@ -1,6 +1,5 @@
 # L1-019-sentinel-errors
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-19：函数直接返回包级哨兵错误，调用方识别失败类别。

@@ -1,6 +1,5 @@
 # L2-004-test-coverage
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L2-04：通过 go test -coverprofile 和 go tool cover 查看目标函数的语句覆盖率。

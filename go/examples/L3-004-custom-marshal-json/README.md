@@ -1,6 +1,5 @@
 # L3-004-custom-marshal-json
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L3-04：为类型实现 `MarshalJSON` 并明确稳定的 JSON 字段。

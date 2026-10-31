@@ -1,6 +1,5 @@
 # L1-005-control-flow
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-05：用 if、for 和 switch 处理边界、匹配、默认分支与有限循环。

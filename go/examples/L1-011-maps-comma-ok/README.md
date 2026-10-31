@@ -1,6 +1,5 @@
 # L1-011-maps-comma-ok
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-11：用 comma-ok 区分不存在的键与值为零的键。

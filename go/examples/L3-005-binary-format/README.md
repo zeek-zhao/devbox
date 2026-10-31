@@ -1,6 +1,5 @@
 # L3-005-binary-format
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L3-05：按固定版本和大端序逐字段编码二进制记录。

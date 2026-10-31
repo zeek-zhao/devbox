@@ -1,6 +1,5 @@
 # L1-009-slice-backing-array
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-09：分别观察有剩余容量和容量已满时 append 的底层数组行为。
