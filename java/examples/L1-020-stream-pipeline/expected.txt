@@ -1,0 +1,4 @@
+processed before terminal=0
+values=[4, 8]
+processed after terminal=2
+rejects stream reuse=true

@@ -1,0 +1,2 @@
+lambda=outer:word
+anonymous=callback:word
