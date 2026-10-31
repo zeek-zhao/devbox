@@ -1,0 +1,3 @@
+function pointer: 15
+function object: 9
+capturing lambda: 11
