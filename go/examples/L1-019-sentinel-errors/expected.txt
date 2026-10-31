@@ -1,0 +1,3 @@
+found: guide, error-free: true
+missing is sentinel: true
+missing branch: no results

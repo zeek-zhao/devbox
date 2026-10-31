@@ -1,0 +1,6 @@
+wrapped text: query: read guide.txt: unreadable document
+wrapped is sentinel: true
+wrapped as ReadError: true
+document: guide.txt
+text-only is sentinel: false
+text-only as ReadError: false
