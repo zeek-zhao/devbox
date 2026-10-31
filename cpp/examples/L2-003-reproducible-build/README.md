@@ -1,6 +1,5 @@
 # L2-003-reproducible-build
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L2-03：显式指定 C++20、警告选项和路径映射，并在两个干净输出目录分别构建。

@@ -1,6 +1,5 @@
 # L4-002-factory-method
 
-<!-- coverage: pending -->
 
 ## 考点
 

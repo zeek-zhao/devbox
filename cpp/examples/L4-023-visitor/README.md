@@ -1,6 +1,5 @@
 # L4-023-visitor
 
-<!-- coverage: pending -->
 
 ## 考点
 

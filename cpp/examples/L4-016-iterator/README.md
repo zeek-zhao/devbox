@@ -1,6 +1,5 @@
 # L4-016-iterator
 
-<!-- coverage: pending -->
 
 ## 考点
 

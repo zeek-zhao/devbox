@@ -1,6 +1,5 @@
 # L2-002-cmake-targets
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L2-02：CMake target 明确声明源文件、公开 include 路径和 target 专属编译选项。

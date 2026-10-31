@@ -1,6 +1,5 @@
 # L2-011-error-reporting
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L2-11：错误值携带枚举类别和上下文，用户输入错误与内部失败输出不同诊断。

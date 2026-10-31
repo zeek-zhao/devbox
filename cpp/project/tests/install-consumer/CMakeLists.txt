@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.28)
+project(index_consumer LANGUAGES CXX)
+find_package(devboxIndex 1.0 REQUIRED CONFIG)
+add_executable(consumer main.cpp)
+target_link_libraries(consumer PRIVATE devbox::project_index)
