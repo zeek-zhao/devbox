@@ -1,0 +1,6 @@
+items=[alpha, beta]
+help=accepted
+unknown=rejected
+missing=rejected
+nonnumeric=rejected
+negative=rejected

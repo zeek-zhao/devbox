@@ -1,0 +1,3 @@
+compile=clean-release-21
+bytecode-call=app/Helper.value
+  major version: 65

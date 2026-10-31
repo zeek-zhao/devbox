@@ -1,0 +1,2 @@
+published-payload=42
+volatile-increment=read-add-write
