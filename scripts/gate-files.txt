@@ -24,9 +24,12 @@ scripts/gate-files.txt
 # ④ 版本单一真本：改一个版本号会连带改掉所有镜像的内容
 images/versions.env
 
-# ⑤ 换行与可执行位：改错会让 Linux 侧整片脚本失效，且不报错
+# ⑤ 镜像安装逻辑：改错了镜像照样能构建成功，只是内容不对（最难发现的一类）
+images/scripts/*.sh
+
+# ⑥ 换行与可执行位：改错会让 Linux 侧整片脚本失效，且不报错
 .gitattributes
 .gitignore
 
-# ⑥ 本地钩子与提交身份约束
+# ⑦ 本地钩子与提交身份约束
 .githooks/*

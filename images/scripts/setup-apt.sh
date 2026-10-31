@@ -9,16 +9,27 @@ set -euo pipefail
 APT_MIRROR="${APT_MIRROR:-mirrors.ustc.edu.cn}"
 TZ_VALUE="${TZ:-Asia/Shanghai}"
 
-echo "==> 切换 apt 源到 ${APT_MIRROR}"
+# APT_MIRROR 为空 / official / default 时保持官方源不动。
+# 用途：CI runner 在境外，套国内源会慢到超时；本地与 215 在境内，才需要换源。
+case "$APT_MIRROR" in
+  ''|official|default)
+    echo "==> 保持官方 apt 源（APT_MIRROR='$APT_MIRROR'）"
+    ;;
+esac
 # 24.04 是 deb822 格式（ubuntu.sources）；老格式一并处理，同一镜像要能跨版本复用
-for f in /etc/apt/sources.list /etc/apt/sources.list.d/ubuntu.sources; do
-  if [ -f "$f" ]; then
-    sed -i \
-      -e "s@//archive.ubuntu.com@//${APT_MIRROR}@g" \
-      -e "s@//security.ubuntu.com@//${APT_MIRROR}@g" \
-      -e "s@//ports.ubuntu.com@//${APT_MIRROR}@g" "$f"
-  fi
-done
+case "$APT_MIRROR" in
+  ''|official|default) : ;;
+  *)
+    for f in /etc/apt/sources.list /etc/apt/sources.list.d/ubuntu.sources; do
+      if [ -f "$f" ]; then
+        sed -i \
+          -e "s@//archive.ubuntu.com@//${APT_MIRROR}@g" \
+          -e "s@//security.ubuntu.com@//${APT_MIRROR}@g" \
+          -e "s@//ports.ubuntu.com@//${APT_MIRROR}@g" "$f"
+      fi
+    done
+    ;;
+esac
 
 apt-get update
 apt-get install -y --no-install-recommends ca-certificates locales tzdata

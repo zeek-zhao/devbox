@@ -58,9 +58,14 @@ jobs:
 
       - name: build base
         run: |
+          # buildx 的 --build-arg-file 在老版本插件上不存在（unknown flag）→ 自己解析
+          mapfile -t BARGS < <(bash images/scripts/build-args.sh)
+          # CI runner 在境外：把 APT_MIRROR 置空，让 setup-apt.sh 保持官方源
+          # （镜像里固化国内源的话，Azure 上 apt 会慢到超时）
+          BARGS=("${BARGS[@]/APT_MIRROR=*/APT_MIRROR=}")
           docker buildx build --load \
             --file images/base/Dockerfile \
-            --build-arg-file images/versions.env \
+            "${BARGS[@]}" \
             --tag "$REGISTRY/devbox-base:$IMAGE_TAG" \
             --cache-from "type=gha,scope=base" \
             --cache-to "type=gha,mode=max,scope=base" \
@@ -70,10 +75,12 @@ jobs:
 
       - name: build tool
         run: |
+          # buildx 的 --build-arg-file 在老版本插件上不存在（unknown flag）→ 自己解析
+          mapfile -t BARGS < <(bash images/scripts/build-args.sh)
           docker buildx build --load \
             --file images/tool/Dockerfile \
             --build-arg "BASE_IMAGE=$REGISTRY/devbox-base:$IMAGE_TAG" \
-            --build-arg-file images/versions.env \
+            "${BARGS[@]}" \
             --tag "$REGISTRY/devbox-tool:$IMAGE_TAG" \
             --cache-from "type=gha,scope=tool" \
             --cache-to "type=gha,mode=max,scope=tool" \
@@ -123,10 +130,12 @@ jobs:
 
       - name: build ${{ matrix.lang }}
         run: |
+          # buildx 的 --build-arg-file 在老版本插件上不存在（unknown flag）→ 自己解析
+          mapfile -t BARGS < <(bash images/scripts/build-args.sh)
           docker buildx build --load \
             --file "images/${{ matrix.lang }}/Dockerfile" \
             --build-arg "BASE_IMAGE=$REGISTRY/devbox-tool:$IMAGE_TAG" \
-            --build-arg-file images/versions.env \
+            "${BARGS[@]}" \
             --tag "$REGISTRY/devbox-${{ matrix.lang }}:$IMAGE_TAG" \
             --cache-from "type=gha,scope=${{ matrix.lang }}" \
             --cache-to "type=gha,mode=max,scope=${{ matrix.lang }}" \
@@ -176,9 +185,14 @@ jobs:
 
       - name: build runtime
         run: |
+          # buildx 的 --build-arg-file 在老版本插件上不存在（unknown flag）→ 自己解析
+          mapfile -t BARGS < <(bash images/scripts/build-args.sh)
+          # CI runner 在境外：把 APT_MIRROR 置空，让 setup-apt.sh 保持官方源
+          # （镜像里固化国内源的话，Azure 上 apt 会慢到超时）
+          BARGS=("${BARGS[@]/APT_MIRROR=*/APT_MIRROR=}")
           docker buildx build --load \
             --file images/runtime/Dockerfile \
-            --build-arg-file images/versions.env \
+            "${BARGS[@]}" \
             --tag "$REGISTRY/devbox-runtime:$IMAGE_TAG" \
             --cache-from "type=gha,scope=runtime" \
             --cache-to "type=gha,mode=max,scope=runtime" \
@@ -188,10 +202,12 @@ jobs:
 
       - name: build all（六语言总环境）
         run: |
+          # buildx 的 --build-arg-file 在老版本插件上不存在（unknown flag）→ 自己解析
+          mapfile -t BARGS < <(bash images/scripts/build-args.sh)
           docker buildx build --load \
             --file images/all/Dockerfile \
             --build-arg "BASE_IMAGE=$REGISTRY/devbox-tool:$IMAGE_TAG" \
-            --build-arg-file images/versions.env \
+            "${BARGS[@]}" \
             --tag "$REGISTRY/devbox-all:$IMAGE_TAG" \
             --cache-from "type=gha,scope=all" \
             --cache-to "type=gha,mode=max,scope=all" \
