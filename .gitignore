@@ -22,7 +22,15 @@ __pycache__/
 *.gcda
 *.gcno
 *.gcov
-coverage.*
+# 覆盖率产物：必须写全名——写 `coverage.*` 会在 Windows/NTFS 上把
+# **/COVERAGE.md 一起忽略（大小写不敏感），导致覆盖表根本没进 git
+coverage.out
+coverage.txt
+coverage.xml
+coverage.json
+coverage.html
+lcov.info
+*.coverprofile
 .vscode/
 .idea/
 
@@ -44,3 +52,11 @@ docs/progress.html
 
 # ---- 本地临时脚本（构建/推送辅助，不入库）----
 .dev/
+
+# ---- wf3 运行时目录（任务卡/日志/远端工具脚本）----
+tools/
+tasks/
+logs/
+
+# 兜底：覆盖表永远要入库
+!**/COVERAGE.md
