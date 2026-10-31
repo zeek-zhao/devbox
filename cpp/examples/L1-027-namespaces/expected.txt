@@ -1,0 +1,5 @@
+first::describe
+second::describe
+first::describe
+scope::label: 1
+local label: 2
