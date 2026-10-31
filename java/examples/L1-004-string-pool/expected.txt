@@ -1,0 +1,5 @@
+literal identity: true
+created identity: false
+interned identity: true
+original after ignored concat: doc
+received concat result: doc-key

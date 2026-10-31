@@ -1,0 +1,4 @@
+first local count: 2
+second local count: 1
+shared instance count: 2
+final reference contents: ready

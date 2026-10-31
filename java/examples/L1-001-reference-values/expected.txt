@@ -1,0 +1,2 @@
+caller value after parameter reassignment: 8
+caller value after returned replacement: 12
