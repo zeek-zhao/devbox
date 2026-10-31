@@ -1,0 +1,3 @@
+hot before archive: 3
+hot after archive: 1
+cold archive rows: 2

@@ -1,0 +1,4 @@
+first acquire: A
+contended acquire: denied
+expired A deletes B lock: yes (unsafe DEL)
+owner-checked release preserves B lock: yes

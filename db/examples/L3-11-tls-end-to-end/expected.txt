@@ -1,0 +1,2 @@
+TLS cipher: active
+plaintext connection: rejected

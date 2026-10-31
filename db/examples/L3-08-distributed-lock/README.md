@@ -10,6 +10,15 @@ SET NX PX + 续期、DB 行锁、误删锁与 fencing token
 
 输出抢锁失败/成功与超时释放
 
+## 为什么这么写
+
+通过真实 Redis SET NX PX 验证竞争失败和过期后接管，并对照无条件 DEL 与按 value 比较后 Lua 原子释放的区别。
+
+## 易错点
+
+- SET NX 和 PX 必须在同一条命令中，否则加锁与过期设置之间会出现永久锁窗口。
+- Lua 释放脚本只允许持有者删除 key；不使用 FLUSHALL 清理。
+
 ## 依赖服务
 
 `redis,mysql`

@@ -1,0 +1,5 @@
+strategy | shard counts (0,1,2,3)
+range-day | 7,1,0,0
+hash-order-id | 2,2,2,2
+range query | one range shard
+hash query | all 4 shards

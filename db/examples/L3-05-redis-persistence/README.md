@@ -10,6 +10,15 @@ RDB/AOF/混合、appendfsync 三档、重启恢复
 
 输出重启后 key 是否还在
 
+## 为什么这么写
+
+专用 Redis 容器启用 AOF 和 appendfsync always；写入后关闭并重启同一容器，再从恢复后的实例读取 key。
+
+## 易错点
+
+- 禁止重启共享 Redis；AOF 文件必须留在同一个临时容器可持久化的可写层。
+- Redis 关闭时 docker exec 可能因主进程退出返回非零，随后要确认容器确实已停止。
+
 ## 依赖服务
 
 `redis`

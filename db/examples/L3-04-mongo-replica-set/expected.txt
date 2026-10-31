@@ -1,0 +1,2 @@
+replica set state: PRIMARY
+majority write: acknowledged
