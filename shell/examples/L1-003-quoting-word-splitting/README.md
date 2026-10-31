@@ -1,6 +1,5 @@
 # L1-003-quoting-word-splitting
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-03：未引用展开会按 IFS 拆词并进行路径名展开，引用展开保留整体。

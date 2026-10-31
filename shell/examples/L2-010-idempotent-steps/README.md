@@ -1,6 +1,5 @@
 # L2-010-idempotent-steps
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L2-10：重复执行配置步骤应到达同一目标状态。

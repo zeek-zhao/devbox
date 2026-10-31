@@ -1,6 +1,5 @@
 # L3-003-jq-json-processing
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L3-03：用 `jq` 读取嵌套 JSON 字段并筛选满足条件的对象。

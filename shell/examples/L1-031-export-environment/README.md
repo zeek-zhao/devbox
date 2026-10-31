@@ -1,6 +1,5 @@
 # L1-031-export-environment
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-31：区分当前 Shell 变量与导出给子进程的环境变量。

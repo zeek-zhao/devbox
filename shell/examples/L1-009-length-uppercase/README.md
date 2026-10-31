@@ -1,6 +1,5 @@
 # L1-009-length-uppercase
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-09：`${#value}` 计算字符串长度，`${value^^}` 转为大写。

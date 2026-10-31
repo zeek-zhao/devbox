@@ -1,6 +1,5 @@
 # L1-023-functions-local-return
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-23：观察 `local` 作用域、函数 stdout 字符串结果和整数返回状态。

@@ -1,6 +1,5 @@
 # L2-004-bats-fixtures
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L2-04：Bats 的 `setup` 和 `teardown` 为每条测试建立并清理 fixture。

@@ -1,6 +1,5 @@
 # L2-008-cli-option-validation
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L2-08：用 `getopts` 实现可验证的命令行选项契约。

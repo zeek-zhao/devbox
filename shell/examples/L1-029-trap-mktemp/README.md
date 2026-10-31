@@ -1,6 +1,5 @@
 # L1-029-trap-mktemp
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-29：使用 `mktemp` 创建唯一文件，并由 `trap ... EXIT` 清理。

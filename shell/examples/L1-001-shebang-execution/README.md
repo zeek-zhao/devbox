@@ -1,6 +1,5 @@
 # L1-001-shebang-execution
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-01：用 shebang 指定解释器，并区分直接执行与 `bash script.sh`。

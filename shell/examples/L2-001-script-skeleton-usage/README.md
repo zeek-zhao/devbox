@@ -1,6 +1,5 @@
 # L2-001-script-skeleton-usage
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L2-01：Bash 入口使用 shebang、严格模式、参数校验和 usage。

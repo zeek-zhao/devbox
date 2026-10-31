@@ -1,6 +1,5 @@
 # L1-034-command-argument-safety
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-34：用 Bash 数组分别保存命令参数，并用 `"${args[@]}"` 保留参数边界。

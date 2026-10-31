@@ -1,6 +1,5 @@
 # L1-014-for-list
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-14：`for` 循环逐个遍历显式列表中的元素。

@@ -1,6 +1,5 @@
 # L1-032-redirections
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-32：按顺序应用文件描述符重定向，分别观察 stdout 与 stderr 的去向。

@@ -1,6 +1,5 @@
 # L1-018-associative-arrays
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-18：用 Bash 关联数组将字符串键映射到值。

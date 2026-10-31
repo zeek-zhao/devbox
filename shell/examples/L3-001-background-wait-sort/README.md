@@ -1,6 +1,5 @@
 # L3-001-background-wait-sort
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L3-01：并发启动后台任务，逐一 `wait` 后再稳定输出结果。

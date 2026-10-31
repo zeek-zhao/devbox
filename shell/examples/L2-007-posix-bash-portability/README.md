@@ -1,6 +1,5 @@
 # L2-007-posix-bash-portability
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L2-07：按脚本方言选择解释器。

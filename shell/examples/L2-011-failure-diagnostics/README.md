@@ -1,6 +1,5 @@
 # L2-011-failure-diagnostics
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L2-11：失败步骤应报告具体操作并保留非零状态。

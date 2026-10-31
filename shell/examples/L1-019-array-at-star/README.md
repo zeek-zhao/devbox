@@ -1,6 +1,5 @@
 # L1-019-array-at-star
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-19：区分 `"${items[@]}"` 的逐元素展开与 `"${items[*]}"` 的合并展开。

@@ -1,6 +1,5 @@
 # L1-027-heredoc-herestring
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-27：比较 here-document 的变量展开、引用分隔符保留原文及 here-string 输入。
