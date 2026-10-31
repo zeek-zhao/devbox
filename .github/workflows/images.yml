@@ -238,3 +238,64 @@ jobs:
         with:
           name: image-sizes-all-runtime
           path: metrics/images-*.tsv
+
+  budget:
+    name: image size budget
+    needs: [base-tool, lang, aggregate]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: image-sizes-base-tool
+          path: metrics/incoming/base-tool
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: image-sizes-cpp
+          path: metrics/incoming/lang
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: image-sizes-go
+          path: metrics/incoming/lang
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: image-sizes-rust
+          path: metrics/incoming/lang
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: image-sizes-shell
+          path: metrics/incoming/lang
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: image-sizes-python
+          path: metrics/incoming/lang
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: image-sizes-java
+          path: metrics/incoming/lang
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: image-sizes-all-runtime
+          path: metrics/incoming/all-runtime
+
+      - name: 合并体积并检查预算
+        run: |
+          set -euo pipefail
+          {
+            printf 'layer\tsize_bytes\n'
+            for file in metrics/incoming/base-tool/*.tsv \
+                        metrics/incoming/lang/*.tsv \
+                        metrics/incoming/all-runtime/*.tsv; do
+              [ -f "$file" ] || continue
+              tail -n +2 "$file"
+            done
+          } > metrics/images-merged.tsv
+          bash scripts/budget-check.sh --metrics metrics/images-merged.tsv
