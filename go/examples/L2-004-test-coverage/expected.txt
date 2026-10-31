@@ -1,0 +1,1 @@
+findValue coverage: 66.7%
