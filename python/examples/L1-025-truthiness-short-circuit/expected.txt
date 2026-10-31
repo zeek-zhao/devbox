@@ -1,0 +1,7 @@
+empty list is false: True
+non-empty list is true: True
+and result: []
+or result: ready
+right-side calls: 0
+0 is missing: False
+None is missing: True

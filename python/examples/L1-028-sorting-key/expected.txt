@@ -1,0 +1,4 @@
+sorted records: [('Omar', 1), ('Lia', 1), ('Mina', 2)]
+input preserved: True
+sort returns None: True
+in-place records: [('Omar', 1), ('Lia', 1), ('Mina', 2)]
