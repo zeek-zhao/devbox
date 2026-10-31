@@ -1,0 +1,3 @@
+before: stable
+operation: failed
+after: stable
