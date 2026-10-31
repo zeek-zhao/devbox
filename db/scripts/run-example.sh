@@ -58,7 +58,10 @@ run_one() {
   local out err rc=0 start end dur
   out="$(mktemp)"; err="$(mktemp)"
   start="$(date +%s)"
-  if ! timeout "$TIMEOUT" bash "$dir/run.sh" >"$out" 2>"$err"; then rc=1; fi
+  # stdin 必须给 /dev/null：用例里的 docker compose exec 会读 stdin，
+  # 不重定向就会把调用方（--all 的 process substitution）的数据流吃掉，
+  # 表现是「只跑了前 N 个就报告全部通过」——一个极难发现的假绿。
+  if ! timeout "$TIMEOUT" bash "$dir/run.sh" >"$out" 2>"$err" < /dev/null; then rc=1; fi
   end="$(date +%s)"; dur=$((end-start))
 
   if [ "$rc" -ne 0 ]; then
@@ -95,7 +98,14 @@ case "$MODE" in
       n=$((n+1)); run_one "$id" || fail=$((fail+1))
     done < <(list_all)
     echo "----------------------------------------"
-    echo "共 $n 个，失败 $fail 个"
+    total="$(list_all | grep -c '' || true)"
+    echo "共 $n 个，失败 $fail 个（目录总数 $total）"
+    # 回归守卫：跑过的数量必须等于目录总数。
+    # 少了就是有东西吃掉了输入流，此时「失败 0」是假绿，必须当失败处理。
+    if [ "$n" -ne "$total" ]; then
+      echo "ERROR: 只跑了 $n 个，目录里有 $total 个 —— 有命令吃掉了输入流，结果不可信" >&2
+      exit 1
+    fi
     [ "$fail" -eq 0 ] || exit 1
     ;;
   "")
