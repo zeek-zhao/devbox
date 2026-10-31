@@ -1,0 +1,3 @@
+ascending: [1 2 3]
+descending: [3 2 1]
+input unchanged: [3 1 2]

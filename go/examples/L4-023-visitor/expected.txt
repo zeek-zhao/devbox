@@ -1,0 +1,5 @@
+name file: main.go
+name folder: src
+metrics file: main.go bytes=42
+metrics folder: src children=1
+total bytes: 42

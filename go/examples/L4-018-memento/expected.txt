@@ -1,0 +1,3 @@
+edited: text=published tags=[changed]
+restored: text=draft tags=[original]
+restored again: text=draft tags=[original]

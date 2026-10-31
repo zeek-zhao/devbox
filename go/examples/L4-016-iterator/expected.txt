@@ -1,0 +1,6 @@
+word: go
+word: design
+word: patterns
+exhausted: false
+next again: "" false
+new iterator: go true
