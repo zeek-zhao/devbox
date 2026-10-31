@@ -1,0 +1,2 @@
+posix: portable
+bash: features=2
