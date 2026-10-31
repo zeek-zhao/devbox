@@ -1,0 +1,5 @@
+literal via str: literal
+String via borrowed str: rust
+owner unchanged after call: "  rust  "
+owner can grow after borrow: "  rust  query"
+owned return survives function: owned query

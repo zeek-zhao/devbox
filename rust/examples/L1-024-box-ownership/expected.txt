@@ -1,0 +1,4 @@
+boxed initial: 7
+boxed after dereference update: 8
+box moved and returned: 10
+recursive nodes consumed by value: [2, 5]

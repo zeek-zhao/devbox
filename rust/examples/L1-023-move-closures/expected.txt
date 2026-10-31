@@ -1,0 +1,6 @@
+Copy captured limit: 3
+outer limit after change: 8
+String returned from owning closure: owned query
+explicit reference captured: borrowed
+outer String still readable: borrowed
+outer String after borrow ends: borrowed query

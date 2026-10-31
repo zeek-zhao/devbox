@@ -1,0 +1,7 @@
+initial owners: 1
+shared owners: 2
+value under shared borrow: 10
+overlapping mutable borrow rejected: true
+original owner reads: 15
+shared owner reads: 15
+owners after shared handle leaves: 1
