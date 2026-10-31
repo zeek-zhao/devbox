@@ -1,0 +1,5 @@
+default unmatched count: 1
+nullglob unmatched count: 0
+globstar matches:
+  tree/one/shallow.txt
+  tree/one/two/deep.txt
