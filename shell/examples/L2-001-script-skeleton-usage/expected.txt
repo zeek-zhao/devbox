@@ -1,0 +1,2 @@
+action=deploy
+invalid=usage-and-nonzero
