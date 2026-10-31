@@ -1,0 +1,5 @@
+set bit 2: 0x00000004
+set bit 5: 0x00000024
+test bit 5: 1
+clear bit 2: 0x00000020
+toggle bit 5: 0x00000000

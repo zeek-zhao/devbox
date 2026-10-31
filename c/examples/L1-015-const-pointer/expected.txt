@@ -1,0 +1,3 @@
+pointer to const now points to 20
+const pointer changed value to 11
+const pointer to const sees 11

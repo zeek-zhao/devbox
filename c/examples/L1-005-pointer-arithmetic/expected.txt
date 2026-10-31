@@ -1,0 +1,2 @@
+element step=4 bytes
+char-pointer difference=4 bytes

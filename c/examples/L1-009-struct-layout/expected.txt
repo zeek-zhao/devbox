@@ -1,0 +1,4 @@
+sizeof(struct Record)=16
+offsetof(tag)=0
+offsetof(count)=4
+offsetof(ratio)=8
