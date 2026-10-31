@@ -1,0 +1,12 @@
+date direct type=range key=events_created_at_idx
+date wrapped type=index key=events_created_at_idx
+string key direct type=ref key=events_code_idx
+implicit numeric conversion type=index key=events_code_idx
+prefix pattern type=range key=events_payload_idx
+leading wildcard type=index key=events_payload_idx
+OR mixed type=index_merge key=events_category_idx,events_payload_idx
+UNION rewrite type=ref key=events_category_idx
+UNION rewrite type=const key=PRIMARY
+UNION rewrite type=ALL key=NULL
+low selectivity type=ALL key=NULL
+forced low-selectivity index type=ref key=events_active_idx

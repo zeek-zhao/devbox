@@ -1,14 +1,23 @@
-# L1-PG-07-serial-sequence · 序列与自增
-
 <!-- coverage: pending -->
+
+# L1-PG-07-serial-sequence · 序列与自增
 
 ## 考点
 
-SERIAL vs IDENTITY、sequence 手动推进、currval/nextval
+- `SERIAL` 是 PostgreSQL 的序列加默认值等对象组成的语法糖；`IDENTITY` 是标准 SQL 身份列语法。
+- `nextval` 在事务回滚后不会退回已分配的序列值。
+- `currval` 返回当前会话该序列最近分配的值，不会替代跨会话的全局查询。
+- 两种自增定义均能为新行生成标识。
 
-## 判据（验收按这一条核对）
+## 为什么这么写
 
-输出 sequence 值与插入后的 id
+先在事务中取一次 `SERIAL` 序列值再回滚，随后再次取值并插入；输出能直接看到回滚造成的序列空洞。另用 identity 表插入一行展示标准写法。
+
+## 易错点
+
+- 序列值不是事务性数据，回滚不会让 `nextval` 重复返回刚分配的值。
+- 不要把实际表的自增 ID 当作跨运行固定输出；本例每次先重建专属数据库。
+- `SERIAL` 与 `IDENTITY` 的创建机制不同，不应把前者称为标准 identity 列。
 
 ## 依赖服务
 
@@ -16,12 +25,4 @@ SERIAL vs IDENTITY、sequence 手动推进、currval/nextval
 
 ## 命名空间
 
-`l1_pg_07_serial_sequence`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-PG-07-serial-sequence --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l1_pg_07_serial_sequence`

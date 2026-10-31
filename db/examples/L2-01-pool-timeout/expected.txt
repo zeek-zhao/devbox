@@ -1,0 +1,3 @@
+pool capacity=2; leases=2
+third acquisition=timeout
+reused connection query=1

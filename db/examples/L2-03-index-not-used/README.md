@@ -1,14 +1,23 @@
-# L2-03-index-not-used · 索引失效场景
-
 <!-- coverage: pending -->
+
+# L2-03-index-not-used · 索引失效场景
 
 ## 考点
 
-函数包裹列、隐式类型转换、前导模糊、OR 混合、选择性过低
+- `DATE(created_at)` 包裹索引列，使日期索引无法按原范围条件使用；MySQL 只能全索引扫描而不是范围查找。
+- 把字符串列与数字比较触发隐式转换，前导通配符、混合 `OR` 也改变索引可用性。
+- 低选择性条件下优化器可能主动放弃索引；计划对照能区分优化器选择与索引不存在。
 
-## 判据（验收按这一条核对）
+## 为什么这么写
 
-输出每种场景的执行计划对比
+MySQL 固定生成 1000 行并对每个场景输出 `EXPLAIN` 的访问类型和索引名，不输出估算行数。每组均同时执行可索引写法和容易失效的写法；低选择性场景另以 `FORCE INDEX` 展示被优化器舍弃的索引确实存在。
+
+## 易错点
+
+- `DATE(created_at) = ...` 可改为含下界、不含上界的时间范围，避免对列逐行计算。
+- `varchar` 列与数字比较并非安全的隐式类型转换；先转成数值会让字符串索引失效。
+- `LIKE '%x'` 的前导通配符不支持普通 B-tree 前缀查找；本例的混合 `OR` 通过 `index_merge` 合并两个索引，拆成 `UNION` 后则分别走索引。
+- 小表或低选择性查询采用全表扫描可能是正确成本选择，不应一概称为缺陷。
 
 ## 依赖服务
 
@@ -16,12 +25,4 @@
 
 ## 命名空间
 
-`l2_03_index_not_used`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L2-03-index-not-used --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l2_03_index_not_used`

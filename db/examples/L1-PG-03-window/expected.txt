@@ -1,0 +1,5 @@
+blue|Ari|10|1|1|1
+blue|Bo|10|2|1|1
+blue|Cy|7|3|3|2
+red|Dee|9|1|1|1
+red|Eli|6|2|2|2

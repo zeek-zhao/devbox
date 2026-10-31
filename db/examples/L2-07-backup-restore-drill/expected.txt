@@ -1,0 +1,3 @@
+source rows=3
+restored rows=3
+checksum match=true

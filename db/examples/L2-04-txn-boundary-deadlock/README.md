@@ -1,27 +1,27 @@
-# L2-04-txn-boundary-deadlock · 事务边界与死锁
-
 <!-- coverage: pending -->
+
+# L2-04-txn-boundary-deadlock · 事务边界与死锁
 
 ## 考点
 
-加锁顺序、间隙锁、死锁检测与重试、长事务危害
+- 两个真实连接以相反顺序更新同一事务内的两行，会形成循环等待。
+- PostgreSQL 死锁 SQLSTATE 为 `40P01`，被选为牺牲者的事务整体回滚。
+- 回滚后重试事务并提交，最终两行变更一致。
 
-## 判据（验收按这一条核对）
+## 为什么这么写
 
-输出死锁错误码与重试成功后的结果
+两个线程先分别锁住不同账户，再用 `Barrier` 同步后请求对方持有的行；确认真的收到 `40P01` 后，只重试失败事务并校验最终余额。数据仅存在本例独立数据库中。
+
+## 易错点
+
+- 用单连接或串行执行无法制造死锁；必须让两个事务同时持有相反方向的锁。
+- 捕获死锁后必须回滚整个事务，不能在失败事务中直接重试 SQL。
+- 本例要求恰好观察到一个 PostgreSQL 死锁；未制造成功会明确失败，不会跳过。
 
 ## 依赖服务
 
-`mysql`
+`postgres`
 
 ## 命名空间
 
-`l2_04_txn_boundary_deadlock`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L2-04-txn-boundary-deadlock --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l2_04_txn_boundary_deadlock`
