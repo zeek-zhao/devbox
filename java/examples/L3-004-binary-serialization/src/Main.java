@@ -24,8 +24,10 @@ public class Main {
         }
         byte[] integer = integerBytes.toByteArray();
         if (integer.length != 4
-                || integer[0] != 1 || integer[1] != 2
-                || integer[2] != 3 || integer[3] != 4) {
+                || integer[0] != 1
+                || integer[1] != 2
+                || integer[2] != 3
+                || integer[3] != 4) {
             throw new IllegalStateException("unexpected byte order");
         }
         System.out.println("big-endian: 01 02 03 04");
@@ -34,7 +36,7 @@ public class Main {
         rejected += rejects(encode(0, VERSION, payload)) ? 1 : 0;
         rejected += rejects(encode(MAGIC, 2, payload)) ? 1 : 0;
         rejected += rejects(header(MAGIC, VERSION, MAX_PAYLOAD + 1, payload)) ? 1 : 0;
-        rejected += rejects(new byte[]{0x44, 0x56}) ? 1 : 0;
+        rejected += rejects(new byte[] {0x44, 0x56}) ? 1 : 0;
         if (rejected != 4) {
             throw new IllegalStateException("invalid records were accepted");
         }

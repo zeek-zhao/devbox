@@ -11,8 +11,14 @@ while getopts ':ab:' option; do
   case "$option" in
     a) enabled=true ;;
     b) value="$OPTARG" ;;
-    :) usage; exit 2 ;;
-    \?) usage; exit 2 ;;
+    :)
+      usage
+      exit 2
+      ;;
+    \?)
+      usage
+      exit 2
+      ;;
   esac
 done
 shift "$((OPTIND - 1))"

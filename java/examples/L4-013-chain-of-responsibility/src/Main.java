@@ -1,5 +1,9 @@
 public class Main {
-    enum Level { INFO, WARNING, ERROR }
+    enum Level {
+        INFO,
+        WARNING,
+        ERROR
+    }
 
     abstract static class Handler {
         private final Handler next;
@@ -19,25 +23,56 @@ public class Main {
         }
 
         abstract boolean accepts(Level level);
+
         abstract String label();
     }
 
     static final class InfoHandler extends Handler {
-        InfoHandler(Handler next) { super(next); }
-        @Override boolean accepts(Level level) { return level == Level.INFO; }
-        @Override String label() { return "info-handler"; }
+        InfoHandler(Handler next) {
+            super(next);
+        }
+
+        @Override
+        boolean accepts(Level level) {
+            return level == Level.INFO;
+        }
+
+        @Override
+        String label() {
+            return "info-handler";
+        }
     }
 
     static final class WarningHandler extends Handler {
-        WarningHandler(Handler next) { super(next); }
-        @Override boolean accepts(Level level) { return level == Level.WARNING; }
-        @Override String label() { return "warning-handler"; }
+        WarningHandler(Handler next) {
+            super(next);
+        }
+
+        @Override
+        boolean accepts(Level level) {
+            return level == Level.WARNING;
+        }
+
+        @Override
+        String label() {
+            return "warning-handler";
+        }
     }
 
     static final class ErrorHandler extends Handler {
-        ErrorHandler(Handler next) { super(next); }
-        @Override boolean accepts(Level level) { return level == Level.ERROR; }
-        @Override String label() { return "error-handler"; }
+        ErrorHandler(Handler next) {
+            super(next);
+        }
+
+        @Override
+        boolean accepts(Level level) {
+            return level == Level.ERROR;
+        }
+
+        @Override
+        String label() {
+            return "error-handler";
+        }
     }
 
     public static void main(String[] args) {

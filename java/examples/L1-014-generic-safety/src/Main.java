@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
@@ -35,11 +36,17 @@ public class Main {
         Files.createDirectories(output);
         var diagnostics = new DiagnosticCollector<JavaFileObject>();
         try (StandardJavaFileManager manager =
-                     compiler.getStandardFileManager(diagnostics, Locale.ROOT, StandardCharsets.UTF_8)) {
-            boolean compiled = Boolean.TRUE.equals(compiler.getTask(
-                    null, manager, diagnostics,
-                    List.of("-proc:none", "-d", output.toString()),
-                    null, List.of(new Source(source))).call());
+                compiler.getStandardFileManager(diagnostics, Locale.ROOT, StandardCharsets.UTF_8)) {
+            boolean compiled =
+                    Boolean.TRUE.equals(
+                            compiler.getTask(
+                                            null,
+                                            manager,
+                                            diagnostics,
+                                            List.of("-proc:none", "-d", output.toString()),
+                                            null,
+                                            List.of(new Source(source)))
+                                    .call());
             return !compiled;
         }
     }
@@ -55,14 +62,18 @@ public class Main {
 
         System.out.println("first string=" + first(words));
         System.out.println("first integer=" + first(numbers));
-        System.out.println("rejects wrong element=" + rejected(
-                "import java.util.*; class Probe { void test() { "
-                        + "List<String> values = new ArrayList<>(); values.add(7); } }",
-                probes));
-        System.out.println("rejects covariant list=" + rejected(
-                "import java.util.*; class Probe { void test() { "
-                        + "List<Integer> integers = new ArrayList<>(); "
-                        + "List<Number> numbers = integers; } }",
-                probes));
+        System.out.println(
+                "rejects wrong element="
+                        + rejected(
+                                "import java.util.*; class Probe { void test() { List<String>"
+                                        + " values = new ArrayList<>(); values.add(7); } }",
+                                probes));
+        System.out.println(
+                "rejects covariant list="
+                        + rejected(
+                                "import java.util.*; class Probe { void test() { "
+                                        + "List<Integer> integers = new ArrayList<>(); "
+                                        + "List<Number> numbers = integers; } }",
+                                probes));
     }
 }

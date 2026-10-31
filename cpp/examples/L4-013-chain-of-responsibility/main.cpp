@@ -9,9 +9,7 @@ class Handler {
 public:
     virtual ~Handler() = default;
 
-    void set_next(std::unique_ptr<Handler> next) {
-        next_ = std::move(next);
-    }
+    void set_next(std::unique_ptr<Handler> next) { next_ = std::move(next); }
 
     virtual std::string_view handle(Level level) const {
         return next_ ? next_->handle(level) : "unhandled";
@@ -48,8 +46,7 @@ int main() {
     warning->set_next(std::make_unique<ErrorHandler>());
     chain->set_next(std::move(warning));
 
-    for (const auto level : {Level::info, Level::warning, Level::error,
-                             Level::unknown}) {
+    for (const auto level : {Level::info, Level::warning, Level::error, Level::unknown}) {
         std::cout << chain->handle(level) << '\n';
     }
 }

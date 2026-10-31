@@ -9,16 +9,16 @@
 namespace devbox {
 
 class InvertedIndex {
- public:
-  bool build(const std::string& path);
-  const std::vector<std::size_t>* find(const std::string& query) const;
-  const std::string& line(std::size_t one_based_line) const;
+public:
+    bool build(const std::string& path);
+    const std::vector<std::size_t>* find(const std::string& query) const;
+    const std::string& line(std::size_t one_based_line) const;
 
- private:
-  std::unordered_map<std::string, std::vector<std::size_t>> postings_;
-  std::vector<std::string> lines_;
+private:
+    std::unordered_map<std::string, std::vector<std::size_t>> postings_;
+    std::vector<std::string> lines_;
 };
 
-}  // namespace devbox
+} // namespace devbox
 
 #endif

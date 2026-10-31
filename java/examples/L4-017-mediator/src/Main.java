@@ -4,17 +4,20 @@ import java.util.List;
 public class Main {
     interface Mediator {
         void register(Colleague colleague);
+
         void send(Colleague sender, String message);
     }
 
     static final class Room implements Mediator {
         private final List<Colleague> colleagues = new ArrayList<>();
 
-        @Override public void register(Colleague colleague) {
+        @Override
+        public void register(Colleague colleague) {
             colleagues.add(colleague);
         }
 
-        @Override public void send(Colleague sender, String message) {
+        @Override
+        public void send(Colleague sender, String message) {
             if (!colleagues.contains(sender)) {
                 throw new IllegalArgumentException("Sender is not registered");
             }
@@ -35,8 +38,14 @@ public class Main {
             this.mediator = mediator;
         }
 
-        String name() { return name; }
-        void send(String message) { mediator.send(this, message); }
+        String name() {
+            return name;
+        }
+
+        void send(String message) {
+            mediator.send(this, message);
+        }
+
         void receive(String sender, String message) {
             System.out.println(name + " <- " + sender + ": " + message);
         }

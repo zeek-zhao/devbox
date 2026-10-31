@@ -7,6 +7,7 @@ import java.util.Objects;
 public interface Api { // L2-009-module-layers
     /**
      * Routes one request and atomically updates the in-memory store.
+     *
      * @param request non-null request with non-null components
      * @return an immutable status, content type and body
      * @throws NullPointerException if request is null
@@ -15,36 +16,47 @@ public interface Api { // L2-009-module-layers
 
     /**
      * Copies the current items.
+     *
      * @return a sorted immutable snapshot of the items
      */
     List<Item> snapshot();
 
     /**
      * Creates an independent store.
+     *
      * @return a new isolated service
      */
-    static Api create() { return new RestService(); }
+    static Api create() {
+        return new RestService();
+    }
 
     /**
      * Checks publication of service state.
+     *
      * @return true once a request has completed
      */
     boolean ready();
 
     /**
      * Runs a health request without transport.
+     *
      * @return the health response
      */
-    default Result health() { return handle(new Request("GET", "/healthz", "")); } // L1-010-interface-methods
+    default Result health() {
+        return handle(new Request("GET", "/healthz", ""));
+    } // L1-010-interface-methods
 
     /**
      * Input envelope.
+     *
      * @param method HTTP method
      * @param path raw URL path
      * @param body UTF-8 decoded body
      */
     record Request(String method, String path, String body) {
-        /** Rejects nulls at the boundary.
+        /**
+         * Rejects nulls at the boundary.
+         *
          * @param method HTTP method
          * @param path raw URL path
          * @param body UTF-8 decoded body
@@ -58,12 +70,14 @@ public interface Api { // L2-009-module-layers
 
     /**
      * Stored immutable value.
+     *
      * @param id positive identifier
      * @param name validated name
      */
     record Item(int id, String name) { // L1-026-record-model
         /**
          * Validates the item.
+         *
          * @param id positive identifier
          * @param name validated name
          */
@@ -75,6 +89,7 @@ public interface Api { // L2-009-module-layers
 
     /**
      * Wire result.
+     *
      * @param status HTTP code
      * @param contentType media type
      * @param body response

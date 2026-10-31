@@ -23,9 +23,7 @@ private:
 
 class Group final : public Node {
 public:
-    void add_child(std::unique_ptr<Node> child) {
-        children_.push_back(std::move(child));
-    }
+    void add_child(std::unique_ptr<Node> child) { children_.push_back(std::move(child)); }
     void render(std::ostream& out, std::size_t depth) const override {
         for (const auto& child : children_) {
             child->render(out, depth + 1);

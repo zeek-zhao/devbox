@@ -13,14 +13,12 @@ public:
 
     private:
         friend class Editor;
-        Memento(std::string text, int cursor)
-            : text_(std::move(text)), cursor_(cursor) {}
+        Memento(std::string text, int cursor) : text_(std::move(text)), cursor_(cursor) {}
         const std::string text_;
         const int cursor_;
     };
 
-    Editor(std::string text, int cursor)
-        : text_(std::move(text)), cursor_(cursor) {}
+    Editor(std::string text, int cursor) : text_(std::move(text)), cursor_(cursor) {}
     void edit(std::string text, int cursor) {
         text_ = std::move(text);
         cursor_ = cursor;
@@ -40,8 +38,8 @@ private:
 };
 
 static_assert(!std::is_copy_assignable_v<Editor::Memento>);
-static_assert(std::is_same_v<decltype(std::declval<Editor::Memento&>().text()),
-                             const std::string&>);
+static_assert(
+    std::is_same_v<decltype(std::declval<Editor::Memento&>().text()), const std::string&>);
 
 int main() {
     Editor editor("draft", 2);
@@ -51,6 +49,5 @@ int main() {
     editor.show("changed");
     editor.restore(checkpoint);
     editor.show("restored");
-    std::cout << "snapshot: " << checkpoint.text()
-              << ", cursor=" << checkpoint.cursor() << '\n';
+    std::cout << "snapshot: " << checkpoint.text() << ", cursor=" << checkpoint.cursor() << '\n';
 }

@@ -29,25 +29,20 @@ private:
 class Cache final : public Decorator {
 public:
     using Decorator::Decorator;
-    std::string describe() const override {
-        return "cache(" + wrapped().describe() + ")";
-    }
+    std::string describe() const override { return "cache(" + wrapped().describe() + ")"; }
 };
 
 class Statistics final : public Decorator {
 public:
     using Decorator::Decorator;
-    std::string describe() const override {
-        return "stats(" + wrapped().describe() + ")";
-    }
+    std::string describe() const override { return "stats(" + wrapped().describe() + ")"; }
 };
 
 int main() {
     const std::shared_ptr<const Component> result = std::make_shared<Result>();
     std::cout << "before: " << result->describe() << '\n';
     const std::shared_ptr<const Component> cached = std::make_shared<Cache>(result);
-    const std::shared_ptr<const Component> measured =
-        std::make_shared<Statistics>(cached);
+    const std::shared_ptr<const Component> measured = std::make_shared<Statistics>(cached);
     std::cout << "decorated: " << measured->describe() << '\n';
     const std::shared_ptr<const Component> reversed =
         std::make_shared<Cache>(std::make_shared<Statistics>(result));

@@ -13,5 +13,5 @@ cat <<'EOF'
 $name
 EOF
 
-IFS= read -r line <<< "single line"
+IFS= read -r line <<<"single line"
 printf 'here_string=%s\n' "$line"

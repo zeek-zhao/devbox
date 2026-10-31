@@ -29,20 +29,22 @@ public class Main {
     public static void main(String[] args) {
         List<String> normalCloseOrder = new ArrayList<>();
         try (TestResource first = new TestResource("first", normalCloseOrder, false);
-             TestResource second = new TestResource("second", normalCloseOrder, false)) {
+                TestResource second = new TestResource("second", normalCloseOrder, false)) {
             System.out.println("body=completed");
         }
         System.out.println("normal-close-order=" + joined(normalCloseOrder));
 
         List<String> failingCloseOrder = new ArrayList<>();
         try (TestResource first = new TestResource("first", failingCloseOrder, true);
-             TestResource second = new TestResource("second", failingCloseOrder, true)) {
+                TestResource second = new TestResource("second", failingCloseOrder, true)) {
             throw new IllegalArgumentException("body-failure");
         } catch (IllegalArgumentException exception) {
             System.out.println("primary=" + exception.getMessage());
-            System.out.println("suppressed="
-                    + exception.getSuppressed()[0].getMessage() + ","
-                    + exception.getSuppressed()[1].getMessage());
+            System.out.println(
+                    "suppressed="
+                            + exception.getSuppressed()[0].getMessage()
+                            + ","
+                            + exception.getSuppressed()[1].getMessage());
             System.out.println("failure-close-order=" + joined(failingCloseOrder));
         }
     }

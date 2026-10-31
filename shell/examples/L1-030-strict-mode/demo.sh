@@ -2,7 +2,7 @@
 set -euo pipefail
 
 work=$1
-printf 'present\n' > "$work/input.txt"
+printf 'present\n' >"$work/input.txt"
 
 if grep -q absent "$work/input.txt"; then
   printf 'expected miss handled: false\n'

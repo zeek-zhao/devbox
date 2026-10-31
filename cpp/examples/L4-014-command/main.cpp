@@ -51,8 +51,7 @@ private:
 
 class Invoker {
 public:
-    explicit Invoker(std::unique_ptr<Command> command)
-        : command_(std::move(command)) {
+    explicit Invoker(std::unique_ptr<Command> command) : command_(std::move(command)) {
         if (!command_) {
             throw std::invalid_argument("command must not be null");
         }

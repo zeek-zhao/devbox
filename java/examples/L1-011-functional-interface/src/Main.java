@@ -7,14 +7,15 @@ public class Main {
 
     private void demonstrate() {
         TextRule lambda = text -> this.prefix + text;
-        TextRule anonymous = new TextRule() {
-            private final String prefix = "callback:";
+        TextRule anonymous =
+                new TextRule() {
+                    private final String prefix = "callback:";
 
-            @Override
-            public String apply(String text) {
-                return this.prefix + text;
-            }
-        };
+                    @Override
+                    public String apply(String text) {
+                        return this.prefix + text;
+                    }
+                };
 
         System.out.println("lambda=" + lambda.apply("word"));
         System.out.println("anonymous=" + anonymous.apply("word"));

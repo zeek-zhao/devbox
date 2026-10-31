@@ -14,5 +14,8 @@ fn main() {
     let borrowed = std::ptr::eq(record.name.as_ptr(), input[1..].as_ptr());
 
     println!("borrowed input: {borrowed}");
-    println!("field: {}", std::str::from_utf8(record.name).expect("valid UTF-8"));
+    println!(
+        "field: {}",
+        std::str::from_utf8(record.name).expect("valid UTF-8")
+    );
 }

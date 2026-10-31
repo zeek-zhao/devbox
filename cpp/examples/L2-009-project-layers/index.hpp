@@ -6,11 +6,11 @@
 #include "storage.hpp"
 
 class Index {
- public:
-  std::string_view query(std::string_view term) const;
+public:
+    std::string_view query(std::string_view term) const;
 
- private:
-  Storage storage_;
+private:
+    Storage storage_;
 };
 
 #endif

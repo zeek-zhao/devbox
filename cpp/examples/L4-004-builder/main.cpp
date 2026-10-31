@@ -43,8 +43,8 @@ int main() {
     RequestBuilder builder;
     const Request request = builder.query("cpp").limit(3).format("json").build();
     builder.query("changed");
-    std::cout << "request: " << request.query << ", " << request.limit
-              << ", " << request.format << '\n';
+    std::cout << "request: " << request.query << ", " << request.limit << ", " << request.format
+              << '\n';
     try {
         const auto invalid = RequestBuilder{}.limit(3).format("json").build();
         std::cerr << "unexpected success: " << invalid.query << '\n';

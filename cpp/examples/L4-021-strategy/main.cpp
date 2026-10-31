@@ -30,18 +30,14 @@ public:
 
 class Sorter {
 public:
-    explicit Sorter(std::unique_ptr<SortStrategy> strategy) {
-        set_strategy(std::move(strategy));
-    }
+    explicit Sorter(std::unique_ptr<SortStrategy> strategy) { set_strategy(std::move(strategy)); }
     void set_strategy(std::unique_ptr<SortStrategy> strategy) {
         if (!strategy) {
             throw std::invalid_argument("strategy must not be null");
         }
         strategy_ = std::move(strategy);
     }
-    std::vector<int> sort(const std::vector<int>& values) const {
-        return strategy_->sort(values);
-    }
+    std::vector<int> sort(const std::vector<int>& values) const { return strategy_->sort(values); }
 
 private:
     std::unique_ptr<SortStrategy> strategy_;

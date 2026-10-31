@@ -22,8 +22,7 @@ public:
 
 class Report {
 public:
-    explicit Report(std::shared_ptr<const Source> source)
-        : source_(std::move(source)) {}
+    explicit Report(std::shared_ptr<const Source> source) : source_(std::move(source)) {}
     virtual ~Report() = default;
     virtual std::string render() const = 0;
 
@@ -37,28 +36,21 @@ private:
 class TextReport final : public Report {
 public:
     using Report::Report;
-    std::string render() const override {
-        return "text/" + std::string(source().read());
-    }
+    std::string render() const override { return "text/" + std::string(source().read()); }
 };
 
 class JsonReport final : public Report {
 public:
     using Report::Report;
-    std::string render() const override {
-        return "json/" + std::string(source().read());
-    }
+    std::string render() const override { return "json/" + std::string(source().read()); }
 };
 
 int main() {
     const std::shared_ptr<const Source> file = std::make_shared<FileSource>();
     const std::shared_ptr<const Source> memory = std::make_shared<MemorySource>();
     const std::unique_ptr<Report> reports[] = {
-        std::make_unique<TextReport>(file),
-        std::make_unique<TextReport>(memory),
-        std::make_unique<JsonReport>(file),
-        std::make_unique<JsonReport>(memory)
-    };
+        std::make_unique<TextReport>(file), std::make_unique<TextReport>(memory),
+        std::make_unique<JsonReport>(file), std::make_unique<JsonReport>(memory)};
     for (const auto& report : reports) {
         std::cout << report->render() << '\n';
     }

@@ -4,8 +4,8 @@
 #include <string_view>
 
 class Command {
- public:
-  void execute(std::string_view term) const;
+public:
+    void execute(std::string_view term) const;
 };
 
 #endif

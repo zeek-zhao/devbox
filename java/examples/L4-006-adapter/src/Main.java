@@ -35,7 +35,8 @@ public class Main {
         Query classAdapter = new ClassAdapter();
         System.out.println("object: " + objectAdapter.find("java"));
         System.out.println("class: " + classAdapter.find("java"));
-        System.out.println("same result: " + objectAdapter.find("patterns")
-                .equals(classAdapter.find("patterns")));
+        System.out.println(
+                "same result: "
+                        + objectAdapter.find("patterns").equals(classAdapter.find("patterns")));
     }
 }

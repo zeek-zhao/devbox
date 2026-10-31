@@ -28,10 +28,8 @@ private:
 };
 
 int main() {
-    const std::unique_ptr<Query> first =
-        std::make_unique<QueryAdapter>(LegacyQuery{"record-7"});
-    const std::unique_ptr<Query> second =
-        std::make_unique<QueryAdapter>(LegacyQuery{"record-9"});
+    const std::unique_ptr<Query> first = std::make_unique<QueryAdapter>(LegacyQuery{"record-7"});
+    const std::unique_ptr<Query> second = std::make_unique<QueryAdapter>(LegacyQuery{"record-9"});
     std::cout << first->execute() << '\n';
     std::cout << second->execute() << '\n';
 }

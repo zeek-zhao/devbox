@@ -2,6 +2,7 @@ import devbox.rest.Api;
 import devbox.rest.Json;
 import devbox.rest.Snapshot;
 import devbox.tests.NativeChecksum;
+
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,10 +15,12 @@ public final class EngineeringTest {
     private EngineeringTest() {}
 
     public static void main(String[] args) throws Exception {
-        if (!EngineeringTest.class.desiredAssertionStatus()) throw new IllegalStateException("requires -ea");
+        if (!EngineeringTest.class.desiredAssertionStatus())
+            throw new IllegalStateException("requires -ea");
         Api api = Api.create();
         for (int i = 0; i < 1000; i++) {
-            assert api.handle(new Api.Request("POST", "/items", Json.name("Item" + i))).status() == 201;
+            assert api.handle(new Api.Request("POST", "/items", Json.name("Item" + i))).status()
+                    == 201;
         }
         List<Api.Item> items = Snapshot.decode(Snapshot.encode(api.snapshot()));
         countedLookup(items);
@@ -53,14 +56,26 @@ public final class EngineeringTest {
     }
 
     private record Found(Api.Item item, int visits) {}
+
     private abstract static class Lookup {
         abstract Found find(List<Api.Item> items, int id);
-        String label() { return "lookup"; }
-        String describe(Object id) { return "object"; }
-        String describe(int id) { return "id"; }
+
+        String label() {
+            return "lookup";
+        }
+
+        String describe(Object id) {
+            return "object";
+        }
+
+        String describe(int id) {
+            return "id";
+        }
     }
+
     private static final class Linear extends Lookup {
-        @Override Found find(List<Api.Item> items, int id) {
+        @Override
+        Found find(List<Api.Item> items, int id) {
             int visits = 0;
             for (Api.Item item : items) {
                 visits++;
@@ -69,9 +84,15 @@ public final class EngineeringTest {
             return new Found(null, visits);
         }
     }
+
     private static final class Binary extends Lookup {
-        @Override String label() { return "binary"; }
-        @Override Found find(List<Api.Item> items, int id) {
+        @Override
+        String label() {
+            return "binary";
+        }
+
+        @Override
+        Found find(List<Api.Item> items, int id) {
             int low = 0;
             int high = items.size() - 1;
             int visits = 0;
@@ -88,8 +109,15 @@ public final class EngineeringTest {
     }
 
     private static void missingNative() throws Exception {
-        Process process = new ProcessBuilder(javaTool("java"), "-Djava.library.path=build/empty",
-                "-cp", "build/classes", "devbox.tests.NativeChecksum").redirectErrorStream(true).start();
+        Process process =
+                new ProcessBuilder(
+                                javaTool("java"),
+                                "-Djava.library.path=build/empty",
+                                "-cp",
+                                "build/classes",
+                                "devbox.tests.NativeChecksum")
+                        .redirectErrorStream(true)
+                        .start();
         String output = finish(process);
         assert process.exitValue() != 0 && output.contains("UnsatisfiedLinkError");
     }
@@ -106,8 +134,13 @@ public final class EngineeringTest {
                 if (System.nanoTime() > deadline) throw new AssertionError("worker did not park");
                 Thread.onSpinWait();
             }
-            Process process = new ProcessBuilder(javaTool("jcmd"), Long.toString(ProcessHandle.current().pid()),
-                    "Thread.print").redirectErrorStream(true).start(); // L3-003-jvm-thread-diagnostics
+            Process process =
+                    new ProcessBuilder(
+                                    javaTool("jcmd"),
+                                    Long.toString(ProcessHandle.current().pid()),
+                                    "Thread.print")
+                            .redirectErrorStream(true)
+                            .start(); // L3-003-jvm-thread-diagnostics
             String dump = finish(process);
             assert process.exitValue() == 0;
             int begin = dump.indexOf("\"rest-diagnostic-worker\"");
@@ -137,13 +170,14 @@ public final class EngineeringTest {
         Files.writeString(seed, "中文\n", StandardCharsets.UTF_8);
         try {
             assert Files.readString(seed, StandardCharsets.UTF_8).strip().equals("中文");
-            assert Main.Options.parse(new String[]{"--seed", seed.toString()}).seed().equals(seed);
+            assert Main.Options.parse(new String[] {"--seed", seed.toString()}).seed().equals(seed);
             Files.writeString(seed, "", StandardCharsets.UTF_8);
             assert Files.size(seed) == 0;
         } finally {
             Files.delete(seed);
         }
-        SelfTest.expect(java.nio.file.NoSuchFileException.class,
+        SelfTest.expect(
+                java.nio.file.NoSuchFileException.class,
                 () -> Files.readString(seed, StandardCharsets.UTF_8));
     }
 
@@ -155,11 +189,14 @@ public final class EngineeringTest {
         try {
             // Drain large thread dumps concurrently so the child cannot block on a full pipe.
             try (var pool = java.util.concurrent.Executors.newSingleThreadExecutor()) {
-                var reader = pool.submit(() -> {
-                    try (var input = process.getInputStream()) {
-                        return new String(input.readAllBytes(), StandardCharsets.UTF_8);
-                    }
-                });
+                var reader =
+                        pool.submit(
+                                () -> {
+                                    try (var input = process.getInputStream()) {
+                                        return new String(
+                                                input.readAllBytes(), StandardCharsets.UTF_8);
+                                    }
+                                });
                 if (!process.waitFor(15, TimeUnit.SECONDS)) {
                     process.destroyForcibly();
                     throw new AssertionError("probe timeout");

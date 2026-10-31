@@ -1,4 +1,4 @@
-use devbox_rust_project::{AppError, Operation, parse_args, run}; // L2-004-integration-tests
+use devbox_rust_project::{parse_args, run, AppError, Operation}; // L2-004-integration-tests
 
 #[test]
 fn help_is_written_to_the_supplied_output() {

@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
+
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
@@ -34,11 +35,17 @@ public class Main {
         Files.createDirectories(output);
         var diagnostics = new DiagnosticCollector<JavaFileObject>();
         try (StandardJavaFileManager manager =
-                     compiler.getStandardFileManager(diagnostics, Locale.ROOT, StandardCharsets.UTF_8)) {
-            boolean compiled = Boolean.TRUE.equals(compiler.getTask(
-                    null, manager, diagnostics,
-                    List.of("-proc:none", "-d", output.toString()),
-                    null, List.of(new Source(source))).call());
+                compiler.getStandardFileManager(diagnostics, Locale.ROOT, StandardCharsets.UTF_8)) {
+            boolean compiled =
+                    Boolean.TRUE.equals(
+                            compiler.getTask(
+                                            null,
+                                            manager,
+                                            diagnostics,
+                                            List.of("-proc:none", "-d", output.toString()),
+                                            null,
+                                            List.of(new Source(source)))
+                                    .call());
             return !compiled;
         }
     }
@@ -52,11 +59,14 @@ public class Main {
         System.out.println("inferred integer=" + count);
         System.out.println("explicit null=" + (missing == null));
         System.out.println("explicit lambda result=" + twice.applyAsInt(3));
-        System.out.println("var rejects null=" + rejected(
-                "class Probe { void test() { var value = null; } }", probes));
-        System.out.println("var rejects lambda=" + rejected(
-                "class Probe { void test() { var action = () -> 1; } }", probes));
-        System.out.println("var rejects field=" + rejected(
-                "class Probe { var field = 1; }", probes));
+        System.out.println(
+                "var rejects null="
+                        + rejected("class Probe { void test() { var value = null; } }", probes));
+        System.out.println(
+                "var rejects lambda="
+                        + rejected(
+                                "class Probe { void test() { var action = () -> 1; } }", probes));
+        System.out.println(
+                "var rejects field=" + rejected("class Probe { var field = 1; }", probes));
     }
 }

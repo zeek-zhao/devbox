@@ -12,16 +12,31 @@ public class Main {
             }
         }
 
-        Session(String query) { this.query = query; }
-        void query(String value) { query = value; }
-        void addFilter(String filter) { filters.add(filter); }
-        Memento save() { return new Memento(query, filters); }
+        Session(String query) {
+            this.query = query;
+        }
+
+        void query(String value) {
+            query = value;
+        }
+
+        void addFilter(String filter) {
+            filters.add(filter);
+        }
+
+        Memento save() {
+            return new Memento(query, filters);
+        }
+
         void restore(Memento snapshot) {
             query = snapshot.query();
             filters.clear();
             filters.addAll(snapshot.filters());
         }
-        String describe() { return query + " " + filters; }
+
+        String describe() {
+            return query + " " + filters;
+        }
     }
 
     public static void main(String[] args) {

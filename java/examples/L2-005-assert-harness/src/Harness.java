@@ -16,20 +16,28 @@ public final class Harness {
     private static int execute(boolean injectFailure) {
         passed = 0;
         failed = 0;
-        run("addition", () -> {
-            assert 2 + 2 == 4;
-        });
-        run("string", () -> {
-            assert "java".startsWith("j");
-        });
+        run(
+                "addition",
+                () -> {
+                    assert 2 + 2 == 4;
+                });
+        run(
+                "string",
+                () -> {
+                    assert "java".startsWith("j");
+                });
         if (injectFailure) {
-            run("injected", () -> {
-                assert 1 == 2;
-            });
+            run(
+                    "injected",
+                    () -> {
+                        assert 1 == 2;
+                    });
         } else {
-            run("collection", () -> {
-                assert java.util.List.of("a", "b").size() == 2;
-            });
+            run(
+                    "collection",
+                    () -> {
+                        assert java.util.List.of("a", "b").size() == 2;
+                    });
         }
         System.out.println("passed: " + passed + " failed: " + failed);
         return failed == 0 ? 0 : 1;
