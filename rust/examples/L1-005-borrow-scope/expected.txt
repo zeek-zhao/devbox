@@ -1,0 +1,2 @@
+last read: query
+reused buffer: query ready

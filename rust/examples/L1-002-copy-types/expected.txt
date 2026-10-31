@@ -1,0 +1,6 @@
+original id: 7
+assigned id: 7
+copied id: 7
+changed copy: 8
+original unchanged: true
+moved title owner: guide

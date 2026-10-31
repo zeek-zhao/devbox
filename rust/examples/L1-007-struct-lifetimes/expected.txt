@@ -1,0 +1,4 @@
+record title: guide
+record body: rust ownership
+title owner after view: guide
+body owner after view: rust ownership

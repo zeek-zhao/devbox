@@ -1,0 +1,3 @@
+shorter from right: rust
+shorter from left: rust
+outer input still alive: rust guide

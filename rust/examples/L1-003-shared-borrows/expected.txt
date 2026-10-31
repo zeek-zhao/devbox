@@ -1,0 +1,5 @@
+first reader: rust
+second reader: rust
+readers agree: true
+owner during reads: rust
+owner after readers: rust docs
