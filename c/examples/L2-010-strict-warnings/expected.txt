@@ -1,0 +1,1 @@
+strict warnings: conversion, shadow, and cast-qual detected
