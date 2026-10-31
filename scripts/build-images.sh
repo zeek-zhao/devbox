@@ -36,6 +36,24 @@ done
 REGISTRY="${REGISTRY:-$(grep -E '^REGISTRY=' "$BUILD_ARGS_FILE" | cut -d= -f2)}"
 PREFIX="${REGISTRY:+${REGISTRY}/}"
 
+# 不用 --build-arg-file：215 上的 buildx 版本偏旧不支持该 flag。
+# 自己把 KEY=VALUE 解析成 --build-arg 数组，兼容任何 docker 版本。
+# REGISTRY 不是 build arg，跳过（否则每次构建都刷一排 unused build arg 警告）。
+build_args=()
+while IFS= read -r line; do
+  case "$line" in
+    ''|\#*) continue ;;
+  esac
+  key="${line%%=*}"
+  val="${line#*=}"
+  case "$key" in
+    REGISTRY) continue ;;
+  esac
+  build_args+=(--build-arg "${key}=${val}")
+done < "$BUILD_ARGS_FILE"
+
+echo "==> 版本参数 ${#build_args[@]} 项，来自 ${BUILD_ARGS_FILE}"
+
 mkdir -p metrics
 TSV="metrics/images.tsv"
 [ -f "$TSV" ] || printf 'timestamp\tlayer\ttag\tsize_bytes\tsize_human\tduration_s\n' > "$TSV"
@@ -76,7 +94,7 @@ build_layer() {
   docker build \
     --file "images/${layer}/Dockerfile" \
     --build-arg "BASE_IMAGE=${base_image}" \
-    --build-arg-file "$BUILD_ARGS_FILE" \
+    "${build_args[@]}" \
     --tag "$image" \
     --label "devbox.tag=${TAG}" \
     .

@@ -1,0 +1,32 @@
+# 门禁文件清单（gate files）
+#
+# 用途：AI 提交的 PR 如果动了下面任何文件，自动 merge 必须被拒绝。
+# 理由：AI 可以同时改「判定标准」和「被测对象」。CI 全绿本身不构成放行证据——
+#       它完全可以把门禁改松再顺利通过。这是 Yocto #56 的原样教训。
+#
+# 用法：wf4.sh merge <owner/name> <pr#> --gate-files scripts/gate-files.txt
+# 语法：一行一个 glob（* 可跨目录，bash 的 [[ $f == $pat ]] 语义）；# 开头为注释
+# 例外：确需改动时人工评审后加 --force 合并，PR 里必须写明为什么改门禁
+#
+# 对应需求：devbox-需求文档 R-A-06 / R-A-07
+
+# ① CI 定义：改这里等于改判定标准
+.github/workflows/*.yml
+
+# ② 判定实现本身
+scripts/run-example.sh
+scripts/coverage-check.sh
+scripts/build-images.sh
+
+# ③ 清单自己（防止「把清单删空」这种绕过）
+scripts/gate-files.txt
+
+# ④ 版本单一真本：改一个版本号会连带改掉所有镜像的内容
+images/versions.env
+
+# ⑤ 换行与可执行位：改错会让 Linux 侧整片脚本失效，且不报错
+.gitattributes
+.gitignore
+
+# ⑥ 本地钩子与提交身份约束
+.githooks/*
