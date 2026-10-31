@@ -1,0 +1,5 @@
+Fn repeated lengths: [4, 4]
+borrowed query remains: rust
+FnMut updates: [1, 2]
+captured count after calls: 2
+FnOnce transferred value: consumed query

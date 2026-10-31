@@ -1,0 +1,6 @@
+valid byte slice 1..4: 中
+valid byte boundaries: [0, 1, 4, 5]
+character ordinal used as byte end: None
+start inside encoding: None
+past end: None
+empty slice at valid boundary: Some("")
