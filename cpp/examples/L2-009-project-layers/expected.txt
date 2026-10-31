@@ -1,0 +1,3 @@
+storage: alpha -> document-1
+index: alpha -> document-1
+command: alpha -> document-1
