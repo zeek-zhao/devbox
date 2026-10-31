@@ -1,0 +1,3 @@
+inconsistent hash lookup: false
+consistent size: 1
+consistent lookup: true

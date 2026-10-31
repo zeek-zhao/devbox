@@ -1,0 +1,3 @@
+resolved defaults: local+shared
+interface static method: strict
+implementation inherits static: false

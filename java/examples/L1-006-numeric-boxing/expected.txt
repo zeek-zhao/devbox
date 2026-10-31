@@ -1,0 +1,4 @@
+integer division: 2
+narrowed byte: -126
+overflow detected: true
+null wrapper checked: true
