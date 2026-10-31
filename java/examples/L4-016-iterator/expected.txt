@@ -1,0 +1,4 @@
+visited: alpha, beta, gamma
+hasNext: false
+exhausted: NoSuchElementException
+fresh cursor: alpha

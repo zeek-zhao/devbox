@@ -1,0 +1,5 @@
+saved: java [open]
+changed: patterns [open, recent]
+restored: java [open]
+edited again: java [open, mine]
+restored again: java [open]
