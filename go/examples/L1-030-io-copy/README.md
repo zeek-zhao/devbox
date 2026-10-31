@@ -1,6 +1,5 @@
 # L1-030-io-copy
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-30，观察 strings.Reader 的内容经 io.Copy 完整写入 bytes.Buffer。

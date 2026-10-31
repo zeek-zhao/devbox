@@ -1,6 +1,5 @@
 # L2-002-gofmt-vet
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L2-02：把 gofmt -l 与 go vet 放在 Go 测试之前作为质量门禁。

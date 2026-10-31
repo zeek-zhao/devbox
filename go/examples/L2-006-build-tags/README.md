@@ -1,6 +1,5 @@
 # L2-006-build-tags
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L2-06：用构建约束在默认实现与 diagnostic 实现之间选择源码文件。

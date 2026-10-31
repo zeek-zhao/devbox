@@ -1,6 +1,5 @@
 # L3-006-tcp-echo
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L3-06：在回环地址上建立 TCP listener 并原样回写客户端数据。

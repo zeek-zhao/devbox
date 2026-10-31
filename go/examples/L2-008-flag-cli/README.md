@@ -1,6 +1,5 @@
 # L2-008-flag-cli
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L2-08：使用标准库 flag 声明和解析命令行选项。

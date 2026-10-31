@@ -1,6 +1,5 @@
 # L1-013-structs
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-13：用 struct 聚合相关字段，并以命名字段初始化。

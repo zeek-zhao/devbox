@@ -1,6 +1,5 @@
 # L1-017-type-assertions
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-17：用 any 接收动态值，并以 comma-ok 类型断言处理匹配和不匹配。

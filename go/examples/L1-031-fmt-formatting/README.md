@@ -1,6 +1,5 @@
 # L1-031-fmt-formatting
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-31，固定输入分别由 `%q` 和 `%d` 格式动词生成精确文本。

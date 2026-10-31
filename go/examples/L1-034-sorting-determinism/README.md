@@ -1,6 +1,5 @@
 # L1-034-sorting-determinism
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-34，map 的键先收集再用 sort.Strings 排序，之后才统一输出键和值。

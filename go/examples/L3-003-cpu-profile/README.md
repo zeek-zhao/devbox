@@ -1,6 +1,5 @@
 # L3-003-cpu-profile
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L3-03：用 `runtime/pprof` 采集受控 CPU 工作负载并验证 profile 可解析。

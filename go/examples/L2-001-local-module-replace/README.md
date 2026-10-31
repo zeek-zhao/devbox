@@ -1,6 +1,5 @@
 # L2-001-local-module-replace
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L2-01：用 go.mod 定义两个本地模块，并用 replace 连接解析器模块。

@@ -1,6 +1,5 @@
 # L1-006-functions-results
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-06：函数返回业务值与 error，调用方分别接收并检查。

@@ -1,6 +1,5 @@
 # L1-002-zero-values
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-02：观察短声明和 `var` 声明，以及基本类型、指针、slice、map、struct 的零值。

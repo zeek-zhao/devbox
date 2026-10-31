@@ -1,6 +1,5 @@
 # L1-029-directional-channels
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-29，生产函数只返回 `<-chan int`，入队函数和消费函数分别约束发送、接收能力。

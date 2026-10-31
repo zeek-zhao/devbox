@@ -1,6 +1,5 @@
 # L2-003-table-tests
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L2-03：用表驱动测试和 t.Run 为多个查询输入创建具名子测试。
