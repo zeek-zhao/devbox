@@ -1,0 +1,3 @@
+cache invalidated: 1
+display refreshed: 1
+display refreshed: 2

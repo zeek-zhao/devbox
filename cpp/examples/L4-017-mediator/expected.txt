@@ -1,0 +1,2 @@
+Bob received: hello
+Alice received: reply

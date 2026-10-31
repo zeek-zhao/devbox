@@ -1,0 +1,4 @@
+before: draft, cursor=2
+changed: published, cursor=9
+restored: draft, cursor=2
+snapshot: draft, cursor=2
