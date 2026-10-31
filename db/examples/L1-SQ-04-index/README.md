@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-SQ-04-index · 索引与查询计划
 

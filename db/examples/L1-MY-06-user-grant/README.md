@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-MY-06-user-grant · 用户与权限
 

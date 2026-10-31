@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-SQ-06-attach · 附加数据库
 

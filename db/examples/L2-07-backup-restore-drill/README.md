@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L2-07-backup-restore-drill · 备份恢复演练
 

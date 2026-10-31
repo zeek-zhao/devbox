@@ -1,6 +1,5 @@
 # L3-08-distributed-lock · 分布式锁
 
-<!-- coverage: pending -->
 
 ## 考点
 

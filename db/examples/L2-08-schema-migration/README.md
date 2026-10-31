@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L2-08-schema-migration · 数据迁移
 

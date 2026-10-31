@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L2-05-cache-consistency · 缓存与库一致性
 

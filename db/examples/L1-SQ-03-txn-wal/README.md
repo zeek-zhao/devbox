@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-SQ-03-txn-wal · 事务与 WAL
 

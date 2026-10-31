@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-SQ-05-view-trigger · 视图与触发器
 

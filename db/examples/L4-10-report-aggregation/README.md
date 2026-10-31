@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L4-10-report-aggregation · 报表聚合
 

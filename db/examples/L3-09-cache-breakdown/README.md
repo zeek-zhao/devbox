@@ -1,6 +1,5 @@
 # L3-09-cache-breakdown · 缓存穿透击穿雪崩
 
-<!-- coverage: pending -->
 
 ## 考点
 

@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L4-04-idempotency · 幂等设计
 

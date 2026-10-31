@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-PG-03-window · 窗口函数
 

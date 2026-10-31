@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-MG-04-aggregation · 聚合管道
 

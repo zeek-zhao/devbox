@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-PG-05-index-gin · GIN/GiST 索引
 

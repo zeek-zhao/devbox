@@ -1,6 +1,5 @@
 # L1-MY-02-crud · 增删改查
 
-<!-- coverage: pending -->
 
 > **这是 db 轨道的参照样板**。其它用例照这个结构写：
 > `run.sh` 跑宿主 → `sql/*.sql` 用重定向喂进容器 → stdout 只有业务输出 → `expected.txt` 逐行对。
