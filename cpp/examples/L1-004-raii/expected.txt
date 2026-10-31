@@ -1,0 +1,5 @@
+acquire: normal
+release: normal
+acquire: exception
+release: exception
+caught: exception

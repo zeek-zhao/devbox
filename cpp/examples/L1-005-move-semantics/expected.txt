@@ -1,0 +1,5 @@
+move-construct
+destination value: 42
+moved-from source remains valid for destruction
+destroy buffer
+destroy buffer

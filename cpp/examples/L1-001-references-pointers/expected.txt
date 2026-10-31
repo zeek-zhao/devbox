@@ -1,0 +1,3 @@
+reference value: 7
+pointer is null: true
+array offset 1: 20
