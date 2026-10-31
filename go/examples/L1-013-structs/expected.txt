@@ -1,0 +1,3 @@
+title: Guide
+pages zero value: 0
+published zero value: false

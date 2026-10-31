@@ -1,0 +1,2 @@
+string assertion: ok=true value=query
+int assertion: ok=false value=0

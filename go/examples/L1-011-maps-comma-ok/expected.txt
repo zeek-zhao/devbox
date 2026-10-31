@@ -1,0 +1,5 @@
+missing: value=0 ok=false
+zero: value=0 ok=true
+pear after delete: ok=false
+apple=1
+zero=0

@@ -1,0 +1,2 @@
+promoted field method: stats
+outer method: index
