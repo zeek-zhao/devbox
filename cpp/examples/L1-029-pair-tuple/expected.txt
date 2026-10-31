@@ -1,0 +1,3 @@
+pair key: widget
+pair count: 3
+tuple: widget, 12, true
