@@ -1,0 +1,2 @@
+default_pipeline=success
+pipefail_pipeline=failure

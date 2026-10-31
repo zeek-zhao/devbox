@@ -1,0 +1,7 @@
+[@]
+count=2
+item=one
+item=two words
+[*]
+count=1
+item=one two words
