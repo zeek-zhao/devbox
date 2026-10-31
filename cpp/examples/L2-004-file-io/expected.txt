@@ -1,0 +1,6 @@
+read: alpha|beta
+missing: not found
+write: failed
+files:
+- notes.txt
+- summary.txt

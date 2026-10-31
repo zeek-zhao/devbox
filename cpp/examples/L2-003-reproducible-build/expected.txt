@@ -1,0 +1,5 @@
+source: ./main.cpp
+standard: C++20
+identical: yes
+sha256 first: 20b321013e32
+sha256 second: 20b321013e32
