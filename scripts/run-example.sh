@@ -24,6 +24,16 @@ TAG="${TAG:-${IMAGE_TAG:-local}}"
 REGISTRY="${REGISTRY:-$(grep -E '^REGISTRY=' images/versions.env 2>/dev/null | cut -d= -f2 || true)}"
 PREFIX="${REGISTRY:+${REGISTRY}/}"
 
+# 语言 -> 镜像层。语言名和镜像层名不是一一对应的：C 复用 cpp 层
+# （同一套 gcc/g++/clang 工具链）。映射的真本是 images/lang-images.tsv。
+image_layer() {
+  local lang="$1" layer=""
+  if [ -f "$ROOT/images/lang-images.tsv" ]; then
+    layer="$(awk -F'\t' -v k="$lang" '$1 == k { print $2; exit }' "$ROOT/images/lang-images.tsv")"
+  fi
+  printf '%s' "${layer:-$lang}"
+}
+
 LANG_ARG="${1:-}"; shift || true
 MODE="one"
 TARGET=""
@@ -58,7 +68,8 @@ examples_for() {
 run_one() {
   local lang="$1" id="$2"
   local dir="$lang/examples/$id"
-  local image="${PREFIX}devbox-${lang}:${TAG}"
+  local image
+  image="${PREFIX}devbox-$(image_layer "$lang"):${TAG}"
 
   if [ ! -d "$dir" ]; then
     printf '%-28s  MISSING(%s)\n' "$lang/$id" "$dir"; return 1
@@ -123,7 +134,7 @@ run_one() {
 }
 
 langs_to_run() {
-  if [ "$LANG_ARG" = "all" ]; then echo "cpp go rust shell python java"; else echo "$LANG_ARG"; fi
+  if [ "$LANG_ARG" = "all" ]; then echo "c cpp go rust shell python java vue"; else echo "$LANG_ARG"; fi
 }
 
 case "$MODE" in

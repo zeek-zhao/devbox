@@ -1,0 +1,2 @@
+compiler-sfc: ok
+<p>hello devbox</p>

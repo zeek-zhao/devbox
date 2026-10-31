@@ -162,7 +162,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        lang: [cpp, go, rust, shell, python, java]
+        lang: [c, cpp, go, rust, shell, python, java, vue]
     steps:
       - uses: actions/checkout@v4
 
@@ -173,7 +173,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 拉取语言镜像
-        run: docker pull "$REGISTRY/devbox-${{ matrix.lang }}:$IMAGE_TAG"
+        run: |
+          # C 没有独立镜像层，复用 devbox-cpp。映射真本是 images/lang-images.tsv，
+          # 与 scripts/run-example.sh / scripts/fmt.sh 读的是同一个文件。
+          layer="$(awk -F'\t' -v k='${{ matrix.lang }}' '$1 == k { print $2; exit }' images/lang-images.tsv)"
+          docker pull "$REGISTRY/devbox-${layer:-${{ matrix.lang }}}:$IMAGE_TAG"
 
       - name: 跑该语言全部用例
         run: bash scripts/run-example.sh ${{ matrix.lang }} --all

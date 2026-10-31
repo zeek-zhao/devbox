@@ -27,6 +27,11 @@ ARG JAVA_MAJOR=21
 ARG MAVEN_OPTS="-Dmaven.repo.local=/opt/m2 -Dfile.encoding=UTF-8"
 ARG GJF_VERSION=1.22.0
 ARG GJF_SHA256=16b2a1ee938686c8b1d88abf19eb83dfd0d623cee9de6fc6d09980214f816d3f
+ARG NODE_VERSION=22.11.0
+ARG NODE_SHA256=83bf07dd343002a26211cf1fcd46a9d9534219aad42ee02847816940bf610a72
+ARG VUE_VERSION=3.5.44
+ARG PRETTIER_VERSION=3.9.10
+ARG NPM_REGISTRY=https://registry.npmmirror.com
 ARG YQ_VERSION=4.44.3
 ARG YQ_SHA256=a2c097180dd884a8d50c956ee16a9cec070f30a7947cf4ebf87d5f36213e9ed7
 
@@ -42,6 +47,7 @@ RUN bash /opt/devbox/scripts/install/rust.sh
 RUN bash /opt/devbox/scripts/install/python.sh
 RUN bash /opt/devbox/scripts/install/java.sh
 RUN bash /opt/devbox/scripts/install/shell.sh
+RUN bash /opt/devbox/scripts/install/vue.sh
 
 ENV CC=gcc \
     CXX=g++ \
@@ -59,6 +65,7 @@ ENV CC=gcc \
     RUSTUP_UPDATE_ROOT=${RUSTUP_UPDATE_ROOT} \
     JAVA_HOME=/opt/java-home \
     MAVEN_OPTS="${MAVEN_OPTS}" \
+    NODE_PATH=/usr/local/lib/node_modules \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_INDEX_URL=${PIP_INDEX_URL} \

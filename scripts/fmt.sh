@@ -31,7 +31,17 @@ TAG="${TAG:-latest}"
 
 MODE="write"
 LANGS=""
-ALL_LANGS=(cpp go rust shell python java)
+ALL_LANGS=(c cpp go rust shell python java vue)
+
+# 语言 -> 镜像层。C 复用 cpp 层，映射的真本是 images/lang-images.tsv。
+# 不读这个文件的话，c 会去找不存在的 devbox-c。
+image_layer() {
+  local lang="$1" layer=""
+  if [ -f "$ROOT/images/lang-images.tsv" ]; then
+    layer="$(awk -F'\t' -v k="$lang" '$1 == k { print $2; exit }' "$ROOT/images/lang-images.tsv")"
+  fi
+  printf '%s' "${layer:-$lang}"
+}
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
@@ -55,51 +65,62 @@ done
 
 # 语言 -> 工具（只用于 --list 与日志，不参与执行）
 declare -A TOOL=(
+  [c]="clang-format 18（LLVM 基线，见 .clang-format）"
   [cpp]="clang-format 18（LLVM 基线，见 .clang-format）"
   [go]="gofmt（无配置，官方强制）"
   [rust]="rustfmt（见 rustfmt.toml）"
   [shell]="shfmt -i 2 -ci -ln bash"
   [python]="ruff format（见 ruff.toml）"
   [java]="google-java-format 1.22.0 --aosp（4 空格，见 install/java.sh）"
+  [vue]="prettier（见 .prettierrc.json）"
 )
 
 # 语言 -> 用来确认「镜像里真的有格式化器」的探针命令
 # 少了这一步，旧镜像会让 clang-format / gjf 直接 command not found，
 # 而 --check 会把它当成「格式有差异」—— 一个完全错误的判据。
 declare -A PROBE=(
+  [c]="clang-format"
   [cpp]="clang-format"
   [go]="gofmt"
   [rust]="rustfmt"
   [shell]="shfmt"
   [python]="ruff"
   [java]="gjf"
+  [vue]="prettier"
 )
 
 # 就地改写
 declare -A WRITE_CMD=(
+  [c]='find . -type f \( -name "*.c" -o -name "*.h" \) -print0 | xargs -0 -r clang-format -i'
   [cpp]='find . -type f \( -name "*.cpp" -o -name "*.hpp" -o -name "*.cc" -o -name "*.h" \) -print0 | xargs -0 -r clang-format -i'
   [go]='gofmt -w .'
   [rust]='find . -type f -name "*.rs" -print0 | xargs -0 -r rustfmt --edition 2021'
   [shell]='find . -type f -name "*.sh" -print0 | xargs -0 -r shfmt -w -i 2 -ci -ln bash'
   [python]='ruff format .'
   [java]='find . -type f -name "*.java" -print0 | xargs -0 -r gjf --aosp --replace'
+  # --ignore-path 必须显式指到仓库根：prettier 只在 cwd 找 .prettierignore，
+  # 而 cwd 是 /work/vue。不指的话它会把 README.md 和 expected.txt 一起重排，
+  # 用例的逐行比对立刻全挂。
+  [vue]='prettier --write --ignore-path /work/.prettierignore .'
 )
 
 # 只检查：有差异时非零退出
 declare -A CHECK_CMD=(
+  [c]='find . -type f \( -name "*.c" -o -name "*.h" \) -print0 | xargs -0 -r clang-format --dry-run --Werror'
   [cpp]='find . -type f \( -name "*.cpp" -o -name "*.hpp" -o -name "*.cc" -o -name "*.h" \) -print0 | xargs -0 -r clang-format --dry-run --Werror'
   [go]='out="$(gofmt -l .)"; if [ -n "$out" ]; then printf "%s\n" "$out"; exit 1; fi'
   [rust]='find . -type f -name "*.rs" -print0 | xargs -0 -r rustfmt --check --edition 2021'
   [shell]='find . -type f -name "*.sh" -print0 | xargs -0 -r shfmt -d -i 2 -ci -ln bash'
   [python]='ruff format --check .'
   [java]='find . -type f -name "*.java" -print0 | xargs -0 -r gjf --aosp --dry-run --set-exit-if-changed'
+  [vue]='prettier --check --ignore-path /work/.prettierignore .'
 )
 
 if [ "$MODE" = "list" ]; then
-  printf '%-8s %s\n' "语言" "格式化工具"
-  printf '%-8s %s\n' "----" "---------"
+  printf '%-8s %-10s %s\n' "语言" "镜像层" "格式化工具"
+  printf '%-8s %-10s %s\n' "----" "------" "---------"
   for l in "${ALL_LANGS[@]}"; do
-    printf '%-8s %s\n' "$l" "${TOOL[$l]}"
+    printf '%-8s %-10s %s\n' "$l" "$(image_layer "$l")" "${TOOL[$l]}"
   done
   exit 0
 fi
@@ -137,7 +158,7 @@ for l in $LANGS; do
     continue
   fi
 
-  image="${REGISTRY}/devbox-${l}:${TAG}"
+  image="${REGISTRY}/devbox-$(image_layer "$l"):${TAG}"
   if ! docker image inspect "$image" >/dev/null 2>&1; then
     printf '  %-8s 失败：镜像不存在 %s\n' "$l" "$image" >&2
     failed_langs+=("$l")
@@ -161,7 +182,7 @@ for l in $LANGS; do
 
   # --user 让容器写出的文件仍归当前用户所有，否则 root 属主的文件
   # 会让后续 git 操作 Permission denied（Windows 上尤其难查）。
-  # HOME 指到 /tmp，避免 ruff / java 找不到可写的家目录。
+  # HOME 指到 /tmp，避免 ruff / java / prettier 找不到可写的家目录。
   if docker run --rm \
       --user "$(id -u):$(id -g)" \
       -e HOME=/tmp \

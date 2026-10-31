@@ -1,0 +1,3 @@
+[hello] C17 from devbox
+strlen = 6
+sum(1..100) = 5050
