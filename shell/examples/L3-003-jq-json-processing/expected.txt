@@ -1,0 +1,3 @@
+service: api ready
+message: queue "green"
+healthy: db
