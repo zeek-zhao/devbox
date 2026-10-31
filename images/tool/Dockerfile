@@ -50,41 +50,12 @@ RUN set -eux; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # 用 /etc/skel 预置交互环境：新建用户自动继承，root 也直接生效
+# 注意：不在这里用 `cat > file <<EOF`。heredoc 需要 buildx 的 dockerfile frontend
+# （`# syntax=docker/dockerfile:1.4+`），而我们刻意不依赖那个 frontend
+# （国内镜像对 docker/dockerfile 拉取会 403），所以配置一律作为文件 COPY 进去。
+COPY images/tool/dotfiles/zshrc     /etc/skel/.zshrc
+COPY images/tool/dotfiles/tmux.conf /etc/skel/.tmux.conf
 RUN set -eux; \
-    mkdir -p /etc/skel; \
-    cat > /etc/skel/.zshrc <<'EOF'
-# devbox tool 层默认 zsh 配置（改这里会重建 tool 层）
-export LANG=en_US.UTF-8
-export EDITOR=nvim
-export PAGER=less
-HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
-setopt SHARE_HISTORY HIST_IGNORE_DUPS INTERACTIVE_COMMENTS
-autoload -Uz compinit && compinit
-autoload -U colors && colors
-PROMPT='%F{cyan}%n@devbox%f:%F{yellow}%~%f %# '
-alias ll='ls -lahF --color=auto --time-style=long-iso'
-alias la='ls -A --color=auto'
-alias gs='git status -sb'
-alias gd='git diff'
-alias dc='docker compose'
-alias rg='rg --smart-case'
-# 快速在容器里看某命令怎么用
-alias ?='compgen -c | sort -u | fzf'
-EOF
-    cat > /etc/skel/.tmux.conf <<'EOF'
-set -g mouse on
-set -g history-limit 10000
-set -g base-index 1
-setw -g pane-base-index 1
-set -g default-terminal "screen-256color"
-set -g status-style 'bg=colour236 fg=colour250'
-set -g status-left '#[fg=colour51][#S] '
-set -g status-right '#[fg=colour250]%Y-%m-%d %H:%M '
-bind | split-window -h -c "#{pane_current_path}"
-bind - split-window -v -c "#{pane_current_path}"
-EOF
     cp /etc/skel/.zshrc /root/.zshrc; \
     cp /etc/skel/.tmux.conf /root/.tmux.conf
 

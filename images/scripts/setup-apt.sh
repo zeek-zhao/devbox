@@ -6,7 +6,9 @@
 # ==================================================================
 set -euo pipefail
 
-APT_MIRROR="${APT_MIRROR:-mirrors.ustc.edu.cn}"
+# 注意是 ${VAR-default} 不是 ${VAR:-default}：冒号版本会把「显式传入的空串」
+# 也当成未设置，结果 CI 里想用官方源反而被改回国内源。
+APT_MIRROR="${APT_MIRROR-mirrors.ustc.edu.cn}"
 TZ_VALUE="${TZ:-Asia/Shanghai}"
 
 # APT_MIRROR 为空 / official / default 时保持官方源不动。
