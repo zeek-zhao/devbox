@@ -1,6 +1,5 @@
 # L3-005-counted-benchmark
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L3-05：对查找算法预热、重复计时，并消费校验和。

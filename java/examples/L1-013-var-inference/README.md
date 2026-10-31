@@ -1,6 +1,5 @@
 # L1-013-var-inference
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-13：var 只推断有初始化器的局部变量类型，并非动态类型。

@@ -1,6 +1,5 @@
 # L2-011-jshell-experiments
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L2-11：用 jshell 运行固定表达式脚本，并以编译版验证兜底。

@@ -1,6 +1,5 @@
 # L2-003-executable-jar
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L2-03：Manifest Main-Class 使 JAR 可执行，辅助类也必须随包分发。

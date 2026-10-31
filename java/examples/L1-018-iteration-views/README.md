@@ -1,6 +1,5 @@
 # L1-018-iteration-views
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-18：迭代器安全删除、比较器排序、只读视图与不可变快照行为不同。

@@ -1,6 +1,5 @@
 # L1-032-executor-future
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-32：ExecutorService 管理任务，Future.get 取得结果并暴露异常。

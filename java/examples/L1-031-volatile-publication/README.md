@@ -1,6 +1,5 @@
 # L1-031-volatile-publication
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-31：volatile 写入发布先前的普通字段写入。

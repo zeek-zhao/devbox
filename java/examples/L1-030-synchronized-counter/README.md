@@ -1,6 +1,5 @@
 # L1-030-synchronized-counter
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-30：用同一个 monitor 保护复合读改写操作。

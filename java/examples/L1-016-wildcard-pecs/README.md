@@ -1,6 +1,5 @@
 # L1-016-wildcard-pecs
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-16：PECS 用 extends 表示生产者、用 super 表示消费者。

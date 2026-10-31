@@ -1,6 +1,5 @@
 # L1-010-interface-methods
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-10：实现类可继承或重写 default 方法，接口 static 方法通过接口名调用。

@@ -1,6 +1,5 @@
 # L2-010-error-protocol
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L2-10：在程序边界区分用户错误、IO 错误与内部缺陷。

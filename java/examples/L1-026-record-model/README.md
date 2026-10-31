@@ -1,6 +1,5 @@
 # L1-026-record-model
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-26：record 提供组件访问与值相等，但引用组件只具备浅层不可变。

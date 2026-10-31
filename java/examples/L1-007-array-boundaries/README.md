@@ -1,6 +1,5 @@
 # L1-007-array-boundaries
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-07：数组长度固定，引用数组协变但运行时仍检查实际元素类型。

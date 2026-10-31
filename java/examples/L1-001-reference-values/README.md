@@ -1,6 +1,5 @@
 # L1-001-reference-values
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-01：Java 按值传递，对象参数传递的是引用值的副本。

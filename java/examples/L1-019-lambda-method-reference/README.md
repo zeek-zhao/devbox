@@ -1,6 +1,5 @@
 # L1-019-lambda-method-reference
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-19：lambda 捕获稳定局部变量，方法引用匹配目标函数签名。

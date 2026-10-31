@@ -1,6 +1,5 @@
 # L2-007-cli-parser
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L2-07：手写 String[] 参数解析需处理帮助、选项、缺值和数值范围。

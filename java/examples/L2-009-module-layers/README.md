@@ -1,6 +1,5 @@
 # L2-009-module-layers
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L2-09：命令入口依赖业务接口，业务服务不依赖控制台或进程退出。

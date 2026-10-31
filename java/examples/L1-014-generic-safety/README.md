@@ -1,6 +1,5 @@
 # L1-014-generic-safety
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-14：泛型约束列表元素类型，类型参数不因子类关系而协变。
