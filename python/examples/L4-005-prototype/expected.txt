@@ -1,0 +1,5 @@
+different objects: True
+independent inner lists: True
+original: [['python'], ['patterns', 'original-only']]
+clone: [['python', 'copy-only'], ['patterns']]
+constructor calls: 1
