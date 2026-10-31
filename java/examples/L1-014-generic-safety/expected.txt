@@ -1,0 +1,4 @@
+first string=index
+first integer=7
+rejects wrong element=true
+rejects covariant list=true

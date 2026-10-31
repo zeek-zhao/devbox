@@ -1,0 +1,4 @@
+array index 1=one
+linked queue=first,second
+hash duplicate key=2
+tree keys=[alpha, beta]

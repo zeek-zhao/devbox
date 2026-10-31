@@ -1,0 +1,6 @@
+inferred integer=4
+explicit null=true
+explicit lambda result=6
+var rejects null=true
+var rejects lambda=true
+var rejects field=true

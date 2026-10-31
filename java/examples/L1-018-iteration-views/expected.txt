@@ -1,0 +1,5 @@
+sorted after iterator removal=[a, b, c]
+view size after source change=4
+snapshot size after source change=3
+view rejects add=true
+snapshot rejects add=true

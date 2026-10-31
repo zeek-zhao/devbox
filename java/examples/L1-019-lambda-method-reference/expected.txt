@@ -1,0 +1,3 @@
+captured value=term:search
+method reference lengths=[3, 5]
+rejects reassigned capture=true

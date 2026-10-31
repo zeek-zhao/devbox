@@ -1,0 +1,4 @@
+extends source total=4.0
+super target first=8
+extends rejects write=true
+super accepts integer write=true
