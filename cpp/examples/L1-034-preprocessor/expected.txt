@@ -1,0 +1,2 @@
+macro SQUARE(1 + 2): 5
+constexpr square(1 + 2): 9

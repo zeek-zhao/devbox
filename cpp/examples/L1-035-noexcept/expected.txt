@@ -1,0 +1,4 @@
+nothrow move constructible: true
+noexcept guaranteed_not_to_throw(): true
+noexcept may_throw(): false
+noexcept move construction: true
