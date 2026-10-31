@@ -1,0 +1,6 @@
+_id_type=ObjectId
+python_types=dict,int,bool
+nested_city=Suzhou
+reference=team-1
+capped=True
+capped_count=2

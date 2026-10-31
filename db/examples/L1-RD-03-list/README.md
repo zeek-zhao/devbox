@@ -1,27 +1,22 @@
-# L1-RD-03-list · 链表
-
 <!-- coverage: pending -->
 
+# L1-RD-03-list · 链表
+
 ## 考点
+- LPUSH 多值插入的顺序与 RPUSH 追加共同形成有序列表。
+- LPOP 移除头元素，LINSERT 在指定值前插入，LTRIM 原地保留指定区间。
+- 输出裁剪后的完整列表和 LLEN。
 
-LPUSH/RPUSH/LRANGE/LPOP/LINSERT/LTRIM
+## 为什么这么写
+列表元素均为固定字符串，操作后通过 LRANGE 读取；结果体现列表的端点语义和索引为闭区间的裁剪行为。
 
-## 判据（验收按这一条核对）
-
-输出列表内容与裁剪后长度
+## 易错点
+- LPUSH 同时传多个值时，最终顺序与参数直觉相反。
+- LTRIM 的结束下标包含在保留区间中。
+- LINSERT 的 pivot 必须存在，否则列表不会按预期增长。
 
 ## 依赖服务
-
 `redis`
 
 ## 命名空间
-
-`l1_rd_03_list`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-RD-03-list --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`l1-rd-03:*`

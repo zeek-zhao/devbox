@@ -1,0 +1,7 @@
+count_before=2
+count_after=3
+p1	pear	7
+p2	banana	9
+p3	plum	2
+deleted=2
+count_final=1

@@ -1,0 +1,3 @@
+subscribe=one,two
+psubscribe=one,two
+stream=durable

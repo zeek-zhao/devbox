@@ -1,27 +1,21 @@
-# L1-MG-08-replica-concept · 副本集概念
-
 <!-- coverage: pending -->
 
+# L1-MG-08-replica-concept · 副本集概念
+
 ## 考点
+- 在共享栈的 MongoDB 单机模式调用 `replSetGetStatus`，断言服务端拒绝该命令。
+- 用稳定错误码 `NoReplicationEnabled` 说明单机实例没有成员、选举或副本集状态。
 
-单节点副本集启动、rs.status、读偏好、写关注
+## 为什么这么写
+选择契约允许的 (a)：断言共享服务实际的 `NoReplicationEnabled`（code 76），不改共享 compose 配置，也不启动额外 Mongo 实例。单机模式下无法演示成员状态、读偏好或多数写关注。
 
-## 判据（验收按这一条核对）
-
-输出 rs.status 的成员状态与写关注结果
+## 易错点
+- `NotYetInitialized` 与 `NoReplicationEnabled` 不同；当前共享 mongod 没有以 `--replSet` 启动，实际返回后者。
+- 不能把“命令失败”泛化成成功，脚本只接受预期错误码，其他 OperationFailure 会继续报错。
+- 不要尝试初始化共享实例，否则会影响其他用例。
 
 ## 依赖服务
-
 `mongodb`
 
 ## 命名空间
-
-`l1_mg_08_replica_concept`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-MG-08-replica-concept --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l1_mg_08_replica_concept`

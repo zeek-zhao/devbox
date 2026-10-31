@@ -1,27 +1,21 @@
-# L1-RD-06-expire-evict · 过期与淘汰
-
 <!-- coverage: pending -->
 
+# L1-RD-06-expire-evict · 过期与淘汰
+
 ## 考点
+- PEXPIRE 设置毫秒级过期并断言 TTL 为正，不输出波动秒数。
+- 专用临时 Redis 实例配置 `allkeys-lru`，施加内存压力并检查实际淘汰计数。
 
-EXPIRE/PEXPIRE/TTL、maxmemory-policy、惰性删除 vs 定期删除
+## 为什么这么写
+maxmemory 是全局配置，不能修改共享 Redis；用带本卡 ID 的临时容器并由 trap 删除。该 Redis 进程的基础内存已接近 1 MiB，因此只在启动隔离实例后临时提高内存上限以准备样本，再降回 1 MiB，并清零统计后验证限额下发生的淘汰。
 
-## 判据（验收按这一条核对）
-
-输出 TTL 递减与淘汰后 key 数
+## 易错点
+- 共享 Redis 执行 CONFIG SET 会改变其他用例的行为。
+- Redis 基础开销可能超过 1 MiB，初始就写数据会直接 OOM；先准备样本再降限额。
+- TTL 是递减值，断言范围即可；不要把精确秒数写入 expected。
 
 ## 依赖服务
-
-`redis`
+`redis`；本例另起并清理 `devbox-db-ex-l1-rd-06`
 
 ## 命名空间
-
-`l1_rd_06_expire_evict`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-RD-06-expire-evict --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`l1-rd-06:*`

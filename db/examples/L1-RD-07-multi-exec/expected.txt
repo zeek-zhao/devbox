@@ -1,0 +1,5 @@
+multi_exec=True,1
+discarded_key=0
+watch_exec=nil (conflict)
+watched_value=changed-by-client-2
+lua_atomic_incr=1

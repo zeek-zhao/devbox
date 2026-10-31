@@ -1,0 +1,7 @@
+comparison=2
+logical=1
+exists=3
+type=3
+elemMatch=2
+size=3
+regex=2

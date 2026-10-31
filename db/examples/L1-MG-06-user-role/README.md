@@ -1,27 +1,22 @@
-# L1-MG-06-user-role · 账号与角色
-
 <!-- coverage: pending -->
 
+# L1-MG-06-user-role · 账号与角色
+
 ## 考点
+- 在目标库定义只读自定义角色，并同时授予内置 `read` 角色。
+- 在 `admin` 认证源创建带本卡 ID 前缀的账号，核对角色列表。
+- 使用该账号尝试写入，确认服务端以 Unauthorized 拒绝。
 
-createUser、内置角色、自定义角色、authSource
+## 为什么这么写
+账号在 `admin` 创建，因此连接 URI 明确写 `authSource=admin`；业务库和用户名都限定在本用例内。拒绝写入只输出稳定错误码 13，不打印驱动异常全文。
 
-## 判据（验收按这一条核对）
-
-输出用户角色列表与越权写入报错
+## 易错点
+- `authSource` 指账号定义所在库，不是用户要访问的业务库。
+- 角色授权只允许读取时，写入必须失败；捕获后还要断言错误码，不能把其他失败也当成功。
+- 脚本结束时删除测试用户和数据库，避免重复执行留下同名用户。
 
 ## 依赖服务
-
 `mongodb`
 
 ## 命名空间
-
-`l1_mg_06_user_role`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-MG-06-user-role --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l1_mg_06_user_role`；用户 `u_l1_mg_06_app`

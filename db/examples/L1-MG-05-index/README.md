@@ -1,27 +1,21 @@
-# L1-MG-05-index · 索引与 explain
-
 <!-- coverage: pending -->
 
+# L1-MG-05-index · 索引与 explain
+
 ## 考点
+- 创建单字段、复合、多键、唯一、部分和 TTL 索引。
+- 对有索引的条件查询运行 executionStats，输出实际执行阶段与返回数。
 
-单字段/复合/多键/唯一/部分/TTL 索引、executionStats
+## 为什么这么写
+`hint("score_1")` 让小型固定数据集也稳定使用指定索引；从 winningPlan 递归读取 stage，而不是输出 explain 中随版本变化的完整计划和耗时。TTL 日期固定在未来，避免后台过期任务删除样本。
 
-## 判据（验收按这一条核对）
-
-输出 explain 的 stage 与 nReturned
+## 易错点
+- 小表上优化器可能认为表扫描更便宜；未使用 hint 时不能假定 explain 一定出现 IXSCAN。
+- TTL 索引字段需要 Date 类型，且后台过期清理不是即时操作。
+- 唯一索引应使用互不重复的样本值；重复数据会使建索引失败。
 
 ## 依赖服务
-
 `mongodb`
 
 ## 命名空间
-
-`l1_mg_05_index`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-MG-05-index --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l1_mg_05_index`
