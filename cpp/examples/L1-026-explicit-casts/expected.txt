@@ -1,0 +1,5 @@
+static_cast numeric: 4
+static_cast upcast: 1
+const_cast on mutable object: 9
+dynamic_cast failed: 1
+reinterpret_cast byte size: 1

@@ -1,0 +1,3 @@
+int is integral: true
+addition type is int: true
+sizeof(short) <= sizeof(int): true
