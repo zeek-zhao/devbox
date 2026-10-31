@@ -1,0 +1,3 @@
+range: 2 4 6
+exhausted equals end: true
+error: iterator exhausted

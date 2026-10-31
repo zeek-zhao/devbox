@@ -1,0 +1,6 @@
+prepare
+parse text
+verify
+prepare
+build index
+verify
