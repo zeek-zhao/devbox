@@ -1,0 +1,3 @@
+lines: 5000
+first: record-0001
+last: record-5000

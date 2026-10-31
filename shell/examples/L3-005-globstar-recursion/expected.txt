@@ -1,0 +1,3 @@
+one/level.txt
+one/two/deep.txt
+root.txt

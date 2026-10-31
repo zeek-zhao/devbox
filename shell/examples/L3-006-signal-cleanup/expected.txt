@@ -1,0 +1,4 @@
+worker: ready
+worker: TERM handled
+cleanup: verified
+deploy: skipped
