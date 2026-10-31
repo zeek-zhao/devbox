@@ -1,0 +1,2 @@
+forward(lvalue): copies=1 moves=0
+forward(rvalue): copies=0 moves=1
