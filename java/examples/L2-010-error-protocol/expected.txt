@@ -1,0 +1,4 @@
+normal-exit: 0
+user-error-exit: 2
+io-error-exit: 3
+internal-error-exit: 1

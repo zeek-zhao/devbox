@@ -1,0 +1,3 @@
+linear-checks: 1000
+binary-checks: 10
+checksum: 9990

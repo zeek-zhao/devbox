@@ -1,0 +1,4 @@
+results: [1, 4, 9]
+all-virtual: true
+completed: 3
+failure-cause: IllegalArgumentException
