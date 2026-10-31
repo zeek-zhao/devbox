@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.16)
+project(clean_build_test LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+enable_testing()
+add_executable(ci_sample main.cpp)
+target_compile_features(ci_sample PRIVATE cxx_std_20)
+target_compile_options(ci_sample PRIVATE -Wall -Wextra -pedantic)
+add_test(NAME sample_runs COMMAND ci_sample)

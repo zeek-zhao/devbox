@@ -1,0 +1,4 @@
+error: query term must not be empty [query term]
+exit-code: 2
+error: cannot read index [documents/index.txt]
+exit-code: 3

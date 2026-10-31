@@ -1,0 +1,10 @@
+query: alpha
+exit-code: 0
+error: missing query
+usage: query --query TERM | --help
+exit-code: 2
+error: invalid option or arguments
+usage: query --query TERM | --help
+exit-code: 2
+usage: query --query TERM | --help
+exit-code: 0
