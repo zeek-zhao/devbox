@@ -1,0 +1,6 @@
+plain base has virtual destructor: false
+plain derived destructor
+plain base destructor
+virtual base has virtual destructor: true
+virtual derived destructor
+virtual base destructor

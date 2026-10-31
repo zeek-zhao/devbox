@@ -1,0 +1,2 @@
+static type: Base*
+virtual call: Derived
