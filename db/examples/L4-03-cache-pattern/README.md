@@ -1,27 +1,23 @@
-# L4-03-cache-pattern · 缓存一致性模式
-
 <!-- coverage: pending -->
 
+# L4-03-cache-pattern · 缓存一致性模式
+
 ## 考点
+- 两个 Python 线程通过 barrier 同时提交版本 1/2 写入，分别执行 Cache-Aside、Write-Through、Write-Behind。
+- 逐模式比较数据库版本/值与缓存值；版本条件保证最终保留较新的写。
+- Cache-Aside 仅失效缓存，Write-Through 同步写缓存，Write-Behind 先排队再按版本落库。
+- 让 Cache-Aside key 到期后回源数据库，证明 TTL 是缓存丢失时的恢复兜底而非一致性保证。
 
-Cache-Aside/Write-Through/Write-Behind、TTL 兜底、版本号
+## 为什么这么写
+并发写用固定版本而非线程完成顺序来确定期望结果；Write-Through 用 Redis Lua 原子比较版本，Write-Behind 使用按版本排序的队列。无并发读时，Cache-Aside 在写入完成后回源并填充最终值。
 
-## 判据（验收按这一条核对）
-
-输出三种模式在并发写下的最终一致结果
+## 易错点
+- 串行调用两次不能暴露并发竞态；本例的两个 writer 在 barrier 后同时开始。
+- 不做版本比较时，较旧写可能最后覆盖缓存或数据库，不能仅凭「线程执行完」声称一致。
+- 示例不模拟读写期间的缓存穿透窗口，也不把它当作一致性保证。
 
 ## 依赖服务
-
-`redis,mysql`
+`mysql`、`redis`
 
 ## 命名空间
-
-`l4_03_cache_pattern`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L4-03-cache-pattern --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+MySQL `db_l4_03_cache_pattern`；Redis 前缀 `l4_03_cache_pattern:`

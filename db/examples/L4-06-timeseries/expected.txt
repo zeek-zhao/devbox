@@ -1,0 +1,2 @@
+narrow rows=6 wide rows=3
+partition scan: measurements_2026_01_02
