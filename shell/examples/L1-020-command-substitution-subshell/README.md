@@ -1,6 +1,5 @@
 # L1-020-command-substitution-subshell
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-20：用 `$(...)` 捕获输出，并观察其中的目录切换和赋值不改变父 Shell。

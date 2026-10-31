@@ -1,6 +1,5 @@
 # L2-006-flock-reentrancy
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L2-06：用 `flock` 限制同一任务同时进入临界区。

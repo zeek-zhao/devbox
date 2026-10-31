@@ -1,6 +1,5 @@
 # L2-009-temporary-workspace
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L2-09：临时工作区必须隔离创建并随脚本退出清理。

@@ -1,6 +1,5 @@
 # L1-013-case-patterns
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-13：用 `case` 按 Shell 模式分派输入。

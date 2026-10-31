@@ -1,6 +1,5 @@
 # L1-002-variable-expansion
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-02：区分 `name=value` 赋值与 `$name`、`${name}` 展开。

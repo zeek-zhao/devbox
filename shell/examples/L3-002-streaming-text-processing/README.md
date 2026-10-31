@@ -1,6 +1,5 @@
 # L3-002-streaming-text-processing
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L3-02：用逐行流式工具处理大型输入，不把整个文件读进 Shell 变量或数组。

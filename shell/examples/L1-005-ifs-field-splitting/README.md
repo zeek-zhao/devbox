@@ -1,6 +1,5 @@
 # L1-005-ifs-field-splitting
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-05：`IFS` 指定未引用展开时的字段分隔符。

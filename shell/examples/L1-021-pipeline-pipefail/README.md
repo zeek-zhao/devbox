@@ -1,6 +1,5 @@
 # L1-021-pipeline-pipefail
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-21：比较普通管道与启用 `pipefail` 后的管道状态。

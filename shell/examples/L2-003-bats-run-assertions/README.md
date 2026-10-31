@@ -1,6 +1,5 @@
 # L2-003-bats-run-assertions
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L2-03：Bats 的 `run` 捕获命令输出和退出状态。

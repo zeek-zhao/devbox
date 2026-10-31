@@ -1,6 +1,5 @@
 # L3-004-sha256-integrity
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L3-04：提取 `sha256sum` 摘要并与已知内容摘要比较。

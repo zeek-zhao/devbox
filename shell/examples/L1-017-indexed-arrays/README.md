@@ -1,6 +1,5 @@
 # L1-017-indexed-arrays
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-17：创建 Bash 索引数组并按下标和元素列表读取。

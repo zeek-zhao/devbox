@@ -1,6 +1,5 @@
 # L1-010-conditional-tests
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-10：区分 Bash 的 `[[ ]]` 与 `[ ]` 条件测试。

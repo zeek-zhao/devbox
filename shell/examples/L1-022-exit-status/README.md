@@ -1,6 +1,5 @@
 # L1-022-exit-status
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-22：从命令退出状态区分成功与失败，并及时处理 `$?`。

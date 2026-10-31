@@ -1,6 +1,5 @@
 # L1-012-if-exit-status
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-12：`if` 根据命令的退出状态选择分支。

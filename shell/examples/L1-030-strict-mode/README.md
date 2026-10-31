@@ -1,6 +1,5 @@
 # L1-030-strict-mode
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-30：观察 `set -euo pipefail` 的失败传播，并显式处理允许失败的命令。

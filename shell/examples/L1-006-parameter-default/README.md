@@ -1,6 +1,5 @@
 # L1-006-parameter-default
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-06：用 `${var:-default}` 为未设置或空值提供默认值。

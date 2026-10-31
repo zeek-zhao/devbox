@@ -1,6 +1,5 @@
 # L1-035-command-discovery
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-35：用 `command -v` 查询可执行命令，并依据返回状态检查依赖。

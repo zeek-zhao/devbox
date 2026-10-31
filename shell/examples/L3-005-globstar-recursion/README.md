@@ -1,6 +1,5 @@
 # L3-005-globstar-recursion
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L3-05：启用 `globstar` 后用 `**` 遍历多层目录并稳定输出匹配项。

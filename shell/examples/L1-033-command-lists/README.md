@@ -1,6 +1,5 @@
 # L1-033-command-lists
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-33：观察 `&&` 与 `||` 根据前一条命令的状态执行后续命令。

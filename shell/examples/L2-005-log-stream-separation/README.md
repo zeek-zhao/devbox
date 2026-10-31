@@ -1,6 +1,5 @@
 # L2-005-log-stream-separation
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L2-05：机器可读结果写 stdout，进度日志写 stderr。

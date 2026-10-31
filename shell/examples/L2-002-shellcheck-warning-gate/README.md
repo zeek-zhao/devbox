@@ -1,6 +1,5 @@
 # L2-002-shellcheck-warning-gate
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L2-02：以 `shellcheck -S warning` 将 warning 级诊断作为静态检查门禁。
