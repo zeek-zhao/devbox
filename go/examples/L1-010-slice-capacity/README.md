@@ -1,6 +1,5 @@
 # L1-010-slice-capacity
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-10：观察子 slice 的容量如何影响 append。

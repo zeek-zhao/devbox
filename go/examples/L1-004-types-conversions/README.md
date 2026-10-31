@@ -1,6 +1,5 @@
 # L1-004-types-conversions
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-04：数值跨类型需要显式转换，且转换前检查窄化范围。

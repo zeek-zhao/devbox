@@ -1,6 +1,5 @@
 # L1-032-json-tags
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-32，观察结构体标签将导出字段编码为固定键名，并让空 note 字段省略。

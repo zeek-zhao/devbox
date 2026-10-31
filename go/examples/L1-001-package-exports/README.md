@@ -1,6 +1,5 @@
 # L1-001-package-exports
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-01：用两个本地包展示包声明与导出规则。

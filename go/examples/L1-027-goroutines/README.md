@@ -1,6 +1,5 @@
 # L1-027-goroutines
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-27：用 go 语句启动函数，用 channel 接收作为任务结果完成点。

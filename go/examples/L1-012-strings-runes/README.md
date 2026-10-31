@@ -1,6 +1,5 @@
 # L1-012-strings-runes
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-12：区分 UTF-8 字节长度、rune 数量和按字节索引。

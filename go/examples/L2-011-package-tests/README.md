@@ -1,6 +1,5 @@
 # L2-011-package-tests
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L2-11：按目录组织模块包，并从模块根运行 `go test ./...`。

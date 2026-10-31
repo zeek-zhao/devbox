@@ -1,6 +1,5 @@
 # L2-009-slog-logging
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L2-09：用 log/slog 输出包含级别、消息和字段的结构化日志。

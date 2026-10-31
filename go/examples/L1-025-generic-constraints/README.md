@@ -1,6 +1,5 @@
 # L1-025-generic-constraints
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-25：约束 interface 的整数类型集允许函数体执行加法。

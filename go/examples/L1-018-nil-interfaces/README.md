@@ -1,6 +1,5 @@
 # L1-018-nil-interfaces
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-18：区分 nil 接口值与装有 nil 指针的接口值。

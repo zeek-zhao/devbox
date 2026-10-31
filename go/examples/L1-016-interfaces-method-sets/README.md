@@ -1,6 +1,5 @@
 # L1-016-interfaces-method-sets
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-16：验证接口隐式满足及值、指针类型的方法集差异。

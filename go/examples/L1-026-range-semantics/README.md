@@ -1,6 +1,5 @@
 # L1-026-range-semantics
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-26：range 遍历 slice、数组、字符串与 map，区分索引、键和值。

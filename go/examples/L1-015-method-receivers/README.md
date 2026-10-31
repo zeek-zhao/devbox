@@ -1,6 +1,5 @@
 # L1-015-method-receivers
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-15：观察值接收者与指针接收者对值修改的影响。

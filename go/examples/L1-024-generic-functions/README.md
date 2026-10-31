@@ -1,6 +1,5 @@
 # L1-024-generic-functions
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-24：同一个带类型参数的函数处理 []int 与 []string。

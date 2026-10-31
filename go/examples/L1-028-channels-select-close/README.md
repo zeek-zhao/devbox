@@ -1,6 +1,5 @@
 # L1-028-channels-select-close
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-28，观察无缓冲握手、缓冲值在关闭后被 range 收尽。

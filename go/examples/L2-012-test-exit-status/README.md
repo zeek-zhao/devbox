@@ -1,6 +1,5 @@
 # L2-012-test-exit-status
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L2-12：测试断言失败时 `go test` 和调用它的严格脚本都应非零退出。

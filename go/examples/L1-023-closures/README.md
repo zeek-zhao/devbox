@@ -1,6 +1,5 @@
 # L1-023-closures
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-23：闭包保留词法变量，创建函数返回后仍可读取。

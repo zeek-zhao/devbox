@@ -1,6 +1,5 @@
 # L1-021-defer-order-return
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-GO-L1-21：两个 defer 后进先出，并修改命名返回值。
