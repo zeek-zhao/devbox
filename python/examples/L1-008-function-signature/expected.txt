@@ -1,0 +1,5 @@
+command: export
+extra positional: ('summary', 'detail')
+keyword-only mode: safe
+extra keywords: {'limit': 3, 'dry_run': True}
+positional-only keyword rejected: True

@@ -1,0 +1,2 @@
+late-bound values: [2, 2, 2]
+fixed values: [0, 1, 2]

@@ -1,0 +1,3 @@
+original: [['a', 'shared'], ['b']]
+shallow: [['a', 'shared'], ['b']]
+deep: [['a'], ['b', 'independent']]
