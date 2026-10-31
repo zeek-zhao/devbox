@@ -1,6 +1,5 @@
 # L1-029-enum-states
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-29：用枚举表达有限状态，并分别观察成员身份、名称和值。

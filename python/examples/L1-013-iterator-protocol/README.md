@@ -1,6 +1,5 @@
 # L1-013-iterator-protocol
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-13：实现 `__iter__` 与 `__next__`，并在迭代结束时抛出 `StopIteration`。

@@ -1,6 +1,5 @@
 # L3-003-cprofile
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L3-03：从 `cProfile` 统计中提取目标函数调用信息。

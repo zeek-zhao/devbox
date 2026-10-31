@@ -1,6 +1,5 @@
 # L3-002-multiprocessing-pool
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L3-02：用 `multiprocessing.Pool.map` 执行纯函数工作项。

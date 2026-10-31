@@ -1,6 +1,5 @@
 # L1-025-truthiness-short-circuit
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-25：验证容器真值、`and`/`or` 返回操作数以及短路副作用。

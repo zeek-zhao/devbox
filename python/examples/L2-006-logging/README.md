@@ -1,6 +1,5 @@
 # L2-006-logging
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L2-06：使用命名 logger、日志等级和固定格式输出诊断信息。

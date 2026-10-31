@@ -1,6 +1,5 @@
 # L1-004-builtin-containers
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-04：使用 list、tuple、dict 和 set 表达不同的数据语义。

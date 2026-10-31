@@ -1,6 +1,5 @@
 # L1-005-index-slice
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-05：运用负索引、半开切片和步长切片提取序列片段。

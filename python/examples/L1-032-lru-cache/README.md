@@ -1,6 +1,5 @@
 # L1-032-lru-cache
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-32：用 `functools.lru_cache` 缓存纯函数，并观察命中、未命中与清理。

@@ -1,6 +1,5 @@
 # L1-012-comprehensions
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-12：区分立即执行的列表推导式与按需执行的生成器表达式。

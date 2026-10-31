@@ -1,6 +1,5 @@
 # L2-001-package-imports
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L2-01：用包边界、`__init__.py` 和相对导入组织模块。

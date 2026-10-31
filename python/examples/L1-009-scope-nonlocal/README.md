@@ -1,6 +1,5 @@
 # L1-009-scope-nonlocal
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-09：观察局部名称遮蔽外层名称，以及 `nonlocal` 更新外层函数状态。

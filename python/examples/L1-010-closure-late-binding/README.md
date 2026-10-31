@@ -1,6 +1,5 @@
 # L1-010-closure-late-binding
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-10：观察闭包延迟查找循环变量，并用默认参数固定创建时的值。

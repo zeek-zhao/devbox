@@ -1,6 +1,5 @@
 # L1-007-mutable-default
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-07：验证默认参数表达式只在函数定义时求值一次。

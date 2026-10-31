@@ -1,6 +1,5 @@
 # L1-003-slice-copy
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-03：比较列表切片的浅拷贝与 `copy.deepcopy` 的深拷贝。

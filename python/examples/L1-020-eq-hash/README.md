@@ -1,6 +1,5 @@
 # L1-020-eq-hash
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-20：为不可变相等状态配套实现 `__eq__` 与 `__hash__`。

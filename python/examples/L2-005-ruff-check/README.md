@@ -1,6 +1,5 @@
 # L2-005-ruff-check
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L2-05：在完整用例目录运行 `ruff check`，并验证违规代码会被拒绝。

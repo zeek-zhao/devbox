@@ -1,6 +1,5 @@
 # L1-015-context-managers
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-15：通过 `__enter__` 和 `__exit__` 管理作用域资源。
