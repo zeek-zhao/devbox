@@ -1,0 +1,4 @@
+relock while held would block: true
+joined workers: 4
+shared count after unlock: 100
+owners after join: 1

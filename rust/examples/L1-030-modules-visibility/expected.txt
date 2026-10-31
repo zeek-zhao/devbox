@@ -1,0 +1,4 @@
+public API via full path: query:rust
+public API via use: query:rust
+full and imported paths agree: true
+crate-visible API name: query
