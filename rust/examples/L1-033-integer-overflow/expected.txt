@@ -1,0 +1,2 @@
+checked overflow: None
+narrow conversion: 42

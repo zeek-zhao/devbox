@@ -1,0 +1,4 @@
+slice: [20, 30]
+index 1: 20
+index 8: out of bounds
+length unchanged: 3
