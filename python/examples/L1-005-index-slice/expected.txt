@@ -1,0 +1,5 @@
+slice 1:4: bcd
+last item: f
+reverse: fedcba
+out-of-range slice: ''
+out-of-range index raises: True

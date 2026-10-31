@@ -1,0 +1,4 @@
+equal values: True
+same object: False
+tuple member after append: [1, 2]
+none singleton: True
