@@ -1,0 +1,3 @@
+pending: started work=1
+running: finished work=2
+done: unchanged work=2

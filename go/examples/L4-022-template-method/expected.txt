@@ -1,0 +1,10 @@
+begin
+memory prepare: 2
+memory execute: 6
+memory verify: true
+end
+begin
+text prepare: go
+text execute: go-pattern
+text verify: true
+end
