@@ -1,0 +1,2 @@
+request: cpp, 3, json
+build error: query is required

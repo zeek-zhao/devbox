@@ -1,0 +1,4 @@
+constructions before clone: 1
+original: cpp
+copy: clone
+constructions after clone: 1
