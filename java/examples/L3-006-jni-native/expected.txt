@@ -1,0 +1,2 @@
+jni-add: 5
+missing-library-rejected: true
