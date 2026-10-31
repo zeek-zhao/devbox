@@ -1,0 +1,3 @@
+found: 1
+after erase: 1 2 4
+new begin: 1
