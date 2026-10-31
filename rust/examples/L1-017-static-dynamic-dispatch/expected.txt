@@ -1,0 +1,4 @@
+static: html
+static: text
+dynamic: html
+dynamic: text

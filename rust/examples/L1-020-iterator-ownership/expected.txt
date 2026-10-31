@@ -1,0 +1,6 @@
+borrowed: rust
+borrowed: search
+still available: 2
+after mutable borrow: ["RUST", "SEARCH"]
+owned: RUST
+owned: SEARCH

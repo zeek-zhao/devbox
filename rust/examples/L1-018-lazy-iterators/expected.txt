@@ -1,0 +1,3 @@
+before consume: 0
+after consume: 3
+values: [20, 40, 60]
