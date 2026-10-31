@@ -1,0 +1,2 @@
+same runtime class=true
+raw pollution fails at typed read=true
