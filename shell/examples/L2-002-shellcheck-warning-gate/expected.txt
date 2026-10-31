@@ -1,0 +1,2 @@
+clean=pass
+warning=blocked

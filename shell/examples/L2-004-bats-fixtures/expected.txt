@@ -1,0 +1,4 @@
+1..2
+ok 1 fixture changes stay within this test
+ok 2 the next test receives a fresh fixture
+fixtures=cleaned
