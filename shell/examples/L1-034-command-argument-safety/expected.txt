@@ -1,0 +1,3 @@
+argument count: 2
+argument: <-n>
+argument: <two words; printf unexpected>

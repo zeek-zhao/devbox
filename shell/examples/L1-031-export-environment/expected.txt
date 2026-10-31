@@ -1,0 +1,2 @@
+unexported variable absent in child: true
+exported child value: local value

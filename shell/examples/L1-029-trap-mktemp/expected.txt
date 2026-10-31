@@ -1,0 +1,3 @@
+normal exit cleaned temporary file: true
+nonzero exit status preserved: true
+nonzero exit cleaned temporary file: true

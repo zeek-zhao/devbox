@@ -1,0 +1,3 @@
+stdout and stderr share file: true
+reversed order captured stderr: stderr line
+reversed order file: stdout line
