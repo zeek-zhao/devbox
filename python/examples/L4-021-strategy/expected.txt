@@ -1,0 +1,3 @@
+alphabetical: ['apple', 'fig', 'kiwi', 'pear']
+length: ['fig', 'pear', 'kiwi', 'apple']
+input unchanged: ['pear', 'fig', 'apple', 'kiwi']

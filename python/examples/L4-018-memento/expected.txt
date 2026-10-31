@@ -1,0 +1,6 @@
+saved: query='python', tags=['stdlib']
+edited: query='patterns', tags=['stdlib', 'behavioral']
+readonly: FrozenInstanceError
+restored: query='python', tags=['stdlib']
+matches snapshot: True
+snapshot tags after edit: ('stdlib',)
