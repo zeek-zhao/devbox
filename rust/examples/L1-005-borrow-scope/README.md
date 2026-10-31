@@ -1,6 +1,5 @@
 # L1-005-borrow-scope
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-05：非词法生命周期使借用在最后一次实际使用后结束。

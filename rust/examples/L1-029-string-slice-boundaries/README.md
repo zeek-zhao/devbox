@@ -1,6 +1,5 @@
 # L1-029-string-slice-boundaries
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-29：字符串切片索引是字节位置，端点必须位于 UTF-8 边界。

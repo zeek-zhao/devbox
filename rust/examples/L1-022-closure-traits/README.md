@@ -1,6 +1,5 @@
 # L1-022-closure-traits
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-22：通过 `Fn`、`FnMut`、`FnOnce` 参数约束区分读取、修改、消费捕获值。

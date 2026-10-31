@@ -1,6 +1,5 @@
 # L1-031-drop-order
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-31：观察局部值离开作用域时的 `Drop` 顺序。

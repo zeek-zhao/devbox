@@ -1,6 +1,5 @@
 # L1-023-move-closures
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-23：`move` 捕获整数副本、拥有型 `String` 或显式引用，取决于绑定类型。

@@ -1,6 +1,5 @@
 # L1-028-utf8-chars-bytes
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-28：`chars()` 遍历 Unicode 标量值，`bytes()` 遍历 UTF-8 编码字节，`len()` 统计字节。

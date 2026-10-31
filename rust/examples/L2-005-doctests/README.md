@@ -1,6 +1,5 @@
 # L2-005-doctests
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L2-05：让公开 API 的文档示例由 `cargo test --doc` 编译运行。

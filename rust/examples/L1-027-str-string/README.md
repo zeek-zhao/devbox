@@ -1,6 +1,5 @@
 # L1-027-str-string
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-27：`&str` 是借用型字符串切片，`String` 拥有数据并可增长。

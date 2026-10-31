@@ -1,6 +1,5 @@
 # L2-009-offline-build
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L2-09：Cargo 仅使用标准库并以 `--offline` 构建。

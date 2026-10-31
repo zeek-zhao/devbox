@@ -1,6 +1,5 @@
 # L3-002-zero-copy-parser
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L3-02：解析结果通过生命周期标注借用调用方输入切片。

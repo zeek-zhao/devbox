@@ -1,6 +1,5 @@
 # L1-002-copy-types
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-02：`u32` 实现 `Copy`，赋值和传值后原绑定仍能使用。

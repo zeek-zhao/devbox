@@ -1,6 +1,5 @@
 # L1-012-exhaustive-match
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-12：对枚举进行穷尽 `match`，并在分支中绑定数据。

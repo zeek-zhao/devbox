@@ -1,6 +1,5 @@
 # L1-021-custom-iterator
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-21：实现 `Iterator::next`，用 `Some` 交出编号、用 `None` 结束。

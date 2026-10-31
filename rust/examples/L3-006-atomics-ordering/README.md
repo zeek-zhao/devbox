@@ -1,6 +1,5 @@
 # L3-006-atomics-ordering
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L3-06：用 `SeqCst` 原子计数，并以 Release/Acquire 发布完成状态。

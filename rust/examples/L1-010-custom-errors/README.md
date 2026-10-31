@@ -1,6 +1,5 @@
 # L1-010-custom-errors
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-10：`IndexError` 组合数字解析与 UTF-8 解码两种来源，分别实现 `From`。

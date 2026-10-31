@@ -1,6 +1,5 @@
 # L1-018-lazy-iterators
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-18：区分创建迭代器适配器与消费迭代器的操作。
