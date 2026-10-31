@@ -10,6 +10,15 @@ INNODB_TRX/INNODB_LOCK_WAITS、pg_locks、currentOp
 
 输出阻塞链的等待者与被等待者
 
+## 为什么这么写
+
+阻塞者先锁住 id=1；等待者先锁 id=2 再申请 id=1。第三个连接从 performance_schema.data_lock_waits 实际观察等待关系后才释放锁。
+
+## 易错点
+
+- 仅看到等待线程不等于验证了阻塞链；要观察到 data_lock_waits 行。
+- 线程设置有限等待时间，避免失败时遗留事务。
+
 ## 依赖服务
 
 `mysql,postgres`

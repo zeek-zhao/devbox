@@ -10,6 +10,15 @@ Cluster 槽位、CRC16、MOVED/ASK 重定向、客户端分片
 
 输出 key 落在哪个槽
 
+## 为什么这么写
+
+按卡片允许的轻量方案实现 Redis CRC16/XMODEM 与 hash-tag 规则，并用同 hash-tag 两个 key 的槽位相等作验证；未搭建真 Cluster。
+
+## 易错点
+
+- CRC16 取模必须是 16384，hash-tag 只在 `{}` 非空时生效。
+- 本例不验证 MOVED/ASK 重定向或客户端集群故障切换。
+
 ## 依赖服务
 
 `redis`
