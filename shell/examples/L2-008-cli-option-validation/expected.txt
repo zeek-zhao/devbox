@@ -1,0 +1,3 @@
+options: a=true b=value
+rejected -x with usage
+rejected -b with usage
