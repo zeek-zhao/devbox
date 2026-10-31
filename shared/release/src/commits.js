@@ -1,17 +1,40 @@
-// 从 git log 解析 conventional commits。
-// ------------------------------------------------------------------
-// 要处理的真实情况（不是玩具解析器）：
-//   - merge commit（`Merge branch ...`）跳过
-//   - revert commit 识别成 revert 类型
-//   - 破坏性变更：`feat!: xxx` 或 footer 里的 `BREAKING CHANGE:`
-//   - 没有 type 前缀的提交（如 `fix typo`）跳过，但要计数并在摘要里报出来
-//   - 中文 subject 要能正常解析
+import { execFileSync } from 'node:child_process';
+
 export function parseCommit(subject, body = '') {
-  // TODO(REL-01)：返回 { type, scope, subject, breaking, body }
-  throw new Error('未实现');
+  if (/^Merge\b/i.test(subject) || /^Revert "/.test(subject)) {
+    if (/^Revert "/.test(subject)) {
+      return { type: 'revert', scope: null, subject, breaking: false, body };
+    }
+    return null;
+  }
+  const match = /^([a-zA-Z][\w-]*)(?:\(([^()\r\n]+)\))?(!)?:\s+(.+)$/.exec(subject);
+  if (!match) return null;
+  return {
+    type: match[1].toLowerCase(),
+    scope: match[2] ?? null,
+    subject: match[4],
+    breaking: Boolean(match[3]) || /(?:^|\n)BREAKING(?: CHANGE)?:\s*\S/i.test(body),
+    body,
+  };
 }
 
 export function readCommits({ cwd, from, to = 'HEAD' }) {
-  // TODO(REL-01)：调 git log，解析成结构
-  throw new Error('未实现');
+  const args = ['log', '--format=%s%x00%b%x1e'];
+  args.push(from ? `${from}..${to}` : to);
+  const output = execFileSync('git', args, { cwd, encoding: 'utf8' });
+  const commits = [];
+  let skippedCount = 0;
+  for (const [index, raw] of output.split('\x1e').entries()) {
+    const record = index ? raw.replace(/^\n/, '') : raw;
+    if (!record) continue;
+    const separator = record.indexOf('\0');
+    if (separator < 0) continue;
+    const subject = record.slice(0, separator);
+    if (!subject) continue;
+    const parsed = parseCommit(subject, record.slice(separator + 1));
+    if (parsed) commits.push(parsed);
+    else skippedCount += 1;
+  }
+  Object.defineProperty(commits, 'skippedCount', { value: skippedCount });
+  return commits;
 }
