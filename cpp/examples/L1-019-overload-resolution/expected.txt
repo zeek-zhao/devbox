@@ -1,0 +1,4 @@
+int argument: int
+long argument: long
+double argument: double
+short argument: template
