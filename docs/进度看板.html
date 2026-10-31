@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>进度看板 R-W-05</title>
+<style>
+:root { color-scheme: light; --bg: #f4f6fa; --surface: #fff; --text: #17213a;
+  --muted: #536078; --line: #d9dfeb; --pass: #14653a; --fail: #b32323; --pending: #855300; }
+:root[data-theme="dark"] { color-scheme: dark; --bg: #101622; --surface: #1a2333;
+  --text: #e8edf7; --muted: #b5c1d5; --line: #35425a; --pass: #80dfa4;
+  --fail: #ff9a9a; --pending: #f5cf7c; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { color-scheme: dark; --bg: #101622; --surface: #1a2333;
+    --text: #e8edf7; --muted: #b5c1d5; --line: #35425a; --pass: #80dfa4;
+    --fail: #ff9a9a; --pending: #f5cf7c; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font-family: system-ui, sans-serif; line-height: 1.6; }
+header, main, footer { max-width: 1200px; margin: auto; padding: 1rem; }
+header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+h1 { font-size: 1.6rem; margin: 0; }
+h2 { font-size: 1.2rem; margin-top: 0; }
+small, footer, .note { color: var(--muted); }
+small { font-weight: normal; font-size: .85rem; }
+button { background: var(--surface); color: var(--text); border: 1px solid var(--line);
+  padding: .6rem 1rem; border-radius: .5rem; cursor: pointer; }
+button:focus-visible { outline: 3px solid var(--pending); outline-offset: 3px; }
+section, .summary { background: var(--surface); border: 1px solid var(--line);
+  border-radius: .7rem; padding: 1rem; margin-bottom: 1rem; }
+.summary { font-weight: bold; }
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+th, td { padding: .6rem; text-align: right; border-bottom: 1px solid var(--line); }
+th:first-child { text-align: left; }
+.passed { color: var(--pass); } .failed { color: var(--fail); }
+.pending { color: var(--pending); }
+progress { width: 6rem; height: .7rem; accent-color: var(--pass); }
+@media (max-width: 600px) { header { align-items: flex-start; } h1 { font-size: 1.2rem; } }
+</style>
+</head>
+<body>
+<header><h1>进度看板 R-W-05</h1><button id="theme-toggle" type="button"
+aria-pressed="false">切换主题</button></header>
+<main>
+<p class="summary" id="overall">总用例数：315 · 总 PASS：315 · 总 FAIL：0 · 总 pending：309 · 未执行：0 · 生成时间：<time datetime="2026-10-31T16:32:09+00:00">2026-10-31T16:32:09+00:00</time></p>
+<p class="note">结果来源：run-example.sh all --all；runner 退出状态：0。执行完成度 = PASS / 用例总数；pending 是项目覆盖欠债，与 PASS/FAIL 独立，可以同时为 PASS 和 pending。未执行不计为 PASS 或 FAIL。COVERAGE 行数不含表头、分隔行和代码块，也不代表代码引用校验已通过。总体包含 hello 等非 L1/L2/L3 用例。</p>
+<section><h2>cpp <small>COVERAGE 表数据行：1</small></h2><div class="table-scroll"><table><thead><tr><th scope="col">级别</th><th scope="col">总数</th><th scope="col">PASS</th><th scope="col">FAIL</th><th scope="col">pending</th><th scope="col">未执行</th><th scope="col">COVERAGE 行数</th><th scope="col">执行完成度</th></tr></thead><tbody><tr data-lang="cpp" data-level="L1"><th scope="row">L1</th><td class="total">35</td><td class="passed">35</td><td class="failed">0</td><td class="pending">35</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="cpp L1 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="cpp" data-level="L2"><th scope="row">L2</th><td class="total">12</td><td class="passed">12</td><td class="failed">0</td><td class="pending">12</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="cpp L2 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="cpp" data-level="L3"><th scope="row">L3</th><td class="total">6</td><td class="passed">6</td><td class="failed">0</td><td class="pending">6</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="cpp L3 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="cpp" data-level="other"><th scope="row">其他（如 hello）</th><td class="total">1</td><td class="passed">1</td><td class="failed">0</td><td class="pending">0</td><td class="unrun">0</td><td class="coverage">1</td><td><progress max="100" value="100.0" aria-label="cpp 其他（如 hello） PASS 完成度">100.0%</progress> 100.0%</td></tr></tbody></table></div></section>
+<section><h2>go <small>COVERAGE 表数据行：1</small></h2><div class="table-scroll"><table><thead><tr><th scope="col">级别</th><th scope="col">总数</th><th scope="col">PASS</th><th scope="col">FAIL</th><th scope="col">pending</th><th scope="col">未执行</th><th scope="col">COVERAGE 行数</th><th scope="col">执行完成度</th></tr></thead><tbody><tr data-lang="go" data-level="L1"><th scope="row">L1</th><td class="total">35</td><td class="passed">35</td><td class="failed">0</td><td class="pending">35</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="go L1 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="go" data-level="L2"><th scope="row">L2</th><td class="total">12</td><td class="passed">12</td><td class="failed">0</td><td class="pending">12</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="go L2 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="go" data-level="L3"><th scope="row">L3</th><td class="total">6</td><td class="passed">6</td><td class="failed">0</td><td class="pending">6</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="go L3 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="go" data-level="other"><th scope="row">其他（如 hello）</th><td class="total">1</td><td class="passed">1</td><td class="failed">0</td><td class="pending">0</td><td class="unrun">0</td><td class="coverage">1</td><td><progress max="100" value="100.0" aria-label="go 其他（如 hello） PASS 完成度">100.0%</progress> 100.0%</td></tr></tbody></table></div></section>
+<section><h2>rust <small>COVERAGE 表数据行：1</small></h2><div class="table-scroll"><table><thead><tr><th scope="col">级别</th><th scope="col">总数</th><th scope="col">PASS</th><th scope="col">FAIL</th><th scope="col">pending</th><th scope="col">未执行</th><th scope="col">COVERAGE 行数</th><th scope="col">执行完成度</th></tr></thead><tbody><tr data-lang="rust" data-level="L1"><th scope="row">L1</th><td class="total">33</td><td class="passed">33</td><td class="failed">0</td><td class="pending">33</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="rust L1 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="rust" data-level="L2"><th scope="row">L2</th><td class="total">11</td><td class="passed">11</td><td class="failed">0</td><td class="pending">11</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="rust L2 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="rust" data-level="L3"><th scope="row">L3</th><td class="total">6</td><td class="passed">6</td><td class="failed">0</td><td class="pending">6</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="rust L3 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="rust" data-level="other"><th scope="row">其他（如 hello）</th><td class="total">1</td><td class="passed">1</td><td class="failed">0</td><td class="pending">0</td><td class="unrun">0</td><td class="coverage">1</td><td><progress max="100" value="100.0" aria-label="rust 其他（如 hello） PASS 完成度">100.0%</progress> 100.0%</td></tr></tbody></table></div></section>
+<section><h2>shell <small>COVERAGE 表数据行：1</small></h2><div class="table-scroll"><table><thead><tr><th scope="col">级别</th><th scope="col">总数</th><th scope="col">PASS</th><th scope="col">FAIL</th><th scope="col">pending</th><th scope="col">未执行</th><th scope="col">COVERAGE 行数</th><th scope="col">执行完成度</th></tr></thead><tbody><tr data-lang="shell" data-level="L1"><th scope="row">L1</th><td class="total">35</td><td class="passed">35</td><td class="failed">0</td><td class="pending">35</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="shell L1 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="shell" data-level="L2"><th scope="row">L2</th><td class="total">12</td><td class="passed">12</td><td class="failed">0</td><td class="pending">12</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="shell L2 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="shell" data-level="L3"><th scope="row">L3</th><td class="total">6</td><td class="passed">6</td><td class="failed">0</td><td class="pending">6</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="shell L3 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="shell" data-level="other"><th scope="row">其他（如 hello）</th><td class="total">1</td><td class="passed">1</td><td class="failed">0</td><td class="pending">0</td><td class="unrun">0</td><td class="coverage">1</td><td><progress max="100" value="100.0" aria-label="shell 其他（如 hello） PASS 完成度">100.0%</progress> 100.0%</td></tr></tbody></table></div></section>
+<section><h2>python <small>COVERAGE 表数据行：1</small></h2><div class="table-scroll"><table><thead><tr><th scope="col">级别</th><th scope="col">总数</th><th scope="col">PASS</th><th scope="col">FAIL</th><th scope="col">pending</th><th scope="col">未执行</th><th scope="col">COVERAGE 行数</th><th scope="col">执行完成度</th></tr></thead><tbody><tr data-lang="python" data-level="L1"><th scope="row">L1</th><td class="total">32</td><td class="passed">32</td><td class="failed">0</td><td class="pending">32</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="python L1 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="python" data-level="L2"><th scope="row">L2</th><td class="total">12</td><td class="passed">12</td><td class="failed">0</td><td class="pending">12</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="python L2 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="python" data-level="L3"><th scope="row">L3</th><td class="total">6</td><td class="passed">6</td><td class="failed">0</td><td class="pending">6</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="python L3 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="python" data-level="other"><th scope="row">其他（如 hello）</th><td class="total">1</td><td class="passed">1</td><td class="failed">0</td><td class="pending">0</td><td class="unrun">0</td><td class="coverage">1</td><td><progress max="100" value="100.0" aria-label="python 其他（如 hello） PASS 完成度">100.0%</progress> 100.0%</td></tr></tbody></table></div></section>
+<section><h2>java <small>COVERAGE 表数据行：1</small></h2><div class="table-scroll"><table><thead><tr><th scope="col">级别</th><th scope="col">总数</th><th scope="col">PASS</th><th scope="col">FAIL</th><th scope="col">pending</th><th scope="col">未执行</th><th scope="col">COVERAGE 行数</th><th scope="col">执行完成度</th></tr></thead><tbody><tr data-lang="java" data-level="L1"><th scope="row">L1</th><td class="total">33</td><td class="passed">33</td><td class="failed">0</td><td class="pending">33</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="java L1 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="java" data-level="L2"><th scope="row">L2</th><td class="total">11</td><td class="passed">11</td><td class="failed">0</td><td class="pending">11</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="java L2 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="java" data-level="L3"><th scope="row">L3</th><td class="total">6</td><td class="passed">6</td><td class="failed">0</td><td class="pending">6</td><td class="unrun">0</td><td class="coverage">0</td><td><progress max="100" value="100.0" aria-label="java L3 PASS 完成度">100.0%</progress> 100.0%</td></tr><tr data-lang="java" data-level="other"><th scope="row">其他（如 hello）</th><td class="total">1</td><td class="passed">1</td><td class="failed">0</td><td class="pending">0</td><td class="unrun">0</td><td class="coverage">1</td><td><progress max="100" value="100.0" aria-label="java 其他（如 hello） PASS 完成度">100.0%</progress> 100.0%</td></tr></tbody></table></div></section>
+<p class="note" id="theme-status" role="status"></p>
+</main>
+<footer>自包含 HTML · 零 CDN · 系统主题自动适配，手动选择保存在当前浏览器。
+重新生成：bash scripts/build-board.sh [结果日志] [输出路径]（需要 Python 3）。
+不提供日志时执行全部用例，默认 TAG=latest；中间日志仅保留在内存。</footer>
+<script>
+(() => {
+  const root = document.documentElement;
+  const button = document.getElementById('theme-toggle');
+  const status = document.getElementById('theme-status');
+  const system = window.matchMedia('(prefers-color-scheme: dark)');
+  const key = 'devbox-board-theme';
+  const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : system.matches;
+  const update = () => {
+    button.setAttribute('aria-pressed', String(isDark()));
+    button.textContent = isDark() ? '切换浅色' : '切换深色';
+  };
+  try {
+    const saved = localStorage.getItem(key);
+    if (saved === 'light' || saved === 'dark') root.dataset.theme = saved;
+  } catch (error) {
+    status.textContent = '浏览器存储不可用：主题选择仅在本次页面有效。';
+    console.warn('无法读取主题选择', error);
+  }
+  button.addEventListener('click', () => {
+    root.dataset.theme = isDark() ? 'light' : 'dark';
+    update();
+    try {
+      localStorage.setItem(key, root.dataset.theme);
+    } catch (error) {
+      status.textContent = '无法保存主题选择：主题选择仅在本次页面有效。';
+      console.warn('无法保存主题选择', error);
+    }
+  });
+  system.addEventListener('change', update);
+  update();
+})();
+</script>
+</body>
+</html>
