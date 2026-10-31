@@ -1,0 +1,3 @@
+child stdout: child-output
+child stderr: child-error
+child exit: 7
