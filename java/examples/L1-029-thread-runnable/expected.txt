@@ -1,0 +1,4 @@
+start-is-new-thread=true
+direct-run-is-caller=true
+completed=2
+worker-failure=none

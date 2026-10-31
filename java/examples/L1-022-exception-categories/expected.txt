@@ -1,0 +1,5 @@
+unchecked-needs-no-declaration=true
+checked-unhandled-rejected=true
+checked-declared-accepted=true
+checked-caught=IOException
+unchecked-caught=NumberFormatException
