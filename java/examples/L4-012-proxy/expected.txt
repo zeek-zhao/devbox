@@ -1,0 +1,10 @@
+constructed before access: 0
+before: 1
+target: java
+after: 1
+returned: result[java]
+before: 2
+target: patterns
+after: 2
+returned: result[patterns]
+constructed after access: 1
