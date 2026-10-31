@@ -1,6 +1,5 @@
 # L3-005-ctypes-libc
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L3-05：通过 `ctypes` 调用系统 C 库并声明函数签名。

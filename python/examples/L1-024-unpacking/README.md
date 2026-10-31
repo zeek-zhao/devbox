@@ -1,6 +1,5 @@
 # L1-024-unpacking
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-24：用位置解包和星号目标接收可变长度序列的剩余部分。

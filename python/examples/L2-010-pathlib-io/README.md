@@ -1,6 +1,5 @@
 # L2-010-pathlib-io
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L2-10：使用 `Path` 组合路径、读写文本并区分缺失文件。

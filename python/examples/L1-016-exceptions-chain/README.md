@@ -1,6 +1,5 @@
 # L1-016-exceptions-chain
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-16：将底层异常转换为领域异常时保留显式原因，并确认 `finally` 执行。

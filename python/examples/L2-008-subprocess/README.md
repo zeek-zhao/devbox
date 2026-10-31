@@ -1,6 +1,5 @@
 # L2-008-subprocess
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L2-08：使用 `subprocess.run` 的参数列表、捕获输出并检查返回码。

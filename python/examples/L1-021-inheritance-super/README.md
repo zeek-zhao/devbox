@@ -1,6 +1,5 @@
 # L1-021-inheritance-super
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-21：通过覆盖方法和 `super()` 扩展继承行为。

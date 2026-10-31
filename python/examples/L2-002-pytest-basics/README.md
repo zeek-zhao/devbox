@@ -1,6 +1,5 @@
 # L2-002-pytest-basics
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L2-02：用 fixture、参数化、异常断言和 `tmp_path` 编写 pytest 用例。

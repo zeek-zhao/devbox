@@ -1,6 +1,5 @@
 # L1-023-collections
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-23：使用 `Counter`、`defaultdict` 和 `deque` 处理固定数据。

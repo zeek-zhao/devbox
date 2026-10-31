@@ -1,6 +1,5 @@
 # L3-006-gil-cpu-work
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L3-06：对固定 CPU 工作量比较串行、线程和进程的结果及计数。

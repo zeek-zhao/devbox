@@ -1,6 +1,5 @@
 # L3-004-struct-binary
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L3-04：用 `struct` 明确字段宽度、字节序和有符号性。

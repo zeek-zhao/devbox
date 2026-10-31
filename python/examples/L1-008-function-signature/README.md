@@ -1,6 +1,5 @@
 # L1-008-function-signature
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-08：用 `/` 限制仅位置参数，以 `*` 分隔关键字专用参数，并收集额外参数。

@@ -1,6 +1,5 @@
 # L1-027-unicode-strings
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-27：区分字符串的 Unicode 码点数量与 UTF-8 编码后的字节长度。

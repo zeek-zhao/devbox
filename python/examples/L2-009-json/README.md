@@ -1,6 +1,5 @@
 # L2-009-json
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L2-09：用 `json` 在 Python 对象和 JSON 文本间往返。

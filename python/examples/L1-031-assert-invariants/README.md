@@ -1,6 +1,5 @@
 # L1-031-assert-invariants
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-PY-L1-31：用 `assert` 表达程序内部不变量，用显式校验处理外部输入。
