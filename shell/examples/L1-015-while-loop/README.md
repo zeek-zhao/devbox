@@ -1,6 +1,5 @@
 # L1-015-while-loop
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-15：用条件命令控制 `while` 循环继续或结束。

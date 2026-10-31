@@ -1,6 +1,5 @@
 # L1-024-stdout-stderr
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-24：用文件描述符区分标准输出中的业务数据与标准错误中的诊断信息。

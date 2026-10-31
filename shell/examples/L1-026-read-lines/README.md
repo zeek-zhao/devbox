@@ -1,6 +1,5 @@
 # L1-026-read-lines
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-26：用 `while IFS= read -r line` 逐行读取并保留原始行内容。

@@ -1,6 +1,5 @@
 # L1-025-printf-echo
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-25：使用格式明确的 `printf` 输出字面量、反斜线和变量值。

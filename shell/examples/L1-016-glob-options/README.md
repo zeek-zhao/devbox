@@ -1,6 +1,5 @@
 # L1-016-glob-options
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-16：观察无匹配 glob 的默认行为，并显式启用 `nullglob` 与 `globstar`。

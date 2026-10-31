@@ -1,6 +1,5 @@
 # L1-028-getopts
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-28：用 `getopts` 解析无值选项和带值选项，并拒绝非法选项。

@@ -1,6 +1,5 @@
 # L1-007-prefix-suffix-removal
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-07：前缀使用 `#`/`##`、后缀使用 `%`/`%%` 移除模式匹配。

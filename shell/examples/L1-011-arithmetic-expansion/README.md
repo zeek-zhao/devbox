@@ -1,6 +1,5 @@
 # L1-011-arithmetic-expansion
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-11：用 Bash 算术展开计算整数表达式。

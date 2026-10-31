@@ -1,6 +1,5 @@
 # L2-012-null-delimited-paths
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L2-12：文件名流用 NUL 分隔，安全传递空格和换行。

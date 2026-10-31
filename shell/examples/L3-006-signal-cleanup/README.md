@@ -1,6 +1,5 @@
 # L3-006-signal-cleanup
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L3-06：worker 就绪后接收 `TERM`，清理活动标记并以非零状态退出。

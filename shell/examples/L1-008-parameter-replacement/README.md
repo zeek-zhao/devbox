@@ -1,6 +1,5 @@
 # L1-008-parameter-replacement
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-SH-L1-08：`${var/pattern/replacement}` 替换首个匹配，双斜线替换全部。
