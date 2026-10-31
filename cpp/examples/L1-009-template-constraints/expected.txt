@@ -1,0 +1,2 @@
+has_size_v<std::string>: true
+has_size_v<int>: false
