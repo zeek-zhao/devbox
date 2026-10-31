@@ -17,3 +17,16 @@
 ## 自检
 
 bash scripts/coverage-check.sh cpp
+
+## pending：用例已落地但项目还没接入
+
+阶段 2 铺开 53 个用例时，项目骨架只真实用到 `hello` 一个。用例若还没被 `project/` 引用，
+就在它自己的 `README.md` 里写一行：
+
+```markdown
+<!-- coverage: pending -->
+```
+
+`scripts/coverage-check.sh` 会对这类用例豁免「必须在表里声明」和「必须在代码里出现」两条，
+但会单独统计并打印 pending 数量 —— 它是**明账上的欠债，不是通过**。
+阶段 4 收口时用 `bash scripts/coverage-check.sh --strict`，pending 未清零即失败。
