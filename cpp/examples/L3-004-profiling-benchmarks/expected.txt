@@ -1,0 +1,4 @@
+iterations: 10000
+comparisons: 10000
+matches: 5000
+benchmark: measured

@@ -1,0 +1,4 @@
+status: 0
+message: value=42
+ownership: C allocates; C++ calls free
+null-output-error: 1
