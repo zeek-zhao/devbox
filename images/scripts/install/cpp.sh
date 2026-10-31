@@ -7,12 +7,15 @@ set -euo pipefail
 : "${GCC_MAJOR:?需要 GCC_MAJOR}"
 : "${CLANG_MAJOR:?需要 CLANG_MAJOR}"
 : "${CMAKE_MIN_VERSION:?需要 CMAKE_MIN_VERSION}"
+# 格式化器必须与编译器同大版本，否则同一份代码在两个版本下排版不同
+: "${CLANG_FORMAT_MAJOR:?需要 CLANG_FORMAT_MAJOR}"
 
-echo "==> 安装 C/C++ 工具链 gcc-${GCC_MAJOR} / clang-${CLANG_MAJOR}"
+echo "==> 安装 C/C++ 工具链 gcc-${GCC_MAJOR} / clang-${CLANG_MAJOR} / clang-format-${CLANG_FORMAT_MAJOR}"
 apt-get update
 apt-get install -y --no-install-recommends \
   "gcc-${GCC_MAJOR}" "g++-${GCC_MAJOR}" \
   "clang-${CLANG_MAJOR}" "lld-${CLANG_MAJOR}" \
+  "clang-format-${CLANG_FORMAT_MAJOR}" \
   cmake ninja-build ccache \
   gcovr lcov \
   libgtest-dev libgmock-dev libbenchmark-dev \
@@ -41,6 +44,16 @@ for name in clang clang++ clangd lld; do
   fi
 done
 
+# clang-format 是独立包，不随 clang 一起装，也没有自带 `clang-format` 入口。
+# 少了这一步，scripts/fmt.sh 在容器里会 command not found。
+if [ -x "/usr/bin/clang-format-${CLANG_FORMAT_MAJOR}" ]; then
+  update-alternatives --install /usr/bin/clang-format clang-format \
+    "/usr/bin/clang-format-${CLANG_FORMAT_MAJOR}" 100
+else
+  echo "!! 找不到 /usr/bin/clang-format-${CLANG_FORMAT_MAJOR}" >&2
+  exit 1
+fi
+
 apt-get clean
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -48,6 +61,7 @@ echo "==> 自检"
 gcc --version | head -1
 g++ --version | head -1
 clang --version | head -1
+clang-format --version
 cmake --version | head -1
 ninja --version
 cppcheck --version | head -1

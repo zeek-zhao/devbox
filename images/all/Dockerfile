@@ -12,6 +12,7 @@ FROM ${BASE_IMAGE}
 
 ARG GCC_MAJOR=14
 ARG CLANG_MAJOR=18
+ARG CLANG_FORMAT_MAJOR=18
 ARG CMAKE_MIN_VERSION=3.28
 ARG GO_VERSION=1.27.3
 ARG GO_SHA256=65efbc80fdc1fa2cd2631cad5b481777a68e8725f34e89f50fc6ac714e379b40
@@ -24,6 +25,10 @@ ARG PYTHON_VERSION=3.12
 ARG PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
 ARG JAVA_MAJOR=21
 ARG MAVEN_OPTS="-Dmaven.repo.local=/opt/m2 -Dfile.encoding=UTF-8"
+ARG GJF_VERSION=1.22.0
+ARG GJF_SHA256=16b2a1ee938686c8b1d88abf19eb83dfd0d623cee9de6fc6d09980214f816d3f
+ARG YQ_VERSION=4.44.3
+ARG YQ_SHA256=a2c097180dd884a8d50c956ee16a9cec070f30a7947cf4ebf87d5f36213e9ed7
 
 LABEL org.opencontainers.image.title="devbox-all" \
       org.opencontainers.image.description="C/C++ Go Rust Shell Python Java 六语言总环境" \
