@@ -1,0 +1,4 @@
+unset-colon=fallback
+empty-no-colon=<>
+empty-colon=fallback
+set-colon=ready
