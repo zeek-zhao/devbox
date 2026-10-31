@@ -1,0 +1,2 @@
+teleport marker: present
+target content: <!--teleport start anchor--><span>teleported</span><!--teleport anchor-->

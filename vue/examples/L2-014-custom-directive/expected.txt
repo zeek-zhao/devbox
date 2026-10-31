@@ -1,0 +1,2 @@
+mounted hook called: false
+directive attribute: absent
