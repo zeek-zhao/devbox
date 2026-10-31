@@ -1,0 +1,4 @@
+array length: 2
+out of bounds detected: true
+covariant store rejected: true
+original element: index

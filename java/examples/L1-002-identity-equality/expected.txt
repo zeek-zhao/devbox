@@ -1,0 +1,4 @@
+same reference: false
+same content: true
+same hash: true
+null-safe same content: true
