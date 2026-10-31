@@ -177,3 +177,36 @@ jobs:
 
       - name: 跑该语言全部用例
         run: bash scripts/run-example.sh ${{ matrix.lang }} --all
+
+  # ------------------------------------------------------------------
+  # shared/ 工具箱自测（见 shared/README.md）
+  # 三个库依赖 bats + jq + yq，这三个都装在 shell 层里，所以只拉 shell 镜像，
+  # 宿主什么都不用装 —— 和 examples 那套「判定逻辑只跑在容器里」保持一致。
+  # 若报「缺少依赖: yq」而不是「not ok」，说明镜像还是加 yq 之前的老镜像，
+  # 先等 images workflow 重建成新的 latest。
+  # ------------------------------------------------------------------
+  shared:
+    name: shared 工具自测
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
+    needs: [probe]
+    if: needs.probe.outputs.ready == 'true'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 拉取 shell 镜像
+        run: docker pull "$REGISTRY/devbox-shell:$IMAGE_TAG"
+
+      - name: README 函数索引与代码一致
+        run: bash scripts/check-shared-index.sh
+
+      - name: 跑 shared/tests
+        run: TAG="$IMAGE_TAG" bash shared/tests/run.sh
