@@ -1,0 +1,4 @@
+local_value=inner
+result=completed
+parent_value=parent
+return_status=7
