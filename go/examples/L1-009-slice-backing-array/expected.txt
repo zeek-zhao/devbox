@@ -1,0 +1,4 @@
+spare capacity before append: true
+shared append visible: true
+full capacity before append: true
+old slice unchanged: true

@@ -1,0 +1,3 @@
+converted boundary: 255
+boundary accepted: true
+out of range rejected: true

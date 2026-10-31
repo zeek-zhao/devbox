@@ -1,0 +1,9 @@
+short declaration: 7
+int zero: 0
+bool zero: false
+string zero: ""
+pointer is nil: true
+slice is nil: true
+map is nil: true
+struct zero: {Limit:0 Enabled:false}
+initialized map value: 1
