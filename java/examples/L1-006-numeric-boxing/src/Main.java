@@ -13,9 +13,13 @@ public class Main {
         Integer boxed = null;
         if (boxed == null) {
             System.out.println("null wrapper checked: true");
-        } else {
-            int value = boxed;
-            System.out.println("unboxed value: " + value);
+        }
+
+        try {
+            int unboxed = boxed;
+            System.out.println("unboxed value: " + unboxed);
+        } catch (NullPointerException expected) {
+            System.out.println("null unboxing: NullPointerException");
         }
     }
 }
