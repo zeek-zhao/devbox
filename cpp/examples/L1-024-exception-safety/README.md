@@ -1,6 +1,5 @@
 # L1-024-exception-safety
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-24：操作失败时维持对象原状态，体现强异常保证。

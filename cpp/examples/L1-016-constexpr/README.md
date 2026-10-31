@@ -1,6 +1,5 @@
 # L1-016-constexpr
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-16：`static_assert` 通过证明 `constexpr` 函数可在编译期求值。

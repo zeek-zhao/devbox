@@ -1,6 +1,5 @@
 # L1-035-noexcept
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-35：用类型特征和 `noexcept(expr)` 验证移动构造及调用表达式的不抛承诺。

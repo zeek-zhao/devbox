@@ -1,6 +1,5 @@
 # L1-010-stl-containers
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-10：`vector::push_back` 追加元素，按迭代访问可见插入后的顺序。

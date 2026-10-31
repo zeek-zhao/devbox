@@ -1,6 +1,5 @@
 # L1-009-template-constraints
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-09：C++20 `requires` 检查类型是否提供 `size()`。

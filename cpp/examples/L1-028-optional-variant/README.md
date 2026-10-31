@@ -1,6 +1,5 @@
 # L1-028-optional-variant
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-28：`optional` 明确输出缺失状态，只有有值时才解引用。

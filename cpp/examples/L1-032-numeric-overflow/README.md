@@ -1,6 +1,5 @@
 # L1-032-numeric-overflow
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-32：无符号加法按模回绕，内建检查器可检测有符号加法和乘法溢出。

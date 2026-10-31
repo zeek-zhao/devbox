@@ -1,6 +1,5 @@
 # L1-021-enum-class
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-21：用 `enum class` 表达有限状态，并显式转换为整数。

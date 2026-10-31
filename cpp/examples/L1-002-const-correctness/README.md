@@ -1,6 +1,5 @@
 # L1-002-const-correctness
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-02：`const` 引用参数和 `const` 成员函数提供只读访问。

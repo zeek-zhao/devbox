@@ -1,6 +1,5 @@
 # L1-034-preprocessor
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-34：宏对实参做文本替换，`SQUARE(1 + 2)` 展开后结果为 5，而 `constexpr` 函数结果为 9。

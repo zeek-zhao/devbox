@@ -1,6 +1,5 @@
 # L1-018-initialization
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-18：观察 `std::vector<int>` 花括号列表初始化与圆括号构造的差别。

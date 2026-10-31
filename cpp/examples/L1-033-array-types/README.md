@@ -1,6 +1,5 @@
 # L1-033-array-types
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-33：对比 C 数组、编译期定长的 `std::array` 与可增长的 `std::vector`。

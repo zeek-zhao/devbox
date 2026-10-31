@@ -1,6 +1,5 @@
 # L1-022-inheritance-polymorphism
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-22：基类指针调用虚函数时，派发到派生类的重写实现。

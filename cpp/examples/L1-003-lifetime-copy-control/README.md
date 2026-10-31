@@ -1,6 +1,5 @@
 # L1-003-lifetime-copy-control
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-03：自定义资源对象通过深拷贝构造、赋值和析构控制资源生命周期。
