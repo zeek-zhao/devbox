@@ -1,0 +1,2 @@
+atomic operations: 3
+mutex-protected data: 42
