@@ -1,0 +1,4 @@
+plain:notice:go
+<p>notice:go</p>
+plain:alert:go
+<p>alert:go</p>

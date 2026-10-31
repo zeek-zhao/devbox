@@ -1,0 +1,6 @@
+proxy: before
+proxy: after
+direct: found:GO
+proxied: found:GO
+same result: true
+target calls: 2

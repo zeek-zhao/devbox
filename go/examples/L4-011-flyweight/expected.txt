@@ -1,0 +1,8 @@
+same key pointer: true
+different key pointer: true
+created: 2
+A at (1,2)
+A at (3,4)
+new key at capacity: glyph cache full
+cached at capacity: true
+created after capacity: 2

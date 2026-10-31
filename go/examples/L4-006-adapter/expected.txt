@@ -1,0 +1,4 @@
+legacy: record:GO
+adapted: record:GO
+same result: true
+legacy calls: 2
