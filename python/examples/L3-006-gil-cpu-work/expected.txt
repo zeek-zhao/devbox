@@ -1,0 +1,5 @@
+serial, thread, process results match: true
+work items: 3
+operations per strategy: 1800
+standard CPython GIL: Python bytecode threads do not run in parallel
+processes: independent interpreters
