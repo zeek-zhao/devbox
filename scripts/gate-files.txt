@@ -17,6 +17,8 @@
 scripts/run-example.sh
 scripts/coverage-check.sh
 scripts/build-images.sh
+# 版本一致性的判定实现，AI 不许自己改松
+scripts/check-version-truth.sh
 
 # ③ 清单自己（防止「把清单删空」这种绕过）
 scripts/gate-files.txt

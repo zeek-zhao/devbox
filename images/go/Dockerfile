@@ -5,7 +5,7 @@ ARG BASE_IMAGE=devbox-tool:local
 FROM ${BASE_IMAGE}
 
 ARG GO_VERSION=1.27.3
-ARG GO_SHA256=
+ARG GO_SHA256=65efbc80fdc1fa2cd2631cad5b481777a68e8725f34e89f50fc6ac714e379b40
 ARG GOPROXY=https://goproxy.cn,direct
 ARG GOSUMDB=sum.golang.google.cn
 

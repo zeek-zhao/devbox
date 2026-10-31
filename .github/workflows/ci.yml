@@ -37,8 +37,9 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq shellcheck
-          # 只 lint 被 git 跟踪的脚本：写死 glob 会在目录/文件不存在时直接报错
-          git ls-files -z '*.sh' | xargs -0 shellcheck -S warning
+          sev="$(grep -E '^SHELLCHECK_SEVERITY=' images/versions.env | cut -d= -f2-)"
+          [ -n "$sev" ] || { echo "versions.env 里没有 SHELLCHECK_SEVERITY"; exit 1; }
+          git ls-files -z '*.sh' | xargs -0 shellcheck -S "$sev"
 
       - name: 用例契约完整性（每个用例必须有 run.sh，有输出就必须有 expected.txt）
         run: |
@@ -54,16 +55,7 @@ jobs:
           exit $fail
 
       - name: 版本真本自洽（Dockerfile 里不许写死版本号）
-        run: |
-          fail=0
-          # 允许出现形如 24.04 / 14 / 18 的 ARG 默认值，但不允许出现具体补丁号直接写死
-          if grep -rnE 'FROM .*:[0-9]+\.[0-9]+\.[0-9]+' images/ ; then
-            echo "FAIL: Dockerfile 里写死了镜像 tag"; fail=1
-          fi
-          if grep -rnE '(gcc|clang|go|rust|python|java)[-_]?[0-9]+\.[0-9]+\.[0-9]+' images/*/Dockerfile ; then
-            echo "FAIL: Dockerfile 里写死了具体版本号，应走 versions.env"; fail=1
-          fi
-          exit $fail
+        run: bash scripts/check-version-truth.sh
 
   coverage:
     name: COVERAGE 校验
