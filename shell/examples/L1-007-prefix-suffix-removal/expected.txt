@@ -1,0 +1,4 @@
+prefix-short=part.tar.gz
+prefix-long=gz
+suffix-short=archive.part.tar
+suffix-long=archive
