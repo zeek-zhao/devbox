@@ -1,0 +1,6 @@
+comma-count=2
+comma-field=red
+comma-field=blue
+space-count=2
+space-field=left
+space-field=right

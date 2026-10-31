@@ -1,0 +1,7 @@
+unquoted:
+argument=two
+argument=words
+argument=sample-a.txt
+argument=sample-b.txt
+quoted:
+argument=two words *.txt
