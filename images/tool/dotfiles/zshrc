@@ -1,0 +1,19 @@
+# devbox tool 层默认 zsh 配置（改这里会重建 tool 层）
+export LANG=en_US.UTF-8
+export EDITOR=nvim
+export PAGER=less
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt SHARE_HISTORY HIST_IGNORE_DUPS INTERACTIVE_COMMENTS
+autoload -Uz compinit && compinit
+autoload -U colors && colors
+PROMPT='%F{cyan}%n@devbox%f:%F{yellow}%~%f %# '
+alias ll='ls -lahF --color=auto --time-style=long-iso'
+alias la='ls -A --color=auto'
+alias gs='git status -sb'
+alias gd='git diff'
+alias dc='docker compose'
+alias rg='rg --smart-case'
+# 快速在容器里看某命令怎么用
+alias '?'='compgen -c | sort -u | fzf'
