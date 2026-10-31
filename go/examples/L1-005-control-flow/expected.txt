@@ -1,0 +1,4 @@
+boundary: reached
+matching switch: matched
+default switch: default
+bounded loop total: 6
