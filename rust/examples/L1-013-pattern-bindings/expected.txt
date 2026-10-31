@@ -1,0 +1,4 @@
+selected Retry { attempt: 2 }, attempt 2
+next value: 4
+next value: 5
+next value: 6
