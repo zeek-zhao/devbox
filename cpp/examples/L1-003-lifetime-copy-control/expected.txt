@@ -1,0 +1,8 @@
+construct 7
+copy-construct 7
+construct 3
+copy-assign 7
+values: original=7 copied=7 assigned=9
+destroy 9
+destroy 7
+destroy 7
