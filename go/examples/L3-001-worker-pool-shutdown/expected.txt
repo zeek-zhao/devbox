@@ -1,0 +1,5 @@
+jobs-processed: 6
+job-sum: 21
+workers-exited: true
+once-calls: 1
+cancel-propagated: true
