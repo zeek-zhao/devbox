@@ -1,0 +1,7 @@
+root/
+  intro.txt
+  patterns/
+    singleton.py
+    structural/
+      composite.py
+standalone.txt

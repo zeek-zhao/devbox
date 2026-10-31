@@ -1,0 +1,6 @@
+calls before: 0
+result:PYTHON
+result:PATTERNS
+result:PYTHON
+calls after: 3
+shared interface: True

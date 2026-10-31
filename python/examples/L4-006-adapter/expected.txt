@@ -1,0 +1,4 @@
+direct: legacy:PYTHON
+adapted: legacy:PYTHON
+same result: True
+legacy unchanged: True
