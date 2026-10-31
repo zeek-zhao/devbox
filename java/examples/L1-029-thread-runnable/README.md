@@ -1,6 +1,5 @@
 # L1-029-thread-runnable
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-29：Runnable 描述任务，Thread.start 启动新线程，join 等待完成。

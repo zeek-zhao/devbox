@@ -1,6 +1,5 @@
 # L1-021-optional-fallback
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-21：用 map/flatMap 组合 Optional，并为缺失值提供默认分支。

@@ -1,6 +1,5 @@
 # L1-003-equality-contract
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-03：相等对象必须有相同的 `hashCode`，集合键参与比较的字段应稳定。

@@ -1,6 +1,5 @@
 # L1-004-string-pool
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-04：字符串不可变，字面量驻留不代表所有同内容字符串身份相同。

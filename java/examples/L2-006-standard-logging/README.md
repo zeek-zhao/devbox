@@ -1,6 +1,5 @@
 # L2-006-standard-logging
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L2-06：java.util.logging 将诊断日志与 stdout 业务结果隔离。

@@ -1,6 +1,5 @@
 # L3-001-concurrent-pipeline
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L3-01：用 CompletableFuture、ExecutorService 与并发集合做异步汇总。

@@ -1,6 +1,5 @@
 # L2-005-assert-harness
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L2-05：手写 harness 用 assert 检查，并把失败汇总为非零退出。

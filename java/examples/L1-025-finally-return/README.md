@@ -1,6 +1,5 @@
 # L1-025-finally-return
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-25：finally 会参与控制流，内部 return 能替换待完成的返回或异常。

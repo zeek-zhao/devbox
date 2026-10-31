@@ -1,6 +1,5 @@
 # L1-023-custom-exceptions
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-23：用领域异常补充业务上下文，同时保留原始 cause。

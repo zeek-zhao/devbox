@@ -1,6 +1,5 @@
 # L3-003-jvm-thread-diagnostics
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L3-03：握手后用 jcmd Thread.print 定位自有工作线程的阻塞帧。

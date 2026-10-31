@@ -1,6 +1,5 @@
 # L1-015-type-erasure
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-15：不同泛型实参的列表在运行时共享同一擦除后的类。

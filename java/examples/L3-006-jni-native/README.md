@@ -1,6 +1,5 @@
 # L3-006-jni-native
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L3-06：用 javac -h 生成 JNI 头，并加载匹配的本地库。

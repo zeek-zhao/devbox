@@ -1,6 +1,5 @@
 # L2-008-files-utf-eight
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L2-08：用 Files/Path 与 UTF-8 读写文件。

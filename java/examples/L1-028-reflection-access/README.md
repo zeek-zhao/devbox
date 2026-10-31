@@ -1,6 +1,5 @@
 # L1-028-reflection-access
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-28：反射查找声明成员，并区分默认访问检查与自有类开放访问。

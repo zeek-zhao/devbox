@@ -1,6 +1,5 @@
 # L2-002-compile-bytecode
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L2-02：干净编译显式指定 Java 21 目标，并检查调用字节码和 class 版本。

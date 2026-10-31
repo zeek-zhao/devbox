@@ -1,6 +1,5 @@
 # L1-011-functional-interface
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-11：函数式接口可由匿名类或 lambda 实现。

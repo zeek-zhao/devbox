@@ -1,6 +1,5 @@
 # L1-033-null-boundaries
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-33：区分空引用解引用、可空比较与入口非空约束。
