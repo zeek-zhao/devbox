@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { renderSection } from '../src/changelog.js';
+import { mergeChangelog, renderSection } from '../src/changelog.js';
 
 const types = [
   { type: 'feat', section: '✨ Features | 新功能' },
@@ -39,4 +39,24 @@ test('breaking 单独一节且在最前', () => {
     { type: 'fix', subject: '小修' },
   ], { types, date: '2026-11-01' });
   assert.ok(md.indexOf('Breaking') < md.indexOf('Bug Fixes'));
+});
+
+test('同 scope 条目也按 subject 全序，逆序输入生成相同内容', () => {
+  const commits = [
+    { type: 'fix', scope: 'db', subject: '乙' },
+    { type: 'fix', scope: 'db', subject: '甲' },
+  ];
+  assert.equal(
+    renderSection('1.1.0', commits, { types, date: '2026-11-01' }),
+    renderSection('1.1.0', [...commits].reverse(), { types, date: '2026-11-01' }),
+  );
+});
+
+test('空 CHANGELOG 使用 header，新版本置于已有历史之前', () => {
+  const section = '## [1.1.0](compare) (2026-11-01)\n';
+  assert.equal(mergeChangelog('', section, '# Changelog\n'), '# Changelog\n\n## [1.1.0](compare) (2026-11-01)\n');
+  assert.equal(
+    mergeChangelog('# Changelog\n\n## [1.0.0](compare) (2026-10-01)\n\nold\n', section, '# Changelog\n'),
+    '# Changelog\n\n## [1.1.0](compare) (2026-11-01)\n\n## [1.0.0](compare) (2026-10-01)\n\nold\n',
+  );
 });
