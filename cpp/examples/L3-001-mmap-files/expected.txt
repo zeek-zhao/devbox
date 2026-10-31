@@ -1,0 +1,6 @@
+mapped-bytes: 4096
+file-bytes: 11
+content: mapped-data
+mapped-bytes: 0
+file-bytes: 0
+content: <empty>
