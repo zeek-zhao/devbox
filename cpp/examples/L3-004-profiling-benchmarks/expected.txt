@@ -1,4 +1,6 @@
-iterations: 10000
-comparisons: 10000
-matches: 5000
-benchmark: measured
+size: 1000000
+target: 1999998
+linear index: 999999 comparisons: 1000000
+binary index: 999999 comparisons: 21
+comparison ratio: 47619
+timing: linear slower than binary by >100x
