@@ -72,6 +72,8 @@ jobs:
             .
           docker run --rm "$REGISTRY/devbox-base:$IMAGE_TAG" bash -lc 'echo base-ok'
           docker push "$REGISTRY/devbox-base:$IMAGE_TAG"
+          docker tag "$REGISTRY/devbox-base:$IMAGE_TAG" "$REGISTRY/devbox-base:latest"
+          docker push "$REGISTRY/devbox-base:latest"
 
       - name: build tool
         run: |
@@ -87,6 +89,8 @@ jobs:
             .
           docker run --rm "$REGISTRY/devbox-tool:$IMAGE_TAG" bash -lc 'gdb --version | head -1'
           docker push "$REGISTRY/devbox-tool:$IMAGE_TAG"
+          docker tag "$REGISTRY/devbox-tool:$IMAGE_TAG" "$REGISTRY/devbox-tool:latest"
+          docker push "$REGISTRY/devbox-tool:latest"
 
       - name: 记录体积
         run: |
@@ -156,6 +160,8 @@ jobs:
             > "metrics/images-${{ matrix.lang }}-$IMAGE_TAG.tsv"
           column -t "metrics/images-${{ matrix.lang }}-$IMAGE_TAG.tsv"
           docker push "$IMG"
+          docker tag "$IMG" "$REGISTRY/devbox-${{ matrix.lang }}:latest"
+          docker push "$REGISTRY/devbox-${{ matrix.lang }}:latest"
 
       - uses: actions/upload-artifact@v4
         with:
@@ -199,6 +205,8 @@ jobs:
             .
           docker run --rm "$REGISTRY/devbox-runtime:$IMAGE_TAG"
           docker push "$REGISTRY/devbox-runtime:$IMAGE_TAG"
+          docker tag "$REGISTRY/devbox-runtime:$IMAGE_TAG" "$REGISTRY/devbox-runtime:latest"
+          docker push "$REGISTRY/devbox-runtime:latest"
 
       - name: build all（六语言总环境）
         run: |
@@ -213,6 +221,8 @@ jobs:
             --cache-to "type=gha,mode=max,scope=all" \
             .
           docker push "$REGISTRY/devbox-all:$IMAGE_TAG"
+          docker tag "$REGISTRY/devbox-all:$IMAGE_TAG" "$REGISTRY/devbox-all:latest"
+          docker push "$REGISTRY/devbox-all:latest"
 
       - name: 记录体积（all + runtime）
         run: |
