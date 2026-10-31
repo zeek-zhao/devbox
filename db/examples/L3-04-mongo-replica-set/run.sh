@@ -41,8 +41,25 @@ while time.monotonic() < deadline:
         break
     time.sleep(1)
 assert primary is not None, "no elected primary"
-status = primary.admin.command("replSetGetStatus")
-assert next(member for member in status["members"] if member["self"])["state"] == 1
+# 竞态：刚选完主时 replSetGetStatus 的 members 里可能还没有 self 字段，
+# 直接取 member["self"] 会 KeyError。必须轮询到 self.state == 1 为止。
+deadline = time.monotonic() + 60
+self_member = None
+status = None
+while time.monotonic() < deadline:
+    try:
+        status = primary.admin.command("replSetGetStatus")
+    except Exception:
+        status = None
+        time.sleep(1)
+        continue
+    self_member = next((m for m in status.get("members", []) if m.get("self")), None)
+    if self_member is not None and self_member.get("state") == 1:
+        break
+    self_member = None
+    time.sleep(1)
+assert self_member is not None, f"replSetGetStatus 里始终没有 self 成员: {status}"
+assert self_member.get("state") == 1, self_member
 collection = primary["db_l3_04_replica"]["events"].with_options(write_concern=pymongo.write_concern.WriteConcern(w="majority", wtimeout=30000))
 collection.insert_one({"event_key": "majority-write", "payload": "committed"})
 assert collection.count_documents({"event_key": "majority-write"}) == 1
