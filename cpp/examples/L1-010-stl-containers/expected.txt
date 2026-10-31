@@ -1,0 +1,5 @@
+vector after push_back: 4 7
+set after insert: 10 20
+find(10): found
+erase(20): 1
+set after erase: 10

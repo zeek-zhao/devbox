@@ -1,0 +1,4 @@
+unique value: 42
+before weak: first=2 second=2
+after weak: first=1 second=2
+对象已析构: 2
