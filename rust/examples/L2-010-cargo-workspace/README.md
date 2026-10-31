@@ -1,6 +1,5 @@
 # L2-010-cargo-workspace
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L2-10：workspace 根清单列出两个成员并共享版本与 edition 设置。

@@ -1,6 +1,5 @@
 # L2-002-cargo-modules
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L2-02：拆分多文件模块，并显式控制 crate 内成员可见性。

@@ -1,6 +1,5 @@
 # L1-001-string-move
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-01：`String` 传值会移动所有权，`&str` 参数只借用。

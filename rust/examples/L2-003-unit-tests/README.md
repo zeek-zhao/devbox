@@ -1,6 +1,5 @@
 # L2-003-unit-tests
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L2-03：由 `cargo test` 启动单元测试，并用 `#[should_panic]` 标记预期 panic。

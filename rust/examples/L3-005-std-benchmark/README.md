@@ -1,6 +1,5 @@
 # L3-005-std-benchmark
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L3-05：使用标准库计时包围固定工作量，并以操作计数和校验值验收。

@@ -1,6 +1,5 @@
 # L1-011-data-enums
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-11：用带数据枚举表达互斥状态及其专属数据。

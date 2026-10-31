@@ -1,6 +1,5 @@
 # L1-030-modules-visibility
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-30：`mod` 组织模块，`pub`、`pub(crate)`、`pub(super)` 控制边界，`use` 缩短调用路径。

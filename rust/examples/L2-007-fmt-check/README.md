@@ -1,6 +1,5 @@
 # L2-007-fmt-check
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L2-07：用 `cargo fmt --check` 验证源码符合 rustfmt 格式。

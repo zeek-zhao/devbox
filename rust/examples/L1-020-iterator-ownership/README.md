@@ -1,6 +1,5 @@
 # L1-020-iterator-ownership
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-20：区分 `iter`、`iter_mut` 和 `into_iter` 的借用与所有权语义。

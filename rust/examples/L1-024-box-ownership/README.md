@@ -1,6 +1,5 @@
 # L1-024-box-ownership
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-24：`Box<T>` 持有堆上数据的唯一所有权，解引用可读写，间接字段使递归类型大小有限。

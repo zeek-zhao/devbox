@@ -1,6 +1,5 @@
 # L3-003-scoped-thread-channel
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L3-03：作用域线程借用任务切片，通过通道收集结果并用互斥量汇总。

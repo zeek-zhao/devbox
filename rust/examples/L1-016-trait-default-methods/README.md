@@ -1,6 +1,5 @@
 # L1-016-trait-default-methods
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-16：trait 默认方法提供复用行为，具体类型也可覆盖它。

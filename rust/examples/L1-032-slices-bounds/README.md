@@ -1,6 +1,5 @@
 # L1-032-slices-bounds
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-32：用切片借用连续元素，并通过 `get` 检查索引边界。

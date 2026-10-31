@@ -1,6 +1,5 @@
 # L2-004-integration-tests
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L2-04：从独立的 `tests/` crate 验证库的公开行为。

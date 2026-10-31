@@ -1,6 +1,5 @@
 # L1-019-iterator-adaptors
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-19：串接 `map`、`filter`、`fold` 与 `collect` 完成转换、筛选、归并和收集。

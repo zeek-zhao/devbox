@@ -1,6 +1,5 @@
 # L1-017-static-dynamic-dispatch
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-17：对比泛型静态分发与 `dyn Trait` 动态分发。

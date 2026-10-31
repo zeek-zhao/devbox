@@ -1,6 +1,5 @@
 # L1-026-arc-mutex
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-26：`Arc` 共享同一计数器，`Mutex` 守卫保护每次写入，线程结束后统一读取。

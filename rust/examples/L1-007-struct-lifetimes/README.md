@@ -1,6 +1,5 @@
 # L1-007-struct-lifetimes
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L1-07：`DocumentView<'a>` 的引用字段依赖外部文本，结构体不拥有这些文本。

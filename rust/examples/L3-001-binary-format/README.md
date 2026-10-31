@@ -1,6 +1,5 @@
 # L3-001-binary-format
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-RS-L3-01：逐字段编码版本和 little-endian 整数，并校验解码边界。
