@@ -1,0 +1,3 @@
+trimmed: hello
+number: 42
+html: <div><input value="  hello  "><input value="0"></div>

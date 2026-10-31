@@ -1,0 +1,1 @@
+<section><header><h1>title</h1></header><main><p>body</p></main><footer><span>Ada</span></footer></section>
