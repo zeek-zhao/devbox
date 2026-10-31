@@ -23,6 +23,9 @@ scripts/gate-files.txt
 
 # ④ 版本单一真本：改一个版本号会连带改掉所有镜像的内容
 images/versions.env
+# 预算和它的判定实现都必须挡在 AI 自动合并之外，否则 AI 可以先把预算调大再"通过"
+images/budgets.tsv
+scripts/budget-check.sh
 
 # ⑤ 镜像安装逻辑：改错了镜像照样能构建成功，只是内容不对（最难发现的一类）
 images/scripts/*.sh
