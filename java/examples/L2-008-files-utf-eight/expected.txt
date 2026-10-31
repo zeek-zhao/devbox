@@ -1,0 +1,4 @@
+utf8-roundtrip: 你好，世界
+empty-length: 0
+missing-file: NoSuchFileException
+deleted: false

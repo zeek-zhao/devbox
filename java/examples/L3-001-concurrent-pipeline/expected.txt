@@ -1,0 +1,3 @@
+counts: {a=2, b=2}
+completed: 4
+failure-cause: IllegalArgumentException
