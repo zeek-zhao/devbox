@@ -1,0 +1,5 @@
+rules=required->min->max
+<p data-input>required</p>
+<p data-input="ab">min:3</p>
+<p data-input="abcdef">max:5</p>
+<p data-input="vue">valid</p>

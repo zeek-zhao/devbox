@@ -1,0 +1,3 @@
+light=<button style="color:#111;background-color:#fff;padding:8px;">Theme</button>
+dark=<button style="color:#eee;background-color:#222;padding:8px;">Theme</button>
+tokens-frozen=true

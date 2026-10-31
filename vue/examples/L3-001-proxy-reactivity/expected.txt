@@ -1,0 +1,5 @@
+proxies-before-nested=1
+proxies-after-nested=2
+count=2 nested=20
+receiver-get=14
+receiver-set=9 parent=2
