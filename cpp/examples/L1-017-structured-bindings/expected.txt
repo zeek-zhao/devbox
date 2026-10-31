@@ -1,0 +1,4 @@
+tuple copy value: 99
+tuple original: 1,20
+aggregate copy value: 99
+aggregate original: 2,40
