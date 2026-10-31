@@ -1,0 +1,2 @@
+read-only value: 7
+mutable interface callable on const object: false
