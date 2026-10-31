@@ -1,6 +1,5 @@
 # L2-004-api-javadoc
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L2-04：公开 API 的参数、返回值和异常契约由 Javadoc 描述。

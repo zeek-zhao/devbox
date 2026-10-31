@@ -1,6 +1,5 @@
 # L1-008-class-initialization
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-08：构造器初始化实例状态，区分私有实例字段、共享静态字段与 `final` 引用。

@@ -1,6 +1,5 @@
 # L1-012-enum-switch
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-12：enum 可封装显式状态码，switch 表达式可用 `yield` 返回分支值。

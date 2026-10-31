@@ -1,6 +1,5 @@
 # L1-024-resource-closing
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-24：try-with-resources 按声明逆序关闭 AutoCloseable 资源。

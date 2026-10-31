@@ -1,6 +1,5 @@
 # L1-002-identity-equality
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-02：`==` 比较对象身份，`equals` 比较内容。

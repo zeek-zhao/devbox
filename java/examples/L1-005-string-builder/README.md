@@ -1,6 +1,5 @@
 # L1-005-string-builder
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-05：循环动态拼接可复用 `StringBuilder`，`String` 则保持不可变。

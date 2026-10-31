@@ -1,6 +1,5 @@
 # L1-027-sealed-pattern-switch
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-27：sealed/permits 限定子类型，类型模式 switch 覆盖许可类型。

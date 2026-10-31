@@ -1,6 +1,5 @@
 # L1-017-collection-selection
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-17：按访问方式与排序需求选择 List、Map 实现。

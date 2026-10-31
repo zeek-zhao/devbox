@@ -1,6 +1,5 @@
 # L3-004-binary-serialization
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L3-04：用 DataOutputStream/DataInputStream 定义显式大端二进制协议。

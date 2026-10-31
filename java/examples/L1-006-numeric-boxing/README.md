@@ -1,6 +1,5 @@
 # L1-006-numeric-boxing
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-06：整数除法、显式窄化、溢出检查及包装类型拆箱空值风险。

@@ -1,6 +1,5 @@
 # L2-001-packages-classpath
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L2-01：包名形成全限定名，classpath 必须指向包树根。

@@ -1,6 +1,5 @@
 # L3-002-virtual-threads
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L3-02：用 Java 21 虚拟线程执行器调度独立任务。

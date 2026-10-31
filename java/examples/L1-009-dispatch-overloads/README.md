@@ -1,6 +1,5 @@
 # L1-009-dispatch-overloads
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-09：重写根据运行时对象派发，重载根据编译期参数类型选择。

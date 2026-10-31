@@ -1,6 +1,5 @@
 # L1-022-exception-categories
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-22：checked 异常必须捕获或声明，unchecked 异常没有编译期处理要求。

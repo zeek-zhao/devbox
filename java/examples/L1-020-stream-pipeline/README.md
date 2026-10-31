@@ -1,6 +1,5 @@
 # L1-020-stream-pipeline
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-JV-L1-20：filter/map 中间操作惰性执行，终止操作驱动流水线，流不能二次消费。
