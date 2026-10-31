@@ -1,0 +1,3 @@
+captured=child
+parent_value=parent
+parent_directory=unchanged

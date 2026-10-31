@@ -1,0 +1,3 @@
+expanded=service
+literal=$name
+here_string=single line
