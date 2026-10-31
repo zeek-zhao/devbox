@@ -6,6 +6,7 @@ set -euo pipefail
 
 : "${GCC_MAJOR:?需要 GCC_MAJOR}"
 : "${CLANG_MAJOR:?需要 CLANG_MAJOR}"
+: "${CMAKE_MIN_VERSION:?需要 CMAKE_MIN_VERSION}"
 
 echo "==> 安装 C/C++ 工具链 gcc-${GCC_MAJOR} / clang-${CLANG_MAJOR}"
 apt-get update
@@ -17,6 +18,12 @@ apt-get install -y --no-install-recommends \
   libgtest-dev libgmock-dev libbenchmark-dev \
   cppcheck \
   libssl-dev zlib1g-dev
+
+cmake_version="$(cmake --version | awk 'NR == 1 {print $3}')"
+if [ "$(printf '%s\n' "$CMAKE_MIN_VERSION" "$cmake_version" | sort -V | head -n1)" != "$CMAKE_MIN_VERSION" ]; then
+  echo "cmake 实测版本 ${cmake_version} 低于要求版本 ${CMAKE_MIN_VERSION}" >&2
+  exit 1
+fi
 
 # 默认编译器指向锁定的版本（Ubuntu 默认是 13，这里强制升到 14）
 for pair in "gcc:${GCC_MAJOR}" "g++:${GCC_MAJOR}" "gcc-ar:${GCC_MAJOR}" "gcc-nm:${GCC_MAJOR}" "gcc-ranlib:${GCC_MAJOR}"; do
