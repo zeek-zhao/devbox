@@ -1,0 +1,2 @@
+go test exit: nonzero
+strict gate exit: nonzero

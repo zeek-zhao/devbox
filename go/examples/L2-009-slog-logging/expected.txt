@@ -1,0 +1,1 @@
+level=INFO msg="index built" records=3
