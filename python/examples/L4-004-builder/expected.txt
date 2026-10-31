@@ -1,0 +1,5 @@
+steps return self: True
+dataclass instance: True
+query: books 2 title,author
+built result unchanged: 2
+missing field: ValueError source is required
