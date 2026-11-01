@@ -1,0 +1,1 @@
+<main><h1>Vue SSR</h1><p>renderToString works</p></main>

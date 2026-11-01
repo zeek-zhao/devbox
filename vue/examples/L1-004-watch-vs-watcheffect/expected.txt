@@ -1,0 +1,3 @@
+order: watchEffect, watch, watchEffect
+watch runs: 1
+watchEffect runs: 2

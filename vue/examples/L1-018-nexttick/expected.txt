@@ -1,0 +1,3 @@
+DOM proxy immediately: unavailable
+DOM proxy after nextTick: unavailable
+SSR html: <p>1</p>

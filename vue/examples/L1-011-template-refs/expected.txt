@@ -1,0 +1,3 @@
+<div>template ref</div>
+template ref: null
+onMounted: not mounted
