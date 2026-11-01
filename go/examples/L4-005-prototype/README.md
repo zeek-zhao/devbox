@@ -1,6 +1,6 @@
 # L4-005-prototype
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 每个请求只有值类型 ID 和不可变文本，网关从请求解码新 Task；没有昂贵预配置对象或需要深复制的原型对象图 -->
 
 ## 考点
 

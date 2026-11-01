@@ -1,6 +1,6 @@
 # L4-020-state
 
-<!-- coverage: pending -->
+<!-- coverage: exempt accepted/completed/failed/rejected 是指标槽位，任务处理后即释放，没有驻留任务对象按状态切换行为；网关关闭是一次性标志而非状态对象协议 -->
 
 ## 考点
 

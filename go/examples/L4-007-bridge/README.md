@@ -1,6 +1,6 @@
 # L4-007-bridge
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 网关仅有一个 HTTP 入口和一种本地 worker 执行机制；计数算法是一维策略替换，没有需独立演进的抽象层与实现层两套层次 -->
 
 ## 考点
 

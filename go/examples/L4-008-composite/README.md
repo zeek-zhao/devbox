@@ -1,6 +1,5 @@
 # L4-008-composite
 
-<!-- coverage: pending -->
 
 ## 考点
 

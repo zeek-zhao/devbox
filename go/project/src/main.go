@@ -25,6 +25,7 @@ func run() (err error) {
 	queue := flag.Int("queue", 16, "queue capacity")
 	burst := flag.Int("burst", 8, "token bucket capacity")
 	interval := flag.Duration("refill", 100*time.Millisecond, "one token refill interval")
+	wordMode := flag.String("word-mode", "folded", "word counting policy: folded or exact")
 	profile := flag.String("cpu-profile", "", "write CPU profile to this file")
 	flag.Parse()
 	if flag.NArg() != 0 {
@@ -44,16 +45,14 @@ func run() (err error) {
 	}
 	if *selfCheck {
 		// hello: execute the complete application and print its checked, stable result.
+		if err := checkApplication(*wordMode); err != nil {
+			return err
+		}
 		return gateway.SelfCheck(os.Stdout)
 	}
 	if *interval <= 0 {
 		return errors.New("refill must be positive in server mode")
 	}
-	g, err := gateway.New(gateway.Config{Workers: *workers, Queue: *queue, Burst: *burst, Interval: *interval})
-	if err != nil {
-		return err
-	}
-	defer g.Shutdown()
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 	// L2-009-slog-logging: operational errors go to stderr, not deterministic stdout.
@@ -65,7 +64,12 @@ func run() (err error) {
 			return a
 		},
 	})))
-	srv := &http.Server{Handler: g.HTTPHandler(), ReadHeaderTimeout: 5 * time.Second,
+	app, err := newAppBuilder().Pool(*workers, *queue, *burst, *interval).Counting(*wordMode).Build(slog.Default())
+	if err != nil {
+		return err
+	}
+	defer app.Shutdown()
+	srv := &http.Server{Handler: app.HTTPHandler(), ReadHeaderTimeout: 5 * time.Second,
 		ReadTimeout: 10 * time.Second, WriteTimeout: 15 * time.Second, IdleTimeout: 30 * time.Second}
 	listener, err := net.Listen("tcp", *address)
 	if err != nil {

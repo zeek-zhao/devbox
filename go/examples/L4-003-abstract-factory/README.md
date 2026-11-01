@@ -1,6 +1,6 @@
 # L4-003-abstract-factory
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 网关只替换单个词频分析步骤，HTTP 编码、令牌桶和 worker pool 对两种策略完全相同，不存在必须成套匹配的多个产品族 -->
 
 ## 考点
 

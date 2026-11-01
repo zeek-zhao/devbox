@@ -1,6 +1,5 @@
 # L4-004-builder
 
-<!-- coverage: pending -->
 
 ## 考点
 

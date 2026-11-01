@@ -1,6 +1,6 @@
 # L4-018-memento
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 网关无编辑会话或回滚操作；9 字节 checkpoint 只序列化 ID 与总词数，不能恢复 worker、令牌桶或词频状态，不是可恢复的对象备忘录 -->
 
 ## 考点
 

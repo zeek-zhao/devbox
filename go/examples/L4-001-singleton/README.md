@@ -1,6 +1,6 @@
 # L4-001-singleton
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 网关允许同一进程创建多个独立 worker pool 与令牌桶，测试也并行创建实例；进程唯一实例会错误共享限流与关闭状态 -->
 
 ## 考点
 
