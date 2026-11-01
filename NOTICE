@@ -1,0 +1,37 @@
+devbox
+Copyright 2026 zeek.zhao
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+----------------------------------------------------------------------
+第三方组件说明 / Third-party components
+
+本仓库自身的代码与文档（含全部 examples、project、scripts、docs）
+除文件内另有声明外，均以 Apache-2.0 授权。
+
+容器镜像基于第三方发行版与官方语言镜像构建，镜像内的软件按各自许可
+分发，不随本仓库源码一起分发：
+
+  - Ubuntu 24.04 LTS 基础镜像及其软件包（各自许可见
+    /usr/share/doc/<package>/copyright）
+  - 语言工具链：GCC / Clang、Go、Rust（rustc/cargo）、OpenJDK、
+    CPython、Node.js、Bash
+  - 数据库服务：MySQL、PostgreSQL、MongoDB、Redis、SQLite
+  - 构建期与检查工具：shellcheck、shfmt、clang-format、rustfmt、
+    ruff、prettier、actionlint、valgrind、bats
+
+这些组件在构建镜像时被拉取与安装，你需要再分发镜像时请自行核对
+上述组件各自的许可条款。
+
+本仓库名称 "devbox" 仅为项目代号，与 JetBrains Devbox、Hashicorp
+等相关产品或商标无任何关联。

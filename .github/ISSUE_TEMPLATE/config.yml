@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 安全漏洞（不要开公开 Issue）
+    url: https://github.com/zeek-zhao/devbox/security/advisories/new
+    about: 涉及镜像、脚本执行或凭据的问题请走私密报告，见 SECURITY.md
+  - name: 使用与学习问题
+    url: https://github.com/zeek-zhao/devbox/discussions
+    about: 「这个用例为什么这样写」这类问题适合讨论区

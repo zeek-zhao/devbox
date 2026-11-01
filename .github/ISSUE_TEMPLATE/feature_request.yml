@@ -1,0 +1,63 @@
+name: 用例建议
+description: 新增知识点用例、补强毕业项目、改进文档
+title: "[case] "
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 建议类型
+      options:
+        - 新增用例
+        - 补强已有用例（判据太软 / 覆盖太浅）
+        - 毕业项目接入更多用例
+        - 文档 / 知识点清单
+        - 流水线与工具链
+    validations:
+      required: true
+
+  - type: dropdown
+    id: track
+    attributes:
+      label: 目标轨道
+      options:
+        - c
+        - cpp
+        - db
+        - go
+        - java
+        - python
+        - rust
+        - shell
+        - vue
+        - 仓库级（不限轨道）
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: 为什么需要它
+      description: 现有用例缺了什么？是知识点没覆盖，还是覆盖了但判据验不出问题？
+    validations:
+      required: true
+
+  - type: textarea
+    id: how
+    attributes:
+      label: 打算怎么验
+      description: |
+        这个仓库的每个用例都必须能被 runner 逐字验证，所以请说明：
+        - `run.sh` 会输出什么（能确定性复现吗）
+        - `expected.txt` 怎么定
+        - 边界情况覆盖哪几条
+    validations:
+      required: true
+
+  - type: textarea
+    id: coverage
+    attributes:
+      label: 与毕业项目的关系
+      description: 如果这条用例能接入 `project/`，说明接入点；不能接入的话，是否属于 `coverage: exempt`，理由是什么
+    validations:
+      required: false

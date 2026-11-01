@@ -1,0 +1,96 @@
+name: 缺陷报告
+description: 用例跑不过、输出不确定、镜像构建失败、脚本报错
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提交前请先确认：`bash scripts/run-example.sh <轨道> <用例ID>` 在**最新 `main`** 上仍能复现。
+        如果是安全问题，请不要在这里提交，见 SECURITY.md。
+
+  - type: dropdown
+    id: track
+    attributes:
+      label: 影响轨道
+      options:
+        - c
+        - cpp
+        - db
+        - go
+        - java
+        - python
+        - rust
+        - shell
+        - vue
+        - images（镜像构建）
+        - scripts（仓库级脚本）
+        - ci（流水线）
+        - 不确定
+    validations:
+      required: true
+
+  - type: input
+    id: case-id
+    attributes:
+      label: 用例 ID 或文件路径
+      description: 例如 `L3-06-redis-sharding`、`scripts/coverage-check.sh`
+      placeholder: L1-001-string-view
+    validations:
+      required: false
+
+  - type: input
+    id: commit
+    attributes:
+      label: 出问题的提交
+      description: `git rev-parse --short HEAD` 的输出
+      placeholder: f9cb5b9
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 实际发生了什么
+      description: 贴完整输出。注意把 stdout 和 stderr 分开贴——本仓库的用例把业务结果写 stdout、错误写 stderr。
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 你期望发生什么
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 从干净状态开始的完整命令序列
+      placeholder: |
+        make build-lang LANG=cpp TAG=local
+        bash scripts/run-example.sh cpp L1-001-string-view
+      render: shell
+    validations:
+      required: true
+
+  - type: input
+    id: env
+    attributes:
+      label: 环境
+      description: 宿主机 OS / Docker 版本 / `TAG`（local 还是 latest）
+      placeholder: Ubuntu 24.04, Docker 28.4.0, TAG=latest
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 自查
+      options:
+        - label: 已在最新 `main` 上复现
+          required: true
+        - label: 已确认不是「示例口令明文」「容器 root 运行」这类设计取舍（见 SECURITY.md）
+          required: true
