@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 运行不依赖调试宏，避免关闭追踪改变参数求值。 -->
 
 # L3-023-debug-build-macros —— 验证关闭追踪时没有参数副作用
 

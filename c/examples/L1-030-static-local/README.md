@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 服务生命周期由显式状态管理，不需隐藏的函数静态状态。 -->
 
 # L1-030-static-local —— 函数内静态变量跨调用保留状态
 

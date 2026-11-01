@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L1-034-include-guard —— 用宏保护处理循环包含
 

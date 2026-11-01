@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 位棋盘集合表示与 HTTP 请求分派无关。 -->
 
 # L3-014-bitboard —— 用 64 位字数组表示 200 位集合
 

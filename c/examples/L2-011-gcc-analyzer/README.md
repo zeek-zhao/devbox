@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 静态分析器是额外诊断工具，不是服务本身行为。 -->
 
 # L2-011-gcc-analyzer —— 用 GCC 静态分析发现泄漏路径
 

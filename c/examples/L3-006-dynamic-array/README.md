@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 协议缓冲区按安全上限固定，不需要扩容数组。 -->
 
 # L3-006-dynamic-array —— 观察动态数组的倍增扩容
 

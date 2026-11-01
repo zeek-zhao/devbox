@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 冒烟用例，只验证工具链能编译运行，不属于任何知识点层级 -->
 
 # hello —— C 语言冒烟用例
 

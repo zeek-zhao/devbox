@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L2-001-multifile-build —— 多个翻译单元正确编译与链接
 

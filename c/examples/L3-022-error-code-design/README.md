@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L3-022-error-code-design —— 用枚举错误码分派不同失败路径
 

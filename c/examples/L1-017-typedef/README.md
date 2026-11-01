@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L1-017 —— typedef 与不透明类型
 

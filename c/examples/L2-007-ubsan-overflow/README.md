@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 数值边界被检查；专门触发未定义溢出与服务目标无关。 -->
 
 # L2-007-ubsan-overflow —— 让 UBSan 报告有符号整数溢出
 

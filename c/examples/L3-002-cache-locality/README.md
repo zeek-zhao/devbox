@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L3-002-cache-locality —— 对比矩阵的两种遍历顺序
 

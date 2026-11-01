@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 端口、长度和状态均为整数，不解析浮点数。 -->
 
 # L3-015-float-precision —— 用相对误差判断浮点近似相等
 

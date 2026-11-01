@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 固定槽位池不需要可变尾部对象布局。 -->
 
 # L1-026-flexible-array-member —— 一次分配结构体与尾随数据
 

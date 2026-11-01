@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 两项路由表不需要排序后再做边界查找。 -->
 
 # L3-017-bsearch-variants —— 区分 lower_bound、upper_bound 与精确查找
 

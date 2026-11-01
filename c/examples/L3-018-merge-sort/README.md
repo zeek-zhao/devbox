@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 路由与日志没有稳定排序需求。 -->
 
 # L3-018-merge-sort —— 通过相等键顺序验证归并排序稳定性
 

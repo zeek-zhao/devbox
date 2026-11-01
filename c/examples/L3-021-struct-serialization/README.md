@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt HTTP 字段按文本解析，不存取版本化 C 结构记录。 -->
 
 # L3-021-struct-serialization —— 读取旧版本记录并补齐新字段
 

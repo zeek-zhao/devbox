@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L1-022-memory-leak-pattern —— 用统一清理出口收拢错误路径
 

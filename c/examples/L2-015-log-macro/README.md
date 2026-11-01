@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 日志刻意不记录易变化的源位置，保持确定性。 -->
 
 # L2-015-log-macro —— 使用源位置宏并规范化动态行号
 

@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L2-003-header-dependency —— 互相包含的头文件仍可安全使用
 

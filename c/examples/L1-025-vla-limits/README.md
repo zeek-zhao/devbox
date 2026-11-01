@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 请求缓冲区有编译期固定上限，无运行期数组需求。 -->
 
 # L1-025-vla-limits —— 让数组长度在运行期确定
 

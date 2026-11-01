@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L3-004-arena-allocator —— 用 bump 指针完成区域分配
 

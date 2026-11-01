@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 项目不做归一化路径或跨构建产物比较。 -->
 
 # L2-017-reproducible-build —— 比较归一化路径后的二进制构建结果
 

@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L2-009-leak-detection —— 在进程退出时检查未释放内存
 

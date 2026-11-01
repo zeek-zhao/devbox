@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L1-018-initializers —— 用指定初始化器按字段名初始化结构体
 

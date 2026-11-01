@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L2-002-makefile-incremental —— 用依赖关系避免重复构建
 

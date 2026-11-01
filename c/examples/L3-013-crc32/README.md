@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 路由服务没有校验和或内容完整性标签需求。 -->
 
 # L3-013-crc32 —— 用查表法计算 CRC-32
 

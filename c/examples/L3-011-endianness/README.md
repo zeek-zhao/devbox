@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt HTTP 内容是文本，地址字节序由 POSIX 转换函数处理。 -->
 
 # L3-011-endianness —— 检测本机字节序并手动翻转字节
 

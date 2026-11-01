@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 长度使用有界检查，不需要依赖回绕的协议逻辑。 -->
 
 # L1-003 —— 无符号回绕
 

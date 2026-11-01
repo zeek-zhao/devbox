@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L2-018-unit-test-harness —— 用宏搭建可定位失败行的断言测试
 

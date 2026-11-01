@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt Socket/协议标志不需要编译器相关的位域布局。 -->
 
 # L1-011 —— 位域宽度与截断
 
