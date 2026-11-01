@@ -1,3 +1,4 @@
+<!-- 本文件由 scripts/build-repo-board.sh 从 docs/board-tracks.tsv + docs/ROADMAP.md 生成，请勿手工编辑 -->
 <!doctype html>
 <html lang="zh-CN">
 <head>
@@ -87,7 +88,9 @@ th { white-space: nowrap; }
   <p id="theme-status" class="note" role="status"></p>
 </main>
 <footer>自包含 HTML · 无外部依赖。主题选择保存在当前浏览器。<br>
-本文件是<strong>手工维护的仓库现状快照</strong>（轨道清单 + 里程碑），数字由 <code>scripts/check-board-truth.sh</code> 在 CI 里校验。<br>
+本文件由 <code>scripts/build-repo-board.sh</code> 生成，请勿手工编辑；
+改内容请改 <code>docs/board-tracks.tsv</code> 或 <code>docs/ROADMAP.md</code> 后重新生成。<br>
+CI 会校验「重新生成后 git diff 为空」。<br>
 某一次执行的用例结果看板是另一份东西，由 <code>scripts/build-board.sh</code> 生成到 <code>docs/progress.html</code>（生成物，不入库）。</footer>
 <script>
 (() => {

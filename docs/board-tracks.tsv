@@ -1,0 +1,10 @@
+# 轨道目录	显示名	毕业项目	镜像层 / 运行环境
+c	C	epoll HTTP server（ISO C17，单线程）	devbox-cpp
+cpp	C++	高性能文本索引器	devbox-cpp
+db	数据库	带缓存的订单服务	独立 Compose runner：五个数据库服务 + toolbox
+go	Go	并发任务网关	devbox-go
+java	Java	JDK HttpServer REST 服务	devbox-java
+python	Python	CSV 数据处理与报表	devbox-python
+rust	Rust	跨平台 CLI 工具	devbox-rust
+shell	Shell	部署与巡检工具集	devbox-shell
+vue	Vue	Vue Todo 待办应用（无打包器）	devbox-vue

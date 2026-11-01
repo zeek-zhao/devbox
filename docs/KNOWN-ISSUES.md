@@ -37,14 +37,7 @@
 
 ## 开放
 
-### KI-04　`docs/进度看板.html` 是静态快照 · [#181](https://github.com/zeek-zhao/devbox/issues/181)
-
-用例数与毕业项目数仍由人写，但已不是「靠自觉」：`scripts/check-board-truth.sh`
-在 CI 里比对看板与 `examples/`、`project/` 的实况，不一致即红。
-层级分布、项目名这类描述性内容无法机器判定，仍需人工核对。
-
-另注：`scripts/build-board.sh` 生成的是**某一次执行的用例结果看板**，
-输出到 `docs/progress.html`（生成物，不入库），与本文件不是同一个东西。
+（暂无。当前没有已知的、还没定下处理方式的问题。）
 
 ## 已知限制（不改，是取舍）
 
@@ -95,4 +88,10 @@ API 取到旧提交，直到服务端 GC 跑过。
 | 编号 | 原来是什么 | 怎么解决的 | Issue |
 |---|---|---|---|
 | **KI-03** | Rust 51 例、Vue 46 例，比其他轨道 74–78 少 | Rust 补到 74（L1 45 / L2 17 / L3 11，**零豁免**，全部真接入）；Vue 补到 74（L1 28 / L2 22 / L3 23，能接的接、接不上的写具体理由） | [#180](https://github.com/zeek-zhao/devbox/issues/180) |
+| **KI-04** | `docs/进度看板.html` 是静态快照，数字由人写 | 改成生成物：数据源 `docs/board-tracks.tsv` + 里程碑从 `docs/ROADMAP.md` 的「依据」列读，模板 `docs/board-template.html`，生成器 `scripts/build-repo-board.sh`；生成结果入库，CI 与 `pre-merge.sh` 都校验「重新生成后 `git diff` 为空」。生成器拒绝静默降级：TSV 与磁盘不一致、里程碑行缺列、模板占位符没替换，一律退出 2 | [#181](https://github.com/zeek-zhao/devbox/issues/181) |
 | **KI-05** | `hello` 不在 `L<层级>-<序号>-<slug>` 命名体系内 | 改名为 `L0-hello`，并把 `L0` 定义为「通路验证层」——L1–L4 是知识点难度，L0 是环境自检，语义上本来就该分开 | [#182](https://github.com/zeek-zhao/devbox/issues/182) |
+
+看板有两份，别搞混：
+
+- `docs/进度看板.html`：**仓库现状**（轨道清单 + 里程碑），生成物且**入库**，由 `scripts/build-repo-board.sh` 生成。
+- `docs/progress.html`：**某一次执行的用例结果**，生成物且**不入库**，由 `scripts/build-board.sh` 生成。

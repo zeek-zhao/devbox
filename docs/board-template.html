@@ -1,0 +1,114 @@
+<!-- 本文件由 scripts/build-repo-board.sh 从 docs/board-tracks.tsv + docs/ROADMAP.md 生成，请勿手工编辑 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>devbox 进度看板</title>
+<style>
+:root { color-scheme: light; --bg: #f4f6fa; --surface: #fff; --text: #17213a;
+  --muted: #536078; --line: #d9dfeb; --pass: #14653a; --pending: #855300; }
+:root[data-theme="dark"] { color-scheme: dark; --bg: #101622; --surface: #1a2333;
+  --text: #e8edf7; --muted: #b5c1d5; --line: #35425a; --pass: #80dfa4;
+  --pending: #f5cf7c; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { color-scheme: dark; --bg: #101622; --surface: #1a2333;
+    --text: #e8edf7; --muted: #b5c1d5; --line: #35425a; --pass: #80dfa4;
+    --pending: #f5cf7c; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font-family: system-ui, sans-serif; line-height: 1.6; }
+header, main, footer { max-width: 1100px; margin: auto; padding: 1rem; }
+header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+h1 { font-size: 1.6rem; margin: 0; }
+h2 { font-size: 1.2rem; margin-top: 0; }
+small, footer, .note { color: var(--muted); }
+button { background: var(--surface); color: var(--text); border: 1px solid var(--line);
+  padding: .6rem 1rem; border-radius: .5rem; cursor: pointer; }
+button:focus-visible { outline: 3px solid var(--pending); outline-offset: 3px; }
+section, .summary { background: var(--surface); border: 1px solid var(--line);
+  border-radius: .7rem; padding: 1rem; margin-bottom: 1rem; }
+.summary { font-size: 1.1rem; font-weight: bold; }
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 720px; }
+th, td { padding: .55rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+th { white-space: nowrap; }
+.status-done { color: var(--pass); }
+.status-open { color: var(--pending); }
+@media (max-width: 600px) { header { align-items: flex-start; } h1 { font-size: 1.2rem; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>devbox 进度看板</h1>
+  <button id="theme-toggle" type="button" aria-pressed="false">切换主题</button>
+</header>
+<main>
+  <p class="summary">{{SUMMARY}}</p>
+  <p class="note">用例数按各轨道 <code>examples/</code> 下的直接子目录计数，包含存在的 L0-hello。层级分布与项目目录状态来自当前 worktree；此看板是目录清单，不代表所有用例均已执行通过。</p>
+  <section>
+    <h2>轨道与用例分布</h2>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th scope="col">轨道</th><th scope="col">用例数</th><th scope="col">层级分布</th><th scope="col">毕业项目</th><th scope="col">镜像层 / 运行环境</th></tr></thead>
+        <tbody>
+{{TRACK_ROWS}}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <section>
+    <h2>里程碑</h2>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th scope="col">阶段</th><th scope="col">范围</th><th scope="col">状态</th><th scope="col">依据</th></tr></thead>
+        <tbody>
+{{MILESTONE_ROWS}}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <p id="theme-status" class="note" role="status"></p>
+</main>
+<footer>自包含 HTML · 无外部依赖。主题选择保存在当前浏览器。<br>
+本文件由 <code>scripts/build-repo-board.sh</code> 生成，请勿手工编辑；
+改内容请改 <code>docs/board-tracks.tsv</code> 或 <code>docs/ROADMAP.md</code> 后重新生成。<br>
+CI 会校验「重新生成后 git diff 为空」。<br>
+某一次执行的用例结果看板是另一份东西，由 <code>scripts/build-board.sh</code> 生成到 <code>docs/progress.html</code>（生成物，不入库）。</footer>
+<script>
+(() => {
+  const root = document.documentElement;
+  const button = document.getElementById('theme-toggle');
+  const status = document.getElementById('theme-status');
+  const system = window.matchMedia('(prefers-color-scheme: dark)');
+  const key = 'devbox-board-theme';
+  const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : system.matches;
+  const update = () => {
+    button.setAttribute('aria-pressed', String(isDark()));
+    button.textContent = isDark() ? '切换浅色' : '切换深色';
+  };
+  try {
+    const saved = localStorage.getItem(key);
+    if (saved === 'light' || saved === 'dark') root.dataset.theme = saved;
+  } catch (error) {
+    status.textContent = '浏览器存储不可用：主题选择仅在本次页面有效。';
+    console.warn('无法读取主题选择', error);
+  }
+  button.addEventListener('click', () => {
+    root.dataset.theme = isDark() ? 'light' : 'dark';
+    update();
+    try {
+      localStorage.setItem(key, root.dataset.theme);
+    } catch (error) {
+      status.textContent = '无法保存主题选择：主题选择仅在本次页面有效。';
+      console.warn('无法保存主题选择', error);
+    }
+  });
+  system.addEventListener('change', update);
+  update();
+})();
+</script>
+</body>
+</html>

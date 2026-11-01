@@ -228,6 +228,8 @@ fi
 step "版本真本自洽" bash "$WT/scripts/check-version-truth.sh"
 step "文档命令校验" bash "$WT/scripts/check-docs.sh"
 step "看板与实况一致" bash "$WT/scripts/check-board-truth.sh"
+step "看板生成结果一致" bash "$WT/scripts/build-repo-board.sh"
+step "看板工作区无差异" git -C "$WT" diff --exit-code -- docs/进度看板.html
 step "覆盖表自洽"   bash "$WT/scripts/coverage-check.sh"
 step "shared 索引"  bash "$WT/scripts/check-shared-index.sh"
 step "shared 自测"  env TAG="$IMAGE_TAG" bash "$WT/shared/tests/run.sh"

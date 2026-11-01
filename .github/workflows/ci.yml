@@ -83,9 +83,17 @@ jobs:
       - name: 文档命令校验（verify 标记）
         run: bash scripts/check-docs.sh
 
-      # 看板是手工维护的，数字靠人同步。这条把「靠人」换成「靠红灯」。
+      # 生成物仍由下方门禁校验，避免看板内容绕过数据源。
       - name: 看板与仓库实况一致
         run: bash scripts/check-board-truth.sh
+
+      - name: 看板必须与生成结果一致
+        run: |
+          bash scripts/build-repo-board.sh
+          if ! git diff --exit-code -- docs/进度看板.html; then
+            echo "::error::docs/进度看板.html 与生成结果不一致。本地跑 bash scripts/build-repo-board.sh 后提交。"
+            exit 1
+          fi
 
       # 发版判据：VERSION 必须与 tag 逐字一致。
       # 少这一条，tag 上的版本号和仓库里写的版本号可以永久不一致而没人发现。

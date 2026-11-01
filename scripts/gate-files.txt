@@ -66,6 +66,8 @@ scripts/fmt.sh
 scripts/check-docs.sh
 # 看板一致性判定：改松了（或删掉）看板就能永远「一致」
 scripts/check-board-truth.sh
+# 看板生成器：它就是「看板内容」的判定标准，改松了看板就能永远「一致」
+scripts/build-repo-board.sh
 
 # ⑩ 语言 -> 镜像层映射：改了它就能让某门语言指向别的镜像，等于换了被测环境
 images/lang-images.tsv
