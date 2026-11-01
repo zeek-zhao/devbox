@@ -1,0 +1,25 @@
+﻿# ==================================================================
+# 语言 -> 镜像层（唯一真本）
+# ------------------------------------------------------------------
+# 为什么需要这个文件：语言名和镜像层名**不是一一对应**的。
+#   C 和 C++ 共用同一套工具链（gcc / g++ / clang 都来自同一个
+#   install/cpp.sh），所以 c 没有自己的镜像层，直接复用 devbox-cpp。
+#   这不是图省事：C 和 C++ 本来就跑在同一套编译器上，单独建一层只会让
+#   `docker inspect` 把同一个 2.2 GB 重复报一遍，预算表也跟着重复计。
+#
+# 用它的地方：scripts/run-example.sh、scripts/fmt.sh、
+#             .github/workflows/ci.yml（拉镜像那一步）
+# 不用它的地方：scripts/build-images.sh、scripts/budget-check.sh
+#             —— 那两个要的是「真实存在的镜像层」，不是语言清单。
+#
+# 本文件是门禁文件：改了它就能让某门语言指向别的镜像，等于换了被测环境。
+#
+# 语言	镜像层
+c	cpp
+cpp	cpp
+go	go
+java	java
+python	python
+rust	rust
+shell	shell
+vue	vue

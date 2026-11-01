@@ -167,7 +167,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        lang: [cpp, go, rust, shell, python, java]
+        lang: [c, cpp, go, rust, shell, python, java, vue]
     steps:
       - uses: actions/checkout@v4
 
@@ -178,7 +178,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 拉取语言镜像
-        run: docker pull "$REGISTRY/devbox-${{ matrix.lang }}:$IMAGE_TAG"
+        run: |
+          # C 没有独立镜像层，复用 devbox-cpp。映射真本是 images/lang-images.tsv，
+          # 与 scripts/run-example.sh / scripts/fmt.sh 读的是同一个文件。
+          layer="$(awk -F'\t' -v k='${{ matrix.lang }}' '$1 == k { print $2; exit }' images/lang-images.tsv)"
+          docker pull "$REGISTRY/devbox-${layer:-${{ matrix.lang }}}:$IMAGE_TAG"
 
       # 格式化检查挂在这里而不是单开一个 job：本 job 已经拉过该语言的镜像，
       # 单开 job 要把六个镜像（约 10 GB）再拉一遍，纯浪费。
