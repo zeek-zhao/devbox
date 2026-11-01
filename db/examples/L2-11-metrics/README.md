@@ -1,6 +1,5 @@
 # L2-11-metrics · 监控指标
 
-<!-- coverage: pending -->
 
 ## 考点
 

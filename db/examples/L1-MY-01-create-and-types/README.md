@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-MY-01-create-and-types · 建表与数据类型
 

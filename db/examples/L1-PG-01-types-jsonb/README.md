@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-PG-01-types-jsonb · 建表与 jsonb/array
 

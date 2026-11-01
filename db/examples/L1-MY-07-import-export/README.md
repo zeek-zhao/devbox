@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-MY-07-import-export · 导入导出
 

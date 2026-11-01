@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-PG-07-serial-sequence · 序列与自增
 

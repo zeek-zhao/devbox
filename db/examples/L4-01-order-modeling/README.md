@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L4-01-order-modeling · 订单模型建模
 

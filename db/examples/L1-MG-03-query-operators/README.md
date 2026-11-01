@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-MG-03-query-operators · 查询操作符
 

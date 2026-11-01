@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-MY-08-functions · 常用函数与冷门功能
 

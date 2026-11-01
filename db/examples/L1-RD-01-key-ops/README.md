@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-RD-01-key-ops · key 操作
 

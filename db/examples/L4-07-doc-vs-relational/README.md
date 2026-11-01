@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L4-07-doc-vs-relational · 文档 vs 关系建模
 

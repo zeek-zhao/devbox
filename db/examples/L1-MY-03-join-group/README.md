@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-MY-03-join-group · 多表连接与分组
 

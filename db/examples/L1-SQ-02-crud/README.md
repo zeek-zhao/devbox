@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-SQ-02-crud · CRUD 与 UPSERT
 

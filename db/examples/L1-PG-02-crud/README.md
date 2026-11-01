@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-PG-02-crud · CRUD 与 RETURNING
 

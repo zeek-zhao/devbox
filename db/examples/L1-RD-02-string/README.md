@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-RD-02-string · 字符串
 

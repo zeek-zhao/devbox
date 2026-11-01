@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L4-09-soft-delete · 软删除与历史追溯
 

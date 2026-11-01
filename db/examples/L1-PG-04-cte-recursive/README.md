@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-PG-04-cte-recursive · CTE 与递归
 

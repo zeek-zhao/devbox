@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-MY-05-transaction · 事务与隔离级别
 

@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-RD-07-multi-exec · 事务
 
