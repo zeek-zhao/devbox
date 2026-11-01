@@ -1,0 +1,4 @@
+user:1 -> slot 10778
+order:{42}:items -> slot 8000
+user:{42}:profile -> slot 8000
+hash-tag co-location: yes

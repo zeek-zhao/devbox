@@ -10,6 +10,15 @@ general_log/审计插件、pgaudit 思路、profiler、操作留痕
 
 输出审计日志抓到的敏感操作条数
 
+## 为什么这么写
+
+用数据库内 AFTER UPDATE 触发器把敏感余额变更写入审计表，避免切换 MySQL general_log 或 Mongo profiler 这类全局开关。
+
+## 易错点
+
+- 触发器要在业务更新前创建，并只记录明确的审计事件。
+- 审计表避免记录不必要的敏感值；断言按业务事件过滤并显式排序。
+
 ## 依赖服务
 
 `mysql,mongodb`

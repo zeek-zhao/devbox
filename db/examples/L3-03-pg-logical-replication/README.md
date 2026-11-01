@@ -10,6 +10,15 @@ publication/subscription、复制槽、冲突处理
 
 输出订阅端收到的行数
 
+## 为什么这么写
+
+发布端和订阅端分开启动，发布端启用 wal_level=logical；订阅建立后轮询订阅端的业务键，确认数据实际到达。
+
+## 易错点
+
+- 逻辑复制不复制 DDL，因此两端都需先创建兼容表结构。
+- CREATE SUBSCRIPTION 不能与其他语句组合在同一个 psql 多语句调用中。
+
 ## 依赖服务
 
 `postgres`

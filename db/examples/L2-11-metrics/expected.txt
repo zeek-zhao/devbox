@@ -1,0 +1,4 @@
+mysql metrics: available
+postgres metrics: available
+mongodb metrics: available
+redis metrics: stats/hit counters available

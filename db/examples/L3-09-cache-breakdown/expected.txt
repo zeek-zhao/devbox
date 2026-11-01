@@ -1,0 +1,3 @@
+penetration DB reads: 10 -> 1
+breakdown concurrent DB rebuilds: 8 -> 1
+avalanche same-expiry cohort: 4 -> 1
