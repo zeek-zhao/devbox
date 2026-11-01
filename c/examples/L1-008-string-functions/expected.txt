@@ -1,0 +1,4 @@
+strlen=7
+strcpy=ok
+strncpy bytes=tool, terminated=no
+safe strncpy=tool

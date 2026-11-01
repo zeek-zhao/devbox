@@ -1,0 +1,2 @@
+inside sizeof(arr)=8
+outside sizeof(values)=20
