@@ -37,6 +37,7 @@ devbox/
 │   ├── dev.sh               #   进容器
 │   ├── run-example.sh       #   跑用例（309 个编号用例 + 6 个 hello 的唯一入口）
 │   └── coverage-check.sh    #   「项目把用例用上了」的机器校验
+├── shared/                  # 跨语言复用的 shell 工具（日志 / JSON / YAML / bats 自测）
 ├── .github/workflows/       # images.yml（建镜像）/ ci.yml（跑用例）
 └── docs/                    # 仓库级文档
 ```
@@ -115,8 +116,24 @@ make fmt --lang cpp,go   # 只处理指定语言
 所以六个配置文件都写进了 [`scripts/gate-files.txt`](scripts/gate-files.txt)，
 AI 提交的 PR 动了它们必须人工评审后才能合并。
 
-格式化范围只限各语言目录（`<lang>/`）下的源码。`scripts/`、`images/` 以及各用例里的 `run.sh`
+格式化范围只限各语言目录（`<lang>/`）下的源码。`scripts/`、`images/`、`shared/` 以及各用例里的 `run.sh`
 不在范围内：动基础设施会让格式化 PR 变成门禁变更，失去「纯排版、可零风险审阅」的意义。
+（`shared/` 的 shell 代码仍按 `shfmt -i 2 -ci -ln bash` 写，只是没进 `fmt-check` 的扫描范围。）
+
+---
+
+## 共享工具（shared/）
+
+跨语言重复的那点东西收在 [`shared/`](shared/README.md)：彩色日志、jq/yq 封装的 JSON/YAML 读写、
+bats 自测、批量修 git author 的工具。用例和脚本直接 `source`，不要再各写一份。
+
+```bash
+make test-shared          # 跑工具箱自测（宿主缺 bats/jq/yq 时自动进 shell 镜像）
+make check-shared-index   # 校验 shared/README.md 的函数索引与代码一致
+```
+
+`check-shared-index.sh` 是「文档别撒谎」的机器校验：`shared/lib/*.sh` 里加了函数却没写进
+README 的索引表，CI 就红。工具箱最容易烂的地方就是代码加了、文档还是老的，而下一个人靠文档判断能不能用。
 
 ---
 
