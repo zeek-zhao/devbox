@@ -1,27 +1,21 @@
-# L4-04-idempotency · 幂等设计
-
 <!-- coverage: pending -->
 
+# L4-04-idempotency · 幂等设计
+
 ## 考点
+- 两次提交同一业务键，唯一约束方案只留下一个订单。
+- 幂等记录方案也只创建一个订单，并在重试时返回第一次保存的响应内容。
+- 重试提交携带不同 payload，检验服务端没有把首次结果覆盖成重试结果。
 
-唯一键去重、幂等表、token 机制、重复提交
+## 为什么这么写
+唯一键是并发去重的最终约束；单独的幂等记录还保存请求结果，能让重试重放第一次响应。用 `INSERT IGNORE` 让唯一键冲突成为可验证的幂等路径。
 
-## 判据（验收按这一条核对）
-
-输出重复提交两次后的订单数
+## 易错点
+- 只统计请求次数不能证明订单去重；判据检查持久化订单数。
+- 如果订单和幂等响应不在同一事务，进程中断可能留下订单却没有可重放的响应；生产实现应原子提交两者。
 
 ## 依赖服务
-
 `mysql`
 
 ## 命名空间
-
-`l4_04_idempotency`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L4-04-idempotency --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l4_04_idempotency`

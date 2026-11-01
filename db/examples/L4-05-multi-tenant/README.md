@@ -1,27 +1,22 @@
-# L4-05-multi-tenant · 多租户隔离
-
 <!-- coverage: pending -->
 
+# L4-05-multi-tenant · 多租户隔离
+
 ## 考点
+- 独立数据库方案为 A 账号只授权 A 库，实际探测 B 库并确认访问被拒。
+- 独立 schema 方案实际执行跨 schema 探测并捕获权限拒绝，而非只在查询中添加租户过滤。
+- 共享表启用 PostgreSQL RLS：A 角色看不到 B 行，跨租户更新影响行数为 0。
 
-独立库/独立 schema/共享表加 tenant_id、行级安全
+## 为什么这么写
+MySQL 库边界、PostgreSQL schema 权限和共享表 RLS 是三种不同隔离层级。共享表策略基于 `current_user`，而不是应用可自行改写的 `tenant_id` 参数；测试通过 `SET ROLE tenant_a` 以非表所有者身份执行。
 
-## 判据（验收按这一条核对）
-
-输出三种方案的隔离验证与越权访问被拒
+## 易错点
+- PostgreSQL 表所有者/超级用户可绕过普通 RLS，因此例子切换到无 `BYPASSRLS` 的租户角色并启用 `FORCE ROW LEVEL SECURITY`。
+- 把 `WHERE tenant_id='A'` 写进 SQL 只是调用方过滤，不是权限隔离。
+- 本例以专属数据库及 schema 命名空间管理数据，运行时不会删除 `devbox` 数据库。
 
 ## 依赖服务
-
-`mysql,postgres`
+`mysql`、`postgres`
 
 ## 命名空间
-
-`l4_05_multi_tenant`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L4-05-multi-tenant --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+MySQL `db_l4_05_tenant_a` / `db_l4_05_tenant_b`；PostgreSQL `l4_05_tenant_a` / `l4_05_tenant_b`

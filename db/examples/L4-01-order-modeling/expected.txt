@@ -1,0 +1,4 @@
+order_items:order_key,line_no,product_id,quantity,unit_price
+orders:order_key,status
+products:product_id,name,current_price
+order-A	paid	2	10.00	20.00	24.00

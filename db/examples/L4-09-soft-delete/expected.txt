@@ -1,0 +1,3 @@
+legacy unique(email): reuse=BLOCKED (1062)
+generated active key: reuse=OK history_rows=2
+history query: deleted,active
