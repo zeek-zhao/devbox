@@ -2,14 +2,18 @@
 # ==================================================================
 # commit-msg —— 提交信息与身份约束
 # ------------------------------------------------------------------
-# 两条规则：
+# 三条规则：
 #   1) 拒绝 AI 署名尾巴（Co-authored-by: Copilot / Claude / GPT …）
 #      理由：署名会让「这行代码谁负责」变模糊，历史里混进多种身份后
-#      git blame 与 author-fix 都会变成体力活。
+#      git blame 与作者归一都会变成体力活。
 #   2) 拒绝空提交信息与「update」「fix」这类无信息量的标题。
+#   3) 拒绝白名单之外的作者邮箱（白名单见 .github/authors-allowlist.txt）。
+#      外部贡献者确需保留自己身份时，用 DEVBOX_ALLOW_EXTERNAL_AUTHOR=1 绕过，
+#      评审后再把其邮箱加进白名单。
 #
-# 身份（作者邮箱）不在钩子里强制——AI 与人在同一台机器上跑，
-# 强制成一个身份等于伪造。身份统一放到 wf4 的 commit 路径上做。
+# 为什么身份要在本地拦：
+#   CI 只能事后发现，发现时提交已经进了历史，改起来要 rebase 整条链。
+#   本地这一道能让错误根本进不去。
 # ==================================================================
 set -euo pipefail
 
@@ -21,8 +25,8 @@ if [ -z "${msg//[[:space:]]/}" ]; then
   exit 1
 fi
 
-if printf '%s' "$msg" | grep -qiE 'co-authored-by:.*(copilot|claude|anthropic|openai|gpt|codex|cursor|gemini)'; then
-  echo "[commit-msg] 拒绝 AI 署名尾巴（Co-authored-by），请删掉后重试" >&2
+if printf '%s' "$msg" | grep -qiE 'co-authored-by:.*(copilot|claude|anthropic|openai|gpt|codex|cursor|gemini|devin|aider)|^generated (with|by) \[?(copilot|claude|chatgpt)'; then
+  echo "[commit-msg] 拒绝 AI 署名尾巴（Co-authored-by / Generated with），请删掉后重试" >&2
   exit 1
 fi
 
@@ -31,6 +35,23 @@ if printf '%s' "$subject" | grep -qiE '^(update|fix|fixup|wip|修改|更新)\.?$
   echo "[commit-msg] 提交标题没有信息量：$subject" >&2
   echo "             写成「<type>: <做了什么>」，例如 feat: 补齐 cpp L1 用例 001-008" >&2
   exit 1
+fi
+
+# ---- 身份校验 ----
+allowlist="$(git rev-parse --show-toplevel)/.github/authors-allowlist.txt"
+if [ -f "$allowlist" ]; then
+  email="$(git var GIT_AUTHOR_IDENT | sed -E 's/.*<([^>]*)>.*/\1/')"
+  if ! grep -vE '^[[:space:]]*(#|$)' "$allowlist" | tr -d '[:space:]' | grep -qxF -- "$email"; then
+    if [ "${DEVBOX_ALLOW_EXTERNAL_AUTHOR:-0}" = "1" ]; then
+      echo "[commit-msg] 警告：作者 $email 不在白名单，已按 DEVBOX_ALLOW_EXTERNAL_AUTHOR=1 放行" >&2
+    else
+      echo "[commit-msg] 作者邮箱不在白名单：$email" >&2
+      echo "             白名单：$allowlist" >&2
+      echo "             修法：git config user.email zeek.zhao@foxmail.com" >&2
+      echo "             外部贡献者：DEVBOX_ALLOW_EXTERNAL_AUTHOR=1 git commit ..." >&2
+      exit 1
+    fi
+  fi
 fi
 
 exit 0

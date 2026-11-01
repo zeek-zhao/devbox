@@ -1,0 +1,16 @@
+# 提交身份白名单（authors allowlist）
+#
+# 用途：main 分支的历史必须身份唯一 —— git blame 要能追到人，
+#       历史里混进 AI 署名或机器邮箱后，责任边界就模糊了。
+#
+# 规则：
+#   - 一行一个邮箱，忽略空行与 # 开头的注释
+#   - author 与 committer 都必须命中
+#   - 外部贡献者按惯例**保留自己的身份**，需要维护者评审后把邮箱加进这里
+#
+# 改这个文件 = 改判定标准，因此它本身在 scripts/gate-files.txt 里。
+#
+# 对应脚本：scripts/check-authors.sh
+# 对应钩子：.githooks/commit-msg
+
+zeek.zhao@foxmail.com

@@ -1,6 +1,15 @@
 # devbox
 
-devbox 是一个教学型仓库：用可运行用例讲清技术点，再用毕业项目把用例中的能力落到真实程序。当前有 **9 条学习轨道、608 个用例**：8 门编程语言与 1 条数据库轨道。
+[![ci](https://github.com/zeek-zhao/devbox/actions/workflows/ci.yml/badge.svg)](https://github.com/zeek-zhao/devbox/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![用例](https://img.shields.io/badge/用例-608-success.svg)](docs/KNOWN-ISSUES.md)
+[![轨道](https://img.shields.io/badge/轨道-9-informational.svg)](#轨道一览)
+
+用**可运行、可逐字验证**的用例讲清技术点，再用毕业项目把用例里的能力落到真实程序。
+当前 **9 条学习轨道、608 个用例、9 个毕业项目**：8 门编程语言 + 1 条数据库轨道。
+
+每个用例都是一个最小可跑单元：`run.sh` 执行、`expected.txt` 逐行比对。跑不通就是没学会，
+不存在「看懂了但写不出来」的模糊地带。
 
 ## 轨道一览
 
@@ -16,7 +25,8 @@ devbox 是一个教学型仓库：用可运行用例讲清技术点，再用毕�
 | Shell | 54 | 部署与巡检工具集 | 严格模式、幂等、并行与 BATS | `devbox-shell` |
 | Vue | 46 | SSR 待办应用 | Vue SFC 与 SSR，不使用 Vite | `devbox-vue` |
 
-用例数按各轨道 `examples/` 的直接子目录计数，包含 `hello`（存在时）；C/C++ 共用镜像不代表共用用例目录。镜像映射以 [`images/lang-images.tsv`](images/lang-images.tsv) 为准。
+用例数按各轨道 `examples/` 的直接子目录计数，包含 `hello`（存在时）；C/C++ 共用镜像
+不代表共用用例目录。镜像映射以 [`images/lang-images.tsv`](images/lang-images.tsv) 为准。
 
 ## 目录结构
 
@@ -24,8 +34,8 @@ devbox 是一个教学型仓库：用可运行用例讲清技术点，再用毕�
 devbox/
 ├── c/ cpp/ go/ java/ python/ rust/ shell/ vue/
 │   ├── examples/<ID>/       # 可运行用例；每例包含 run.sh、expected.txt、README.md
-│   ├── docs/                # 该轨道的知识点与学习资料（部分轨道尚无此目录）
-│   └── project/             # 毕业项目及 COVERAGE.md（尚无项目的轨道暂不含此目录）
+│   ├── docs/                # 该轨道的知识点与学习资料
+│   └── project/             # 毕业项目及 COVERAGE.md
 ├── db/
 │   ├── examples/<ID>/       # 数据库用例
 │   ├── project/             # 数据库毕业项目与覆盖声明
@@ -35,23 +45,38 @@ devbox/
 │   ├── base/ tool/          # 公共底座与调试工具层
 │   ├── cpp/ go/ java/ python/ rust/ shell/ vue/    # 语言镜像层；C 复用 cpp 层
 │   └── scripts/             # 镜像安装脚本
-├── shared/                  # 跨轨道复用的 shell 工具
+├── shared/                  # 跨轨道复用的 shell 工具与发布辅助
 ├── scripts/                 # 仓库级 runner、覆盖检查、构建与门禁脚本
-└── docs/                    # 仓库级说明与进度看板
+└── docs/                    # 仓库级说明、路线图、已知问题、开源合规审计
 ```
 
-`examples/` 放逐例可运行的知识点练习；`project/` 放整合练习的毕业项目及覆盖表；`docs/` 放轨道知识资料或仓库级说明。目录只展示仓库中已经存在的部分；九条轨道现在都有 `project/`。
+`examples/` 放逐例可运行的知识点练习；`project/` 放整合练习的毕业项目及覆盖表；
+`docs/` 放轨道知识资料或仓库级说明。九条轨道现在都有 `project/`。
 
 ## 快速开始
 
-先准备镜像，再运行一门轨道的全部用例：
+镜像已发布到 GHCR，直接用就行：
+
+```bash
+git clone https://github.com/zeek-zhao/devbox.git
+cd devbox
+
+# 跑一门轨道的全部用例（拉取已发布镜像）
+make examples LANG=cpp TAG=latest
+
+# 只跑一条用例
+bash scripts/run-example.sh cpp L1-001-string-view
+```
+
+想自己构建镜像（改了 `images/` 或想固定依赖版本时）：
 
 ```bash
 make build-lang LANG=cpp TAG=local
-make examples LANG=cpp TAG=local
+make examples   LANG=cpp TAG=local
 ```
 
-215 上已有的镜像使用 `:local`；CI 发布和拉取的镜像使用 `:latest`。如使用已发布镜像，可用 `docker pull ghcr.io/zeek-zhao/devbox-cpp:latest` 代替构建，并以 `TAG=latest` 运行 `make examples`。镜像映射与构建细节见 [镜像体系](docs/01-镜像体系.md)。
+`TAG=latest` 用 CI 发布的镜像，`TAG=local` 用本地构建的镜像。镜像映射与构建细节见
+[镜像体系](docs/01-镜像体系.md)。
 
 ## 用例契约
 
@@ -64,31 +89,85 @@ cpp/examples/L1-001-string-view/
 └── README.md       # 考点、判据与边界
 ```
 
-runner 将 `run.sh` 的 stdout 与 `expected.txt` 逐行比较；行尾空白和首尾空行在比较时忽略，其余输出必须一致。用例 ID 中的 `L1`–`L4` 表示难度层级。集合输出应显式排序，浮点数使用固定精度，避免同一用例重复运行产生不确定输出。
+runner 将 `run.sh` 的 stdout 与 `expected.txt` 逐行比较；行尾空白和首尾空行在比较时忽略，
+其余输出必须一致。用例 ID 中的 `L1`–`L4` 表示难度层级。
+
+**输出必须确定**：集合输出显式排序，浮点数固定精度，不打印时间戳、随机数、容器 IP 或耗时。
+同一条用例连跑两次必须完全一致——不确定性用例会以随机间隔假红，是最难排查的一类缺陷。
 
 ## 覆盖表
 
-有毕业项目的轨道在 `project/COVERAGE.md` 声明项目实际覆盖哪些用例，`bash scripts/coverage-check.sh <轨道>` 会核对声明与项目代码。`pending` 表示用例已存在、但尚未接入项目，是未完成项；`exempt` 表示该用例与项目形态天然无关，必须附上具体理由。二者不能用来掩盖漏接入；严格检查使用 `bash scripts/coverage-check.sh <轨道> --strict`。
+有毕业项目的轨道在 `project/COVERAGE.md` 声明项目实际覆盖哪些用例，
+`bash scripts/coverage-check.sh <轨道>` 会核对声明与项目代码。
 
-## CI 与合并前校验
+- `pending` —— 用例已存在但尚未接入项目，属于**未完成项**，`--strict` 下算失败
+- `exempt <理由>` —— 该用例与项目形态天然无关，属于**已决策项**，理由必填
 
-PR 阶段不跑 CI；`push main` 跑 fast（180 秒预算）；`push tag v*` 跑 full。合并前由本地 `scripts/pre-merge.sh` 执行总闸。档位、触发条件和具体检查见 [CI 分级说明](docs/02-CI分级.md)，这里不重复其细节。
+二者不能用来掩盖漏接入：覆盖校验只认非文档文件里的引用，把用例 ID 抄进 README 表格
+是不算的。
+
+## 校验与流水线
+
+```bash
+bash scripts/coverage-check.sh <轨道>            # 覆盖表自洽
+bash scripts/coverage-check.sh <轨道> --strict   # 不留 pending
+bash scripts/fmt.sh --check --lang <轨道>        # 格式化
+bash scripts/pre-merge.sh --base main            # 全量总闸（约 15 分钟）
+```
+
+流水线对所有触发（`push`、`pull_request`、打 tag）都跑全量：608 个用例 + 8 门格式 +
+覆盖表 + 镜像构建 + 体积预算，单次约 20–25 分钟。仓库是公开的，Actions 分钟数不计量，
+所以不再按场景省测。细节见 [流水线说明](docs/02-流水线.md)。
 
 ## 门禁文件
 
-门禁文件定义校验标准本身，例如 CI workflow、runner、覆盖/预算检查脚本、版本真本和格式化配置。改动它们可能改变「什么算通过」，因此 AI 不得擅自修改；完整清单及检查方式见 [`scripts/gate-files.txt`](scripts/gate-files.txt)。
+门禁文件定义的是「什么算通过」，而不是「通过什么」：CI workflow、runner、覆盖/预算检查
+脚本、版本真本、格式化配置、镜像安装逻辑。改动它们可能改变判定标准本身，因此必须单独
+一个 PR 并写明理由。完整清单见 [`scripts/gate-files.txt`](scripts/gate-files.txt)。
 
 ## 增加一门语言
 
-按 [CI 分级说明的末节](docs/02-CI分级.md) 接线：在 `images/lang-images.tsv` 登记语言到镜像层的映射，并把该语言加入 `ci.yml` 与 `full.yml` 的 matrix。C 复用 `devbox-cpp` 镜像；遗漏 matrix 会导致该轨道静默不进入 CI。
+1. 在 `images/lang-images.tsv` 登记「语言 → 镜像层」映射
+2. 在 `images/` 下加该语言的 Dockerfile 与安装脚本
+3. 把该语言加入 `.github/workflows/ci.yml` 的 matrix
+4. 建 `examples/`、`docs/`、`project/` 三个目录
+
+第 3 步最容易漏——遗漏 matrix 会让该轨道**静默不进入 CI**，本地全绿而远端从不校验。
 
 ## 版本真本
 
-`VERSION` 是项目版本真本；`images/versions.env` 是镜像依赖版本真本。两者物理隔离、用途不同，不要把依赖版本写进项目版本文件，也不要把项目版本混入镜像依赖清单。
+`VERSION` 是项目版本真本；`images/versions.env` 是镜像依赖版本真本。两者物理隔离、
+用途不同：不要把依赖版本写进项目版本文件，也不要把项目版本混入镜像依赖清单。
+发版时 `full` 档会校验 `VERSION` 与 tag 逐字一致。
 
 ## 格式化
 
-格式化器运行在各自语言镜像中，使用 `bash scripts/fmt.sh --check --lang <轨道>` 检查。宿主已有 `:local` 镜像时设置 `TAG=local`；CI 使用 `:latest`。
+格式化器运行在各自语言镜像中：
+
+```bash
+bash scripts/fmt.sh --check --lang <轨道>
+bash scripts/fmt.sh --list
+```
+
+宿主已有本地镜像时用 `TAG=local`，否则默认 `TAG=latest`。
+
+## 项目现状
+
+- [路线图与里程碑](docs/ROADMAP.md)
+- [已知问题](docs/KNOWN-ISSUES.md)
+- [开源合规审计](docs/开源合规审计.md)
+- [贡献指南](CONTRIBUTING.md) · [安全策略](SECURITY.md) · [行为准则](CODE_OF_CONDUCT.md)
+
+## 许可
+
+本仓库的代码与文档以 [Apache License 2.0](LICENSE) 授权，第三方组件说明见 [NOTICE](NOTICE)。
+
+## 声明
+
+- 本项目名称 `devbox` 仅为项目代号，与 JetBrains Devbox、HashiCorp 等相关产品或商标
+  **无任何关联**。
+- 所有容器配置中的口令（如 `password: devbox`）都是本地教学用固定值，服务只监听 Docker
+  内部网络。**不要把这些配置用于任何联网环境**，详见 [SECURITY.md](SECURITY.md)。
 
 <!-- verify: bash scripts/fmt.sh --list -->
 <!-- verify: make help -->

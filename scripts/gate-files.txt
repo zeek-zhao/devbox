@@ -22,9 +22,13 @@ scripts/check-version-truth.sh
 # 合并前总闸：它决定「什么算绿」。改松了等于绕过所有门禁
 scripts/pre-merge.sh
 scripts/check-gate-files.sh
+# 提交身份判定：改松了就能把 AI 署名或机器邮箱放进历史
+scripts/check-authors.sh
 
 # ③ 清单自己（防止「把清单删空」这种绕过）
 scripts/gate-files.txt
+# 身份白名单：把自己加进去就等于绕过身份门禁
+.github/authors-allowlist.txt
 
 # ④ 版本单一真本：改一个版本号会连带改掉所有镜像的内容
 images/versions.env
@@ -36,6 +40,9 @@ scripts/budget-check.sh
 
 # ⑤ 镜像安装逻辑：改错了镜像照样能构建成功，只是内容不对（最难发现的一类）
 images/scripts/*.sh
+# Dockerfile 同理，而且更根本：它决定的是「被测环境是什么」
+# （基础镜像、包列表、入口点）。换了基础镜像而用例仍全绿，不等于代码没问题。
+images/*/Dockerfile
 
 # ⑥ 换行与可执行位：改错会让 Linux 侧整片脚本失效，且不报错
 .gitattributes

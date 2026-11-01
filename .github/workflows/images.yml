@@ -5,27 +5,19 @@ name: images
 # ------------------------------------------------------------------
 # 分 job 并行的正确形态（这一点很容易写错）：
 #   1) base+tool 一个 job 先出，tag 用「本次 commit 的 sha」
-#   2) 6 个语言 job needs 上面，并行构建，FROM tool:<sha>
+#   2) 7 个语言 job needs 上面，并行构建，FROM tool:<sha>
 #   3) all / runtime 最后收口
 # 严禁让语言 job FROM tool:latest —— 那样改了 tool 层，
 # 语言镜像还在用上次 CI 留下的旧层，镜像里两个版本的工具并存且不报错。
 # ==================================================================
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'images/**'
-      - '.github/workflows/images.yml'
-  workflow_dispatch:
-    inputs:
-      push_latest:
-        description: '同时打 latest tag'
-        type: boolean
-        default: true
-  # 供 full.yml（打 tag 时）复用，不复制那 200 行构建逻辑。
+  # 只作为可复用工作流被 ci.yml 调用，不再自带触发条件 ——
+  # 自带 push 触发会与 ci.yml 里的调用重复构建同一批镜像。
   # 复用而不是复制：改一行构建逻辑要改两个地方，是最容易漂的一类重复。
   workflow_call:
+  # 手动触发：只想重建镜像、不跑用例时用
+  workflow_dispatch:
 
 concurrency:
   group: images-${{ github.ref }}

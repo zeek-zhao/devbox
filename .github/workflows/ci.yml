@@ -1,54 +1,61 @@
 name: ci
 
 # ==================================================================
-# 日常流水线（fast 档）—— 墙钟预算 180 秒
+# 单一流水线：所有触发都跑全量
 # ------------------------------------------------------------------
-# 分级策略（详见 docs/02-CI分级.md）：
+# 触发：
+#   pull_request        —— 全量
+#   push main           —— 全量
+#   push tag v*         —— 全量 + VERSION 与 tag 一致性校验
+#   workflow_dispatch   —— 全量（手动）
 #
-#   ① pull_request   —— 不触发任何流水线（省 GitHub 额度）
-#   ② push main/dev  —— 本文件（fast）：只跑静态门禁，不跑用例矩阵
-#   ③ push tag v*    —— full.yml：608 个用例 + 镜像重建 + 体积预算
+# 为什么不再分档：
+#   本仓库已转为公开仓库，GitHub Actions 的分钟数不计量，省测没有收益。
+#   之前的「PR 不跑 / main 跑 fast / tag 跑 full」是为了省额度，
+#   代价是 PR 阶段的红要等到合并后才暴露。现在没有这个约束了。
 #
-# 为什么 PR 阶段零 CI：
-#   判定标准是「全量用例 + 8 门格式化 + 覆盖表自洽」，跑一次十分钟。
-#   给每个中间状态都烧一次额度，收益只是「早十分钟知道红了」，
-#   而代价是并行派 N 张卡时同时烧 N 份。所以 PR 阶段不跑，
-#   改由本地 scripts/pre-merge.sh 在合并前一次性跑全量（等价 fast+full）。
+# 为什么不给 push 开全部分支：
+#   同仓分支推送会与 pull_request 重复触发同一次全量。
+#   只保留 main + tag，PR 走 pull_request，一次改动只跑一次。
 #
-# 为什么 fast 档不含用例：
-#   用例矩阵要拉 8 个镜像、go 一门就 544 秒，天然超预算。
-#   它已经在 pre-merge 里跑过了，main 上再跑一遍只是重复确认。
-#   main 上留的是「快、且能挡住明显事故」的五项：
-#     static（shellcheck/契约/版本真本/文档命令）、coverage、probe、fmt 8 门、shared。
-#
-# 为什么 fmt 留在 fast 档：
-#   格式化漂移是并行派卡最常见的事故（两张卡各改一半，合起来就不达标），
-#   而它便宜。丢了它，main 上的格式会慢慢烂掉，而发现时已经是几百个文件。
+# 外部 fork 的 PR：
+#   fork PR 拿不到可写的 GITHUB_TOKEN（GitHub 机制），镜像推送必失败，
+#   所以 images job 在 fork PR 上跳过。其余 job（608 例 + 格式 + 覆盖）照常跑。
+#   这是平台约束，不是省测。
 # ==================================================================
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main]
+    tags: ['v*']
+  pull_request:
   workflow_dispatch:
 
 concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # 同一分支的新推送取消旧的一次（PR 场景）；main 与 tag 不取消，
+  # 避免「合并了但流水线被后来的推送打断」。
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+  packages: write
 
 env:
   REGISTRY: ghcr.io/${{ github.repository_owner }}
-  # 用例与格式化跑的是 images workflow 推上来的 latest；
-  # 改了 Dockerfile 时先等 images 跑完再手动触发，见 docs/01-镜像体系.md
+  # 用例与格式化跑的是 images job 推上来的 latest。
+  # 镜像只在 images/** 变了才变，所以「用上一次的 latest 跑用例」不影响
+  # 「这次代码能不能过」这个结论。
   IMAGE_TAG: latest
-  # fast 档墙钟预算（秒）。守卫 job 超了只发 ::warning::，不判红 ——
-  # 硬红会让「runner 慢一点」变成「代码有问题」，噪音盖过信号。
-  FAST_BUDGET_SECONDS: 180
 
 jobs:
+  # ------------------------------------------------------------------
+  # 静态检查：不依赖镜像，最快，失败信息最直接
+  # ------------------------------------------------------------------
   static:
     name: 静态检查
     runs-on: ubuntu-24.04
-    timeout-minutes: 3
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
@@ -60,11 +67,10 @@ jobs:
           [ -n "$sev" ] || { echo "versions.env 里没有 SHELLCHECK_SEVERITY"; exit 1; }
           git ls-files -z '*.sh' | xargs -0 shellcheck -S "$sev"
 
-      - name: 用例契约完整性（每个用例必须有 run.sh，有输出就必须有 expected.txt）
+      - name: 用例契约完整性（每个用例必须有 run.sh）
         run: |
           fail=0
           while IFS= read -r d; do
-            id="$(basename "$d")"
             if [ ! -f "$d/run.sh" ]; then
               echo "FAIL: $d 缺 run.sh"; fail=1
             fi
@@ -76,29 +82,72 @@ jobs:
       - name: 版本真本自洽（Dockerfile 里不许写死版本号）
         run: bash scripts/check-version-truth.sh
 
-      # 文档里的命令会随 make 目标改名而静默失效，这条让 CI 替人敲一遍。
-      # 不依赖镜像，所以放在 static 里而不是 fmt 里。
       - name: 文档命令校验（verify 标记）
         run: bash scripts/check-docs.sh
 
+      # 发版判据：VERSION 必须与 tag 逐字一致。
+      # 少这一条，tag 上的版本号和仓库里写的版本号可以永久不一致而没人发现。
+      - name: VERSION 与 tag 一致
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          set -euo pipefail
+          want="${GITHUB_REF_NAME#v}"
+          have="$(tr -d '[:space:]' < VERSION)"
+          echo "tag=${GITHUB_REF_NAME}  VERSION=${have}"
+          if [ "$want" != "$have" ]; then
+            echo "::error::VERSION（$have）与 tag（$GITHUB_REF_NAME）不一致；先改 VERSION 再打 tag"
+            exit 1
+          fi
+
+  # ------------------------------------------------------------------
+  # 提交身份门禁
+  # main 与 tag：全历史必须命中白名单，硬失败
+  # pull_request：只查 AI 署名尾巴，外部作者身份只告警（开源惯例）
+  # ------------------------------------------------------------------
+  authors:
+    name: 提交身份
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 校验提交身份
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -uo pipefail
+          if [ "$EVENT" = "pull_request" ]; then
+            bash scripts/check-authors.sh "${BASE_SHA}..${HEAD_SHA}" --warn-only
+          else
+            bash scripts/check-authors.sh --all
+          fi
+
+  # ------------------------------------------------------------------
+  # 覆盖表：一律 --strict
+  # 公开仓不需要「明账上的欠债」，pending 一律算失败。
+  # ------------------------------------------------------------------
   coverage:
     name: COVERAGE 校验
     runs-on: ubuntu-24.04
-    timeout-minutes: 3
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: 校验用例覆盖表
-        run: bash scripts/coverage-check.sh
+      - name: 校验用例覆盖表（严格，不允许 pending）
+        run: bash scripts/coverage-check.sh --strict
 
   # ------------------------------------------------------------------
-  # 镜像可用性探测：镜像还没建时，fmt 直接 pull 会红，
-  # 把「镜像还没建」误报成「格式不达标」。所以先探测，探测不到就跳过，
-  # 但仓库变量 REQUIRE_IMAGES=true 时硬红（M1 完成后应当设成 true）。
+  # 镜像可用性探测
+  # 镜像还没建时，fmt/examples 直接 pull 会红，把「镜像还没建」
+  # 误报成「代码有问题」。所以先探测，不存在就硬失败并给出明确指引。
   # ------------------------------------------------------------------
   probe:
     name: 镜像可用性
     runs-on: ubuntu-24.04
-    timeout-minutes: 3
+    timeout-minutes: 10
     permissions:
       contents: read
       packages: read
@@ -120,22 +169,19 @@ jobs:
             echo "镜像已就绪：$REGISTRY/devbox-cpp:$IMAGE_TAG"
           else
             echo "ready=false" >> "$GITHUB_OUTPUT"
-            if [ "${{ vars.REQUIRE_IMAGES }}" = "true" ]; then
-              echo "::error::镜像 $REGISTRY/devbox-cpp:$IMAGE_TAG 不存在，但仓库变量 REQUIRE_IMAGES=true。先跑 images workflow"
-              exit 1
-            fi
-            echo "::warning::镜像尚未构建，本次跳过格式化检查。M1 完成后请把仓库变量 REQUIRE_IMAGES 设为 true"
+            echo "::error::镜像 $REGISTRY/devbox-cpp:$IMAGE_TAG 不存在。先跑一次 images workflow（push main 或手动触发）"
+            exit 1
           fi
 
   # ------------------------------------------------------------------
-  # 格式化检查：一门语言一个 job。
+  # 格式化：一门语言一个 job。
   # 一门一个 job 而不是一个 job 跑八门：八门串行要拉 11 GB 镜像，
-  # 并行则墙钟约等于最慢的那一门。fast 档的 180 秒预算靠的就是这个。
+  # 并行则墙钟约等于最慢的那一门。
   # ------------------------------------------------------------------
   fmt:
     name: 格式-${{ matrix.lang }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 3
+    timeout-minutes: 30
     permissions:
       contents: read
       packages: read
@@ -165,14 +211,59 @@ jobs:
         run: TAG="$IMAGE_TAG" bash scripts/fmt.sh --check --lang ${{ matrix.lang }}
 
   # ------------------------------------------------------------------
-  # shared/ 工具箱自测（见 shared/README.md）
-  # 三个库依赖 bats + jq + yq，这三个都装在 shell 层里，所以只拉 shell 镜像，
-  # 宿主什么都不用装 —— 和用例那套「判定逻辑只跑在容器里」保持一致。
+  # 全量用例：一门语言一个 job。
+  # fail-fast 关掉 —— 要知道「到底坏了几门」，而不是第一门坏了就停。
+  # ------------------------------------------------------------------
+  examples:
+    name: 用例-${{ matrix.lang }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      packages: read
+    needs: [probe]
+    if: needs.probe.outputs.ready == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        lang: [c, cpp, go, rust, shell, python, java, vue]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 拉取语言镜像
+        run: |
+          layer="$(awk -F'\t' -v k='${{ matrix.lang }}' '$1 == k { print $2; exit }' images/lang-images.tsv)"
+          docker pull "$REGISTRY/devbox-${layer:-${{ matrix.lang }}}:$IMAGE_TAG"
+
+      - name: 跑该语言全部用例
+        run: TAG="$IMAGE_TAG" bash scripts/run-example.sh ${{ matrix.lang }} --all
+
+  # ------------------------------------------------------------------
+  # 数据库轨道：自己起 Compose 栈，runner 与其它轨道不同
+  # （db/scripts/run-all.sh 负责 up → wait-ready → 逐例跑 → down）
+  # ------------------------------------------------------------------
+  examples-db:
+    name: 用例-db
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: 跑数据库轨道全部用例
+        run: bash db/scripts/run-all.sh
+
+  # ------------------------------------------------------------------
+  # shared/ 工具箱自测（三个库依赖 bats + jq + yq，都在 shell 层里）
   # ------------------------------------------------------------------
   shared:
     name: shared 工具自测
     runs-on: ubuntu-24.04
-    timeout-minutes: 3
+    timeout-minutes: 30
     permissions:
       contents: read
       packages: read
@@ -198,14 +289,12 @@ jobs:
 
   # ------------------------------------------------------------------
   # release 工具自测（shared/release，零依赖的 Node 工具）
-  # 不起容器：runner 自带 node，测试也不联网（临时目录里 git init 造仓库）。
-  # 它管的是「打 tag / 生成 CHANGELOG」这条链路 —— 坏了不会立刻被发现，
-  # 只会在某次发版时炸，所以放进 fast 档每次 push main 都验一遍。
+  # 不起容器：runner 自带 node，测试也不联网。
   # ------------------------------------------------------------------
   release:
     name: release 工具自测
     runs-on: ubuntu-24.04
-    timeout-minutes: 3
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -215,33 +304,18 @@ jobs:
           cd shared/release && node --test test/*.test.js
 
   # ------------------------------------------------------------------
-  # 墙钟预算守卫：读的是 runner 上真实的时间戳（含排队），不是各 job 自报。
-  # 只发 ::warning::，不判红 —— 它的作用是「让预算漂移看得见」，不是拦合并。
+  # 镜像重建 + 体积预算：直接复用 images.yml，不复制那 200 行。
+  # 与用例矩阵并行跑（串行要多花一倍时长，且用例跑的是上一次的 latest，
+  # 对「这次代码能不能过」没有影响）。
+  #
+  # fork PR 跳过：拿不到可写的 GITHUB_TOKEN，推送必失败。
   # ------------------------------------------------------------------
-  wallclock:
-    name: 墙钟预算
-    runs-on: ubuntu-24.04
-    timeout-minutes: 3
-    if: always()
-    needs: [static, coverage, probe, fmt, shared, release]
+  images:
+    name: 镜像重建
+    needs: [probe]
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     permissions:
       contents: read
-      actions: read
-    steps:
-      - name: 统计本轮墙钟
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -uo pipefail
-          started="$(gh api "/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs?per_page=100" \
-                       --jq '[.jobs[].started_at | select(. != null)] | min' 2>/dev/null || true)"
-          if [ -z "$started" ] || [ "$started" = "null" ]; then
-            echo "::warning::取不到本轮 job 起始时间，跳过墙钟统计"
-            exit 0
-          fi
-          start_epoch="$(date -u -d "$started" +%s)"
-          elapsed=$(( $(date -u +%s) - start_epoch ))
-          echo "fast 档墙钟：${elapsed}s（预算 ${FAST_BUDGET_SECONDS}s）"
-          if [ "$elapsed" -gt "$FAST_BUDGET_SECONDS" ]; then
-            echo "::warning::fast 档耗时 ${elapsed}s 已超预算 ${FAST_BUDGET_SECONDS}s —— 先看是哪个 job 变慢，再决定是缩矩阵还是放宽预算"
-          fi
+      packages: write
+    uses: ./.github/workflows/images.yml
+    secrets: inherit
