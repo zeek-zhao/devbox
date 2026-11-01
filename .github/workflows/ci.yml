@@ -212,7 +212,7 @@ jobs:
       - name: 跑 shared/release 测试
         run: |
           node --version
-          cd shared/release && node --test test/
+          cd shared/release && node --test test/*.test.js
 
   # ------------------------------------------------------------------
   # 墙钟预算守卫：读的是 runner 上真实的时间戳（含排队），不是各 job 自报。
