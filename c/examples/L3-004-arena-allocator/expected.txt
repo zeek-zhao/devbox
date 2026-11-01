@@ -1,0 +1,3 @@
+allocations=3
+used_bytes=32
+released=once

@@ -1,0 +1,3 @@
+success:value=42
+invalid:negative-key
+not-found:key=7
