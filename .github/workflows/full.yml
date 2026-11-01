@@ -1,0 +1,188 @@
+name: full
+
+# ==================================================================
+# 发布流水线（full 档）—— 只在打 tag 时跑，允许跑满时间
+# ------------------------------------------------------------------
+# 与 ci.yml（fast 档）的分工：
+#   ci.yml    push main/dev → 五项静态门禁，预算 180 秒
+#   full.yml  push tag v*   → 全量用例 + 镜像重建 + 体积预算，不设预算
+#
+# 为什么要分档：
+#   全量用例跑一次十分钟（go 一门就 544 秒），镜像重建十四分钟。
+#   这些事在每次 push main 时都做一遍，纯属烧额度；
+#   而它们真正要回答的问题是「这个 commit 能不能发版」——
+#   这个问题只在打 tag 时被问一次。
+#
+# 为什么 full 里还要重建镜像：
+#   tag 上的镜像才是可复现的发布产物。只跑用例不建镜像，
+#   等于「代码在别人的镜像上跑通了」，那不叫发布。
+# ==================================================================
+
+on:
+  push:
+    tags: ['v*']
+  # 手动触发用于「打 tag 之前先验一遍」——不然第一次跑就是正式发布，压力太大
+  workflow_dispatch:
+
+concurrency:
+  group: full-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io/${{ github.repository_owner }}
+  IMAGE_TAG: latest
+
+jobs:
+  static:
+    name: 静态检查
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: shellcheck（脚本层）
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq shellcheck
+          sev="$(grep -E '^SHELLCHECK_SEVERITY=' images/versions.env | cut -d= -f2-)"
+          [ -n "$sev" ] || { echo "versions.env 里没有 SHELLCHECK_SEVERITY"; exit 1; }
+          git ls-files -z '*.sh' | xargs -0 shellcheck -S "$sev"
+
+      - name: 版本真本自洽
+        run: bash scripts/check-version-truth.sh
+
+      - name: 文档命令校验
+        run: bash scripts/check-docs.sh
+
+      # 发版判据：VERSION 必须与 tag 逐字一致。
+      # 少这一条，tag 上的版本号和仓库里写的版本号可以永久不一致而没人发现。
+      - name: VERSION 与 tag 一致
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          set -euo pipefail
+          want="${GITHUB_REF_NAME#v}"
+          have="$(tr -d '[:space:]' < VERSION)"
+          echo "tag=${GITHUB_REF_NAME}  VERSION=${have}"
+          if [ "$want" != "$have" ]; then
+            echo "::error::VERSION（$have）与 tag（$GITHUB_REF_NAME）不一致；先改 VERSION 再打 tag"
+            exit 1
+          fi
+
+  coverage:
+    name: COVERAGE 校验
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: 校验用例覆盖表
+        run: bash scripts/coverage-check.sh
+
+  probe:
+    name: 镜像可用性
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
+    needs: [static, coverage]
+    outputs:
+      ready: ${{ steps.p.outputs.ready }}
+    steps:
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 探测 devbox-cpp 镜像是否存在
+        id: p
+        run: |
+          if docker manifest inspect "$REGISTRY/devbox-cpp:$IMAGE_TAG" > /dev/null 2>&1; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::error::发布档必须有可用镜像：$REGISTRY/devbox-cpp:$IMAGE_TAG 不存在"
+            exit 1
+          fi
+
+  # ------------------------------------------------------------------
+  # 全量用例矩阵：一门语言一个 job，跑该门全部用例。
+  # fail-fast 关掉 —— 发版时要知道「到底坏了几门」，而不是第一门坏了就停。
+  # ------------------------------------------------------------------
+  examples:
+    name: 用例-${{ matrix.lang }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
+    needs: [probe]
+    if: needs.probe.outputs.ready == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        lang: [c, cpp, go, rust, shell, python, java, vue]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 拉取语言镜像
+        run: |
+          # C 没有独立镜像层，复用 devbox-cpp。映射真本是 images/lang-images.tsv。
+          layer="$(awk -F'\t' -v k='${{ matrix.lang }}' '$1 == k { print $2; exit }' images/lang-images.tsv)"
+          docker pull "$REGISTRY/devbox-${layer:-${{ matrix.lang }}}:$IMAGE_TAG"
+
+      - name: 格式化检查（fmt-check）
+        run: TAG="$IMAGE_TAG" bash scripts/fmt.sh --check --lang ${{ matrix.lang }}
+
+      - name: 跑该语言全部用例
+        run: TAG="$IMAGE_TAG" bash scripts/run-example.sh ${{ matrix.lang }} --all
+
+  shared:
+    name: shared 工具自测
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
+    needs: [probe]
+    if: needs.probe.outputs.ready == 'true'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 拉取 shell 镜像
+        run: docker pull "$REGISTRY/devbox-shell:$IMAGE_TAG"
+
+      - name: README 函数索引与代码一致
+        run: bash scripts/check-shared-index.sh
+
+      - name: 跑 shared/tests
+        run: TAG="$IMAGE_TAG" bash shared/tests/run.sh
+
+  # ------------------------------------------------------------------
+  # 镜像重建：直接复用 images.yml，不复制那 200 行。
+  # 改一行构建逻辑要改两个地方，是最容易漂的一类重复。
+  #
+  # 与上面的用例矩阵**并行**跑，不串行：
+  # 串行要先等 14 分钟镜像、再跑 10 分钟用例，一倍时长只为验证
+  # 「新镜像也能跑通」这一件事。而镜像只在 images/** 变了才会变，
+  # 用例跑的是上一次的 latest，对「代码能不能发版」这个问题的答案没有影响。
+  # ------------------------------------------------------------------
+  images:
+    name: 镜像重建
+    needs: [probe]
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/images.yml
+    secrets: inherit

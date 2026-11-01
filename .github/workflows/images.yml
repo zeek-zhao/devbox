@@ -23,6 +23,9 @@ on:
         description: '同时打 latest tag'
         type: boolean
         default: true
+  # 供 full.yml（打 tag 时）复用，不复制那 200 行构建逻辑。
+  # 复用而不是复制：改一行构建逻辑要改两个地方，是最容易漂的一类重复。
+  workflow_call:
 
 concurrency:
   group: images-${{ github.ref }}
@@ -261,56 +264,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 一次性收全部体积报告，而不是逐层硬编码 download-artifact。
+      # 原来的写法漏了 image-sizes-vue —— 加了第九门语言后预算 job 永远报
+      # 「缺少 vue 的 metrics」并 exit 2，而红的原因看着像「超预算」。
+      # 用 pattern + merge-multiple，以后再加语言不用改这里。
       - uses: actions/download-artifact@v4
         with:
-          name: image-sizes-base-tool
-          path: metrics/incoming/base-tool
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: image-sizes-cpp
-          path: metrics/incoming/lang
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: image-sizes-go
-          path: metrics/incoming/lang
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: image-sizes-rust
-          path: metrics/incoming/lang
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: image-sizes-shell
-          path: metrics/incoming/lang
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: image-sizes-python
-          path: metrics/incoming/lang
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: image-sizes-java
-          path: metrics/incoming/lang
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: image-sizes-all-runtime
-          path: metrics/incoming/all-runtime
+          pattern: image-sizes-*
+          path: metrics/incoming
+          merge-multiple: true
 
       - name: 合并体积并检查预算
         run: |
           set -euo pipefail
+          shopt -s nullglob
+          files=(metrics/incoming/*.tsv)
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "::error::没有收到任何体积报告（artifact 名应为 image-sizes-*）"
+            exit 1
+          fi
           {
             printf 'layer\tsize_bytes\n'
-            for file in metrics/incoming/base-tool/*.tsv \
-                        metrics/incoming/lang/*.tsv \
-                        metrics/incoming/all-runtime/*.tsv; do
-              [ -f "$file" ] || continue
+            for file in "${files[@]}"; do
               tail -n +2 "$file"
             done
           } > metrics/images-merged.tsv
+          column -t metrics/images-merged.tsv
           bash scripts/budget-check.sh --metrics metrics/images-merged.tsv

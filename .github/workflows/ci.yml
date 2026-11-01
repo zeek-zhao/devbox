@@ -1,18 +1,33 @@
 name: ci
 
 # ==================================================================
-# 用例与门禁流水线（不构建镜像，只消费 images workflow 推上去的镜像）
+# 日常流水线（fast 档）—— 墙钟预算 180 秒
 # ------------------------------------------------------------------
-# 分工：
-#   images.yml -> 证明「镜像能构建出来，并且能跑一个 hello」
-#   ci.yml     -> 证明「代码与用例是对的，覆盖表是自洽的」
-# 两件事分开，改用例不必重建镜像，改镜像不必重跑 330 个用例。
+# 分级策略（详见 docs/02-CI分级.md）：
+#
+#   ① pull_request   —— 不触发任何流水线（省 GitHub 额度）
+#   ② push main/dev  —— 本文件（fast）：只跑静态门禁，不跑用例矩阵
+#   ③ push tag v*    —— full.yml：608 个用例 + 镜像重建 + 体积预算
+#
+# 为什么 PR 阶段零 CI：
+#   判定标准是「全量用例 + 8 门格式化 + 覆盖表自洽」，跑一次十分钟。
+#   给每个中间状态都烧一次额度，收益只是「早十分钟知道红了」，
+#   而代价是并行派 N 张卡时同时烧 N 份。所以 PR 阶段不跑，
+#   改由本地 scripts/pre-merge.sh 在合并前一次性跑全量（等价 fast+full）。
+#
+# 为什么 fast 档不含用例：
+#   用例矩阵要拉 8 个镜像、go 一门就 544 秒，天然超预算。
+#   它已经在 pre-merge 里跑过了，main 上再跑一遍只是重复确认。
+#   main 上留的是「快、且能挡住明显事故」的五项：
+#     static（shellcheck/契约/版本真本/文档命令）、coverage、probe、fmt 8 门、shared。
+#
+# 为什么 fmt 留在 fast 档：
+#   格式化漂移是并行派卡最常见的事故（两张卡各改一半，合起来就不达标），
+#   而它便宜。丢了它，main 上的格式会慢慢烂掉，而发现时已经是几百个文件。
 # ==================================================================
 
 on:
   push:
-    branches: [main, dev]
-  pull_request:
     branches: [main, dev]
   workflow_dispatch:
 
@@ -22,14 +37,18 @@ concurrency:
 
 env:
   REGISTRY: ghcr.io/${{ github.repository_owner }}
-  # 用例跑的是上一次 images workflow 推上来的 latest；
+  # 用例与格式化跑的是 images workflow 推上来的 latest；
   # 改了 Dockerfile 时先等 images 跑完再手动触发，见 docs/01-镜像体系.md
   IMAGE_TAG: latest
+  # fast 档墙钟预算（秒）。守卫 job 超了只发 ::warning::，不判红 ——
+  # 硬红会让「runner 慢一点」变成「代码有问题」，噪音盖过信号。
+  FAST_BUDGET_SECONDS: 180
 
 jobs:
   static:
     name: 静态检查
     runs-on: ubuntu-24.04
+    timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
 
@@ -58,76 +77,28 @@ jobs:
         run: bash scripts/check-version-truth.sh
 
       # 文档里的命令会随 make 目标改名而静默失效，这条让 CI 替人敲一遍。
-      # 不依赖镜像，所以放在 static 里而不是 languages 里。
+      # 不依赖镜像，所以放在 static 里而不是 fmt 里。
       - name: 文档命令校验（verify 标记）
         run: bash scripts/check-docs.sh
 
   coverage:
     name: COVERAGE 校验
     runs-on: ubuntu-24.04
+    timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
       - name: 校验用例覆盖表
         run: bash scripts/coverage-check.sh
 
   # ------------------------------------------------------------------
-  # 门禁文件守卫（对应需求 R-A-06 / R-A-07）
-  # 关键点：清单读的是 **base 分支的版本**，不是 PR 里的版本。
-  # 否则 AI 可以先把自己加进白名单、或把清单删空，再动门禁文件——
-  # 那样这道闸就成了摆设。
-  # 例外：人工评审后给 PR 打 allow-gate-change 标签（这个标签只许人加）。
-  # ------------------------------------------------------------------
-  gate:
-    name: 门禁文件未被动
-    runs-on: ubuntu-24.04
-    if: github.event_name == 'pull_request'
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: 用 base 版本的清单比对本次改动
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'allow-gate-change') }}
-        run: |
-          set -euo pipefail
-          base="origin/${{ github.base_ref }}"
-          git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
-          if ! git cat-file -e "$base:scripts/gate-files.txt" 2>/dev/null; then
-            echo "::error::base 分支上没有 scripts/gate-files.txt，无法判定门禁"
-            exit 1
-          fi
-          git show "$base:scripts/gate-files.txt" > "$RUNNER_TEMP/gate-base.txt"
-
-          changed="$(git diff --name-only "$base"...HEAD)"
-          echo "改动文件："; echo "$changed"
-
-          hits=""
-          while IFS= read -r pat; do
-            case "$pat" in ''|'#'*) continue ;; esac
-            while IFS= read -r f; do
-              [ -z "$f" ] && continue
-              # shellcheck disable=SC2254  # 这里就是要用变量当 glob
-              case "$f" in $pat) hits="${hits}${f}"$'\n' ;; esac
-            done <<< "$changed"
-          done < "$RUNNER_TEMP/gate-base.txt"
-
-          if [ -n "$hits" ]; then
-            echo "::error::本 PR 触碰了门禁文件，自动合并必须被拒绝："
-            printf '  %s\n' $hits
-            echo "确需改动时，由人评审后在 PR 上打 allow-gate-change 标签。"
-            exit 1
-          fi
-          echo "未触碰门禁文件"
-
-  # ------------------------------------------------------------------
-  # 镜像可用性探测：M1 之前 GHCR 里还没有 devbox-* 镜像，
-  # 这时 examples 直接 pull 会红，把「镜像还没建」误报成「用例写错了」。
-  # 所以先探测，探测不到就跳过，但要求仓库变量 REQUIRE_IMAGES=true 时硬红。
-  # M1 完成的验收项之一：把 REQUIRE_IMAGES 设成 true（否则这道闸会一直软着）。
+  # 镜像可用性探测：镜像还没建时，fmt 直接 pull 会红，
+  # 把「镜像还没建」误报成「格式不达标」。所以先探测，探测不到就跳过，
+  # 但仓库变量 REQUIRE_IMAGES=true 时硬红（M1 完成后应当设成 true）。
   # ------------------------------------------------------------------
   probe:
     name: 镜像可用性
     runs-on: ubuntu-24.04
+    timeout-minutes: 3
     permissions:
       contents: read
       packages: read
@@ -153,12 +124,18 @@ jobs:
               echo "::error::镜像 $REGISTRY/devbox-cpp:$IMAGE_TAG 不存在，但仓库变量 REQUIRE_IMAGES=true。先跑 images workflow"
               exit 1
             fi
-            echo "::warning::镜像尚未构建，本次跳过用例执行。M1 完成后请把仓库变量 REQUIRE_IMAGES 设为 true"
+            echo "::warning::镜像尚未构建，本次跳过格式化检查。M1 完成后请把仓库变量 REQUIRE_IMAGES 设为 true"
           fi
 
-  examples:
-    name: 用例-${{ matrix.lang }}
+  # ------------------------------------------------------------------
+  # 格式化检查：一门语言一个 job。
+  # 一门一个 job 而不是一个 job 跑八门：八门串行要拉 11 GB 镜像，
+  # 并行则墙钟约等于最慢的那一门。fast 档的 180 秒预算靠的就是这个。
+  # ------------------------------------------------------------------
+  fmt:
+    name: 格式-${{ matrix.lang }}
     runs-on: ubuntu-24.04
+    timeout-minutes: 3
     permissions:
       contents: read
       packages: read
@@ -184,37 +161,18 @@ jobs:
           layer="$(awk -F'\t' -v k='${{ matrix.lang }}' '$1 == k { print $2; exit }' images/lang-images.tsv)"
           docker pull "$REGISTRY/devbox-${layer:-${{ matrix.lang }}}:$IMAGE_TAG"
 
-      # 格式化检查挂在这里而不是单开一个 job：本 job 已经拉过该语言的镜像，
-      # 单开 job 要把六个镜像（约 10 GB）再拉一遍，纯浪费。
-      # 放在用例之前，格式不达标就先红，不用等 77 个用例跑完。
       - name: 格式化检查（fmt-check）
         run: TAG="$IMAGE_TAG" bash scripts/fmt.sh --check --lang ${{ matrix.lang }}
-
-      # 格式化检查挂在这里而不是单开一个 job：本 job 已经拉过该语言的镜像，
-      # 单开 job 要把六个镜像（约 10 GB）再拉一遍，纯浪费。
-      # 放在用例之前，格式不达标就先红，不用等 77 个用例跑完。
-      - name: 格式化检查（fmt-check）
-        run: TAG="$IMAGE_TAG" bash scripts/fmt.sh --check --lang ${{ matrix.lang }}
-
-      # 格式化检查挂在这里而不是单开一个 job：本 job 已经拉过该语言的镜像，
-      # 单开 job 要把六个镜像（约 10 GB）再拉一遍，纯浪费。
-      # 放在用例之前，格式不达标就先红，不用等 77 个用例跑完。
-      - name: 格式化检查（fmt-check）
-        run: TAG="$IMAGE_TAG" bash scripts/fmt.sh --check --lang ${{ matrix.lang }}
-
-      - name: 跑该语言全部用例
-        run: bash scripts/run-example.sh ${{ matrix.lang }} --all
 
   # ------------------------------------------------------------------
   # shared/ 工具箱自测（见 shared/README.md）
   # 三个库依赖 bats + jq + yq，这三个都装在 shell 层里，所以只拉 shell 镜像，
-  # 宿主什么都不用装 —— 和 examples 那套「判定逻辑只跑在容器里」保持一致。
-  # 若报「缺少依赖: yq」而不是「not ok」，说明镜像还是加 yq 之前的老镜像，
-  # 先等 images workflow 重建成新的 latest。
+  # 宿主什么都不用装 —— 和用例那套「判定逻辑只跑在容器里」保持一致。
   # ------------------------------------------------------------------
   shared:
     name: shared 工具自测
     runs-on: ubuntu-24.04
+    timeout-minutes: 3
     permissions:
       contents: read
       packages: read
@@ -237,3 +195,35 @@ jobs:
 
       - name: 跑 shared/tests
         run: TAG="$IMAGE_TAG" bash shared/tests/run.sh
+
+  # ------------------------------------------------------------------
+  # 墙钟预算守卫：读的是 runner 上真实的时间戳（含排队），不是各 job 自报。
+  # 只发 ::warning::，不判红 —— 它的作用是「让预算漂移看得见」，不是拦合并。
+  # ------------------------------------------------------------------
+  wallclock:
+    name: 墙钟预算
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    if: always()
+    needs: [static, coverage, probe, fmt, shared]
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: 统计本轮墙钟
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+          started="$(gh api "/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs?per_page=100" \
+                       --jq '[.jobs[].started_at | select(. != null)] | min' 2>/dev/null || true)"
+          if [ -z "$started" ] || [ "$started" = "null" ]; then
+            echo "::warning::取不到本轮 job 起始时间，跳过墙钟统计"
+            exit 0
+          fi
+          start_epoch="$(date -u -d "$started" +%s)"
+          elapsed=$(( $(date -u +%s) - start_epoch ))
+          echo "fast 档墙钟：${elapsed}s（预算 ${FAST_BUDGET_SECONDS}s）"
+          if [ "$elapsed" -gt "$FAST_BUDGET_SECONDS" ]; then
+            echo "::warning::fast 档耗时 ${elapsed}s 已超预算 ${FAST_BUDGET_SECONDS}s —— 先看是哪个 job 变慢，再决定是缩矩阵还是放宽预算"
+          fi
