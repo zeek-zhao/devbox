@@ -21,9 +21,9 @@
 | Go | 77 | 并发任务网关 | 标准库 HTTP 服务、worker pool 与指标 | `devbox-go` |
 | Java | 74 | JDK `HttpServer` REST 服务 | 手写 JSON 与内存存储，不依赖 Spring | `devbox-java` |
 | Python | 74 | CSV 数据处理与报表 | 标准库 CSV、集合与命令行处理 | `devbox-python` |
-| Rust | 51 | 跨平台 CLI 工具 | 标准库参数解析、线程与基准测量 | `devbox-rust` |
+| Rust | 74 | 跨平台 CLI 工具 | 标准库参数解析、线程与基准测量 | `devbox-rust` |
 | Shell | 54 | 部署与巡检工具集 | 严格模式、幂等、并行与 BATS | `devbox-shell` |
-| Vue | 46 | SSR 待办应用 | Vue SFC 与 SSR，不使用 Vite | `devbox-vue` |
+| Vue | 74 | SSR 待办应用 | Vue SFC 与 SSR，不使用 Vite | `devbox-vue` |
 
 用例数按各轨道 `examples/` 的直接子目录计数，包含 `L0-hello`（存在时）；C/C++ 共用镜像
 不代表共用用例目录。镜像映射以 [`images/lang-images.tsv`](images/lang-images.tsv) 为准。

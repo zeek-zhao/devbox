@@ -45,23 +45,23 @@ th { white-space: nowrap; }
   <button id="theme-toggle" type="button" aria-pressed="false">切换主题</button>
 </header>
 <main>
-  <p class="summary">9 条轨道 · 608 个用例 · 9 个已有毕业项目</p>
-  <p class="note">用例数按各轨道 <code>examples/</code> 下的直接子目录计数，包含存在的 hello。层级分布与项目目录状态来自当前 worktree；此看板是目录清单，不代表所有用例均已执行通过。</p>
+  <p class="summary">9 条轨道 · 659 个用例 · 9 个已有毕业项目</p>
+  <p class="note">用例数按各轨道 <code>examples/</code> 下的直接子目录计数，包含存在的 L0-hello。层级分布与项目目录状态来自当前 worktree；此看板是目录清单，不代表所有用例均已执行通过。</p>
   <section>
     <h2>轨道与用例分布</h2>
     <div class="table-scroll">
       <table>
         <thead><tr><th scope="col">轨道</th><th scope="col">用例数</th><th scope="col">层级分布</th><th scope="col">毕业项目</th><th scope="col">镜像层 / 运行环境</th></tr></thead>
         <tbody>
-          <tr><th scope="row">C</th><td>78</td><td>L1 34 · L2 20 · L3 23 · hello 1</td><td>epoll HTTP server（ISO C17，单线程）</td><td>devbox-cpp</td></tr>
-          <tr><th scope="row">C++</th><td>77</td><td>L1 35 · L2 12 · L3 6 · L4 23 · hello 1</td><td>高性能文本索引器</td><td>devbox-cpp</td></tr>
+          <tr><th scope="row">C</th><td>78</td><td>L0 1 · L1 34 · L2 20 · L3 23</td><td>epoll HTTP server（ISO C17，单线程）</td><td>devbox-cpp</td></tr>
+          <tr><th scope="row">C++</th><td>77</td><td>L0 1 · L1 35 · L2 12 · L3 6 · L4 23</td><td>高性能文本索引器</td><td>devbox-cpp</td></tr>
           <tr><th scope="row">数据库</th><td>77</td><td>L1 40 · L2 15 · L3 12 · L4 10</td><td>带缓存的订单服务</td><td>独立 Compose runner：五个数据库服务 + toolbox</td></tr>
-          <tr><th scope="row">Go</th><td>77</td><td>L1 35 · L2 12 · L3 6 · L4 23 · hello 1</td><td>并发任务网关</td><td>devbox-go</td></tr>
-          <tr><th scope="row">Java</th><td>74</td><td>L1 33 · L2 11 · L3 6 · L4 23 · hello 1</td><td>JDK HttpServer REST 服务</td><td>devbox-java</td></tr>
-          <tr><th scope="row">Python</th><td>74</td><td>L1 32 · L2 12 · L3 6 · L4 23 · hello 1</td><td>CSV 数据处理与报表</td><td>devbox-python</td></tr>
-          <tr><th scope="row">Rust</th><td>51</td><td>L1 33 · L2 11 · L3 6 · hello 1</td><td>跨平台 CLI 工具</td><td>devbox-rust</td></tr>
-          <tr><th scope="row">Shell</th><td>54</td><td>L1 35 · L2 12 · L3 6 · hello 1</td><td>部署与巡检工具集</td><td>devbox-shell</td></tr>
-          <tr><th scope="row">Vue</th><td>46</td><td>L1 18 · L2 15 · L3 12 · hello 1</td><td>Vue Todo 待办应用（无打包器）</td><td>devbox-vue</td></tr>
+          <tr><th scope="row">Go</th><td>77</td><td>L0 1 · L1 35 · L2 12 · L3 6 · L4 23</td><td>并发任务网关</td><td>devbox-go</td></tr>
+          <tr><th scope="row">Java</th><td>74</td><td>L0 1 · L1 33 · L2 11 · L3 6 · L4 23</td><td>JDK HttpServer REST 服务</td><td>devbox-java</td></tr>
+          <tr><th scope="row">Python</th><td>74</td><td>L0 1 · L1 32 · L2 12 · L3 6 · L4 23</td><td>CSV 数据处理与报表</td><td>devbox-python</td></tr>
+          <tr><th scope="row">Rust</th><td>74</td><td>L0 1 · L1 45 · L2 17 · L3 11</td><td>跨平台 CLI 工具</td><td>devbox-rust</td></tr>
+          <tr><th scope="row">Shell</th><td>54</td><td>L0 1 · L1 35 · L2 12 · L3 6</td><td>部署与巡检工具集</td><td>devbox-shell</td></tr>
+          <tr><th scope="row">Vue</th><td>74</td><td>L0 1 · L1 28 · L2 22 · L3 23</td><td>Vue Todo 待办应用（无打包器）</td><td>devbox-vue</td></tr>
         </tbody>
       </table>
     </div>
@@ -75,7 +75,7 @@ th { white-space: nowrap; }
           <tr><th scope="row">M0</th><td>工具链打通：一条用例能从零跑到自动校验</td><td class="status-done">已完成</td><td><code>scripts/run-example.sh</code> + 三文件契约</td></tr>
           <tr><th scope="row">M1</th><td>镜像体系：9 层镜像都能 <code>docker run</code>，体积在预算内</td><td class="status-done">已完成</td><td><code>images/budgets.tsv</code> 预算检查通过</td></tr>
           <tr><th scope="row">M2</th><td>C++ 样板：模板质量够复制给其余语言</td><td class="status-done">已完成</td><td>C++ 77 例 + 文本索引器项目</td></tr>
-          <tr><th scope="row">M3</th><td>语言铺开：用例全绿 + 抽查问题率达标</td><td class="status-done">已完成</td><td>608 例全量跑通，失败 0</td></tr>
+          <tr><th scope="row">M3</th><td>语言铺开：用例全绿 + 抽查问题率达标</td><td class="status-done">已完成</td><td>659 例全量跑通，失败 0</td></tr>
           <tr><th scope="row">M4</th><td>项目闭环：9 个项目覆盖落点真实，runtime 能跑</td><td class="status-done">已完成</td><td>9 个 <code>project/</code> 全覆盖，<code>--strict</code> 0 pending</td></tr>
           <tr><th scope="row">M5</th><td>收尾：文档、看板、镜像 tag 就位</td><td class="status-done">已完成</td><td><code>v0.1.0</code> 已打 tag，<code>VERSION</code> 逐字一致</td></tr>
           <tr><th scope="row">L4</th><td>设计模式专题：4 门语言的设计模式用例接入毕业项目</td><td class="status-done">已完成</td><td>C++ / Go / Java / Python 各 23 例 L4</td></tr>

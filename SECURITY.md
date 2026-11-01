@@ -37,7 +37,11 @@
 - **示例口令明文**：`db/docker/docker-compose.yml` 与 `db/examples/*/run.sh` 里的
   `password="devbox"` 一类口令是给本地容器用的固定值。这些服务只监听 Docker 内部
   网络，不映射到宿主机以外的接口。**绝对不要把这些配置搬到任何联网环境。**
-- **容器以 root 运行**：用例需要安装包、改文件权限，镜像内默认 root 是刻意选择。
+- **db 的 toolbox 容器仍以 root 运行**：九层 devbox 镜像已经改成非 root（默认以
+  `dev` 运行，启动时把它的 uid/gid 对齐宿主），但 `db/docker/toolbox` 是独立镜像，
+  用例通过 `docker compose exec` 进去跑 SQL 客户端，仍是 root。它只在本地 compose
+  网络里工作，不往宿主的 bind mount 写文件。详见
+  [KNOWN-ISSUES](docs/KNOWN-ISSUES.md) 的 KI-07。
 - **镜像体积较大**：教学镜像装了完整工具链，体积预算见 `images/budgets.tsv`，
   超预算是 CI 问题，不是安全问题。
-- **镜像标签不可变**：`:latest` 会随 `main` 变动，需要可复现请用 `:<commit-sha>` 标签。
+- **镜像标签可变**：`:latest` 会随 `main` 变动，需要可复现请用 `:sha-<commit-sha>` 标签。
