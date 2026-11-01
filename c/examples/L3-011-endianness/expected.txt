@@ -1,0 +1,2 @@
+host_endian=little
+byte_swap=0x78563412
