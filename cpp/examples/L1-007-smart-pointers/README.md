@@ -1,6 +1,5 @@
 # L1-007-smart-pointers
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-07：`unique_ptr` 独占管理资源，共享所有权形成环时节点计数都为 2。

@@ -1,6 +1,5 @@
 # L1-023-virtual-destructor
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-23：通过基类指针销毁派生对象时，虚析构保证派生析构函数执行。

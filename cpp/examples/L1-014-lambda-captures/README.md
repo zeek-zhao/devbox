@@ -1,6 +1,5 @@
 # L1-014-lambda-captures
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-14：选择 Lambda 的值捕获或引用捕获，并理解闭包对象与捕获对象的关系。

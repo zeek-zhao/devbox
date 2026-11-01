@@ -1,6 +1,5 @@
 # L1-020-operator-overloading
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-20：二维点的 `+` 表示坐标相加，`==` 比较两个点的坐标。

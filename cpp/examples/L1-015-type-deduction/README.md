@@ -1,6 +1,5 @@
 # L1-015-type-deduction
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-15：比较 `auto`、`const auto&` 与 `decltype(auto)` 对 const 和引用的推导。

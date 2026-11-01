@@ -1,6 +1,5 @@
 # L1-011-container-selection
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-11：按操作需求选择标准库容器。

@@ -1,6 +1,5 @@
 # L1-005-move-semantics
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-05：移动构造将拥有的缓冲区转移给目标对象。

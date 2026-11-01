@@ -1,6 +1,5 @@
 # L1-012-iterators-algorithms
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-12：用迭代器连接容器与 `<algorithm>`，并判断容器修改后的迭代器失效。

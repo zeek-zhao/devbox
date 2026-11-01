@@ -1,6 +1,5 @@
 # L1-025-undefined-behavior
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-25：以检查式访问和可选值表达边界，避免执行未定义行为。

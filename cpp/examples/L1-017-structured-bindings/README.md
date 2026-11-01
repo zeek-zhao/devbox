@@ -1,6 +1,5 @@
 # L1-017-structured-bindings
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-17：分别拆解 `std::tuple` 和聚合体，并比较值绑定与引用绑定。

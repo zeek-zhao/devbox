@@ -1,6 +1,5 @@
 # L1-030-static-assert
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-30：`static_assert` 在编译时检查类型约束和常量条件，断言成立后程序运行。
