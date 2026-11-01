@@ -44,7 +44,7 @@ for a in "$@"; do
     *) LANGS="${LANGS:+$LANGS }$a" ;;
   esac
 done
-[ -n "$LANGS" ] || LANGS="cpp go rust shell python java"
+[ -n "$LANGS" ] || LANGS="c cpp go rust shell python java vue"
 
 failed=0
 pending_total=0

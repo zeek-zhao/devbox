@@ -61,6 +61,7 @@ budget_bytes() {
     shell)   echo $((2800*1024*1024)) ;;
     python)  echo $((3200*1024*1024)) ;;
     java)    echo $((4000*1024*1024)) ;;
+    vue)     echo $((1800*1024*1024)) ;;
     all)     echo $((11000*1024*1024)) ;;
     runtime) echo $((900*1024*1024)) ;;
     *)       echo $((10*1024*1024*1024)) ;;
@@ -112,7 +113,7 @@ build_layer() {
 }
 
 BUDGET_FAIL=0
-LANGS="cpp go rust shell python java"
+LANGS="cpp go rust shell python java vue"
 
 base_img="${PREFIX}devbox-base:${TAG}"
 tool_img="${PREFIX}devbox-tool:${TAG}"

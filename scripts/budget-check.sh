@@ -8,7 +8,7 @@ BUDGETS="images/budgets.tsv"
 METRICS=""
 REGISTRY="ghcr.io/zeek-zhao"
 TOL="15"
-EXPECTED_LAYERS=(base tool cpp go rust shell python java all runtime)
+EXPECTED_LAYERS=(base tool cpp go rust shell python java vue all runtime)
 LAYERS=""
 LAYERS_SET=0
 
