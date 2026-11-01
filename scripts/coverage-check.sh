@@ -199,16 +199,19 @@ check_lang() {
   done
 
   # 2) 每个非豁免用例 ID 必须在 project/ 的代码里出现
-  #    排除 COVERAGE.md 自身：否则表格里写一行就"自证"了，等于没校验
+  #    排除**所有 *.md**：COVERAGE.md 是自证表，README 里的「覆盖落点」表同样是自证。
+  #    原来只排除 COVERAGE.md，于是把 ID 抄进 README.md 的表格就能过 —— 闸门形同虚设
+  #    （PROJ-C / PROJ-VUE 两张卡都踩了这个洞：声明 78/46 条，代码里一条都没有）。
+  #    只认非文档文件（源码 / 配置 / SQL / 脚本），注释里写 ID 也算，便于追溯。
   local covered=0 missing=0
   while IFS= read -r id; do
     [ -z "$id" ] && continue
     # 注意：--exclude 必须放在 `--` 之前。放在 `--` 之后会被当成文件名，
     # 排除静默失效 —— 那样只要把 ID 写进 COVERAGE.md 表格就自证了。
-    if grep -rqF --exclude='COVERAGE.md' -- "$id" "$lang/project" 2>/dev/null; then
+    if grep -rqF --exclude='*.md' -- "$id" "$lang/project" 2>/dev/null; then
       covered=$((covered + 1))
     else
-      echo "  [FAIL] 用例 $id 在 $lang/project/ 里找不到引用（若尚未接入请标 coverage: pending）"
+      echo "  [FAIL] 用例 $id 在 $lang/project/ 的非文档文件里找不到引用（写进 README 不算）"
       missing=$((missing + 1))
     fi
   done <<< "$live_list"
