@@ -76,8 +76,11 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: 校验用例覆盖表
-        run: bash scripts/coverage-check.sh
+      # 发版档比日常档严：--strict 下 pending 一律算失败。
+      # 日常档（ci.yml）容忍「明账上的 pending」，发版档不允许任何欠债 ——
+      # 这样「还欠多少条」在平时是可见的数字，在发版时是必须清零的红线。
+      - name: 校验用例覆盖表（严格，不允许 pending）
+        run: bash scripts/coverage-check.sh --strict
 
   probe:
     name: 镜像可用性
