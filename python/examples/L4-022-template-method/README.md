@@ -1,6 +1,5 @@
 # L4-022-template-method
 
-<!-- coverage: pending -->
 
 ## 考点
 

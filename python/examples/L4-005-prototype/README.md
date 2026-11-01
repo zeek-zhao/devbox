@@ -1,6 +1,6 @@
 # L4-005-prototype
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 本项目逐行读取不可变 Record 并重新汇总 Group，不从预配置的可变对象克隆作业；复制报表原型会额外引入跨调用状态隔离问题 -->
 
 ## 考点
 

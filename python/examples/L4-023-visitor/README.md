@@ -1,6 +1,6 @@
 # L4-023-visitor
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 本项目报表树仅需统一 render 操作，未对多个稳定节点类型执行独立导出、审计或分析遍历；加入 accept 与双分派会复制已有组件渲染而没有第二种访问业务 -->
 
 ## 考点
 

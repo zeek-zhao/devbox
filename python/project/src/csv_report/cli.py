@@ -6,13 +6,10 @@ from pathlib import Path
 
 from .core import (
     DataError,
-    ReportRow,
-    aggregate,
-    format_money,
     read_records,
-    render_table,
     write_clean,
 )
+from .reporting import FullReportJob, SummaryJob
 
 SAMPLE = (
     "date,category,amount\n"
@@ -63,7 +60,9 @@ class AtomicOutput:
                 self.temporary.unlink()
 
 
-def execute(command: str, source: Path, output: Path | None = None) -> str:
+def execute(  # L4-010-facade
+    command: str, source: Path, output: Path | None = None
+) -> str:
     if command not in ("clean", "summary", "report"):
         raise DataError(f"unknown command: {command}")
     if command == "clean":
@@ -72,13 +71,9 @@ def execute(command: str, source: Path, output: Path | None = None) -> str:
         with AtomicOutput(output) as temporary:
             count = write_clean(read_records(source), temporary)
         return f"clean: {count} rows"
-    groups = aggregate(read_records(source))
-    rows = [ReportRow(group) for group in groups]
-    table = render_table(ReportRow.headings, rows)
     if command == "summary":
-        return table
-    total = sum(group.cents for group in groups)
-    return f"CSV report\n{table}\nrows: {sum(g.row_count for g in groups)}\ntotal: {format_money(total)}"
+        return SummaryJob().execute(read_records(source))
+    return FullReportJob().execute(read_records(source))
 
 
 def self_check() -> str:

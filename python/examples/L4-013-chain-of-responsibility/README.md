@@ -1,6 +1,6 @@
 # L4-013-chain-of-responsibility
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 本项目每行日期、分类和金额都必须通过固定校验，失败立即带行号终止；没有由多个候选处理者选择接手或沿 successor 转交的业务请求 -->
 
 ## 考点
 

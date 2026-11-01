@@ -30,7 +30,7 @@ class TableRow(Protocol):  # L2-003-typing-protocols
     def cells(self) -> Sequence[str]: ...
 
 
-class ReportRow:
+class ReportRow:  # L4-006-adapter
     __slots__ = ("group",)  # L1-018-slots
     headings = ("category", "count", "total")  # L1-017-class-attributes
 

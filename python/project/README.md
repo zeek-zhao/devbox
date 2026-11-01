@@ -12,7 +12,7 @@ project/
 ├── tests/fixtures/          # 包内固定 CSV 资源
 ├── build.sh                 # 离线 ruff / mypy --strict / pytest
 ├── check-runtime.sh         # runtime 固定输入逐字比对
-├── COVERAGE.md              # 全部 51 个用例的实际代码落点
+├── COVERAGE.md              # 74 个用例的实际落点或具体豁免
 └── build/                   # 忽略的自检戳与输出
 ```
 
@@ -45,3 +45,17 @@ CSV 表头严格为 `date,category,amount`（允许 UTF-8 BOM 和字段两端空
 
 覆盖检查：`bash scripts/coverage-check.sh --strict python`。COVERAGE 落点允许指向开发测试，
 例如 JSON 往返、进程/线程结果一致性、枚举状态和 dataclass 期望数据，不在 runtime 导入它们。
+
+L4 收口：9 条真接入、14 条按项目形态豁免（逐条见 COVERAGE.md 和用例声明）。
+`run` / 自检经 `execute` 门面分派，清洗仍保留原子写入；报表走
+`SummaryJob` / `FullReportJob` 的 `ReportingJob.execute` 模板，由子类工厂创建
+`TableFormat` / `FullReportFormat` 策略。聚合消费 `ObservedRecords` 装饰的流，
+`ReportTotals` 订阅每条记录并提供完整报告的行数与金额页脚，输入不二次遍历也不隐式去重。
+`ReportRow` 复用已有的领域分组到表格行适配；完整报告由 `ReportBuilder` 组装，
+`ReportSection` 组合标题、表格及嵌套页脚，统一递归渲染。CLI 文本格式保持不变。
+`tests/test_reporting.py` 验证真实分派、工厂钩子、惰性叠加、多订阅者、错误传播、
+builder 完整性及快照、嵌套组合和作业状态隔离；adapter 和 facade 是已有真实落点的复用，
+不是新造的业务功能。
+
+使用本轮本地镜像校验项目：`TAG=local bash python/project/build.sh`；
+runtime 逐字回归：`TAG=local bash python/project/check-runtime.sh`。

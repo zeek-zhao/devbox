@@ -1,6 +1,6 @@
 # L4-001-singleton
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 本项目每次 CLI 调用独立消费一个 CSV，计数与去重状态必须按调用隔离；没有需要进程全局唯一实例的共享服务 -->
 
 ## 考点
 

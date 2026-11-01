@@ -57,3 +57,26 @@
 | L3-004-struct-binary | tests/test_development.py:94 | 聚合行数与整数分以固定大端格式编码、解码并验证字节数 |
 | L3-005-ctypes-libc | tests/test_development.py:101 | 声明 libc strlen ABI，验证分类 UTF-8 编码的字节边界 |
 | L3-006-gil-cpu-work | tests/test_development.py:41 | 固定金额工作量在串行、线程和进程中结果一致，不作耗时断言 |
+| L4-001-singleton | coverage: exempt | 每次 CLI 独立消费 CSV，计数和去重状态按调用隔离，没有进程全局唯一共享服务 |
+| L4-002-factory-method | src/csv_report/reporting.py:ReportingJob.create_formatter、SummaryJob.create_formatter、FullReportJob.create_formatter | execute 模板调用子类工厂创建输出策略，CLI 的 summary 与 report 分别选择真实作业 |
+| L4-003-abstract-factory | coverage: exempt | 仅一种文本表格及共用行适配器，没有需配套创建的多族产品 |
+| L4-004-builder | src/csv_report/reporting.py:ReportBuilder.with_table、with_totals、build；FullReportFormat.format | 分步组装表格与统计页脚，缺任一部分拒绝发布；已构建报表不受 builder 后续修改影响 |
+| L4-005-prototype | coverage: exempt | 逐行不可变记录与重新聚合的分组，不从可变预配置作业克隆实例 |
+| L4-006-adapter | src/csv_report/core.py:ReportRow.cells；src/csv_report/reporting.py:TableFormat.format | 复用真实 Group 到 TableRow 的适配器，将整数分及计数转换成表格列而不修改领域记录 |
+| L4-007-bridge | coverage: exempt | 只有标准库文本后端，不存在报表抽象与多种后端两个独立扩展维度 |
+| L4-008-composite | src/csv_report/reporting.py:ReportText.render、ReportSection.render；ReportBuilder.build | 报表根组合标题、表格与嵌套页脚，叶子和子节用同一 render 接口递归生成固定文本 |
+| L4-009-decorator | src/csv_report/reporting.py:ObservedRecords.__iter__；ReportingJob.execute | 保持 Iterable 接口并包装原记录流，在聚合消费时附加通知职责；测试双层包装保留原记录和惰性 |
+| L4-010-facade | src/csv_report/cli.py:execute、run、self_check | 复用并重构统一入口隐藏读取校验、原子清洗和报表作业，CLI 与自检都调用同一业务门面 |
+| L4-011-flyweight | coverage: exempt | 流式记录和按分类聚合没有大量共享内在状态对象；金额解析缓存不是享元池 |
+| L4-012-proxy | coverage: exempt | 直接本地文件输入，没有远端接收者、权限代理或昂贵服务的延迟访问 |
+| L4-013-chain-of-responsibility | coverage: exempt | 固定字段校验全部必过且失败即终止，没有多个候选处理者接手或 successor 转交 |
+| L4-014-command | coverage: exempt | 单次同步 CLI 无排队、历史或撤销；原子文件发布不是可撤销接收者命令 |
+| L4-015-interpreter | coverage: exempt | 固定 CSV 字段与三个 CLI 子命令，没有表达式语言、语法树或上下文求值 |
+| L4-016-iterator | coverage: exempt | csv.reader 与生成器承担流遍历，没有需自定义游标的聚合容器；观察包装不冒充独立 GoF 遍历器 |
+| L4-017-mediator | coverage: exempt | 单向管线及只接收通知的订阅者，没有双向同事交互网络需调停 |
+| L4-018-memento | coverage: exempt | 不可变输入与重建报表，无领域对象编辑恢复历史；原子输出不是对象状态备忘录 |
+| L4-019-observer | src/csv_report/reporting.py:RecordObserver.on_record、ReportTotals.on_record、ObservedRecords.__iter__ | 消费每条记录通知订阅者，报告页脚真实使用订阅统计；与分类聚合解耦且不再二次遍历输入 |
+| L4-020-state | coverage: exempt | 一次性作业完成或异常，无长生命周期按状态改变行为的领域实体 |
+| L4-021-strategy | src/csv_report/reporting.py:ReportFormat、TableFormat.format、FullReportFormat.format；ReportingJob.execute | 同一聚合流程切换纯表格和完整报告输出策略，完整报告复用表格策略确保列格式一致 |
+| L4-022-template-method | src/csv_report/reporting.py:ReportingJob.execute；src/csv_report/cli.py:execute | 固定观察、单次聚合、创建策略、渲染顺序；子类仅覆盖工厂钩子，失败时不调用渲染 |
+| L4-023-visitor | coverage: exempt | 组件树仅有 render 操作，无跨稳定节点类型的第二种审计或导出遍历，双分派没有业务落点 |

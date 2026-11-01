@@ -1,6 +1,6 @@
 # L4-007-bridge
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 本项目报表只使用标准库文本表格，没有 HTML、终端或远端等独立实现后端；summary 与 report 是输出策略差异而非两套需正交扩展的继承维度 -->
 
 ## 考点
 

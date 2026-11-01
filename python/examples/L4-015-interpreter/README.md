@@ -1,6 +1,6 @@
 # L4-015-interpreter
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 本项目输入是固定三列 CSV，CLI 仅选择三个固定子命令，没有用户表达式、语法树或上下文求值语言；字段解析不构成可组合的解释器语法 -->
 
 ## 考点
 

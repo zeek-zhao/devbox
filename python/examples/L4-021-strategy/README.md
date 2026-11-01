@@ -1,6 +1,5 @@
 # L4-021-strategy
 
-<!-- coverage: pending -->
 
 ## 考点
 
