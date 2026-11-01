@@ -29,7 +29,12 @@ npx @zeek/release --write --release-as minor
 
 # 在受保护分支上跑（显式授权）
 npx @zeek/release --write --allow-branch main
+
+# 固定 CHANGELOG 日期（也可设置 RELEASE_DATE 环境变量）
+npx @zeek/release --date 2026-11-01
 ```
+
+未指定 `--date` 或 `RELEASE_DATE` 时，CHANGELOG 使用最新提交日期，保证重复预览可复现。
 
 ## 安全默认（六条，一条都不让步）
 
