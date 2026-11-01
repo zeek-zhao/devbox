@@ -1,0 +1,7 @@
+independent databases: A db A rows=1 A db B rows=0 B db rows=1
+A account rows=1
+independent database cross-access=BLOCKED (1142)
+schema A rows=1
+schema cross-access=BLOCKED
+shared-table visible rows=1
+cross-tenant update rows=0

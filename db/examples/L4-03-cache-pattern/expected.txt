@@ -1,0 +1,4 @@
+aside: db=value-2@2 cache=value-2
+through: db=value-2@2 cache=value-2
+behind: db=value-2@2 cache=value-2
+aside TTL miss: db=value-2@2 cache=value-2
