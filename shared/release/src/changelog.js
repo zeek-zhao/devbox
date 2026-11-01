@@ -12,20 +12,27 @@ function lineFor(commit) {
   return `* ${scope}${commit.subject}`;
 }
 
-export function renderSection(version, commits, {
-  types = [], date, repoUrl = '', previousTag, tagPrefix = 'v',
-} = {}) {
+export function renderSection(
+  version,
+  commits,
+  { types = [], date, repoUrl = '', previousTag, tagPrefix = 'v' } = {},
+) {
   const releaseDate = date ?? process.env.RELEASE_DATE;
   if (!releaseDate) throw new Error('必须通过 --date 或 RELEASE_DATE 指定 CHANGELOG 日期');
   const normalizedRepo = repoUrl.replace(/\/+$/, '');
   const currentTag = `${tagPrefix}${version}`;
-  const compareUrl = `${normalizedRepo ? `${normalizedRepo}/` : ''}compare/${previousTag ?? `${currentTag}^`}...${currentTag}`;
-  const output = [`## [${version}](${compareUrl}) (${releaseDate})`];
+  const compareRange = `${previousTag ?? `${currentTag}^`}...${currentTag}`;
+  const heading = normalizedRepo
+    ? `## [${version}](${normalizedRepo}/compare/${compareRange}) (${releaseDate})`
+    : `## ${version} (${releaseDate})`;
+  const output = [heading];
+  if (!normalizedRepo) output.push('', compareRange);
   const breaking = commits.filter((commit) => commit.breaking).sort(compareEntries);
   if (breaking.length) {
     output.push('', '### ⚠️ Breaking Changes', ...breaking.map(lineFor));
   }
-  const configured = types.map((item, index) => ({ ...item, index }))
+  const configured = types
+    .map((item, index) => ({ ...item, index }))
     .filter((item) => !item.hidden)
     .sort((a, b) => a.index - b.index);
   const sections = new Map();
