@@ -1,6 +1,6 @@
 # L2-13-lock-wait · 锁等待与阻塞排查
 
-<!-- coverage: pending -->
+<!-- coverage: exempt DB-06 的并发互斥由带过期时间的 Redis 锁实现，不以竞争 MySQL 行锁协调请求；项目流程无需要长时间等待的行锁。 -->
 
 ## 考点
 
@@ -33,4 +33,4 @@ INNODB_TRX/INNODB_LOCK_WAITS、pg_locks、currentOp
 - stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
 - 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L2-13-lock-wait --update` 生成 `expected.txt`，
   并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+- 本用例与 DB-06 的覆盖处置及理由见顶部声明。

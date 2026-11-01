@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt DB-06 的查询路径有界并使用索引，报表在固定小数据集执行；项目不为演示而人为制造慢查询或耗时输出。 -->
 
 # L2-02-slow-query · 慢查询定位
 

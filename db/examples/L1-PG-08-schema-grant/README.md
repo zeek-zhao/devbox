@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt DB-06 使用部署预置的 PostgreSQL 连接身份，仅在业务 schema 内存取报表；项目不管理 PostgreSQL 全局角色或授权策略。 -->
 
 # L1-PG-08-schema-grant · schema 与权限
 

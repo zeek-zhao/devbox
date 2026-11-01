@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt DB-06 使用共享栈预置的 MongoDB 服务账号；订单服务不负责 MongoDB 全局身份与角色生命周期，这属于部署管理面而非订单业务路径。 -->
 
 # L1-MG-06-user-role · 账号与角色
 

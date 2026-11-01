@@ -1,4 +1,7 @@
-user:1 -> slot 10778
-order:{42}:items -> slot 8000
-user:{42}:profile -> slot 8000
+redis cluster state: ok
+redis masters: three
+redis slots: complete
+MOVED redirection and cross-node read: yes
+ASK redirection during slot migration: yes
 hash-tag co-location: yes
+failover and slot takeover: recovered

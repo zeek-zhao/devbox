@@ -1,6 +1,6 @@
 # L3-03-pg-logical-replication · PG 逻辑复制
 
-<!-- coverage: pending -->
+<!-- coverage: exempt DB-06 的 PostgreSQL 报表由同一应用直接写入，没有独立下游订阅者或跨实例发布需求；增加逻辑复制端点不会服务项目读取路径。 -->
 
 ## 考点
 
@@ -33,4 +33,4 @@ publication/subscription、复制槽、冲突处理
 - stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
 - 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L3-03-pg-logical-replication --update` 生成 `expected.txt`，
   并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+- 本用例与 DB-06 的覆盖处置及理由见顶部声明。

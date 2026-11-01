@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt DB-06 的订单写入按单事务顺序执行，没有相互竞争的写事务；项目验证原子提交，不制造死锁或依赖死锁恢复。 -->
 
 # L2-04-txn-boundary-deadlock · 事务边界与死锁
 

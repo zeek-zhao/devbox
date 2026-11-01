@@ -1,6 +1,6 @@
 # L3-10-archive-cold-hot · 数据归档与冷热分离
 
-<!-- coverage: pending -->
+<!-- coverage: exempt DB-06 的 Mongo 行为数据按固定业务日分集合，但没有独立对象存储、保留期迁移或冷读接口；项目不实现冷热存储生命周期。 -->
 
 ## 考点
 
@@ -33,4 +33,4 @@
 - stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
 - 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L3-10-archive-cold-hot --update` 生成 `expected.txt`，
   并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+- 本用例与 DB-06 的覆盖处置及理由见顶部声明。

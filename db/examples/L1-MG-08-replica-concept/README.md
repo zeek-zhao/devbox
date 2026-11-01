@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt DB-06 的 MongoDB 仅保存可重建的行为日志，订单真相在 MySQL；项目无需 Mongo 副本集选举或读写一致性。 -->
 
 # L1-MG-08-replica-concept · 副本集概念
 

@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt DB-06 的 MongoDB 行为集合每次按命名空间重建，服务没有 Mongo 导出或恢复流程；离线恢复只针对 SQLite 快照。 -->
 
 # L1-MG-07-dump-restore · 备份恢复
 

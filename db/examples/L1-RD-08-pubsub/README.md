@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt DB-06 是确定性单进程流程，没有独立在线订阅者；订单行为写入 MongoDB 持久记录而非 Redis 临时广播。 -->
 
 # L1-RD-08-pubsub · 发布订阅
 

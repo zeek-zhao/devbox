@@ -1,6 +1,6 @@
 # L3-05-redis-persistence · Redis 持久化
 
-<!-- coverage: pending -->
+<!-- coverage: exempt DB-06 的 Redis 仅保存可从 MySQL 重建的缓存、锁和短期排行，不承载唯一持久数据；项目不需要以 AOF 恢复作为成功条件。 -->
 
 ## 考点
 
@@ -33,4 +33,4 @@ RDB/AOF/混合、appendfsync 三档、重启恢复
 - stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
 - 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L3-05-redis-persistence --update` 生成 `expected.txt`，
   并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+- 本用例与 DB-06 的覆盖处置及理由见顶部声明。
