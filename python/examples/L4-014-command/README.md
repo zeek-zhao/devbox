@@ -1,6 +1,6 @@
 # L4-014-command
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 本项目一次 CLI 调用同步执行一个操作，没有请求队列、历史或撤销；clean 的原子发布是异常安全文件替换，不是可保存并逆序撤销的接收者命令 -->
 
 ## 考点
 

@@ -1,6 +1,6 @@
 # L4-016-iterator
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 本项目流遍历已经由 csv.reader 与 Python 生成器提供，不维护需要自定义游标的聚合容器；ObservedRecords 仅包装现有 Iterable，并非独立的 GoF 集合遍历器实现 -->
 
 ## 考点
 

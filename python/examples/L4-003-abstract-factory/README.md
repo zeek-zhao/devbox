@@ -1,6 +1,6 @@
 # L4-003-abstract-factory
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 本项目只生成一种标准库文本表格，summary 与 report 复用同一行适配器；不存在必须配套创建的多族输入器、渲染器或存储产品 -->
 
 ## 考点
 

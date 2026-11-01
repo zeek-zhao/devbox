@@ -1,6 +1,5 @@
 # L4-019-observer
 
-<!-- coverage: pending -->
 
 ## 考点
 

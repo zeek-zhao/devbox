@@ -1,6 +1,5 @@
 # L4-010-facade
 
-<!-- coverage: pending -->
 
 ## 考点
 
