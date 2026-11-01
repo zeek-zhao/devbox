@@ -1,6 +1,5 @@
 # L1-004-raii
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-04：资源由 RAII 对象持有，作用域退出时自动释放。

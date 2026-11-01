@@ -1,6 +1,5 @@
 # L1-001-references-pointers
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-01：引用必须绑定到对象，指针可以为空。

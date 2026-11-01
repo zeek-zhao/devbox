@@ -1,6 +1,5 @@
 # L1-008-template-basics
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-08：同一个函数模板分别处理 `int` 和 `std::string`。

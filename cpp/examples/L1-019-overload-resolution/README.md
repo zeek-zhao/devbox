@@ -1,6 +1,5 @@
 # L1-019-overload-resolution
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-19：通过返回标签观察 `int`、`long`、`double` 与模板候选的胜出情况。

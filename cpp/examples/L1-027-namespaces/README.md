@@ -1,6 +1,5 @@
 # L1-027-namespaces
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-27：限定调用能无歧义地区分不同命名空间中的同名函数。

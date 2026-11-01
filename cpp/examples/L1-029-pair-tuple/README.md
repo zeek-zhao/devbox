@@ -1,6 +1,5 @@
 # L1-029-pair-tuple
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-29：函数以 `pair` 和 `tuple` 返回关联的多个值，并展示元素类型。

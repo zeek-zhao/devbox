@@ -1,6 +1,5 @@
 # L1-006-perfect-forwarding
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-06：包装函数用 `std::forward` 保留实参的值类别。

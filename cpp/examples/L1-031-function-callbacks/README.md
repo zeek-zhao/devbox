@@ -1,6 +1,5 @@
 # L1-031-function-callbacks
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-31：把函数指针、函数对象和捕获 lambda 作为回调传入接口。

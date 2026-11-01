@@ -1,6 +1,5 @@
 # L1-013-string-view
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-13：区分拥有字符的 `std::string` 与不拥有字符的 `std::string_view`。

@@ -1,6 +1,5 @@
 # L1-026-explicit-casts
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L1-26：按目的选择显式 cast，运行后可观察数值转换、上行转换及对象修改。
