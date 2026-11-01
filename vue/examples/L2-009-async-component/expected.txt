@@ -1,0 +1,3 @@
+before: not loaded
+after: loaded
+<p>async ready</p>
