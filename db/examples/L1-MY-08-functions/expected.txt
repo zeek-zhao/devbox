@@ -1,0 +1,3 @@
+Tea	2026-01-03	drink	tea
+coffee	1
+check_rejected=3819

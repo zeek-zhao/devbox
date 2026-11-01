@@ -1,0 +1,4 @@
+active	1	true
+name	Mika	text
+score	7	integer
+7	8	"Mika"	Mika

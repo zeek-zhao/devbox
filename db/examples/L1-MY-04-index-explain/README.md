@@ -1,27 +1,21 @@
-# L1-MY-04-index-explain · 索引与执行计划
-
 <!-- coverage: pending -->
 
+# L1-MY-04-index-explain · 索引与执行计划
+
 ## 考点
+- 比较有索引与禁用索引时 `EXPLAIN` 的访问类型和使用的 key。
+- 验证复合索引可以按最左列查找，且投影列由索引覆盖。
+- 用仅按第二列筛选的查询说明跳过最左前缀后无法使用该复合索引。
 
-EXPLAIN 的 type/key/rows、最左前缀、覆盖索引、索引失效
+## 为什么这么写
+`FORCE INDEX`/`IGNORE INDEX` 将执行计划对比固定在索引选择上；输出只保留 `type` 和 `key`，避免展示随统计估算变化的行数。
 
-## 判据（验收按这一条核对）
-
-输出 EXPLAIN 的 type 与 key 列，对比有索引/无索引两段
+## 易错点
+- 小表上优化器可能主动选择全表扫描，因此用索引提示构造可重复对比。
+- 复合索引 `(category, sku)` 不等于可以直接按 `sku` 查找。
 
 ## 依赖服务
-
 `mysql`
 
 ## 命名空间
-
-`l1_my_04_index_explain`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-MY-04-index-explain --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l1_my_04_index_explain`

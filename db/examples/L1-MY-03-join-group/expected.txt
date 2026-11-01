@@ -1,0 +1,8 @@
+LEFT JOIN
+blue	aya	4
+blue	bo	7
+green	cy	5
+red	-	NULL
+GROUP BY
+blue	2	2	aya,bo
+green	1	1	cy

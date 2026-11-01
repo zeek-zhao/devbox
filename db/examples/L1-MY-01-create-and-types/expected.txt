@@ -1,0 +1,9 @@
+enum_types	item_code	char(4)	utf8mb4
+enum_types	state	enum('new','ready')	utf8mb4
+numeric_types	item_code	char(4)	utf8mb4
+numeric_types	quantity	smallint unsigned	-
+numeric_types	price	decimal(10,2)	-
+text_types	item_code	char(4)	utf8mb4
+text_types	label	varchar(24)	utf8mb4
+varchar_types	item_code	char(4)	utf8mb4
+varchar_types	state	varchar(8)	utf8mb4
