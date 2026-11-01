@@ -1,6 +1,5 @@
 # L4-003-abstract-factory
 
-<!-- coverage: pending -->
 
 ## 考点
 

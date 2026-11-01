@@ -1,6 +1,5 @@
 # L4-017-mediator
 
-<!-- coverage: pending -->
 
 ## 考点
 

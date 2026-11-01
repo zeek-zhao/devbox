@@ -1,6 +1,5 @@
 # L4-014-command
 
-<!-- coverage: pending -->
 
 ## 考点
 

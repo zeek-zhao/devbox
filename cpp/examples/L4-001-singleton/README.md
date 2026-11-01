@@ -1,6 +1,5 @@
 # L4-001-singleton
 
-<!-- coverage: pending -->
 
 ## 考点
 

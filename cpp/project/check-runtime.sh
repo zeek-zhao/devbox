@@ -11,8 +11,8 @@ if [[ ! -x "$BINARY" ]]; then
 fi
 
 if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
-  echo "[skip] devbox-runtime 镜像不在本地，先 docker pull"
-  exit 0
+  echo "[fail] devbox-runtime 镜像不在本地：$IMAGE" >&2
+  exit 1
 fi
 
 INPUT="$(mktemp)"

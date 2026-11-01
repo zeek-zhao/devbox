@@ -1,6 +1,5 @@
 # L2-005-test-harness
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L2-05：轻量 `CHECK` 宏统计成功与失败断言，覆盖正常、边界及未命中路径。

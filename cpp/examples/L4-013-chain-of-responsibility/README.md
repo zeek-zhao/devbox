@@ -1,6 +1,5 @@
 # L4-013-chain-of-responsibility
 
-<!-- coverage: pending -->
 
 ## 考点
 

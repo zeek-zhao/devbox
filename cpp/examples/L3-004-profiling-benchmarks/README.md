@@ -1,6 +1,5 @@
 # L3-004-profiling-benchmarks
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L3-04：用可复现的基准比较"优化前"和"优化后"，并验证收益是真的。

@@ -1,6 +1,5 @@
 # L2-007-gdb-debugging
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L2-07：运行脚本在未优化、带调试信息的二进制上设置断点并取得回溯。

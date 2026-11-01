@@ -1,6 +1,5 @@
 # L2-006-sanitizers
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L2-06：用 AddressSanitizer 检查一次堆缓冲区越界写入，并将报告归一化输出。

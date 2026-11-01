@@ -1,6 +1,5 @@
 # L3-003-atomics-memory-order
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L3-03：生产者先写普通数据，再用 release 原子标志发布它。

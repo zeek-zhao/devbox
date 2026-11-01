@@ -1,6 +1,5 @@
 # L4-018-memento
 
-<!-- coverage: pending -->
 
 ## 考点
 

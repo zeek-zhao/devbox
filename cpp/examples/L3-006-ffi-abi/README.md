@@ -1,6 +1,5 @@
 # L3-006-ffi-abi
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L3-06：C 文件提供稳定的 `extern "C"` 接口，C++ 调用并检查返回码。

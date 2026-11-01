@@ -1,6 +1,5 @@
 # L4-012-proxy
 
-<!-- coverage: pending -->
 
 ## 考点
 

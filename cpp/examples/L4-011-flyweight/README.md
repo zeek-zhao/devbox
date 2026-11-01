@@ -1,6 +1,5 @@
 # L4-011-flyweight
 
-<!-- coverage: pending -->
 
 ## 考点
 
