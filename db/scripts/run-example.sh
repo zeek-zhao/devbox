@@ -66,7 +66,17 @@ run_one() {
 
   if [ "$rc" -ne 0 ]; then
     printf '%-32s  FAIL (exit!=0, %ss)\n' "$id" "$dur"
-    sed 's/^/      | /' "$err" | head -20
+    # stdout 也要打：用例的业务输出走 stdout，只看 stderr 会丢掉失败现场，
+    # 表现是「一行 FAIL，什么线索都没有」。
+    if [ -s "$out" ]; then
+      echo "      --- stdout (last 15) ---"
+      tail -15 "$out" | sed 's/^/      > /'
+    fi
+    if [ -s "$err" ]; then
+      echo "      --- stderr (last 20) ---"
+      tail -20 "$err" | sed 's/^/      | /'
+    fi
+    [ -s "$out" ] || [ -s "$err" ] || echo "      (stdout 与 stderr 都是空的：失败命令把自己的输出吞了)"
     rm -f "$out" "$err"; return 1
   fi
 

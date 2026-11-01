@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
+# 失败时报出「第几行、哪条命令」——没有这个，静默失败（命令自己吞了 stderr）
+# 在 CI 上就只剩一行 FAIL，查不出来。
+trap 'echo "ERROR: 第 $LINENO 行失败: $BASH_COMMAND" >&2' ERR
 cd "$(dirname "$0")/../.."
 . scripts/lib/common.sh
 
@@ -19,7 +22,9 @@ ssl="$(psql_db "SHOW ssl" | tr -d '[:space:]')"
 [ "$ssl" = "off" ] || die "共享 PostgreSQL 的 TLS 状态不是 off: $ssl"
 echo "shared PostgreSQL TLS: off"
 
-tb openssl req -x509 -newkey rsa:2048 -nodes -days 1 -keyout "$KEY" -out "$CRT" -subj "/CN=$NAME" -addext "subjectAltName=DNS:$NAME" >/dev/null 2>&1
+# 只静默 stdout（openssl 会往 stdout 打进度点）；stderr 必须留着，
+# 否则自签证书失败时现场一片空白。
+tb openssl req -x509 -newkey rsa:2048 -nodes -days 1 -keyout "$KEY" -out "$CRT" -subj "/CN=$NAME" -addext "subjectAltName=DNS:$NAME" >/dev/null
 tb chmod 600 "$KEY"
 docker cp "$TOOLBOX:$CRT" "$TMP/server.crt" >/dev/null
 docker cp "$TOOLBOX:$KEY" "$TMP/server.key" >/dev/null
