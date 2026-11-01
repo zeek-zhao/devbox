@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt DB-06 的业务查询必须使用租户和业务键索引；故意绕过索引会引入与项目性能目标相反的全表扫描路径。 -->
 
 # L2-03-index-not-used · 索引失效场景
 

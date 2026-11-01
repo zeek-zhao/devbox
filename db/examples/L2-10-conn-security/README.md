@@ -1,6 +1,6 @@
 # L2-10-conn-security · 连接安全
 
-<!-- coverage: pending -->
+<!-- coverage: exempt DB-06 是仅供本地 Compose 网络运行的教学服务，不提供外部连接端点；TLS 终止和数据库传输策略由部署层负责。 -->
 
 ## 考点
 
@@ -33,4 +33,4 @@
 - stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
 - 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L2-10-conn-security --update` 生成 `expected.txt`，
   并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+- 本用例与 DB-06 的覆盖处置及理由见顶部声明。

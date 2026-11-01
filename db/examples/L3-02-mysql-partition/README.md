@@ -1,6 +1,6 @@
 # L3-02-mysql-partition · 表分区
 
-<!-- coverage: pending -->
+<!-- coverage: exempt DB-06 的时间序列报表已由 PostgreSQL 日分区承担，MySQL 订单表保持小型 OLTP 表，不需要重复建立 MySQL 分区。 -->
 
 ## 考点
 
@@ -33,4 +33,4 @@ RANGE/LIST/HASH 分区、分区裁剪、分区维护
 - stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
 - 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L3-02-mysql-partition --update` 生成 `expected.txt`，
   并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+- 本用例与 DB-06 的覆盖处置及理由见顶部声明。

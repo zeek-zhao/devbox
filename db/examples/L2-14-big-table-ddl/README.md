@@ -1,6 +1,6 @@
 # L2-14-big-table-ddl · 大表 DDL 安全
 
-<!-- coverage: pending -->
+<!-- coverage: exempt DB-06 使用固定小型订单数据集和显式版本迁移，不在共享服务上创建大表或执行会阻塞业务的 DDL。 -->
 
 ## 考点
 
@@ -33,4 +33,4 @@
 - stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
 - 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L2-14-big-table-ddl --update` 生成 `expected.txt`，
   并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+- 本用例与 DB-06 的覆盖处置及理由见顶部声明。

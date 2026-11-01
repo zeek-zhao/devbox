@@ -1,4 +1,4 @@
-mysql metrics: available
+mysql Com_select increased: yes
 postgres metrics: available
 mongodb metrics: available
-redis metrics: stats/hit counters available
+redis total_commands_processed increased: yes
