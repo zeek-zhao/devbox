@@ -38,3 +38,17 @@ images/scripts/*.sh
 
 # ⑦ 本地钩子与提交身份约束
 .githooks/*
+
+# ⑧ 格式化配置：改了它就能让不达标的代码「自动达标」
+#    与第④条同类风险 —— 把 ColumnLimit 从 100 改到 200，代码立刻全部合规，
+#    fmt-check 依然全绿，但代码其实没被整理过。
+.editorconfig
+.clang-format
+rustfmt.toml
+ruff.toml
+.prettierrc.json
+.prettierignore
+
+# ⑨ 格式化的判定实现本身
+scripts/fmt.sh
+scripts/check-docs.sh
