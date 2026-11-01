@@ -1,27 +1,22 @@
-# L1-RD-01-key-ops · key 操作
-
 <!-- coverage: pending -->
 
+# L1-RD-01-key-ops · key 操作
+
 ## 考点
+- 对本用例前缀执行 SET、TYPE、EXISTS、DEL，并核对删除前后的状态。
+- EXPIRE/TTL 只断言 TTL 为正数；PERSIST 后断言 TTL 为 -1。
+- 用 SCAN 按前缀找 key，排序后输出，避免依赖游标返回顺序。
 
-SET/GET/DEL/EXISTS/TYPE/TTL/PERSIST/SCAN vs KEYS
+## 为什么这么写
+使用 Redis Python 客户端逐页遍历 SCAN，并通过 `UNLINK` 仅清理本用例 key；TTL 输出判定而非变化中的原始秒数。
 
-## 判据（验收按这一条核对）
-
-输出 SCAN 游标遍历结果（排序后）
+## 易错点
+- SCAN 可能重复返回 key，且顺序不固定；不要把单次扫描结果当全局有序结果。
+- DEL/EXISTS 返回整数，key 不存在时为 0。
+- 不可使用 KEYS 阻塞共享实例，也不可使用 FLUSHDB/FLUSHALL。
 
 ## 依赖服务
-
 `redis`
 
 ## 命名空间
-
-`l1_rd_01_key_ops`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-RD-01-key-ops --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`l1-rd-01:*`

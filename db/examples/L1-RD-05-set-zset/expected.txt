@@ -1,0 +1,6 @@
+intersection=blue,green
+union_count=4
+difference=red
+top2=Mo:20,Lin:20
+score_range_count=3
+rank_Ada=1

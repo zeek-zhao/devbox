@@ -1,0 +1,7 @@
+type=string
+exists=1
+ttl=positive
+persisted=True
+scan=alpha,temporary
+deleted=1
+exists_after_delete=0

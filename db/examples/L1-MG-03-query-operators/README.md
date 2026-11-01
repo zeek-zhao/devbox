@@ -1,27 +1,21 @@
-# L1-MG-03-query-operators · 查询操作符
-
 <!-- coverage: pending -->
 
+# L1-MG-03-query-operators · 查询操作符
+
 ## 考点
+- 比较与逻辑组合、字段存在性和 BSON 类型过滤分别产生可区分命中数。
+- `$elemMatch`、`$size` 检查数组元素和值个数；正则表达式匹配业务键。
 
-比较/逻辑/元素($exists,$type)/数组($elemMatch,$size)/正则
+## 为什么这么写
+固定三条文档并对每个查询单独输出 `count_documents`，直接验证操作符语义而不依赖文档遍历顺序。显式给定数组、布尔值和整数，避免样本间条件重叠带来的含混。
 
-## 判据（验收按这一条核对）
-
-输出每个操作符命中的文档数
+## 易错点
+- `$exists: false` 也会匹配字段缺失的文档，不能当作字段值为 null。
+- `$size` 要求数组长度精确相等，不接受范围条件。
+- 多条件只有放进 `$and` 等逻辑操作符才表达组合查询。
 
 ## 依赖服务
-
 `mongodb`
 
 ## 命名空间
-
-`l1_mg_03_query_operators`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-MG-03-query-operators --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l1_mg_03_query_operators`
