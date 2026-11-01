@@ -43,10 +43,8 @@ permissions:
 
 env:
   REGISTRY: ghcr.io/${{ github.repository_owner }}
-  # 用例与格式化跑的是 images job 推上来的 latest。
-  # 镜像只在 images/** 变了才变，所以「用上一次的 latest 跑用例」不影响
-  # 「这次代码能不能过」这个结论。
-  IMAGE_TAG: latest
+  # 同仓 PR 使用本次 images job 推送的 SHA 镜像；fork PR 没有推送权限，沿用 latest。
+  IMAGE_TAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && format('sha-{0}', github.sha) || 'latest' }}
 
 jobs:
   # ------------------------------------------------------------------
@@ -145,8 +143,7 @@ jobs:
 
   # ------------------------------------------------------------------
   # 镜像可用性探测
-  # 镜像还没建时，fmt/examples 直接 pull 会红，把「镜像还没建」
-  # 误报成「代码有问题」。所以先探测，不存在就硬失败并给出明确指引。
+  # 探测 latest 作为基线（fork PR 仍使用它）；同仓 PR 随后构建 SHA 镜像供测试使用。
   # ------------------------------------------------------------------
   probe:
     name: 镜像可用性
@@ -168,12 +165,12 @@ jobs:
       - name: 探测 devbox-cpp 镜像是否存在
         id: p
         run: |
-          if docker manifest inspect "$REGISTRY/devbox-cpp:$IMAGE_TAG" > /dev/null 2>&1; then
+          if docker manifest inspect "$REGISTRY/devbox-cpp:latest" > /dev/null 2>&1; then
             echo "ready=true" >> "$GITHUB_OUTPUT"
-            echo "镜像已就绪：$REGISTRY/devbox-cpp:$IMAGE_TAG"
+            echo "镜像已就绪：$REGISTRY/devbox-cpp:latest"
           else
             echo "ready=false" >> "$GITHUB_OUTPUT"
-            echo "::error::镜像 $REGISTRY/devbox-cpp:$IMAGE_TAG 不存在。先跑一次 images workflow（push main 或手动触发）"
+            echo "::error::镜像 $REGISTRY/devbox-cpp:latest 不存在。先跑一次 images workflow（push main 或手动触发）"
             exit 1
           fi
 
@@ -189,8 +186,8 @@ jobs:
     permissions:
       contents: read
       packages: read
-    needs: [probe]
-    if: needs.probe.outputs.ready == 'true'
+    needs: [probe, images]
+    if: always() && needs.probe.outputs.ready == 'true' && (needs.images.result == 'success' || needs.images.result == 'skipped')
     strategy:
       fail-fast: false
       matrix:
@@ -225,8 +222,8 @@ jobs:
     permissions:
       contents: read
       packages: read
-    needs: [probe]
-    if: needs.probe.outputs.ready == 'true'
+    needs: [probe, images]
+    if: always() && needs.probe.outputs.ready == 'true' && (needs.images.result == 'success' || needs.images.result == 'skipped')
     strategy:
       fail-fast: false
       matrix:
@@ -271,8 +268,8 @@ jobs:
     permissions:
       contents: read
       packages: read
-    needs: [probe]
-    if: needs.probe.outputs.ready == 'true'
+    needs: [probe, images]
+    if: always() && needs.probe.outputs.ready == 'true' && (needs.images.result == 'success' || needs.images.result == 'skipped')
     steps:
       - uses: actions/checkout@v4
 
@@ -309,8 +306,7 @@ jobs:
 
   # ------------------------------------------------------------------
   # 镜像重建 + 体积预算：直接复用 images.yml，不复制那 200 行。
-  # 与用例矩阵并行跑（串行要多花一倍时长，且用例跑的是上一次的 latest，
-  # 对「这次代码能不能过」没有影响）。
+  # 先构建本次镜像，再由 fmt/examples 使用其 SHA tag；fork PR 跳过构建并继续使用 latest。
   #
   # fork PR 跳过：拿不到可写的 GITHUB_TOKEN，推送必失败。
   # ------------------------------------------------------------------

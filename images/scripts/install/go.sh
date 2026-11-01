@@ -29,9 +29,9 @@ rm -rf /usr/local/go
 tar -C /usr/local -xzf /tmp/go.tgz
 rm -f /tmp/go.tgz
 
-# 全局 GOPATH / GOCACHE：非 root 用户也能写
+# 只开放 Go 模块与构建缓存；不让任意用户替换 /go/bin 下的工具。
 mkdir -p /go/bin /go/pkg /go/cache
-chmod -R 0777 /go
+chmod -R a+rwX /go/pkg /go/cache
 
 echo "==> 自检"
 /usr/local/go/bin/go version

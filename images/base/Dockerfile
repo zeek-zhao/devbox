@@ -33,10 +33,19 @@ RUN set -eux; \
       vim-tiny less file tree \
       jq zip unzip xz-utils tar gzip bzip2 zstd \
       procps psmisc iproute2 net-tools dnsutils iputils-ping \
-      sudo rsync \
+      sudo rsync gosu passwd \
     ; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# 复用 Ubuntu 自带的 uid/gid 1000 用户，并移除其附加组；默认非 root，见 entrypoint.sh。
+RUN set -eux; \
+    groupmod -n dev ubuntu; \
+    usermod -l dev -d /home/dev -m -c devbox ubuntu; \
+    usermod -G '' dev; \
+    id dev
+COPY images/scripts/entrypoint.sh /usr/local/bin/devbox-entrypoint
+RUN chmod +x /usr/local/bin/devbox-entrypoint
 
 # git 默认值写进系统级配置：容器里没有 ~/.gitconfig，避免每个仓库重复设置
 RUN git config --system init.defaultBranch main \
@@ -44,6 +53,8 @@ RUN git config --system init.defaultBranch main \
  && git config --system pull.rebase true
 
 WORKDIR /work
+ENTRYPOINT ["/usr/local/bin/devbox-entrypoint"]
+CMD ["bash"]
 
 # 自检：这一层必须能跑通最基础的三件事
 RUN set -eux; \

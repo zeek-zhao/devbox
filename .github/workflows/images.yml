@@ -37,9 +37,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: 缩短 tag 并打印版本真本
+      - name: 打印版本真本
         run: |
-          echo "IMAGE_TAG=sha-$(echo '${{ github.sha }}' | cut -c1-7)" >> "$GITHUB_ENV"
           echo "=== images/versions.env ===" 
           grep -v '^\s*#' images/versions.env | grep -v '^\s*$' || true
 
@@ -70,6 +69,10 @@ jobs:
           printf 'layer\tsize_bytes\nbase\t%s\n' "$size" > /tmp/metrics-base.tsv
           bash scripts/budget-check.sh --metrics /tmp/metrics-base.tsv --layers base
           docker push "$REGISTRY/devbox-base:$IMAGE_TAG"
+
+      - name: publish base latest
+        if: github.event_name != 'pull_request'
+        run: |
           docker tag "$REGISTRY/devbox-base:$IMAGE_TAG" "$REGISTRY/devbox-base:latest"
           docker push "$REGISTRY/devbox-base:latest"
 
@@ -90,6 +93,10 @@ jobs:
           printf 'layer\tsize_bytes\ntool\t%s\n' "$size" > /tmp/metrics-tool.tsv
           bash scripts/budget-check.sh --metrics /tmp/metrics-tool.tsv --layers tool
           docker push "$REGISTRY/devbox-tool:$IMAGE_TAG"
+
+      - name: publish tool latest
+        if: github.event_name != 'pull_request'
+        run: |
           docker tag "$REGISTRY/devbox-tool:$IMAGE_TAG" "$REGISTRY/devbox-tool:latest"
           docker push "$REGISTRY/devbox-tool:latest"
 
@@ -122,9 +129,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: 计算 tag
-        run: echo "IMAGE_TAG=sha-$(echo '${{ github.sha }}' | cut -c1-7)" >> "$GITHUB_ENV"
-
       - uses: docker/setup-buildx-action@v3
 
       - uses: docker/login-action@v3
@@ -150,7 +154,9 @@ jobs:
       - name: smoke test（真跑 hello 用例）
         run: |
           IMG="$REGISTRY/devbox-${{ matrix.lang }}:$IMAGE_TAG"
-          docker run --rm -v "$PWD:/work" -w "/work/${{ matrix.lang }}/examples/hello" "$IMG" bash run.sh
+          docker run --rm \
+            -e "HOST_UID=$(id -u)" -e "HOST_GID=$(id -g)" \
+            -v "$PWD:/work" -w "/work/${{ matrix.lang }}/examples/L0-hello" "$IMG" bash run.sh
 
       - name: 记录体积 + 推送
         run: |
@@ -164,6 +170,11 @@ jobs:
             --metrics "metrics/images-${{ matrix.lang }}-$IMAGE_TAG.tsv" \
             --layers "${{ matrix.lang }}"
           docker push "$IMG"
+
+      - name: publish ${{ matrix.lang }} latest
+        if: github.event_name != 'pull_request'
+        run: |
+          IMG="$REGISTRY/devbox-${{ matrix.lang }}:$IMAGE_TAG"
           docker tag "$IMG" "$REGISTRY/devbox-${{ matrix.lang }}:latest"
           docker push "$REGISTRY/devbox-${{ matrix.lang }}:latest"
 
@@ -181,9 +192,6 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
-
-      - name: 计算 tag
-        run: echo "IMAGE_TAG=sha-$(echo '${{ github.sha }}' | cut -c1-7)" >> "$GITHUB_ENV"
 
       - uses: docker/setup-buildx-action@v3
 
@@ -212,6 +220,10 @@ jobs:
           printf 'layer\tsize_bytes\nruntime\t%s\n' "$size" > /tmp/metrics-runtime.tsv
           bash scripts/budget-check.sh --metrics /tmp/metrics-runtime.tsv --layers runtime
           docker push "$REGISTRY/devbox-runtime:$IMAGE_TAG"
+
+      - name: publish runtime latest
+        if: github.event_name != 'pull_request'
+        run: |
           docker tag "$REGISTRY/devbox-runtime:$IMAGE_TAG" "$REGISTRY/devbox-runtime:latest"
           docker push "$REGISTRY/devbox-runtime:latest"
 
@@ -231,6 +243,10 @@ jobs:
           printf 'layer\tsize_bytes\nall\t%s\n' "$size" > /tmp/metrics-all.tsv
           bash scripts/budget-check.sh --metrics /tmp/metrics-all.tsv --layers all
           docker push "$REGISTRY/devbox-all:$IMAGE_TAG"
+
+      - name: publish all latest
+        if: github.event_name != 'pull_request'
+        run: |
           docker tag "$REGISTRY/devbox-all:$IMAGE_TAG" "$REGISTRY/devbox-all:latest"
           docker push "$REGISTRY/devbox-all:latest"
 

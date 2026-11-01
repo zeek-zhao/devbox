@@ -95,6 +95,8 @@ run_one() {
   if ! docker "${run_args[@]}" \
         -v "$(host_path "$ROOT"):/work" \
         -w "/work/$dir" \
+        -e "HOST_UID=$(id -u)" \
+        -e "HOST_GID=$(id -g)" \
         -e "DEBIAN_FRONTEND=noninteractive" \
         "$image" bash run.sh >"$out" 2>"$err"; then
     rc=1

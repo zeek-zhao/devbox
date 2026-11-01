@@ -33,16 +33,25 @@ RUN set -eux; \
       libstdc++6 libgcc-s1 libssl3 zlib1g \
       python3 \
       "openjdk-${JAVA_MAJOR}-jre-headless" \
-      tini \
+      tini gosu passwd \
     ; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# 复用 Ubuntu 自带的 uid/gid 1000 用户，并移除其附加组。
+RUN set -eux; \
+    groupmod -n dev ubuntu; \
+    usermod -l dev -d /home/dev -m -c devbox ubuntu; \
+    usermod -G '' dev; \
+    id dev
+COPY images/scripts/entrypoint.sh /usr/local/bin/devbox-entrypoint
+RUN chmod +x /usr/local/bin/devbox-entrypoint
 
 COPY --chmod=0755 images/scripts/runtime-verify.sh /usr/local/bin/runtime-verify
 
 WORKDIR /opt/app
 
-ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["/usr/local/bin/runtime-verify"]
+ENTRYPOINT ["/usr/local/bin/devbox-entrypoint"]
+CMD ["/usr/bin/tini", "--", "/usr/local/bin/runtime-verify"]
 
 RUN /usr/local/bin/runtime-verify

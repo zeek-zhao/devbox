@@ -36,7 +36,15 @@ rm -f /tmp/rustup-init
 # rustup 装完后组件再补：minimal profile 不含 clippy/rustfmt
 "${CARGO_HOME}/bin/rustup" component add clippy rustfmt
 
-chmod -R 0777 "${CARGO_HOME}" "${RUSTUP_HOME}"
+mkdir -p \
+  "${CARGO_HOME}/registry" \
+  "${CARGO_HOME}/git"
+# .package-cache is cargo's lock file, not a directory.
+: > "${CARGO_HOME}/.package-cache"
+chmod 0666 "${CARGO_HOME}/.package-cache"
+chmod -R a+rwX \
+  "${CARGO_HOME}/registry" \
+  "${CARGO_HOME}/git"
 
 echo "==> 自检"
 "${CARGO_HOME}/bin/rustc" --version

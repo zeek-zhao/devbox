@@ -23,6 +23,10 @@ JAVA_HOME_REAL="$(dirname "$(dirname "$JAVAC_REAL")")"
 ln -sfn "$JAVA_HOME_REAL" /opt/java-home
 echo "==> JAVA_HOME=${JAVA_HOME_REAL} -> /opt/java-home"
 
+# Maven 的共享依赖仓库需要允许任意运行 uid 写入。
+mkdir -p /opt/m2
+chmod -R a+rwX /opt/m2
+
 # ------------------------------------------------------------------
 # google-java-format：Java 的格式化器，apt 源里没有，只能下 jar。
 # 1) JDK 16+ 上必须用 --add-exports 打开 jdk.compiler 的内部包，

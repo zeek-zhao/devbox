@@ -11,6 +11,10 @@ ARG BASE_IMAGE=devbox-base:local
 FROM ${BASE_IMAGE}
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG ACTIONLINT_VERSION=1.7.12
+ARG ACTIONLINT_SHA256=8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8
+ARG GIT_FILTER_REPO_VERSION=2.47.0
+ARG GIT_FILTER_REPO_SHA256=67447413e273fc76809289111748870b6f6072f08b17efe94863a92d810b7d94
 
 LABEL org.opencontainers.image.title="devbox-tool" \
       org.opencontainers.image.description="Ubuntu 24.04 调试工具层：gdb/lldb/strace/valgrind/tcpdump + zsh/tmux/fzf" \
@@ -41,13 +45,32 @@ RUN set -eux; \
       httpie \
       zsh tmux fzf ripgrep fd-find bat \
       neovim universal-ctags graphviz \
-      shellcheck shfmt \
+      shellcheck shfmt gosu python3 \
     ; \
     # Ubuntu 把 fd/bat 装成 fdfind/batcat，建兼容软链
     ln -sf /usr/bin/fdfind /usr/local/bin/fd; \
     ln -sf /usr/bin/batcat /usr/local/bin/bat; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# 固定版本与校验和来自 images/versions.env。
+RUN set -eux; \
+    case "$(uname -m)" in \
+      x86_64) actionlint_arch=amd64 ;; \
+      *) echo "actionlint 未锁定该架构的校验和: $(uname -m)" >&2; exit 1 ;; \
+    esac; \
+    curl -fsSL --retry 3 --retry-delay 2 \
+      -o /tmp/actionlint.tar.gz \
+      "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_${actionlint_arch}.tar.gz"; \
+    echo "${ACTIONLINT_SHA256}  /tmp/actionlint.tar.gz" | sha256sum -c -; \
+    tar -xzf /tmp/actionlint.tar.gz -C /tmp actionlint; \
+    install -m 0755 /tmp/actionlint /usr/local/bin/actionlint; \
+    curl -fsSL --retry 3 --retry-delay 2 \
+      -o /usr/local/bin/git-filter-repo \
+      "https://raw.githubusercontent.com/newren/git-filter-repo/v${GIT_FILTER_REPO_VERSION}/git-filter-repo"; \
+    echo "${GIT_FILTER_REPO_SHA256}  /usr/local/bin/git-filter-repo" | sha256sum -c -; \
+    chmod 0755 /usr/local/bin/git-filter-repo; \
+    rm -f /tmp/actionlint.tar.gz /tmp/actionlint
 
 # 用 /etc/skel 预置交互环境：新建用户自动继承，root 也直接生效
 # 注意：不在这里用 `cat > file <<EOF`。heredoc 需要 buildx 的 dockerfile frontend
@@ -57,7 +80,10 @@ COPY images/tool/dotfiles/zshrc     /etc/skel/.zshrc
 COPY images/tool/dotfiles/tmux.conf /etc/skel/.tmux.conf
 RUN set -eux; \
     cp /etc/skel/.zshrc /root/.zshrc; \
-    cp /etc/skel/.tmux.conf /root/.tmux.conf
+    cp /etc/skel/.tmux.conf /root/.tmux.conf; \
+    cp /etc/skel/.zshrc /home/dev/.zshrc; \
+    cp /etc/skel/.tmux.conf /home/dev/.tmux.conf; \
+    chown dev:dev /home/dev/.zshrc /home/dev/.tmux.conf
 
 ENV EDITOR=nvim \
     PAGER=less
@@ -72,4 +98,7 @@ RUN set -eux; \
     valgrind --version; \
     shellcheck --version | head -2; \
     tmux -V; \
-    zsh --version
+    zsh --version; \
+    gosu --version; \
+    actionlint --version; \
+    git filter-repo --version

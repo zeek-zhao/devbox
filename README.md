@@ -78,6 +78,9 @@ make examples   LANG=cpp TAG=local
 `TAG=latest` 用 CI 发布的镜像，`TAG=local` 用本地构建的镜像。镜像映射与构建细节见
 [镜像体系](docs/01-镜像体系.md)。
 
+镜像默认以非 root 用户 `dev` 运行，其 uid/gid 会在启动时对齐 `HOST_UID`/`HOST_GID`；
+需要 root 时可使用 `-e DEVBOX_AS_ROOT=1`。
+
 ## 用例契约
 
 每个用例目录恰好包含三个文件：
