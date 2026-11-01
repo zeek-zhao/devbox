@@ -16,18 +16,20 @@ public final class Main {
         CountDownLatch started = new CountDownLatch(1);
         AtomicReference<Integer> observed = new AtomicReference<>();
         AtomicReference<Throwable> failure = new AtomicReference<>();
-        Thread reader = new Thread(() -> {
-            started.countDown();
-            long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(2);
-            while (!publication.ready) {
-                if (System.nanoTime() >= deadline) {
-                    failure.set(new IllegalStateException("publication timed out"));
-                    return;
-                }
-                Thread.onSpinWait();
-            }
-            observed.set(publication.payload);
-        });
+        Thread reader =
+                new Thread(
+                        () -> {
+                            started.countDown();
+                            long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(2);
+                            while (!publication.ready) {
+                                if (System.nanoTime() >= deadline) {
+                                    failure.set(new IllegalStateException("publication timed out"));
+                                    return;
+                                }
+                                Thread.onSpinWait();
+                            }
+                            observed.set(publication.payload);
+                        });
 
         reader.start();
         if (!started.await(2, TimeUnit.SECONDS)) {

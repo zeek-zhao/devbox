@@ -14,12 +14,20 @@ public class Main {
         AtomicInteger lazyCalls = new AtomicInteger();
 
         System.out.println("mapped=" + present.map(String::toUpperCase).orElseGet(() -> "missing"));
-        System.out.println("fallback=" + absent.flatMap(value -> Optional.of(value + "!"))
-                .orElseGet(() -> "missing"));
-        System.out.println("orElse-eager-calls="
-                + present.orElse(defaultValue(eagerCalls)) + ":" + eagerCalls.get());
-        System.out.println("orElseGet-calls="
-                + present.orElseGet(() -> defaultValue(lazyCalls)) + ":" + lazyCalls.get());
+        System.out.println(
+                "fallback="
+                        + absent.flatMap(value -> Optional.of(value + "!"))
+                                .orElseGet(() -> "missing"));
+        System.out.println(
+                "orElse-eager-calls="
+                        + present.orElse(defaultValue(eagerCalls))
+                        + ":"
+                        + eagerCalls.get());
+        System.out.println(
+                "orElseGet-calls="
+                        + present.orElseGet(() -> defaultValue(lazyCalls))
+                        + ":"
+                        + lazyCalls.get());
         try {
             absent.get();
         } catch (java.util.NoSuchElementException exception) {

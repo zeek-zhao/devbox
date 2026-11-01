@@ -4,8 +4,8 @@
 #include <string_view>
 
 class Storage {
- public:
-  std::string_view find(std::string_view term) const;
+public:
+    std::string_view find(std::string_view term) const;
 };
 
 #endif

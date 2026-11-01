@@ -18,25 +18,30 @@ public class Main {
             CompletableFuture<?>[] tasks = new CompletableFuture<?>[words.length];
             for (int index = 0; index < words.length; index++) {
                 String word = words[index];
-                tasks[index] = CompletableFuture.supplyAsync(() -> word, pool)
-                        .thenApply(value -> {
-                            counts.merge(value, 1, Integer::sum);
-                            completed.incrementAndGet();
-                            return value;
-                        });
+                tasks[index] =
+                        CompletableFuture.supplyAsync(() -> word, pool)
+                                .thenApply(
+                                        value -> {
+                                            counts.merge(value, 1, Integer::sum);
+                                            completed.incrementAndGet();
+                                            return value;
+                                        });
             }
             CompletableFuture.allOf(tasks).get(5, TimeUnit.SECONDS);
             Map<String, Integer> sorted = new TreeMap<>(counts);
             System.out.println("counts: " + sorted);
             System.out.println("completed: " + completed.get());
 
-            CompletableFuture<Void> failed = CompletableFuture
-                    .supplyAsync(() -> {
-                        throw new IllegalArgumentException("fixed failure");
-                    }, pool)
-                    .thenAccept(value -> {
-                        throw new IllegalStateException("unreachable");
-                    });
+            CompletableFuture<Void> failed =
+                    CompletableFuture.supplyAsync(
+                                    () -> {
+                                        throw new IllegalArgumentException("fixed failure");
+                                    },
+                                    pool)
+                            .thenAccept(
+                                    value -> {
+                                        throw new IllegalStateException("unreachable");
+                                    });
             try {
                 failed.get(5, TimeUnit.SECONDS);
                 throw new IllegalStateException("failed future was accepted");
@@ -44,8 +49,8 @@ public class Main {
                 if (!(expected.getCause() instanceof IllegalArgumentException)) {
                     throw expected;
                 }
-                System.out.println("failure-cause: " +
-                        expected.getCause().getClass().getSimpleName());
+                System.out.println(
+                        "failure-cause: " + expected.getCause().getClass().getSimpleName());
             }
         } finally {
             pool.shutdown();
@@ -55,5 +60,4 @@ public class Main {
             }
         }
     }
-
 }

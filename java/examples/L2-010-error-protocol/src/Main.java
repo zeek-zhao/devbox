@@ -48,19 +48,26 @@ public class Main {
         System.exit(status);
     }
 
-    private static void checkChild(String mode, int expectedStatus, String expectedOutput,
-            String expectedError) throws IOException, InterruptedException {
+    private static void checkChild(
+            String mode, int expectedStatus, String expectedOutput, String expectedError)
+            throws IOException, InterruptedException {
         String java = Path.of(System.getProperty("java.home"), "bin", "java").toString();
-        Process process = new ProcessBuilder(java, "-cp", System.getProperty("java.class.path"),
-                Main.class.getName(), mode).start();
+        Process process =
+                new ProcessBuilder(
+                                java,
+                                "-cp",
+                                System.getProperty("java.class.path"),
+                                Main.class.getName(),
+                                mode)
+                        .start();
         if (!process.waitFor(5, TimeUnit.SECONDS)) {
             process.destroyForcibly();
             throw new IllegalStateException("child command timed out: " + mode);
         }
-        String actualOutput = new String(process.getInputStream().readAllBytes(),
-                StandardCharsets.UTF_8);
-        String actualError = new String(process.getErrorStream().readAllBytes(),
-                StandardCharsets.UTF_8);
+        String actualOutput =
+                new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+        String actualError =
+                new String(process.getErrorStream().readAllBytes(), StandardCharsets.UTF_8);
         if (process.exitValue() != expectedStatus
                 || !actualOutput.equals(expectedOutput)
                 || !actualError.equals(expectedError)) {

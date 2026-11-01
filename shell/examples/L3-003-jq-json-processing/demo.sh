@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cat > "$WORK/response.json" <<'JSON'
+cat >"$WORK/response.json" <<'JSON'
 {
   "service": {
     "name": "api",

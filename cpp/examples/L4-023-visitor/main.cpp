@@ -22,9 +22,7 @@ class Text final : public Element {
 public:
     explicit Text(std::string value) : value_(std::move(value)) {}
     const std::string& value() const { return value_; }
-    std::string accept(const Visitor& visitor) const override {
-        return visitor.visit(*this);
-    }
+    std::string accept(const Visitor& visitor) const override { return visitor.visit(*this); }
 
 private:
     std::string value_;
@@ -34,9 +32,7 @@ class Number final : public Element {
 public:
     explicit Number(int value) : value_(value) {}
     int value() const { return value_; }
-    std::string accept(const Visitor& visitor) const override {
-        return visitor.visit(*this);
-    }
+    std::string accept(const Visitor& visitor) const override { return visitor.visit(*this); }
 
 private:
     int value_;
@@ -44,9 +40,7 @@ private:
 
 class DescribeVisitor final : public Visitor {
 public:
-    std::string visit(const Text& text) const override {
-        return "describe text: " + text.value();
-    }
+    std::string visit(const Text& text) const override { return "describe text: " + text.value(); }
     std::string visit(const Number& number) const override {
         return "describe number: " + std::to_string(number.value());
     }
@@ -58,8 +52,7 @@ public:
         return "measure text: " + std::to_string(text.value().size());
     }
     std::string visit(const Number& number) const override {
-        return "measure number: "
-            + std::to_string(std::to_string(number.value()).size());
+        return "measure number: " + std::to_string(std::to_string(number.value()).size());
     }
 };
 

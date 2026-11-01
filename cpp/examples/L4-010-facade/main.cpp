@@ -28,9 +28,7 @@ public:
 
 class Renderer {
 public:
-    void render(std::size_t count) const {
-        std::cout << "render: " << count << " entries\n";
-    }
+    void render(std::size_t count) const { std::cout << "render: " << count << " entries\n"; }
 };
 
 class PipelineFacade {

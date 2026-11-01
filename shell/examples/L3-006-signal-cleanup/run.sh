@@ -13,7 +13,10 @@ for _ in $(seq 1 100); do
   [[ -f "$WORK/ready" ]] && break
   sleep 0.05
 done
-[[ -f "$WORK/ready" ]] || { printf 'worker 未就绪\n' >&2; exit 1; }
+[[ -f "$WORK/ready" ]] || {
+  printf 'worker 未就绪\n' >&2
+  exit 1
+}
 
 kill -TERM "$worker_pid"
 if wait "$worker_pid"; then

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 work=$1
-cat > "$work/child.sh" <<'CHILD'
+cat >"$work/child.sh" <<'CHILD'
 #!/usr/bin/env bash
 set -euo pipefail
 

@@ -13,16 +13,12 @@ public:
 
 class CacheObserver final : public Observer {
 public:
-    void update(int version) override {
-        std::cout << "cache invalidated: " << version << '\n';
-    }
+    void update(int version) override { std::cout << "cache invalidated: " << version << '\n'; }
 };
 
 class DisplayObserver final : public Observer {
 public:
-    void update(int version) override {
-        std::cout << "display refreshed: " << version << '\n';
-    }
+    void update(int version) override { std::cout << "display refreshed: " << version << '\n'; }
 };
 
 class Subject {
@@ -31,8 +27,7 @@ public:
         if (!observer) {
             throw std::invalid_argument("observer must not be null");
         }
-        if (std::find(observers_.begin(), observers_.end(), observer)
-            != observers_.end()) {
+        if (std::find(observers_.begin(), observers_.end(), observer) != observers_.end()) {
             throw std::invalid_argument("observer already registered");
         }
         observers_.push_back(std::move(observer));

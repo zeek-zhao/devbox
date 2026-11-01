@@ -4,8 +4,8 @@ set -euo pipefail
 export LC_ALL=C
 work="$1"
 cd "$work" || exit 1
-: > sample-a.txt
-: > sample-b.txt
+: >sample-a.txt
+: >sample-b.txt
 
 show_args() {
   printf 'argument=%s\n' "$@"

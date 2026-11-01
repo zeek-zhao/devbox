@@ -18,11 +18,12 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
         Counter counter = new Counter();
-        Runnable increments = () -> {
-            for (int index = 0; index < 1000; index++) {
-                counter.increment();
-            }
-        };
+        Runnable increments =
+                () -> {
+                    for (int index = 0; index < 1000; index++) {
+                        counter.increment();
+                    }
+                };
         Thread first = new Thread(increments);
         Thread second = new Thread(increments);
         first.start();

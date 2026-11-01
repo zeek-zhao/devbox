@@ -19,8 +19,8 @@ deploy() {
   if [[ -e "$target/release" ]]; then
     # L2-010-idempotent-steps: repeated deployment never rewrites matching files.
     if [[ -f "$target/release/service.txt" && ! -L "$target/release/service.txt" ]] &&
-       cmp -s -- "$workspace/service.txt" "$target/release/service.txt" &&
-       check_files "$target" && check_layout "$target" && check_integrity "$target"; then
+      cmp -s -- "$workspace/service.txt" "$target/release/service.txt" &&
+      check_files "$target" && check_layout "$target" && check_integrity "$target"; then
       printf 'deploy\tunchanged\n'
       return
     fi
@@ -30,7 +30,7 @@ deploy() {
   rm -rf -- "$workspace"
   workspace="$(mktemp -d -- "$target/.stage.XXXXXXXX")"
   payload "$name" >"$workspace/service.txt"
-  (cd -- "$workspace" && sha256sum service.txt > SHA256SUMS)
+  (cd -- "$workspace" && sha256sum service.txt >SHA256SUMS)
   # L1-034-command-argument-safety
   mv -T -- "$workspace" "$target/release"
   workspace=''
@@ -68,7 +68,7 @@ check_layout() {
 check_integrity() {
   local target=$1 manifest
   [[ -f "$target/release/SHA256SUMS" && ! -L "$target/release/SHA256SUMS" &&
-     -f "$target/release/service.txt" && ! -L "$target/release/service.txt" ]] || return 1
+    -f "$target/release/service.txt" && ! -L "$target/release/service.txt" ]] || return 1
   manifest=$(cat -- "$target/release/SHA256SUMS") || return 1
   [[ "$manifest" =~ ^[a-f0-9]{64}'  service.txt'$ ]] || return 1
   # L3-004-sha256-integrity
@@ -105,7 +105,10 @@ inspect() {
   local checks=(files integrity layout)
   [[ -z "$config" ]] || checks+=(policy)
   # L1-019-array-at-star: join names for diagnostics, preserve arguments below.
-  printf '[inspect] checks: %s\n' "$(IFS=,; printf '%s' "${checks[*]}")" >&2
+  printf '[inspect] checks: %s\n' "$(
+    IFS=,
+    printf '%s' "${checks[*]}"
+  )" >&2
   # L1-014-for-list
   for check in "${checks[@]}"; do
     # Each worker owns a process group so signals also stop external commands.
@@ -137,7 +140,10 @@ report_short() {
   # L1-028-getopts: report also accepts a validated short-option interface.
   while getopts ':f:h' option; do
     case "$option" in
-      f) [[ -z "$input" && -n "$OPTARG" ]] || die 'invalid or duplicate -f'; input=$OPTARG ;;
+      f)
+        [[ -z "$input" && -n "$OPTARG" ]] || die 'invalid or duplicate -f'
+        input=$OPTARG
+        ;;
       h) help=1 ;;
       :) die "missing value for -$OPTARG" ;;
       \?) die "unknown option: -$OPTARG" ;;
@@ -162,7 +168,7 @@ report() {
   while IFS= read -r line || [[ -n "$line" ]]; do
     [[ "$line" == *$'\t'* && "$line" != *$'\t'*$'\t'* ]] || die 'expected two TSV columns'
     # L1-005-ifs-field-splitting
-    IFS=$'\t' read -r check status <<< "$line"
+    IFS=$'\t' read -r check status <<<"$line"
     [[ "$check" =~ ^[a-z][a-z0-9_-]*$ && "$status" =~ ^(PASS|FAIL)$ ]] || die 'invalid report row'
     [[ ! -v "results[$check]" ]] || die "duplicate check: $check"
     results[$check]=$status

@@ -67,8 +67,7 @@ int main() {
     while (iterator != sequence.end()) {
         ++iterator;
     }
-    std::cout << std::boolalpha
-              << "exhausted equals end: " << (iterator == sequence.end()) << '\n';
+    std::cout << std::boolalpha << "exhausted equals end: " << (iterator == sequence.end()) << '\n';
     try {
         std::cout << *iterator << '\n';
         return 1;

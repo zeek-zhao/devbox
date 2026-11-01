@@ -10,18 +10,19 @@ public final class Main {
     public static void main(String[] args) throws InterruptedException {
         ExecutorService executor = Executors.newFixedThreadPool(2);
         try {
-            List<Future<Integer>> results = List.of(
-                    executor.submit(() -> 2),
-                    executor.submit(() -> 4));
+            List<Future<Integer>> results =
+                    List.of(executor.submit(() -> 2), executor.submit(() -> 4));
             List<Integer> values = new ArrayList<>();
             for (Future<Integer> result : results) {
                 values.add(result.get(2, TimeUnit.SECONDS));
             }
             System.out.println("results=" + values);
 
-            Future<Integer> failed = executor.submit(() -> {
-                throw new IllegalArgumentException("fixed failure");
-            });
+            Future<Integer> failed =
+                    executor.submit(
+                            () -> {
+                                throw new IllegalArgumentException("fixed failure");
+                            });
             try {
                 failed.get(2, TimeUnit.SECONDS);
                 throw new IllegalStateException("task failure was not reported");

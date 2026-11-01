@@ -29,17 +29,22 @@ public class Main {
             throws IOException, InterruptedException {
         String java = Path.of(System.getProperty("java.home"), "bin", "java").toString();
         String classpath = System.getProperty("java.class.path");
-        Process process = new ProcessBuilder(java, "-Djava.library.path=" + directory,
-                "-cp", classpath, Main.class.getName(), "missing-library")
-                .redirectErrorStream(true).start();
+        Process process =
+                new ProcessBuilder(
+                                java,
+                                "-Djava.library.path=" + directory,
+                                "-cp",
+                                classpath,
+                                Main.class.getName(),
+                                "missing-library")
+                        .redirectErrorStream(true)
+                        .start();
         if (!process.waitFor(5, TimeUnit.SECONDS)) {
             process.destroyForcibly();
             throw new IllegalStateException("missing-library probe timed out");
         }
-        String output = new String(process.getInputStream().readAllBytes(),
-                StandardCharsets.UTF_8);
-        if (process.exitValue() == 0
-                || !output.equals("missing-library: UnsatisfiedLinkError\n")) {
+        String output = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+        if (process.exitValue() == 0 || !output.equals("missing-library: UnsatisfiedLinkError\n")) {
             throw new IllegalStateException("unexpected missing-library probe result: " + output);
         }
     }

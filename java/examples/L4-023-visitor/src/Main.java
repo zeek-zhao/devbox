@@ -7,33 +7,46 @@ public class Main {
 
     interface Visitor<R> {
         R visit(Text text);
+
         R visit(NumberNode number);
     }
 
     record Text(String value) implements Element {
-        @Override public <R> R accept(Visitor<R> visitor) {
+        @Override
+        public <R> R accept(Visitor<R> visitor) {
             return visitor.visit(this);
         }
     }
 
     record NumberNode(int value) implements Element {
-        @Override public <R> R accept(Visitor<R> visitor) {
+        @Override
+        public <R> R accept(Visitor<R> visitor) {
             return visitor.visit(this);
         }
     }
 
     static final class Render implements Visitor<String> {
-        @Override public String visit(Text text) { return "render/text: " + text.value(); }
-        @Override public String visit(NumberNode number) { return "render/number: " + number.value(); }
+        @Override
+        public String visit(Text text) {
+            return "render/text: " + text.value();
+        }
+
+        @Override
+        public String visit(NumberNode number) {
+            return "render/number: " + number.value();
+        }
     }
 
     record Measurement(String label, int value) {}
 
     static final class Measure implements Visitor<Measurement> {
-        @Override public Measurement visit(Text text) {
+        @Override
+        public Measurement visit(Text text) {
             return new Measurement("measure/text", text.value().length());
         }
-        @Override public Measurement visit(NumberNode number) {
+
+        @Override
+        public Measurement visit(NumberNode number) {
             return new Measurement("measure/number", Integer.toString(number.value()).length());
         }
     }

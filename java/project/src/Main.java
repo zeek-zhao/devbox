@@ -1,6 +1,7 @@
 import devbox.rest.Api;
 import devbox.rest.HttpApp;
 import devbox.rest.SelfCheck;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -14,14 +15,19 @@ public final class Main {
         try {
             var options = Options.parse(args); // L1-013-var-inference
             if (options.help()) {
-                System.out.println("usage: java -jar app.jar [--port 8080] [--seed FILE] | --self-check");
+                System.out.println(
+                        "usage: java -jar app.jar [--port 8080] [--seed FILE] | --self-check");
             } else if (options.selfCheck()) {
                 SelfCheck.run(System.out);
             } else {
                 Api api = Api.create(); // L2-001-packages-classpath
                 if (options.seed() != null) {
-                    String name = Files.readString(options.seed(), StandardCharsets.UTF_8).strip(); // L2-008-files-utf-eight
-                    var result = api.handle(new Api.Request("POST", "/items", devbox.rest.Json.name(name)));
+                    String name =
+                            Files.readString(options.seed(), StandardCharsets.UTF_8)
+                                    .strip(); // L2-008-files-utf-eight
+                    var result =
+                            api.handle(
+                                    new Api.Request("POST", "/items", devbox.rest.Json.name(name)));
                     if (result.status() != 201) {
                         throw new IllegalArgumentException("invalid seed: " + result.body());
                     }
@@ -51,19 +57,23 @@ public final class Main {
                     case "--help" -> help = true;
                     case "--self-check" -> check = true;
                     case "--port" -> {
-                        if (++i == args.length) throw new IllegalArgumentException("--port needs a value");
+                        if (++i == args.length)
+                            throw new IllegalArgumentException("--port needs a value");
                         port = Integer.parseInt(args[i]);
-                        if (port < 1 || port > 65535) throw new IllegalArgumentException("port must be 1..65535");
+                        if (port < 1 || port > 65535)
+                            throw new IllegalArgumentException("port must be 1..65535");
                         portSet = true;
                     }
                     case "--seed" -> {
-                        if (++i == args.length) throw new IllegalArgumentException("--seed needs a file");
+                        if (++i == args.length)
+                            throw new IllegalArgumentException("--seed needs a file");
                         seed = Path.of(args[i]);
                     }
                     default -> throw new IllegalArgumentException("unknown option: " + args[i]);
                 }
             }
-            if ((check && (portSet || seed != null || help)) || (help && (portSet || seed != null))) {
+            if ((check && (portSet || seed != null || help))
+                    || (help && (portSet || seed != null))) {
                 throw new IllegalArgumentException("exclusive mode options");
             }
             return new Options(help, check, port, seed);

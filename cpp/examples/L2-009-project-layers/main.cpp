@@ -1,6 +1,6 @@
 #include "command.hpp"
 
 int main() {
-  Command command;
-  command.execute("alpha");
+    Command command;
+    command.execute("alpha");
 }

@@ -15,12 +15,12 @@ public class Main {
         try {
             String text = "你好，世界";
             Files.writeString(document, text, StandardCharsets.UTF_8);
-            System.out.println("utf8-roundtrip: " +
-                    Files.readString(document, StandardCharsets.UTF_8));
+            System.out.println(
+                    "utf8-roundtrip: " + Files.readString(document, StandardCharsets.UTF_8));
 
             Files.writeString(empty, "", StandardCharsets.UTF_8);
-            System.out.println("empty-length: " +
-                    Files.readString(empty, StandardCharsets.UTF_8).length());
+            System.out.println(
+                    "empty-length: " + Files.readString(empty, StandardCharsets.UTF_8).length());
 
             try {
                 Files.readString(missing, StandardCharsets.UTF_8);

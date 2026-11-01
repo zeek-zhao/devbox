@@ -8,7 +8,8 @@ public class Main {
     }
 
     static final class Alphabetical implements SortStrategy {
-        @Override public List<String> sort(List<String> input) {
+        @Override
+        public List<String> sort(List<String> input) {
             List<String> result = new ArrayList<>(input);
             result.sort(Comparator.naturalOrder());
             return List.copyOf(result);
@@ -16,19 +17,30 @@ public class Main {
     }
 
     static final class ByLength implements SortStrategy {
-        @Override public List<String> sort(List<String> input) {
+        @Override
+        public List<String> sort(List<String> input) {
             List<String> result = new ArrayList<>(input);
-            result.sort(Comparator.comparingInt(String::length)
-                    .thenComparing(Comparator.naturalOrder()));
+            result.sort(
+                    Comparator.comparingInt(String::length)
+                            .thenComparing(Comparator.naturalOrder()));
             return List.copyOf(result);
         }
     }
 
     static final class Sorter {
         private SortStrategy strategy;
-        Sorter(SortStrategy strategy) { this.strategy = strategy; }
-        void strategy(SortStrategy value) { strategy = value; }
-        List<String> sort(List<String> input) { return strategy.sort(input); }
+
+        Sorter(SortStrategy strategy) {
+            this.strategy = strategy;
+        }
+
+        void strategy(SortStrategy value) {
+            strategy = value;
+        }
+
+        List<String> sort(List<String> input) {
+            return strategy.sort(input);
+        }
     }
 
     public static void main(String[] args) {

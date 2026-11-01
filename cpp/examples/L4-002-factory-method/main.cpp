@@ -26,16 +26,12 @@ public:
 
 class JsonFactory final : public Factory {
 public:
-    std::unique_ptr<Product> create() const override {
-        return std::make_unique<JsonParser>();
-    }
+    std::unique_ptr<Product> create() const override { return std::make_unique<JsonParser>(); }
 };
 
 class TextFactory final : public Factory {
 public:
-    std::unique_ptr<Product> create() const override {
-        return std::make_unique<TextParser>();
-    }
+    std::unique_ptr<Product> create() const override { return std::make_unique<TextParser>(); }
 };
 
 void use_factory(const Factory* factory) {

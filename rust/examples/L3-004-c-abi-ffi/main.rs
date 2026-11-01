@@ -11,6 +11,9 @@ fn safe_byte_sum(data: Option<&[u8]>) -> Option<c_int> {
 
 fn main() {
     let data = [1, 2, 3];
-    println!("byte sum: {}", safe_byte_sum(Some(&data)).expect("slice is present"));
+    println!(
+        "byte sum: {}",
+        safe_byte_sum(Some(&data)).expect("slice is present")
+    );
     println!("null rejected: {}", safe_byte_sum(None).is_none());
 }

@@ -5,10 +5,11 @@ import java.util.stream.Stream;
 public class Main {
     public static void main(String[] args) {
         AtomicInteger processed = new AtomicInteger();
-        Stream<Integer> pipeline = List.of(1, 2, 3, 4).stream()
-                .filter(value -> value % 2 == 0)
-                .map(value -> value * 2)
-                .peek(value -> processed.incrementAndGet());
+        Stream<Integer> pipeline =
+                List.of(1, 2, 3, 4).stream()
+                        .filter(value -> value % 2 == 0)
+                        .map(value -> value * 2)
+                        .peek(value -> processed.incrementAndGet());
 
         System.out.println("processed before terminal=" + processed.get());
         List<Integer> values = pipeline.toList();

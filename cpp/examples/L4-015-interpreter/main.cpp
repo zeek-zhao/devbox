@@ -27,9 +27,7 @@ class Add final : public Expression {
 public:
     Add(std::unique_ptr<Expression> left, std::unique_ptr<Expression> right)
         : left_(std::move(left)), right_(std::move(right)) {}
-    int interpret() const override {
-        return left_->interpret() + right_->interpret();
-    }
+    int interpret() const override { return left_->interpret() + right_->interpret(); }
 
 private:
     std::unique_ptr<Expression> left_;
@@ -40,9 +38,7 @@ class Subtract final : public Expression {
 public:
     Subtract(std::unique_ptr<Expression> left, std::unique_ptr<Expression> right)
         : left_(std::move(left)), right_(std::move(right)) {}
-    int interpret() const override {
-        return left_->interpret() - right_->interpret();
-    }
+    int interpret() const override { return left_->interpret() - right_->interpret(); }
 
 private:
     std::unique_ptr<Expression> left_;
@@ -59,8 +55,7 @@ public:
         while (position_ < input_.size()) {
             const char operation = input_[position_++];
             if (operation != '+' && operation != '-') {
-                throw std::invalid_argument(
-                    std::string("invalid character: ") + operation);
+                throw std::invalid_argument(std::string("invalid character: ") + operation);
             }
             auto right = number();
             if (operation == '+') {
@@ -86,13 +81,11 @@ private:
             throw std::invalid_argument("expected number");
         }
         if (input_[position_] < '0' || input_[position_] > '9') {
-            throw std::invalid_argument(
-                std::string("invalid character: ") + input_[position_]);
+            throw std::invalid_argument(std::string("invalid character: ") + input_[position_]);
         }
         int value = 0;
         const char* first = input_.data() + position_;
-        const auto [end, error] =
-            std::from_chars(first, input_.data() + input_.size(), value);
+        const auto [end, error] = std::from_chars(first, input_.data() + input_.size(), value);
         if (error != std::errc{}) {
             throw std::invalid_argument("number out of range");
         }

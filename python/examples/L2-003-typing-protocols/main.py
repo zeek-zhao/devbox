@@ -6,8 +6,7 @@ Value = TypeVar("Value")
 
 
 class Source(Protocol[Value_co]):
-    def read(self) -> Value_co:
-        ...
+    def read(self) -> Value_co: ...
 
 
 class ListSource:

@@ -1,5 +1,5 @@
 #include <iostream>
 
 int main() {
-  std::cout << "sample: ok\n";
+    std::cout << "sample: ok\n";
 }

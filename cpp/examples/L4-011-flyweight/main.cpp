@@ -7,9 +7,7 @@
 class Token {
 public:
     explicit Token(std::string key) : key_(std::move(key)) {}
-    void render(int position) const {
-        std::cout << key_ << '@' << position << '\n';
-    }
+    void render(int position) const { std::cout << key_ << '@' << position << '\n'; }
 
 private:
     const std::string key_;
@@ -41,8 +39,7 @@ int main() {
     const auto third = factory.get("patterns");
     std::cout << std::boolalpha;
     std::cout << "same key, same instance: " << (first.get() == second.get()) << '\n';
-    std::cout << "different key, different instance: "
-              << (first.get() != third.get()) << '\n';
+    std::cout << "different key, different instance: " << (first.get() != third.get()) << '\n';
     std::cout << "creations: " << factory.creation_count() << '\n';
     first->render(1);
     second->render(8);

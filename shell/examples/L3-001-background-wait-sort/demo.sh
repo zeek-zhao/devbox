@@ -3,7 +3,7 @@ set -euo pipefail
 
 pids=()
 for result in gamma alpha beta; do
-  (printf '%s\n' "$result" > "$WORK/$result.result") &
+  (printf '%s\n' "$result" >"$WORK/$result.result") &
   pids+=("$!")
 done
 

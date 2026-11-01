@@ -57,6 +57,11 @@ jobs:
       - name: 版本真本自洽（Dockerfile 里不许写死版本号）
         run: bash scripts/check-version-truth.sh
 
+      # 文档里的命令会随 make 目标改名而静默失效，这条让 CI 替人敲一遍。
+      # 不依赖镜像，所以放在 static 里而不是 languages 里。
+      - name: 文档命令校验（verify 标记）
+        run: bash scripts/check-docs.sh
+
   coverage:
     name: COVERAGE 校验
     runs-on: ubuntu-24.04
@@ -174,6 +179,12 @@ jobs:
 
       - name: 拉取语言镜像
         run: docker pull "$REGISTRY/devbox-${{ matrix.lang }}:$IMAGE_TAG"
+
+      # 格式化检查挂在这里而不是单开一个 job：本 job 已经拉过该语言的镜像，
+      # 单开 job 要把六个镜像（约 10 GB）再拉一遍，纯浪费。
+      # 放在用例之前，格式不达标就先红，不用等 77 个用例跑完。
+      - name: 格式化检查（fmt-check）
+        run: TAG="$IMAGE_TAG" bash scripts/fmt.sh --check --lang ${{ matrix.lang }}
 
       - name: 跑该语言全部用例
         run: bash scripts/run-example.sh ${{ matrix.lang }} --all

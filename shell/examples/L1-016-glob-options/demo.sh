@@ -9,14 +9,14 @@ if ! cd "$work"; then
   exit 1
 fi
 
-unmatched=( *.missing )
+unmatched=(*.missing)
 printf 'default unmatched count: %s\n' "${#unmatched[@]}"
 
 shopt -s nullglob
-unmatched=( *.missing )
+unmatched=(*.missing)
 printf 'nullglob unmatched count: %s\n' "${#unmatched[@]}"
 
 shopt -s globstar
-files=( tree/**/*.txt )
+files=(tree/**/*.txt)
 printf 'globstar matches:\n'
 printf '  %s\n' "${files[@]}"

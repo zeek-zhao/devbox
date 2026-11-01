@@ -8,7 +8,9 @@ public final class Main {
     private static final class StableFormatter extends java.util.logging.Formatter {
         @Override
         public String format(LogRecord record) {
-            return record.getLevel().getName() + ":" + formatMessage(record)
+            return record.getLevel().getName()
+                    + ":"
+                    + formatMessage(record)
                     + System.lineSeparator();
         }
     }
@@ -20,13 +22,14 @@ public final class Main {
         logger.setUseParentHandlers(false);
         logger.setLevel(Level.ALL);
 
-        Handler handler = new StreamHandler(System.err, new StableFormatter()) {
-            @Override
-            public synchronized void publish(LogRecord record) {
-                super.publish(record);
-                flush();
-            }
-        };
+        Handler handler =
+                new StreamHandler(System.err, new StableFormatter()) {
+                    @Override
+                    public synchronized void publish(LogRecord record) {
+                        super.publish(record);
+                        flush();
+                    }
+                };
         handler.setLevel(Level.INFO);
         logger.addHandler(handler);
 
