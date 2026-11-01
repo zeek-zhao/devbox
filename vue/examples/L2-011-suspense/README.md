@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 初始待办是每请求同步创建的固定种子，组件没有 async setup 或异步依赖，页面也没有需要等待的加载边界。 -->
 
 # L2-011-suspense —— SSR 等待 Suspense 中的异步 setup
 

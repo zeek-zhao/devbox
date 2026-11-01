@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L2-006-package-exports —— 用 exports 限制包的公开入口
 
 ## 考点

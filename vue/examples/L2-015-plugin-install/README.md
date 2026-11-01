@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 服务端每个请求都创建独立 store，并通过 provide 注入组件树；全局插件状态会削弱请求隔离且没有额外全局属性需求。 -->
 
 # L2-015-plugin-install —— 在 SSR 前安装全局属性插件
 

@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt todo 页面和行组件都随首屏同步加载，没有按需页面或可延迟加载的大型子树，defineAsyncComponent 不会带来实际加载边界。 -->
 
 # L2-009-async-component —— 等待异步组件加载后进行 SSR
 

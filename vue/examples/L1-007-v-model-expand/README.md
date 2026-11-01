@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-007-v-model-expand
 
 ## 考点

@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-015-form-modifiers
 
 ## 考点

@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-012-vif-vs-vshow
 
 ## 考点

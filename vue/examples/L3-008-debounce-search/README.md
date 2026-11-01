@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt todo 应用没有搜索框、远程查询或高频过滤输入，因此没有需要延迟执行或取消的搜索任务。 -->
 
 # L3-008-debounce-search —— 真实定时器的尾缘防抖
 

@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-003-computed-caching
 
 ## 考点

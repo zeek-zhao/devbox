@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-010-lifecycle-order
 
 ## 考点

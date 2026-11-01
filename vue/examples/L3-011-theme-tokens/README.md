@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L3-011-theme-tokens —— 注入不可变主题令牌
 
 ## 考点

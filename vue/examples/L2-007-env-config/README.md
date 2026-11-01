@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L2-007-env-config —— 通过环境变量切换渲染配置
 
 ## 考点

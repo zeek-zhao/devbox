@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L2-002-sfc-template-compile —— 验证模板编译产物的确定性
 
 ## 考点

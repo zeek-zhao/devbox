@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 唯一表单只 trim 文本并拒绝空标题，不存在多个有序规则、字段错误状态或需展示的验证消息，规则引擎会超过实际需求。 -->
 
 # L3-009-form-validation —— 声明式有序规则引擎
 

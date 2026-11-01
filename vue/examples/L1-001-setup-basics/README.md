@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-001-setup-basics
 
 ## 考点

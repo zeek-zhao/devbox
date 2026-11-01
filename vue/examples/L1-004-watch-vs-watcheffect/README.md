@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-004-watch-vs-watcheffect
 
 ## 考点

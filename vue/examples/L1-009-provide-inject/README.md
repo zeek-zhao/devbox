@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-009-provide-inject
 
 ## 考点

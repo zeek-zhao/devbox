@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-008-slots
 
 ## 考点

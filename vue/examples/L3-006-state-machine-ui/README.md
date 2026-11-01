@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 每条 todo 只有 completed 布尔状态，页面没有加载/完成/错误等工作流阶段，加入转移表会虚构应用不存在的业务状态。 -->
 
 # L3-006-state-machine-ui —— 转移表驱动的 UI
 

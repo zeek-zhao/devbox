@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L3-003-hydration-mismatch —— 确定性模拟水合输入不一致
 
 ## 考点

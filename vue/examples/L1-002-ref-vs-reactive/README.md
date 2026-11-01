@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-002-ref-vs-reactive
 
 ## 考点

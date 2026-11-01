@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-014-class-style-binding
 
 ## 考点
