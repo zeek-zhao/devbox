@@ -36,6 +36,15 @@ npx @zeek/release --date 2026-11-01
 
 未指定 `--date` 或 `RELEASE_DATE` 时，CHANGELOG 使用最新提交日期，保证重复预览可复现。
 
+首次发版没有匹配 `tagPrefix` 的 tag 时，安静地从全部提交计算版本；
+非 Git 仓库、缺少 Git 或其他 Git 命令失败仍会明确报错。
+
+CHANGELOG 从 `git remote get-url origin` 读取仓库地址，支持
+`git@github.com:owner/repo.git` 和 `https://github.com/owner/repo.git`，
+生成完整的 `https://github.com/owner/repo/compare/...` 链接。
+没有 origin 或 origin 不是支持的 GitHub 地址时，版本标题与比较范围改为纯文本，
+不生成相对链接，也不要求额外的 `repoUrl` 配置；读取 remote 的真实错误仍会报错。
+
 ## 安全默认（六条，一条都不让步）
 
 | # | 规则 | 为什么 |
@@ -69,5 +78,5 @@ docs/
 
 ```bash
 cd shared/release
-node --test test/
+node --test test/*.test.js
 ```

@@ -8,6 +8,10 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { loadConfig } from '../src/config.js';
+import { readCommits } from '../src/commits.js';
+import { lastTag, repositoryUrl } from '../src/git.js';
+import { buildPlan } from '../src/plan.js';
 
 const cli = fileURLToPath(new URL('../src/cli.js', import.meta.url));
 
@@ -39,6 +43,7 @@ test('dry-run 不改任何文件', () => {
     const beforePackage = fs.readFileSync(path.join(repo.dir, 'package.json'));
     const result = release(repo);
     assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.stderr, '');
     assert.match(result.stdout, /1\.1\.0/);
     assert.deepEqual(fs.readFileSync(path.join(repo.dir, 'VERSION')), beforeVersion);
     assert.deepEqual(fs.readFileSync(path.join(repo.dir, 'package.json')), beforePackage);
@@ -59,9 +64,12 @@ test('--write 之后版本号、CHANGELOG、tag 都到位', () => {
     const result = release(repo, ['--write']);
     assert.equal(result.status, 0, result.stderr);
     assert.equal(fs.readFileSync(path.join(repo.dir, 'VERSION'), 'utf8'), '1.1.0\n');
-    assert.equal(JSON.parse(fs.readFileSync(path.join(repo.dir, 'package.json'), 'utf8')).version, '1.1.0');
+    assert.equal(
+      JSON.parse(fs.readFileSync(path.join(repo.dir, 'package.json'), 'utf8')).version,
+      '1.1.0',
+    );
     const changelog = fs.readFileSync(path.join(repo.dir, 'CHANGELOG.md'), 'utf8');
-    assert.match(changelog, /## \[1\.1\.0\]/);
+    assert.match(changelog, /^## 1\.1\.0 \(2026-11-01\)$/m);
     assert.match(changelog, /初始化/);
     assert.equal(repo.run(['tag', '--list']).trim(), 'v1.1.0');
     assert.match(repo.run(['log', '-1', '--pretty=%s']), /chore\(release\): 1\.1\.0/);
@@ -72,6 +80,74 @@ test('--write 之后版本号、CHANGELOG、tag 都到位', () => {
     fs.rmSync(remote, { recursive: true, force: true });
   }
 });
+
+test('无 remote 时写入的 CHANGELOG 不含相对 compare 链接', () => {
+  const repo = makeRepo();
+  try {
+    const result = release(repo, ['--write']);
+    assert.equal(result.status, 0, result.stderr);
+    const changelog = fs.readFileSync(path.join(repo.dir, 'CHANGELOG.md'), 'utf8');
+    assert.match(changelog, /^## 1\.1\.0 \(2026-11-01\)$/m);
+    assert.doesNotMatch(changelog, /\]\(\/?compare\//);
+  } finally {
+    fs.rmSync(repo.dir, { recursive: true, force: true });
+  }
+});
+
+test('无 remote 的 dry-run 发布计划保留纯文本范围且三次逐字节相同', async () => {
+  const repo = makeRepo();
+  try {
+    const config = await loadConfig(repo.dir);
+    const previousTag = lastTag(repo.dir);
+    const outputs = [];
+    for (let i = 0; i < 3; i += 1) {
+      const result = release(repo);
+      assert.equal(result.status, 0, result.stderr);
+      assert.equal(result.stderr, '');
+      const plan = buildPlan({
+        config,
+        commits: readCommits({ cwd: repo.dir, from: previousTag, to: 'HEAD' }),
+        currentVersion: '1.0.0',
+        date: '2026-11-01',
+        repoUrl: repositoryUrl(repo.dir),
+        previousTag,
+      });
+      assert.match(plan.changelog, /^v1\.1\.0\^\.\.\.v1\.1\.0$/m);
+      assert.doesNotMatch(plan.changelog, /\]\(/);
+      outputs.push(Buffer.from(`${result.stdout}\n${plan.changelog}`));
+    }
+    assert.deepEqual(outputs[0], outputs[1]);
+    assert.deepEqual(outputs[1], outputs[2]);
+    assert.equal(fs.existsSync(path.join(repo.dir, 'CHANGELOG.md')), false);
+    assert.equal(repo.run(['status', '--porcelain']).trim(), '');
+  } finally {
+    fs.rmSync(repo.dir, { recursive: true, force: true });
+  }
+});
+
+for (const [kind, remoteUrl] of [
+  ['SSH', 'git@github.com:owner/project.git'],
+  ['HTTPS', 'https://github.com/owner/project.git'],
+]) {
+  test(`${kind} GitHub remote 生成完整 CHANGELOG compare URL`, () => {
+    const repo = makeRepo();
+    try {
+      repo.run(['remote', 'add', 'origin', remoteUrl]);
+      repo.run(['tag', 'v1.0.0']);
+      repo.run(['commit', '-q', '--allow-empty', '-m', 'feat: next release']);
+      const result = release(repo, ['--write']);
+      assert.equal(result.status, 0, result.stderr);
+      const changelog = fs.readFileSync(path.join(repo.dir, 'CHANGELOG.md'), 'utf8');
+      assert.match(
+        changelog,
+        /^## \[1\.1\.0\]\(https:\/\/github\.com\/owner\/project\/compare\/v1\.0\.0\.\.\.v1\.1\.0\) \(2026-11-01\)$/m,
+      );
+      assert.doesNotMatch(changelog, /\]\(\/?compare\//);
+    } finally {
+      fs.rmSync(repo.dir, { recursive: true, force: true });
+    }
+  });
+}
 
 test('工作树脏时拒绝执行（退出码 2）', () => {
   const repo = makeRepo();

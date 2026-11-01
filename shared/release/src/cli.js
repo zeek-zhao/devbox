@@ -5,7 +5,15 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { loadConfig } from './config.js';
 import { readCommits } from './commits.js';
 import { compareVersions } from './bump.js';
-import { isClean, currentBranch, lastTag, git, commitAll, createTag } from './git.js';
+import {
+  isClean,
+  currentBranch,
+  lastTag,
+  git,
+  commitAll,
+  createTag,
+  repositoryUrl,
+} from './git.js';
 import { buildPlan, formatPlan } from './plan.js';
 import { readVersion, writeVersion, assertWritable } from './version-file.js';
 
@@ -14,15 +22,25 @@ export const EXIT_FAIL = 1;
 export const EXIT_SAFETY = 2;
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-const RELEASE_AS_RE = /^(major|minor|patch|\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?)$/;
+const RELEASE_AS_RE =
+  /^(major|minor|patch|\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?)$/;
 
 function validDate(value) {
-  return DATE_RE.test(value) && !Number.isNaN(Date.parse(`${value}T00:00:00Z`))
-    && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value;
+  return (
+    DATE_RE.test(value) &&
+    !Number.isNaN(Date.parse(`${value}T00:00:00Z`)) &&
+    new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value
+  );
 }
 
 export function parseArgs(argv) {
-  const options = { write: false, releaseAs: undefined, allowBranches: [], cwd: process.cwd(), date: undefined };
+  const options = {
+    write: false,
+    releaseAs: undefined,
+    allowBranches: [],
+    cwd: process.cwd(),
+    date: undefined,
+  };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === '--write') options.write = true;
@@ -48,18 +66,6 @@ export function parseArgs(argv) {
   return options;
 }
 
-function detectRepoUrl(cwd) {
-  try {
-    const raw = git(['config', '--get', 'remote.origin.url'], cwd);
-    const ssh = /^git@([^:]+):(.+)$/.exec(raw);
-    const url = ssh ? `https://${ssh[1]}/${ssh[2]}` : raw.replace(/\.git$/, '');
-    return url.replace(/\.git$/, '');
-  } catch (error) {
-    if (error.status === 1) return '';
-    throw error;
-  }
-}
-
 function writeTextAtomic(filePath, content) {
   const temporary = `${filePath}.tmp`;
   try {
@@ -76,7 +82,9 @@ export async function main(argv = process.argv.slice(2)) {
   try {
     options = parseArgs(argv);
     if (options.help) {
-      console.log('用法：zeek-release [--write] [--release-as <major|minor|patch|x.y.z>] [--allow-branch <name>] [--cwd <dir>] [--date YYYY-MM-DD]');
+      console.log(
+        '用法：zeek-release [--write] [--release-as <major|minor|patch|x.y.z>] [--allow-branch <name>] [--cwd <dir>] [--date YYYY-MM-DD]',
+      );
       return EXIT_OK;
     }
     if (options.version) {
@@ -93,31 +101,37 @@ export async function main(argv = process.argv.slice(2)) {
     }
     const branch = currentBranch(cwd);
     if (config.protectedBranches.includes(branch) && !options.allowBranches.includes(branch)) {
-      console.error(`当前分支 ${branch} 受保护；如确认要继续，请显式传入 --allow-branch ${branch}。`);
+      console.error(
+        `当前分支 ${branch} 受保护；如确认要继续，请显式传入 --allow-branch ${branch}。`,
+      );
       return EXIT_SAFETY;
     }
     const tag = lastTag(cwd, config.tagPrefix ?? 'v');
     const commits = readCommits({ cwd, from: tag, to: 'HEAD' });
-    if (commits.skippedCount) console.log(`已跳过 ${commits.skippedCount} 个非 Conventional Commit。`);
+    if (commits.skippedCount)
+      console.log(`已跳过 ${commits.skippedCount} 个非 Conventional Commit。`);
     if (!commits.length) {
       console.log('没有可发布的提交。');
       return EXIT_OK;
     }
-    if (!config.versionFiles.length) throw new Error('配置 versionFiles 为空，无法安全确定项目版本');
+    if (!config.versionFiles.length)
+      throw new Error('配置 versionFiles 为空，无法安全确定项目版本');
     const versionFile = config.versionFiles[0];
     const currentVersion = readVersion({
       ...versionFile,
       path: path.resolve(cwd, versionFile.path),
     });
-    const releaseDate = options.date ?? process.env.RELEASE_DATE ?? git(['log', '-1', '--format=%cs'], cwd);
-    if (!validDate(releaseDate)) throw new Error('RELEASE_DATE 或 --date 必须是有效的 YYYY-MM-DD 日期');
+    const releaseDate =
+      options.date ?? process.env.RELEASE_DATE ?? git(['log', '-1', '--format=%cs'], cwd);
+    if (!validDate(releaseDate))
+      throw new Error('RELEASE_DATE 或 --date 必须是有效的 YYYY-MM-DD 日期');
     const plan = buildPlan({
       config,
       commits,
       currentVersion,
       releaseAs: options.releaseAs,
       date: releaseDate,
-      repoUrl: detectRepoUrl(cwd),
+      repoUrl: repositoryUrl(cwd),
       previousTag: tag,
     });
     console.log(formatPlan(plan));
@@ -135,8 +149,10 @@ export async function main(argv = process.argv.slice(2)) {
     }
     const changelogPath = path.resolve(cwd, config.changelogPath);
     writeTextAtomic(changelogPath, plan.changelog);
-    const message = (config.releaseCommitMessage ?? 'chore(release): {version}')
-      .replaceAll('{version}', plan.nextVersion);
+    const message = (config.releaseCommitMessage ?? 'chore(release): {version}').replaceAll(
+      '{version}',
+      plan.nextVersion,
+    );
     commitAll(cwd, message);
     createTag(cwd, plan.tag, message);
     console.log(`已创建 release commit 和 tag ${plan.tag}；不会自动 push。`);
