@@ -197,6 +197,24 @@ jobs:
         run: TAG="$IMAGE_TAG" bash shared/tests/run.sh
 
   # ------------------------------------------------------------------
+  # release 工具自测（shared/release，零依赖的 Node 工具）
+  # 不起容器：runner 自带 node，测试也不联网（临时目录里 git init 造仓库）。
+  # 它管的是「打 tag / 生成 CHANGELOG」这条链路 —— 坏了不会立刻被发现，
+  # 只会在某次发版时炸，所以放进 fast 档每次 push main 都验一遍。
+  # ------------------------------------------------------------------
+  release:
+    name: release 工具自测
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 跑 shared/release 测试
+        run: |
+          node --version
+          cd shared/release && node --test test/
+
+  # ------------------------------------------------------------------
   # 墙钟预算守卫：读的是 runner 上真实的时间戳（含排队），不是各 job 自报。
   # 只发 ::warning::，不判红 —— 它的作用是「让预算漂移看得见」，不是拦合并。
   # ------------------------------------------------------------------
@@ -205,7 +223,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     if: always()
-    needs: [static, coverage, probe, fmt, shared]
+    needs: [static, coverage, probe, fmt, shared, release]
     permissions:
       contents: read
       actions: read
