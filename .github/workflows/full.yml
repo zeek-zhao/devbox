@@ -169,6 +169,17 @@ jobs:
       - name: 跑 shared/tests
         run: TAG="$IMAGE_TAG" bash shared/tests/run.sh
 
+  release:
+    name: release 工具自测
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 跑 shared/release 测试
+        run: |
+          node --version
+          cd shared/release && node --test test/
+
   # ------------------------------------------------------------------
   # 镜像重建：直接复用 images.yml，不复制那 200 行。
   # 改一行构建逻辑要改两个地方，是最容易漂的一类重复。
