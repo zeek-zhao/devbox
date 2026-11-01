@@ -61,3 +61,26 @@ TCP 测试以 integration build tag 隔离，容器只编译，宿主执行。
 | L3-004-custom-marshal-json | internal/gateway/task.go:50 | 自定义 MarshalJSON 返回固定字段和有序词频 |
 | L3-005-binary-format | internal/gateway/task.go:60 | 版本字节与大端字段编码 checkpoint，校验长度/版本 |
 | L3-006-tcp-echo | internal/gateway/integration_test.go:17 | 回环 TCP 上 echo 项目真实 checkpoint 并逐字节验证 |
+| L4-001-singleton | B 豁免：用例 README 的 coverage 声明 | 独立 pool 必须隔离令牌桶、指标及关闭状态，不能共享进程唯一实例 |
+| L4-002-factory-method | src/patterns.go:analysisFactory.NewAnalysis、foldedFactory.NewAnalysis、exactFactory.NewAnalysis；appBuilder.Build | 具体创建者提供不同分析步骤，构建器按同一流程包装处理器并启动网关 |
+| L4-003-abstract-factory | B 豁免：用例 README 的 coverage 声明 | 只替换一个分析步骤，不存在成套匹配的多产品族 |
+| L4-004-builder | src/patterns.go:newAppBuilder、appBuilder.Pool/Counting/Build；src/main.go:run | CLI 分步收集 pool 与计数选项，全部验证后才启动 worker，实例不共享统计 |
+| L4-005-prototype | B 豁免：用例 README 的 coverage 声明 | 请求仅含值类型 ID 与不可变文本，无昂贵原型对象图可克隆 |
+| L4-006-adapter | src/patterns.go:counterAdapter.Analyze、foldedFactory.NewAnalysis；processingTemplate.Process | 将已有 CounterProcessor.Process 适配到分析步骤接口，默认计数复用原实现 |
+| L4-007-bridge | B 豁免：用例 README 的 coverage 声明 | 单一 HTTP 入口及本地执行机制，没有两套独立演进的抽象/实现层次 |
+| L4-008-composite | src/patterns.go:observerGroup.Observe、processingStats.Observe、failureObserver.Observe；processingEvents.Publish | 观察者组与叶子使用同一接口，主流程同时通知统计与日志；测试验证嵌套组 |
+| L4-009-decorator | src/patterns.go:observedProcessor.Process；appBuilder.Build | 不改变 Processor 协议地增加完成通知，错误透传，panic 通知后交原 worker 恢复 |
+| L4-010-facade | src/patterns.go:application.HTTPHandler/Shutdown；src/main.go:run | 将原网关和新增分析统计组装成单一 HTTP/退出入口，CLI 不管理观察者内部结构 |
+| L4-011-flyweight | B 豁免：用例 README 的 coverage 声明 | 词对象仅活一个至多 4096 字节请求，不保留跨请求对象池 |
+| L4-012-proxy | B 豁免：用例 README 的 coverage 声明 | 本地廉价计算无远程、延迟加载或替身访问控制，通知包装属于装饰 |
+| L4-013-chain-of-responsibility | B 豁免：用例 README 的 coverage 声明 | 所有任务执行固定准入流程，不择一处理或转交后继处理者 |
+| L4-014-command | B 豁免：用例 README 的 coverage 声明 | 队列传数据而非多种动作，无撤销、命令历史或持久化重放 |
+| L4-015-interpreter | B 豁免：用例 README 的 coverage 声明 | 空白切词没有 DSL、语法树及求值语义 |
+| L4-016-iterator | B 豁免：用例 README 的 coverage 声明 | 有限有序 slice 直接 range，无游标、分页或隐藏聚合遍历协议 |
+| L4-017-mediator | B 豁免：用例 README 的 coverage 声明 | 统计与日志只接收单向通知，不存在需中介协调的双向协作者交互 |
+| L4-018-memento | B 豁免：用例 README 的 coverage 声明 | checkpoint 只有 ID/总词数，不能恢复对象状态，网关没有回滚会话 |
+| L4-019-observer | src/patterns.go:processingEvents.Publish、processingStats.Observe、failureObserver.Observe；observedProcessor.Process | worker 分析结束通知统计和失败日志，拒绝入队不发事件，新增指标可观察 |
+| L4-020-state | B 豁免：用例 README 的 coverage 声明 | 状态仅用于计数，任务完成即释放，无状态对象驱动的驻留行为 |
+| L4-021-strategy | src/patterns.go:analysis、counterAdapter.Analyze、exactAnalysis.Analyze；processingTemplate.Process；src/main.go:run | folded/exact 按 CLI 显式切换大小写计数算法，共享 HTTP、worker 与结果协议 |
+| L4-022-template-method | src/patterns.go:processingTemplate.Process；appBuilder.Build | 固定校验输入→可变分析步骤→验证 ID/总数/词排序骨架，阻止分析策略破坏 wire 契约 |
+| L4-023-visitor | B 豁免：用例 README 的 coverage 声明 | 同构平面 Word 记录没有异构节点树或双分派操作 |

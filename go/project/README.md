@@ -8,8 +8,11 @@
 ```text
 go.mod                     零依赖模块及本地 replace 验证
 src/main.go                CLI、TCP HTTP 服务、信号退出、可选 CPU profile
+src/patterns.go            计数策略、处理骨架、构建器、观察者及应用 facade
+src/patterns_test.go       策略差异、骨架校验、通知组合、并发及 panic 边界
+src/selfcheck.go           经应用主流程验证策略、处理指标及退出，不增加 stdout
 internal/gateway/          任务处理、限流、指标、HTTP、自检及测试
-COVERAGE.md                全部 54 个用例的真实代码/测试/脚本落点
+COVERAGE.md                全部 77 个用例的落点或明确豁免（L4 真接入 9 条）
 build.sh                   格式、vet、测试覆盖、静态构建、自检
 check-runtime.sh           runtime 容器逐字比对，不监听端口
 test.sh                    race、benchmark/profile、arm64 交叉编译
@@ -55,6 +58,16 @@ HTTP 方法由路由限制；其他路径返回 404。
 
 默认 4 workers、16 队列、8 burst，每 100ms 补充一个令牌（不超过 burst）。
 可用 `--workers`、`--queue`、`--burst`、`--refill` 调整。
+`--word-mode=folded` 是兼容原行为的默认策略；`--word-mode=exact` 保留大小写，
+例如 `Alpha alpha` 得到两个词，Unicode 空白切词及排序规则不变。
+构建器按策略工厂创建分析步骤，处理模板固定执行输入校验、分析、结果校验；
+已有 `CounterProcessor` 经适配器复用，错误链保持 `errors.Is` 可识别。
+
+`GET /processing-metrics` 返回 Prometheus `gateway_analysis_total` 的
+completed、failed 两种计数。处理器装饰器在 worker 完成分析后通知组合观察者：
+一个线程安全观察者累计结果，另一个仅把分析失败写 stderr。
+panic 计入 failed 后重新抛出，由原 worker 边界恢复；拒绝入队的请求不计入分析指标。
+原 `/metrics` 生命周期指标和原端点响应保持不变。
 SIGINT/SIGTERM 先 `srv.Shutdown`（10 秒超时，超时明确报错并强制关闭连接），
 再关闭派发 channel，排空任务并等待 workers 和 ticker 退出。
 处理器应是有限、可终止的计算；无法强杀任意 Go goroutine。
@@ -63,6 +76,8 @@ SIGINT/SIGTERM 先 `srv.Shutdown`（10 秒超时，超时明确报错并强制�
 显式补充令牌、二进制结果、非法输入、关闭拒绝和最终指标。
 使用与生产相同的 refill 操作，但不启动 ticker，因此不依赖调度速度、时间或端口。
 只有 `bash go/project/test.sh --integration` 才启用真实回环 TCP 测试。
+自检在原输出前还会执行应用构建器、所选策略及 `/processing-metrics` 的内存断言；
+这些断言不打印额外业务输出，`--self-check --word-mode=exact` 也可验证非默认策略。
 无宿主 Go 时，在容器内只编译静态测试程序，再在宿主执行 TCP 测试，
 所有容器（包括测试容器）均不监听端口。
 

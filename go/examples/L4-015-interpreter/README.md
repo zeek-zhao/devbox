@@ -1,6 +1,6 @@
 # L4-015-interpreter
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 输入文本仅按 Unicode 空白切词后计数，没有表达式语法、AST 或求值上下文；解释器会把原本不解释的用户文本错误变成语言 -->
 
 ## 考点
 

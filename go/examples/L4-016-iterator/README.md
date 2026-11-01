@@ -1,6 +1,6 @@
 # L4-016-iterator
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 结果是单次计算所得的有序 Words slice，可直接 range；没有封装游标、分页或需隐藏内部存储的自定义聚合遍历协议 -->
 
 ## 考点
 

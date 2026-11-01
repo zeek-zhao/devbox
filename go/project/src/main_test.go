@@ -32,6 +32,8 @@ func TestCLIValidation(t *testing.T) {
 		{"workers", []string{"--workers=0"}, "configuration"},
 		{"queue", []string{"--queue=-1"}, "configuration"},
 		{"burst", []string{"--burst=0"}, "configuration"},
+		{"word mode", []string{"--word-mode=unknown"}, "word-mode"},
+		{"self-check word mode", []string{"--self-check", "--word-mode=unknown"}, "word-mode"},
 		{"profile path", []string{"--cpu-profile=" + filepath.Join(t.TempDir(), "absent", "cpu.pprof")}, "no such file"},
 	} {
 		t.Run(tc.name, func(t *testing.T) {

@@ -1,6 +1,6 @@
 # L4-013-chain-of-responsibility
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 每个任务固定经历校验、限流、入队和唯一分析步骤，各阶段不能择一处理或转交后继处理者；拒绝即结束的准入检查不是可替换的责任链 -->
 
 ## 考点
 

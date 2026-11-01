@@ -1,6 +1,6 @@
 # L4-023-visitor
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 输出只有同构 Word 记录的平面 slice，没有异构节点树及双分派操作；序列化由 Result 自身承担，不需要访问者跨多种节点类型扩展操作 -->
 
 ## 考点
 

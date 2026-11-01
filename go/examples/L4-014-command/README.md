@@ -1,6 +1,6 @@
 # L4-014-command
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 队列只传递文本 Task 和一次性 reply，所有任务执行同一处理协议；没有多种封装动作、撤销历史或持久化命令重放，数据消息不冒充命令对象 -->
 
 ## 考点
 

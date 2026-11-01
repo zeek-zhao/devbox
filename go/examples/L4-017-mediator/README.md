@@ -1,6 +1,6 @@
 # L4-017-mediator
 
-<!-- coverage: pending -->
+<!-- coverage: exempt worker 完成后向统计与日志发送单向通知，订阅者之间不通信；没有需中介协调的双向协作者交互，事件发布器仅承担观察者通知 -->
 
 ## 考点
 
