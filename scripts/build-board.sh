@@ -10,7 +10,8 @@ fi
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # 默认输出刻意不是 docs/进度看板.html：
-# 那个文件是**手工维护的仓库现状快照**（轨道清单 + 里程碑），已入库、受 prettier 管辖；
+# 那个文件是**仓库现状看板**（轨道清单 + 里程碑），由 scripts/build-repo-board.sh
+# 从 docs/board-tracks.tsv + docs/ROADMAP.md 生成，生成结果入库、受 prettier 管辖；
 # 本脚本产出的是**某一次执行的用例结果看板**，两者内容与生命周期都不同。
 # 早先默认值写成 docs/进度看板.html，跑一次就会把文档覆盖成另一份东西，且 .gitignore
 # 忽略的是 docs/progress.html —— 生成物反而会进工作树。现在两边对齐到 progress.html。

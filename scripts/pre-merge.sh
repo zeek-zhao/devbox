@@ -28,7 +28,7 @@
 #   2) 每门格式化 --check 达标
 #   3) 覆盖表自洽（pending/exempt 明账可数）
 #   4) shared 自测 + README 函数索引
-#   5) 版本真本 + 文档命令 + 看板与实况一致
+#   5) 版本真本 + 文档命令 + 看板与实况一致 + 看板重新生成后无差异
 #   6) 相对 base 未触碰门禁文件（除 --allow-gate-change）
 #
 # 为什么默认不自动解冲突：
@@ -228,8 +228,18 @@ fi
 step "版本真本自洽" bash "$WT/scripts/check-version-truth.sh"
 step "文档命令校验" bash "$WT/scripts/check-docs.sh"
 step "看板与实况一致" bash "$WT/scripts/check-board-truth.sh"
-step "看板生成结果一致" bash "$WT/scripts/build-repo-board.sh"
-step "看板工作区无差异" git -C "$WT" diff --exit-code -- docs/进度看板.html
+
+# 重新生成看板，再要求工作区没有差异。
+# 必须合成一步：拆成「生成」和「比对」两步时，第一步只执行生成、永远不会红，
+# 看日志的人会以为已经验过了。判定标准只有一条 —— 重新生成后 git diff 为空。
+board_generated() {
+  bash "$WT/scripts/build-repo-board.sh" || return 1
+  if ! git -C "$WT" diff --exit-code -- docs/进度看板.html; then
+    echo "docs/进度看板.html 与生成结果不一致：本地跑 bash scripts/build-repo-board.sh 后提交" >&2
+    return 1
+  fi
+}
+step "看板是生成物且与数据源一致" board_generated
 step "覆盖表自洽"   bash "$WT/scripts/coverage-check.sh"
 step "shared 索引"  bash "$WT/scripts/check-shared-index.sh"
 step "shared 自测"  env TAG="$IMAGE_TAG" bash "$WT/shared/tests/run.sh"
