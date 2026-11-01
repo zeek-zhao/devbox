@@ -1,0 +1,1 @@
+scoped=.box[data-v-widget] deep=.box[data-v-widget] .child

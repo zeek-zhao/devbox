@@ -1,7 +1,7 @@
 # Vue project coverage
 
-Only examples implemented by the project are listed here. Exemptions and their project-specific
-reasons live in the corresponding example README.
+This project covers all 74 example directories under `vue/examples/`. Exemptions and their
+project-specific reasons live in the corresponding example README.
 
 | 用例ID | 落点 | 说明 |
 |---|---|---|
@@ -24,7 +24,17 @@ reasons live in the corresponding example README.
 | L1-016-ssr-basic | src/ssr/render.js:6 | 每个请求创建 SSR 应用。 |
 | L1-017-render-function | src/components/app-factory.js:78 | 使用 Vue.h 创建根 vnode。 |
 | L1-018-nexttick | src/components/app-factory.js:41 | Vue 更新 DOM 后再聚焦输入框。 |
+| L1-019-computed-setter | src/components/app-factory.js | 表单 computed setter 将 v-model 写回 store 源 ref。 |
+| L1-020-watch-flush | src/store/todos.js | 标题 watcher 使用 post flush 并等待响应式更新队列。 |
+| L1-021-dynamic-component | src/components/TodoApp.vue | 路由状态通过 component is 选择 SSR 标题标签。 |
+| L1-023-with-modifiers | src/components/TodoApp.vue | 导航点击阻止默认行为并停止冒泡。 |
+| L1-025-inject-default | src/components/app-factory.js | 行组件注入请求 store，缺少 provider 时使用 ref 默认值。 |
+| L1-026-to-refs-props | src/components/app-factory.js | `toRefs(props)` 保持 todo 属性的响应式连接。 |
+| L1-028-vhtml-escape | src/components/TodoItem.vue | 待办文本使用插值转义，不走 v-html。 |
 | L2-002-sfc-template-compile | src/components/app-factory.js:70 | Vue runtime compiler 编译页面 SFC 模板。 |
+| L2-018-runtime-compiler | src/components/app-factory.js | 完整版 Vue 导出的 `compile` 在项目中编译模板。 |
+| L2-020-emits-validation | src/components/app-factory.js | 组件 emits validator 校验待办事件的字符串 ID。 |
+| L2-021-app-config | src/app.js | 应用配置提供全局属性与错误处理器，模板定界符传给 compiler-dom。 |
 | L2-003-multifile-modules | src/app.js:6 | store、router 和组件由独立模块组合。 |
 | L2-004-unit-test-harness | test/smoke.sh:27 | smoke 对真实 SSR 响应断言，失败时非零退出。 |
 | L2-006-package-exports | src/server.js:9 | package.json 将服务端设为包的唯一公开入口。 |
@@ -35,3 +45,11 @@ reasons live in the corresponding example README.
 | L3-005-composable-reuse | src/store/todos.js:4 | SSR 与浏览器复用 store factory，各自创建隔离状态。 |
 | L3-011-theme-tokens | src/styles.css:2 | 页面消费共享颜色和间距 CSS 令牌。 |
 | L3-012-render-perf-baseline | src/perf/baseline.js:11 | 对固定 1000 条列表做真实 SSR 渲染观测。 |
+| L3-013-effect-scope | src/store/todos.js | 将请求级 watcher 收入 effectScope 并在 SSR 结束时停止。 |
+| L3-014-shallow-markraw | src/router/router.js | 路由快照浅层追踪并标记为 raw，按整体替换。 |
+| L3-015-custom-ref | src/store/todos.js | 自定义草稿 ref 明确调用 track 与 trigger。 |
+| L3-016-track-trigger-debug | src/store/todos.js | watcher 调试钩子记录依赖追踪和触发操作。 |
+| L3-017-error-boundary | src/components/app-factory.js | 子组件错误由父组件边界记录并切换降级区域。 |
+| L3-018-ssr-prefetch | src/components/app-factory.js | 服务端渲染前等待请求待办数据完成预取。 |
+| L3-019-drag-reorder | src/store/todos.js | 行操作按确定性列表操作将待办向前重排。 |
+| L3-023-leak-audit | src/server.js | SSR 请求 finally 停止 store scope，避免 watcher 泄漏。 |

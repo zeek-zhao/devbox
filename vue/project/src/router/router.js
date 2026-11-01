@@ -25,18 +25,21 @@ function createTodoRouter(Vue, initialPath, onNavigate) {
     return to.name === 'not-found' ? resolve('/') : to;
   }
 
-  const current = Vue.ref(beforeEach(resolve(initialPath || '/')));
+  // L3-014-shallow-markraw: route snapshots are replaced atomically and stay unproxied.
+  const current = Vue.shallowReactive({
+    value: Vue.markRaw(beforeEach(resolve(initialPath || '/'))),
+  });
 
   function navigate(path) {
     const next = beforeEach(resolve(path));
-    current.value = next;
+    current.value = Vue.markRaw(next);
     if (typeof onNavigate === 'function') {
       onNavigate(next.path);
     }
   }
 
   function restore(path) {
-    current.value = beforeEach(resolve(path));
+    current.value = Vue.markRaw(beforeEach(resolve(path)));
   }
 
   return { current, navigate, restore, resolve, beforeEach };

@@ -37,7 +37,13 @@ function escapeJson(value) {
 
 async function renderPage(urlPath) {
   const application = createApplication(urlPath);
-  const html = await renderSSR(application.app);
+  let html;
+  try {
+    html = await renderSSR(application.app);
+  } finally {
+    // L3-023-leak-audit: release the request's watcher scope on success and failure.
+    application.store.dispose();
+  }
   const footer = '<!-- Vue SSR output -->';
   return (
     '<!doctype html>' +

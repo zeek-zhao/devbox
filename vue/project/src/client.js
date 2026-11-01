@@ -32,6 +32,7 @@
     todoItem: templateFrom(itemSource),
   });
   window.hydrate(Vue, component, store, '#app');
+  window.addEventListener('pagehide', store.dispose, { once: true });
   window.__TODO_STORE__ = store;
   window.__TODO_HYDRATED__ = true;
 })().catch(function hydrationFailed(error) {

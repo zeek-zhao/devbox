@@ -1,0 +1,1 @@
+object=1,2,zebra,alpha map=zebra,alpha key-attribute=absent

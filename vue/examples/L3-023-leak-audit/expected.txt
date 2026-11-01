@@ -1,0 +1,1 @@
+scoped=2 manual=2 after-stop=unchanged
