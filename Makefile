@@ -2,7 +2,7 @@
 SHELL := /bin/bash
 TAG ?= latest
 
-.PHONY: help images build-base build-tool build-lang examples coverage lint sha-modes
+.PHONY: help images build-base build-tool build-lang examples coverage lint fmt fmt-check check-docs sha-modes
 
 help:
 	@echo "make images                 逐层构建全部镜像（需要 docker）"
@@ -11,6 +11,9 @@ help:
 	@echo "make examples LANG=cpp      跑某门语言全部用例（需镜像已存在）"
 	@echo "make coverage               校验 COVERAGE.md"
 	@echo "make lint                   静态检查"
+	@echo "make fmt                    格式化全部语言（走容器，宿主无需装格式化器）"
+	@echo "make fmt-check              只检查格式，有差异 exit 1（CI 用这个）"
+	@echo "make check-docs             校验文档里的 <!-- verify: ... --> 命令"
 	@echo "make sha-modes              修复脚本可执行位（Windows 上必备）"
 
 images:
@@ -36,6 +39,17 @@ coverage:
 lint:
 	@command -v shellcheck >/dev/null && shellcheck -S warning scripts/*.sh images/scripts/*.sh images/scripts/install/*.sh || \
 		echo "未安装 shellcheck，跳过（CI 里会跑）"
+
+# 格式化器只装在语言镜像里，宿主没有 —— 所以这两个目标都走 docker。
+# 不加 TAG 会去找 :local 标签（只有 base 层打过），六门语言镜像全是 :latest。
+fmt:
+	TAG=$(TAG) bash scripts/fmt.sh
+
+fmt-check:
+	TAG=$(TAG) bash scripts/fmt.sh --check
+
+check-docs:
+	bash scripts/check-docs.sh
 
 # Windows 的 NTFS 会让 chmod 失效，脚本进 git 后是 100644，Linux 侧静默不执行。
 # 这个目标把可执行位写进 git 索引，是跨平台仓库的必备补丁。

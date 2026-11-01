@@ -1,0 +1,32 @@
+# ==================================================================
+# C / C++ 格式化基线（唯一真本）
+# ------------------------------------------------------------------
+# 为什么选 LLVM 而不是 Google：
+#   仓库现有 C++ 代码就是 LLVM 风格 —— `{` 与声明同行、`public:` 顶格、
+#   指针/引用左贴类型（`Config& instance()`）。用 Google 基线（`{` 换行、
+#   访问修饰符缩进 1 格）会把 407 个用例的文件整体重排，diff 里全是噪声。
+#
+# 本文件是门禁文件，见 scripts/gate-files.txt。
+# ==================================================================
+BasedOnStyle: LLVM
+
+# 现有代码是 4 空格（LLVM 默认 2）
+IndentWidth: 4
+ContinuationIndentWidth: 4
+
+# IndentWidth 改了，访问修饰符偏移要跟着改，否则 public: 会被缩进
+AccessModifierOffset: -4
+
+# 与 .editorconfig 的 100 列一致
+ColumnLimit: 100
+
+# `Config& instance()` 这种写法：符号贴类型
+PointerAlignment: Left
+ReferenceAlignment: Pointer
+
+# 不重排 include（重排会让「为什么这个头文件在前」这类信息丢失）
+SortIncludes: false
+
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLoopsOnASingleLine: true

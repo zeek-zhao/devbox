@@ -86,6 +86,40 @@ bash scripts/coverage-check.sh
 
 ---
 
+## 代码格式化
+
+```bash
+make fmt          # 就地格式化全部语言
+make fmt-check    # 只检查不改写，有差异 exit 1（CI 用这个）
+make fmt --lang cpp,go   # 只处理指定语言
+```
+
+<!-- verify: bash scripts/fmt.sh --list -->
+<!-- verify: make help -->
+
+**为什么格式化命令要走 docker**：格式化器只装在各自的语言镜像里，宿主（Windows 开发机、构建机）
+上一个都没有。所以它们和被测代码一样，只能活在镜像里——`scripts/fmt.sh` 对每门语言
+`docker run` 一次，宿主什么都不用装。
+
+| 语言 | 格式化工具 | 配置文件 |
+|---|---|---|
+| C / C++ | `clang-format` 18（LLVM 基线） | [`.clang-format`](.clang-format) |
+| Go | `gofmt` | 无（官方强制格式） |
+| Rust | `rustfmt` | [`rustfmt.toml`](rustfmt.toml) |
+| Shell | `shfmt -i 2 -ci -ln bash` | [`.editorconfig`](.editorconfig) |
+| Python | `ruff format` | [`ruff.toml`](ruff.toml) |
+| Java | `google-java-format` 1.22.0 `--aosp`（4 空格） | [`.editorconfig`](.editorconfig) |
+
+**格式化配置是门禁文件。** 把 `.clang-format` 里的 `ColumnLimit` 从 100 改成 200，
+代码立刻全部「合规」而其实一行都没被整理过——这和把 `images/budgets.tsv` 的预算调大是同一类绕过，
+所以六个配置文件都写进了 [`scripts/gate-files.txt`](scripts/gate-files.txt)，
+AI 提交的 PR 动了它们必须人工评审后才能合并。
+
+格式化范围只限各语言目录（`<lang>/`）下的源码。`scripts/`、`images/` 以及各用例里的 `run.sh`
+不在范围内：动基础设施会让格式化 PR 变成门禁变更，失去「纯排版、可零风险审阅」的意义。
+
+---
+
 ## 用例契约
 
 每个用例是 `examples/` 下的一个目录，三个文件：

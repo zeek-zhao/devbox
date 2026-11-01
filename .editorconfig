@@ -1,0 +1,41 @@
+# ==================================================================
+# 编辑器通用约定（唯一真本）
+# ------------------------------------------------------------------
+# 用途：让任何编辑器/IDE 在任何一门语言里都遵循同一套空白与编码规则，
+#       避免「换台机器就整文件 diff」。
+# 边界：本文件只管空白、编码、换行。真正的代码排版由 `make fmt` 调各语言
+#       格式化器完成（见根 README「代码格式化」一节）。
+#
+# 本文件是门禁文件：改了它就能让不达标的代码「看起来达标」，
+# 与改 images/budgets.tsv 同类风险，见 scripts/gate-files.txt。
+# ==================================================================
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+# YAML / JSON 按 2 空格（与仓库现有 yml、tsv 对齐）
+[*.{yml,yaml,json,jsonc}]
+indent_size = 2
+
+# Markdown 行尾两个空格是硬换行，不能被裁掉
+[*.md]
+trim_trailing_whitespace = false
+
+# Go 官方风格是 tab（gofmt 强制）
+[*.go]
+indent_style = tab
+
+# Makefile 的命令行必须是真 tab
+[Makefile]
+indent_style = tab
+
+# Shell 脚本按 2 空格（与 images/scripts、scripts 现有风格一致）
+[*.{sh,bash}]
+indent_size = 2

@@ -6,6 +6,9 @@ FROM ${BASE_IMAGE}
 
 ARG JAVA_MAJOR=21
 ARG MAVEN_OPTS="-Dmaven.repo.local=/opt/m2 -Dfile.encoding=UTF-8"
+# 格式化器版本与校验和必须成对出现，缺一个 install/java.sh 会直接报错退出
+ARG GJF_VERSION=1.22.0
+ARG GJF_SHA256=16b2a1ee938686c8b1d88abf19eb83dfd0d623cee9de6fc6d09980214f816d3f
 
 LABEL org.opencontainers.image.title="devbox-java" \
       devbox.layer="lang" \

@@ -6,6 +6,7 @@ FROM ${BASE_IMAGE}
 
 ARG GCC_MAJOR=14
 ARG CLANG_MAJOR=18
+ARG CLANG_FORMAT_MAJOR=18
 ARG CMAKE_MIN_VERSION=3.28
 
 LABEL org.opencontainers.image.title="devbox-cpp" \

@@ -1,0 +1,18 @@
+# prettier 不处理的路径
+# 本文件是门禁文件，见 scripts/gate-files.txt。
+
+# 文档由人写，不交给 prettier 重排（中英混排会被拆行）
+*.md
+
+# 用例的期望输出是逐行精确匹配的，绝不能被格式化
+expected.txt
+
+# 运行期产物
+logs/
+tasks/
+node_modules/
+dist/
+package-lock.json
+
+# 进度看板是手工维护的单文件页面
+docs/*.html
