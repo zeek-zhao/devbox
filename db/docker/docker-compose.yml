@@ -1,0 +1,76 @@
+# devbox 数据库学习轨道的服务编排
+# ------------------------------------------------------------------
+# 只跑在 215 / CI 上，不参与六门语言的镜像分层。
+# Docker Hub 直连不通，默认走 daocloud 镜像源；要换源用 DB_IMAGE_PREFIX 覆盖。
+# 不挂数据卷：每次 up 都是干净的库，用例自己管自己的命名空间。
+name: devbox-db
+
+services:
+  mysql:
+    image: ${DB_IMAGE_PREFIX:-docker.m.daocloud.io/library/}mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: devbox
+      MYSQL_DATABASE: devbox
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+      - --slow_query_log=1
+      - --long_query_time=1
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pdevbox"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+
+  postgres:
+    image: ${DB_IMAGE_PREFIX:-docker.m.daocloud.io/library/}postgres:16-alpine
+    environment:
+      POSTGRES_USER: devbox
+      POSTGRES_PASSWORD: devbox
+      POSTGRES_DB: devbox
+    command: ["postgres", "-c", "log_min_duration_statement=1000"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U devbox -d devbox"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+
+  mongodb:
+    image: ${DB_IMAGE_PREFIX:-docker.m.daocloud.io/library/}mongo:7
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: devbox
+      MONGO_INITDB_ROOT_PASSWORD: devbox
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')", "-u", "devbox", "-p", "devbox", "--authenticationDatabase", "admin"]
+      interval: 5s
+      timeout: 5s
+      retries: 40
+
+  redis:
+    image: ${DB_IMAGE_PREFIX:-docker.m.daocloud.io/library/}redis:7-alpine
+    command: ["redis-server", "--requirepass", "devbox", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "devbox", "--no-auth-warning", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+
+  toolbox:
+    build:
+      context: ./toolbox
+      args:
+        BASE_IMAGE: ${BASE_IMAGE:-ubuntu:24.04}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      MYSQL_PWD: devbox
+      PGPASSWORD: devbox
+    volumes:
+      - ../../:/workspace/db:ro
