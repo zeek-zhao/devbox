@@ -31,7 +31,7 @@ RUN bash /opt/devbox/setup-apt.sh
 RUN set -eux; \
     apt-get install -y --no-install-recommends \
       libstdc++6 libgcc-s1 libssl3 zlib1g \
-      python3-minimal \
+      python3 \
       "openjdk-${JAVA_MAJOR}-jre-headless" \
       tini \
     ; \
