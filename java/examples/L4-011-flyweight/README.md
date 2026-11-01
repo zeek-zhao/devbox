@@ -1,6 +1,6 @@
 # L4-011-flyweight
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 每条 Item 仅有唯一 ID 和短 name，无可拆分的昂贵共享内蕴状态；跨实体共享可变对象会破坏不可变快照契约 -->
 
 ## 考点
 

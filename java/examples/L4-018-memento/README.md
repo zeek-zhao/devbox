@@ -1,6 +1,6 @@
 # L4-018-memento
 
-<!-- coverage: pending -->
+<!-- coverage: exempt Snapshot 只做可移植编码，服务无恢复或撤销端点，也不保留历史；引入 caretaker 会新增尚未承诺的回滚语义 -->
 
 ## 考点
 

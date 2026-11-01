@@ -25,6 +25,8 @@ runtime 只挂载 `build/app.jar`，不需要编译器、本地库或仓库元�
 src/Main.java                 参数与进程退出边界
 src/devbox/rest/Api.java       跨包公开接口和 DTO
 src/devbox/rest/RestService.java 包内业务实现、路由、事务和存储
+src/devbox/rest/ResultBuilder.java 校验并构造不可变响应
+src/devbox/rest/PatternTest.java 主流程设计模式的定向断言
 src/devbox/rest/Json.java      单字段 JSON 解析与完整字符串转义
 src/devbox/rest/HttpApp.java   HTTP 适配、固定线程池、流与生命周期
 src/devbox/rest/Snapshot.java 可移植二进制快照编解码
@@ -33,7 +35,7 @@ src/SelfTest.java              路由、真实 HTTP、并发、错误及值语�
 src/EngineeringTest.java       二进制往返、查找操作数、线程诊断和文件测试
 src/devbox/tests/              测试专用 JNI 快照 ID 校验和
 src/probes.jsh                固定 REPL 业务实验，编译版测试同步验证
-COVERAGE.md                   全部 51 个用例的实际落点
+COVERAGE.md                   74 个用例的实际落点或具体豁免理由
 build.sh                      幂等编译、打包、文档与测试
 check-runtime.sh              只读挂载、逐字比较（包括结尾换行）
 ```
@@ -69,6 +71,15 @@ check-runtime.sh              只读挂载、逐字比较（包括结尾换行�
 数据只在内存中，重启清空，不承诺数据库持久化。Snapshot 是独立备份编解码 API：
 大端魔数 `01 02 03 04`、版本 1、数量、每条 ID 与 UTF-8 长度/内容，
 拒绝重复/乱序 ID、截断、尾随字节和越界长度。
+
+请求主流程接入 8 个 L4 模式：`Router` 组合管理/资源路由组，选择 `Route` 策略，
+`ValidatedRoute` 装饰器统一处理领域校验错误；`RequestEvents` 通知计数观察者。
+新增和替换经 `NameRoute.apply` 的固定校验/写入模板，子类 `success` 工厂分别构造
+201/200 响应。所有业务响应由 `ResultBuilder` 检查完整性和 204 空体后构建，
+HTTP 边界由 `ExchangeRequestAdapter.read` 适配有界 UTF-8 流为 DTO。
+`SelfTest` 调用 `PatternTest.run` 检查路由组合与策略切换、异常传播、多个观察者、
+构建失败边界、无效写入的原子性及状态码；原有真实 HTTP 和并发测试继续运行。
+其余 15 个 L4 用例按单进程内存 CRUD 的实际形态豁免，逐条理由见覆盖表和用例声明。
 
 工程探针用生成的 JNI 头编译测试库，并验证缺库明确失败；该库不用于服务运行。
 `jcmd Thread.print` 仅采样自有 JVM 中已握手进入 WAITING 的线程，不打印进程号或线程转储。

@@ -1,6 +1,6 @@
 # L4-010-facade
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 项目已有单一 Api 业务边界，CRUD 不需协调多个独立子系统；JSON 与快照各有固定入口，再增加门面只会转发现有接口 -->
 
 ## 考点
 

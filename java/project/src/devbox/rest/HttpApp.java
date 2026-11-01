@@ -83,16 +83,9 @@ public final class HttpApp implements AutoCloseable {
         try {
             Api.Result result;
             try {
-                String body;
-                try (var input = exchange.getRequestBody()) { // L1-024-resource-closing
-                    byte[] bytes = input.readNBytes(MAX_BODY + 1);
-                    if (bytes.length > MAX_BODY) {
-                        throw new ValidationException("body exceeds 4096 bytes");
-                    }
-                    body = decode(bytes);
-                }
+                Api.Request request = ExchangeRequestAdapter.read(exchange);
                 String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
-                String method = exchange.getRequestMethod();
+                String method = request.method();
                 if ((method.equals("POST") || method.equals("PUT"))
                         && (contentType == null
                                 || !contentType
@@ -107,10 +100,7 @@ public final class HttpApp implements AutoCloseable {
                 } else if (exchange.getRequestURI().getRawQuery() != null) {
                     throw new ValidationException("query parameters not supported");
                 } else {
-                    result =
-                            api.handle(
-                                    new Api.Request(
-                                            method, exchange.getRequestURI().getRawPath(), body));
+                    result = api.handle(request);
                 }
             } catch (ValidationException | CharacterCodingException e) {
                 result =
@@ -143,6 +133,24 @@ public final class HttpApp implements AutoCloseable {
             throw e;
         } finally {
             exchange.close();
+        }
+    }
+
+    // L4-006-adapter: JDK transport streams become the transport-independent API DTO.
+    private static final class ExchangeRequestAdapter {
+        private ExchangeRequestAdapter() {}
+
+        static Api.Request read(HttpExchange exchange) throws IOException {
+            String body;
+            try (var input = exchange.getRequestBody()) { // L1-024-resource-closing
+                byte[] bytes = input.readNBytes(MAX_BODY + 1);
+                if (bytes.length > MAX_BODY) {
+                    throw new ValidationException("body exceeds 4096 bytes");
+                }
+                body = decode(bytes);
+            }
+            return new Api.Request(
+                    exchange.getRequestMethod(), exchange.getRequestURI().getRawPath(), body);
         }
     }
 

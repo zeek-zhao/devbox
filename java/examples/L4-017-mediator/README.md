@@ -1,6 +1,6 @@
 # L4-017-mediator
 
-<!-- coverage: pending -->
+<!-- coverage: exempt HttpApp 单向调用 Api，实体不互相通信；不存在多个对等组件交互网需要中介协调 -->
 
 ## 考点
 

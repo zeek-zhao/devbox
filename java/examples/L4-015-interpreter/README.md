@@ -1,6 +1,6 @@
 # L4-015-interpreter
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 请求只含固定路径与单字段 JSON，不提供可组合表达式、查询语言或规则 DSL；JSON 字符串解码不是执行语言解释器 -->
 
 ## 考点
 

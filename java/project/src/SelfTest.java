@@ -1,6 +1,7 @@
 import devbox.rest.Api;
 import devbox.rest.HttpApp;
 import devbox.rest.Json;
+import devbox.rest.PatternTest;
 import devbox.rest.SelfCheck;
 import devbox.rest.Snapshot;
 import devbox.rest.ValidationException;
@@ -48,6 +49,7 @@ public final class SelfTest {
         }
         assert output.toString(StandardCharsets.UTF_8).endsWith("[pass] java self-check OK\n");
         routesAndJson();
+        PatternTest.run();
         valueBoundaries();
         snapshots();
         concurrentRequests();

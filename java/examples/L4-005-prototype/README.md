@@ -1,6 +1,6 @@
 # L4-005-prototype
 
-<!-- coverage: pending -->
+<!-- coverage: exempt Item 是仅含 ID/name 的不可变 record，新建必须由事务分配新 ID；克隆现有实体会复制唯一键，快照直接复制不可变值即可 -->
 
 ## 考点
 
