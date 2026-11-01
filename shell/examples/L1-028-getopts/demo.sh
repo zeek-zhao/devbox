@@ -9,8 +9,14 @@ parse_options() {
     case "$option" in
       a) enabled=true ;;
       b) value=$OPTARG ;;
-      :) printf 'missing value for -%s\n' "$OPTARG"; return 1 ;;
-      \?) printf 'invalid option: -%s\n' "$OPTARG"; return 1 ;;
+      :)
+        printf 'missing value for -%s\n' "$OPTARG"
+        return 1
+        ;;
+      \?)
+        printf 'invalid option: -%s\n' "$OPTARG"
+        return 1
+        ;;
     esac
   done
 }

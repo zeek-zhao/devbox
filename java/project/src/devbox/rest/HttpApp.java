@@ -2,6 +2,7 @@ package devbox.rest;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -20,20 +21,24 @@ import java.util.logging.Logger;
 public final class HttpApp implements AutoCloseable {
     private static final int MAX_BODY = 4096;
     private static final Logger LOG = Logger.getLogger(HttpApp.class.getName());
+
     static {
         LOG.setUseParentHandlers(false);
         ConsoleHandler handler = new ConsoleHandler();
-        handler.setFormatter(new Formatter() {
-            @Override public String format(LogRecord record) {
-                String message = record.getLevel() + ":" + record.getMessage() + "\n";
-                if (record.getThrown() == null) return message;
-                java.io.StringWriter stack = new java.io.StringWriter();
-                record.getThrown().printStackTrace(new java.io.PrintWriter(stack));
-                return message + stack;
-            }
-        });
+        handler.setFormatter(
+                new Formatter() {
+                    @Override
+                    public String format(LogRecord record) {
+                        String message = record.getLevel() + ":" + record.getMessage() + "\n";
+                        if (record.getThrown() == null) return message;
+                        java.io.StringWriter stack = new java.io.StringWriter();
+                        record.getThrown().printStackTrace(new java.io.PrintWriter(stack));
+                        return message + stack;
+                    }
+                });
         LOG.addHandler(handler); // L2-006-standard-logging
     }
+
     private final HttpServer server;
     private final ExecutorService workers;
 
@@ -44,6 +49,7 @@ public final class HttpApp implements AutoCloseable {
 
     /**
      * Starts the owned listener and workers.
+     *
      * @param api service
      * @param port TCP port (0 chooses an ephemeral port for tests)
      * @return running adapter
@@ -66,9 +72,12 @@ public final class HttpApp implements AutoCloseable {
 
     /**
      * Reads the bound address.
+     *
      * @return bound TCP port
      */
-    public int port() { return server.getAddress().getPort(); }
+    public int port() {
+        return server.getAddress().getPort();
+    }
 
     private void respond(Api api, HttpExchange exchange) throws IOException {
         try {
@@ -84,26 +93,48 @@ public final class HttpApp implements AutoCloseable {
                 }
                 String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
                 String method = exchange.getRequestMethod();
-                if ((method.equals("POST") || method.equals("PUT")) && (contentType == null
-                        || !contentType.split(";", 2)[0].strip().equalsIgnoreCase("application/json"))) {
-                    result = new Api.Result(415, "application/json; charset=utf-8",
-                            "{\"error\":\"expected application/json\"}");
+                if ((method.equals("POST") || method.equals("PUT"))
+                        && (contentType == null
+                                || !contentType
+                                        .split(";", 2)[0]
+                                        .strip()
+                                        .equalsIgnoreCase("application/json"))) {
+                    result =
+                            new Api.Result(
+                                    415,
+                                    "application/json; charset=utf-8",
+                                    "{\"error\":\"expected application/json\"}");
                 } else if (exchange.getRequestURI().getRawQuery() != null) {
                     throw new ValidationException("query parameters not supported");
                 } else {
-                    result = api.handle(new Api.Request(method, exchange.getRequestURI().getRawPath(), body));
+                    result =
+                            api.handle(
+                                    new Api.Request(
+                                            method, exchange.getRequestURI().getRawPath(), body));
                 }
             } catch (ValidationException | CharacterCodingException e) {
-                result = new Api.Result(400, "application/json; charset=utf-8",
-                        "{\"error\":" + Json.quote(e instanceof CharacterCodingException
-                                ? "invalid UTF-8" : e.getMessage()) + "}");
+                result =
+                        new Api.Result(
+                                400,
+                                "application/json; charset=utf-8",
+                                "{\"error\":"
+                                        + Json.quote(
+                                                e instanceof CharacterCodingException
+                                                        ? "invalid UTF-8"
+                                                        : e.getMessage())
+                                        + "}");
             } catch (RuntimeException e) {
                 LOG.log(Level.SEVERE, "handler failed", e);
-                result = new Api.Result(500, "application/json; charset=utf-8", "{\"error\":\"internal error\"}");
+                result =
+                        new Api.Result(
+                                500,
+                                "application/json; charset=utf-8",
+                                "{\"error\":\"internal error\"}");
             }
             byte[] bytes = result.body().getBytes(StandardCharsets.UTF_8);
             exchange.getResponseHeaders().set("Content-Type", result.contentType());
-            exchange.sendResponseHeaders(result.status(), result.status() == 204 ? -1 : bytes.length);
+            exchange.sendResponseHeaders(
+                    result.status(), result.status() == 204 ? -1 : bytes.length);
             try (var output = exchange.getResponseBody()) {
                 output.write(bytes);
             }
@@ -116,12 +147,17 @@ public final class HttpApp implements AutoCloseable {
     }
 
     private static String decode(byte[] bytes) throws CharacterCodingException {
-        return StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
-                .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(bytes)).toString();
+        return StandardCharsets.UTF_8
+                .newDecoder()
+                .onMalformedInput(CodingErrorAction.REPORT)
+                .onUnmappableCharacter(CodingErrorAction.REPORT)
+                .decode(ByteBuffer.wrap(bytes))
+                .toString();
     }
 
     /** Stops the listener and waits for owned worker threads. */
-    @Override public void close() {
+    @Override
+    public void close() {
         server.stop(0);
         workers.shutdownNow();
         try {

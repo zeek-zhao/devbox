@@ -15,10 +15,12 @@ import java.util.List;
 public final class Snapshot {
     private static final int MAGIC = 0x01020304;
     private static final int MAX_ITEMS = 10000;
+
     private Snapshot() {}
 
     /**
      * Encodes the snapshot.
+     *
      * @param items sorted items
      * @return big-endian version-1 backup
      * @throws IOException invalid snapshot order or size
@@ -45,13 +47,15 @@ public final class Snapshot {
 
     /**
      * Decodes and validates the complete backup.
+     *
      * @param bytes complete backup
      * @return validated immutable snapshot
      * @throws IOException corrupt, truncated or unsupported input
      */
     public static List<Api.Item> decode(byte[] bytes) throws IOException {
         try (DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes))) {
-            if (in.readInt() != MAGIC || in.readInt() != 1) throw new IOException("invalid snapshot header");
+            if (in.readInt() != MAGIC || in.readInt() != 1)
+                throw new IOException("invalid snapshot header");
             int count = in.readInt();
             if (count < 0 || count > MAX_ITEMS) throw new IOException("invalid item count");
             List<Api.Item> items = new ArrayList<>();
@@ -64,8 +68,13 @@ public final class Snapshot {
                 if (size < 1 || size > 256) throw new IOException("invalid name length");
                 byte[] name = new byte[size];
                 in.readFully(name);
-                String decoded = StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
-                        .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(name)).toString();
+                String decoded =
+                        StandardCharsets.UTF_8
+                                .newDecoder()
+                                .onMalformedInput(CodingErrorAction.REPORT)
+                                .onUnmappableCharacter(CodingErrorAction.REPORT)
+                                .decode(ByteBuffer.wrap(name))
+                                .toString();
                 try {
                     items.add(new Api.Item(id, decoded));
                 } catch (ValidationException e) {

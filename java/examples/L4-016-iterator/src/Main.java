@@ -11,18 +11,21 @@ public class Main {
             this.elements = List.copyOf(elements);
         }
 
-        @Override public Iterator<T> iterator() {
+        @Override
+        public Iterator<T> iterator() {
             return new Cursor();
         }
 
         private final class Cursor implements Iterator<T> {
             private int position;
 
-            @Override public boolean hasNext() {
+            @Override
+            public boolean hasNext() {
                 return position < elements.size();
             }
 
-            @Override public T next() {
+            @Override
+            public T next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException("Sequence exhausted");
                 }

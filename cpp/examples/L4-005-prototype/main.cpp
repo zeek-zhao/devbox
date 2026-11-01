@@ -17,15 +17,11 @@ public:
     Index() : words_{"cpp", "patterns"} { ++construction_count_; }
     Index(const Index&) = default;
 
-    std::unique_ptr<Prototype> clone() const override {
-        return std::make_unique<Index>(*this);
-    }
+    std::unique_ptr<Prototype> clone() const override { return std::make_unique<Index>(*this); }
     void set_word(std::size_t index, std::string word) override {
         words_.at(index) = std::move(word);
     }
-    const std::string& word(std::size_t index) const override {
-        return words_.at(index);
-    }
+    const std::string& word(std::size_t index) const override { return words_.at(index); }
     static int construction_count() { return construction_count_; }
 
 private:

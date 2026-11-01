@@ -21,8 +21,7 @@ public class Main {
 final class Config {
     private String value = "default";
 
-    private Config() {
-    }
+    private Config() {}
 
     private static final class Holder {
         private static final Config INSTANCE = new Config();

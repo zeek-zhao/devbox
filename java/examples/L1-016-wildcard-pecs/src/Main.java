@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
@@ -35,11 +36,17 @@ public class Main {
         Files.createDirectories(output);
         var diagnostics = new DiagnosticCollector<JavaFileObject>();
         try (StandardJavaFileManager manager =
-                     compiler.getStandardFileManager(diagnostics, Locale.ROOT, StandardCharsets.UTF_8)) {
-            boolean compiled = Boolean.TRUE.equals(compiler.getTask(
-                    null, manager, diagnostics,
-                    List.of("-proc:none", "-d", output.toString()),
-                    null, List.of(new Source(source))).call());
+                compiler.getStandardFileManager(diagnostics, Locale.ROOT, StandardCharsets.UTF_8)) {
+            boolean compiled =
+                    Boolean.TRUE.equals(
+                            compiler.getTask(
+                                            null,
+                                            manager,
+                                            diagnostics,
+                                            List.of("-proc:none", "-d", output.toString()),
+                                            null,
+                                            List.of(new Source(source)))
+                                    .call());
             return !compiled;
         }
     }
@@ -65,11 +72,13 @@ public class Main {
 
         System.out.println("extends source total=" + total(source));
         System.out.println("super target first=" + first);
-        System.out.println("extends rejects write=" + rejected(
-                "import java.util.*; class Probe { void test() { "
-                        + "List<? extends Number> values = new ArrayList<Integer>(); "
-                        + "values.add(1); } }",
-                probes));
+        System.out.println(
+                "extends rejects write="
+                        + rejected(
+                                "import java.util.*; class Probe { void test() { List<? extends"
+                                    + " Number> values = new ArrayList<Integer>(); values.add(1); }"
+                                    + " }",
+                                probes));
         System.out.println("super accepts integer write=" + (first instanceof Integer));
     }
 }

@@ -74,6 +74,5 @@ public class Main {
         return new SearchResult(-1, checks);
     }
 
-    private record SearchResult(int value, int checks) {
-    }
+    private record SearchResult(int value, int checks) {}
 }

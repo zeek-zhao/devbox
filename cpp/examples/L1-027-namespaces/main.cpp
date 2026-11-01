@@ -1,26 +1,30 @@
 #include <iostream>
 
 namespace first {
-void describe() { std::cout << "first::describe\n"; }
+void describe() {
+    std::cout << "first::describe\n";
 }
+} // namespace first
 
 namespace second {
-void describe() { std::cout << "second::describe\n"; }
+void describe() {
+    std::cout << "second::describe\n";
 }
+} // namespace second
 
 namespace scope {
 int label = 1;
 }
 
 int main() {
-  first::describe();
-  second::describe();
+    first::describe();
+    second::describe();
 
-  using first::describe;
-  describe();
+    using first::describe;
+    describe();
 
-  using namespace scope;
-  int label = 2;
-  std::cout << "scope::label: " << scope::label << '\n';
-  std::cout << "local label: " << label << '\n';
+    using namespace scope;
+    int label = 2;
+    std::cout << "scope::label: " << scope::label << '\n';
+    std::cout << "local label: " << label << '\n';
 }

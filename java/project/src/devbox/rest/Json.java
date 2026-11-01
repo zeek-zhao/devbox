@@ -6,11 +6,15 @@ import java.util.regex.Pattern;
 
 /** Deliberately small JSON schema: exactly one string field named "name". */
 public final class Json {
-    private static final Pattern NAME = Pattern.compile("[\\p{L}\\p{N}][\\p{L}\\p{N} _.'\"\\\\-]{0,63}"); // L1-008-class-initialization
+    private static final Pattern NAME =
+            Pattern.compile(
+                    "[\\p{L}\\p{N}][\\p{L}\\p{N} _.'\"\\\\-]{0,63}"); // L1-008-class-initialization
+
     private Json() {}
 
     /**
      * Validates the name schema.
+     *
      * @param name input name
      * @return validated name
      * @throws ValidationException invalid name
@@ -25,13 +29,17 @@ public final class Json {
 
     /**
      * Serializes a create/update request.
+     *
      * @param name a string
      * @return one-field JSON object
      */
-    public static String name(String name) { return "{\"name\":" + quote(name) + "}"; }
+    public static String name(String name) {
+        return "{\"name\":" + quote(name) + "}";
+    }
 
     /**
      * Serializes an item.
+     *
      * @param item stored item
      * @return JSON object
      */
@@ -41,15 +49,19 @@ public final class Json {
 
     /**
      * Serializes a snapshot.
+     *
      * @param items sorted snapshot
      * @return JSON array
      */
     public static String items(List<Api.Item> items) {
-        return items.stream().map(Json::item).collect(java.util.stream.Collectors.joining(",", "[", "]"));
+        return items.stream()
+                .map(Json::item)
+                .collect(java.util.stream.Collectors.joining(",", "[", "]"));
     }
 
     /**
      * Escapes JSON string syntax and controls.
+     *
      * @param value string
      * @return escaped JSON string
      */
@@ -82,6 +94,7 @@ public final class Json {
 
     /**
      * Parses the complete single-field request.
+     *
      * @param input complete JSON document
      * @return validated name
      * @throws ValidationException bad schema
@@ -105,23 +118,31 @@ public final class Json {
                 if (++i == value.length() || !Character.isLowSurrogate(value.charAt(i))) {
                     throw new ValidationException("unpaired surrogate");
                 }
-            } else if (Character.isLowSurrogate(c)) throw new ValidationException("unpaired surrogate");
+            } else if (Character.isLowSurrogate(c))
+                throw new ValidationException("unpaired surrogate");
         }
     }
 
     private static final class Cursor {
         private final String input;
         private int position;
-        Cursor(String input) { this.input = Objects.requireNonNull(input, "input"); }
-        void space() {
-            while (position < input.length() && " \t\r\n".indexOf(input.charAt(position)) >= 0) position++;
+
+        Cursor(String input) {
+            this.input = Objects.requireNonNull(input, "input");
         }
+
+        void space() {
+            while (position < input.length() && " \t\r\n".indexOf(input.charAt(position)) >= 0)
+                position++;
+        }
+
         void expect(char wanted) {
             space();
             if (position == input.length() || input.charAt(position++) != wanted) {
                 throw new ValidationException("expected " + wanted);
             }
         }
+
         String string() {
             expect('"');
             StringBuilder out = new StringBuilder();
@@ -133,7 +154,10 @@ public final class Json {
                     return result;
                 }
                 if (c < 0x20) throw new ValidationException("unescaped control character");
-                if (c != '\\') { out.append(c); continue; }
+                if (c != '\\') {
+                    out.append(c);
+                    continue;
+                }
                 if (position == input.length()) throw new ValidationException("truncated escape");
                 char escaped = input.charAt(position++);
                 switch (escaped) {
@@ -144,7 +168,8 @@ public final class Json {
                     case 'r' -> out.append('\r');
                     case 't' -> out.append('\t');
                     case 'u' -> {
-                        if (input.length() - position < 4) throw new ValidationException("truncated unicode");
+                        if (input.length() - position < 4)
+                            throw new ValidationException("truncated unicode");
                         int code = 0;
                         for (int j = 0; j < 4; j++) {
                             char digit = input.charAt(position++);

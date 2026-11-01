@@ -8,7 +8,8 @@ public class Main {
         Path directory = Path.of(args[0]);
         Path script = directory.resolve("experiment.jsh");
         Path output = directory.resolve("jshell-output.txt");
-        Files.writeString(script,
+        Files.writeString(
+                script,
                 "int twice(int value) { return value * 2; }\n"
                         + "if (twice(21) != 42) throw new AssertionError(\"bad result\");\n"
                         + "System.out.println(\"repl: ok\");\n"
@@ -16,12 +17,16 @@ public class Main {
                 StandardCharsets.UTF_8);
 
         Path jshell = Path.of(System.getProperty("java.home"), "bin", "jshell");
-        Process process = new ProcessBuilder(jshell.toString(), "--feedback", "silent",
-                "-J-Djava.util.prefs.userRoot=" + directory.resolve("prefs"))
-                .redirectInput(script.toFile())
-                .redirectErrorStream(true)
-                .redirectOutput(output.toFile())
-                .start();
+        Process process =
+                new ProcessBuilder(
+                                jshell.toString(),
+                                "--feedback",
+                                "silent",
+                                "-J-Djava.util.prefs.userRoot=" + directory.resolve("prefs"))
+                        .redirectInput(script.toFile())
+                        .redirectErrorStream(true)
+                        .redirectOutput(output.toFile())
+                        .start();
         if (!process.waitFor(10, TimeUnit.SECONDS)) {
             process.destroyForcibly();
             throw new IllegalStateException("jshell timed out");

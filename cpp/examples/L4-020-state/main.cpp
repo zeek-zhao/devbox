@@ -14,25 +14,19 @@ public:
 class Done final : public State {
 public:
     std::string_view name() const override { return "done"; }
-    std::unique_ptr<State> handle() const override {
-        return std::make_unique<Done>();
-    }
+    std::unique_ptr<State> handle() const override { return std::make_unique<Done>(); }
 };
 
 class Running final : public State {
 public:
     std::string_view name() const override { return "running"; }
-    std::unique_ptr<State> handle() const override {
-        return std::make_unique<Done>();
-    }
+    std::unique_ptr<State> handle() const override { return std::make_unique<Done>(); }
 };
 
 class Pending final : public State {
 public:
     std::string_view name() const override { return "pending"; }
-    std::unique_ptr<State> handle() const override {
-        return std::make_unique<Running>();
-    }
+    std::unique_ptr<State> handle() const override { return std::make_unique<Running>(); }
 };
 
 class Task {

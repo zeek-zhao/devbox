@@ -37,6 +37,7 @@ public class Main {
 
     interface AbstractFactory<B extends Button, C extends Checkbox> {
         B createButton();
+
         C createCheckbox();
     }
 

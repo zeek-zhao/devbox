@@ -82,9 +82,7 @@ def test_profile_aggregation():
     assert groups[0].cents == 100
     stats = pstats.Stats(profiler)
     calls = sorted(
-        (key[2], entry[1])
-        for key, entry in stats.stats.items()
-        if key[2] == "aggregate"
+        (key[2], entry[1]) for key, entry in stats.stats.items() if key[2] == "aggregate"
     )
     assert calls == [("aggregate", 1)]
 
@@ -123,9 +121,7 @@ def test_checker_rejects_bad_code(tmp_path, tool, content):
         if tool == "ruff"
         else [tool, "--strict", str(PROJECT / "src"), str(bad)]
     )
-    result = subprocess.run(
-        command, check=False, capture_output=True, text=True, cwd=PROJECT
-    )
+    result = subprocess.run(command, check=False, capture_output=True, text=True, cwd=PROJECT)
     assert result.returncode == 1
     assert ("F401" if tool == "ruff" else "arg-type") in result.stdout
 

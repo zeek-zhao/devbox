@@ -3,7 +3,7 @@ set -euo pipefail
 
 route() {
   case "$1" in
-    start|run)
+    start | run)
       printf 'action: start\n'
       ;;
     stop)

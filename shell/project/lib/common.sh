@@ -86,13 +86,24 @@ payload() {
 
 main() {
   local command target='' name=demo config='' input='' name_seen=0
-  [[ $# -gt 0 ]] || { usage >&2; exit 2; }
+  [[ $# -gt 0 ]] || {
+    usage >&2
+    exit 2
+  }
   command=$1
   shift
   case "$command" in
-    --help|-h) [[ $# -eq 0 ]] || die 'unexpected arguments'; usage; return ;;
-    --self-check) [[ $# -eq 0 ]] || die 'unexpected arguments'; self_check; return ;;
-    deploy|inspect|report) ;;
+    --help | -h)
+      [[ $# -eq 0 ]] || die 'unexpected arguments'
+      usage
+      return
+      ;;
+    --self-check)
+      [[ $# -eq 0 ]] || die 'unexpected arguments'
+      self_check
+      return
+      ;;
+    deploy | inspect | report) ;;
     *) die "unknown command: $command" ;;
   esac
   if [[ "$command" == report && ${1:-} == -* && ${1:-} != --* ]]; then
@@ -103,23 +114,47 @@ main() {
   while [ $# -gt 0 ]; do
     # L1-013-case-patterns
     case "$1" in
-      --target|--name|--config|--input)
+      --target | --name | --config | --input)
         # L2-008-cli-option-validation
         [[ $# -ge 2 && -n "$2" && "$2" != --* ]] || die "missing value for $1"
         case "$command:$1" in
-          deploy:--target|inspect:--target) [[ -z "$target" ]] || die 'duplicate target'; target=$2 ;;
-          deploy:--name) [[ "$name_seen" -eq 0 ]] || die 'duplicate name'; name=$2; name_seen=1 ;;
-          inspect:--config) [[ -z "$config" ]] || die 'duplicate config'; config=$2 ;;
-          report:--input) [[ -z "$input" ]] || die 'duplicate input'; input=$2 ;;
+          deploy:--target | inspect:--target)
+            [[ -z "$target" ]] || die 'duplicate target'
+            target=$2
+            ;;
+          deploy:--name)
+            [[ "$name_seen" -eq 0 ]] || die 'duplicate name'
+            name=$2
+            name_seen=1
+            ;;
+          inspect:--config)
+            [[ -z "$config" ]] || die 'duplicate config'
+            config=$2
+            ;;
+          report:--input)
+            [[ -z "$input" ]] || die 'duplicate input'
+            input=$2
+            ;;
           *) die "option not valid for $command: $1" ;;
         esac
-        shift 2 ;;
+        shift 2
+        ;;
       *) die "unknown option: $1" ;;
     esac
   done
   case "$command" in
-    deploy) [[ -n "$target" ]] || die 'target is required'; validate_name "$name"; deploy "$target" "$name" ;;
-    inspect) [[ -n "$target" ]] || die 'target is required'; inspect "$target" "$config" ;;
-    report) [[ -n "$input" ]] || die 'input is required'; report "$input" ;;
+    deploy)
+      [[ -n "$target" ]] || die 'target is required'
+      validate_name "$name"
+      deploy "$target" "$name"
+      ;;
+    inspect)
+      [[ -n "$target" ]] || die 'target is required'
+      inspect "$target" "$config"
+      ;;
+    report)
+      [[ -n "$input" ]] || die 'input is required'
+      report "$input"
+      ;;
   esac
 }

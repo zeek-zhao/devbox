@@ -4,14 +4,24 @@ import java.util.Deque;
 public class Main {
     interface Command {
         void execute();
+
         void undo();
     }
 
     static final class Document {
         private String text;
-        Document(String text) { this.text = text; }
-        String text() { return text; }
-        void replace(String value) { text = value; }
+
+        Document(String text) {
+            this.text = text;
+        }
+
+        String text() {
+            return text;
+        }
+
+        void replace(String value) {
+            text = value;
+        }
     }
 
     static final class ReplaceCommand implements Command {
@@ -25,7 +35,8 @@ public class Main {
             this.replacement = replacement;
         }
 
-        @Override public void execute() {
+        @Override
+        public void execute() {
             if (executed) {
                 throw new IllegalStateException("Command already executed");
             }
@@ -34,7 +45,8 @@ public class Main {
             executed = true;
         }
 
-        @Override public void undo() {
+        @Override
+        public void undo() {
             if (!executed) {
                 throw new IllegalStateException("Command not executed");
             }
@@ -45,10 +57,12 @@ public class Main {
 
     static final class Editor {
         private final Deque<Command> history = new ArrayDeque<>();
+
         void submit(Command command) {
             command.execute();
             history.push(command);
         }
+
         void undo() {
             history.pop().undo();
         }

@@ -2,4 +2,6 @@
 
 #include <iostream>
 
-int main() { std::cout << "message: " << message() << '\n'; }
+int main() {
+    std::cout << "message: " << message() << '\n';
+}

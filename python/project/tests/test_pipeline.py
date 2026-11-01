@@ -59,9 +59,7 @@ def test_pipeline(source, tmp_path):
         "food     | 2     | 12.60"
     )
     assert run(["summary", str(output)]) == expected
-    assert (
-        run(["report", str(output)]) == f"CSV report\n{expected}\nrows: 3\ntotal: 32.60"
-    )
+    assert run(["report", str(output)]) == f"CSV report\n{expected}\nrows: 3\ntotal: 32.60"
     assert run(["clean", str(output), str(output)]) == "clean: 3 rows"
 
 
@@ -75,9 +73,7 @@ def test_exact_money(amount, cents):
     assert parse_money("0.10") + parse_money("0.20") == 30
 
 
-@pytest.mark.parametrize(
-    "amount", ["", "-1", "NaN", "1e3", "1.234", "1.", ".1", "１.00"]
-)
+@pytest.mark.parametrize("amount", ["", "-1", "NaN", "1e3", "1.234", "1.", ".1", "１.00"])
 def test_bad_money(amount):
     with pytest.raises(DataError):
         parse_money(amount)
@@ -159,9 +155,7 @@ def test_self_check_is_repeatable():
     assert self_check().endswith("rows: 3\ntotal: 32.60")
 
 
-@pytest.mark.parametrize(
-    "argv", [[], ["clean"], ["summary"], ["--self-check", "report", "x"]]
-)
+@pytest.mark.parametrize("argv", [[], ["clean"], ["summary"], ["--self-check", "report", "x"]])
 def test_cli_usage_errors(argv, capsys):
     with pytest.raises(SystemExit) as error:
         run(argv)
@@ -223,9 +217,7 @@ def test_diagnostic_logging(source, caplog):
             execute("unknown", source)
         except DataError as exc:
             logger.warning("rejected command: %s", exc)
-    assert [
-        (entry.name, entry.levelname, entry.message) for entry in caplog.records
-    ] == [
+    assert [(entry.name, entry.levelname, entry.message) for entry in caplog.records] == [
         (
             "csv-report.validation",
             "WARNING",

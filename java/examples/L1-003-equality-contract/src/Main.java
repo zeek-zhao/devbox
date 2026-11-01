@@ -50,8 +50,8 @@ public class Main {
     public static void main(String[] args) {
         Set<FixedHashKey> inconsistent = new HashSet<>();
         inconsistent.add(new FixedHashKey("doc", 1));
-        System.out.println("inconsistent hash lookup: "
-                + inconsistent.contains(new FixedHashKey("doc", 2)));
+        System.out.println(
+                "inconsistent hash lookup: " + inconsistent.contains(new FixedHashKey("doc", 2)));
 
         Set<StableKey> consistent = new HashSet<>();
         consistent.add(new StableKey("doc"));

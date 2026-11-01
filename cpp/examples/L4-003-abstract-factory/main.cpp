@@ -7,22 +7,19 @@
 struct LightFamily {};
 struct DarkFamily {};
 
-template <typename Family>
-class Button {
+template <typename Family> class Button {
 public:
     virtual ~Button() = default;
     virtual std::string_view family() const = 0;
 };
 
-template <typename Family>
-class TextBox {
+template <typename Family> class TextBox {
 public:
     virtual ~TextBox() = default;
     virtual std::string_view family() const = 0;
 };
 
-template <typename Family>
-class Factory {
+template <typename Family> class Factory {
 public:
     virtual ~Factory() = default;
     virtual std::unique_ptr<Button<Family>> create_button() const = 0;
@@ -69,18 +66,15 @@ public:
     }
 };
 
-template <typename Family>
-class Panel {
+template <typename Family> class Panel {
 public:
-    Panel(std::unique_ptr<Button<Family>> button,
-          std::unique_ptr<TextBox<Family>> text_box)
+    Panel(std::unique_ptr<Button<Family>> button, std::unique_ptr<TextBox<Family>> text_box)
         : button_(std::move(button)), text_box_(std::move(text_box)) {}
 
     std::string_view render() const {
-        std::cout << "button: " << button_->family()
-                  << ", text box: " << text_box_->family() << '\n';
-        std::cout << "matching family: "
-                  << (button_->family() == text_box_->family()) << '\n';
+        std::cout << "button: " << button_->family() << ", text box: " << text_box_->family()
+                  << '\n';
+        std::cout << "matching family: " << (button_->family() == text_box_->family()) << '\n';
         return button_->family();
     }
 
@@ -89,22 +83,18 @@ private:
     std::unique_ptr<TextBox<Family>> text_box_;
 };
 
-static_assert(!std::is_constructible_v<Panel<LightFamily>,
-              std::unique_ptr<Button<LightFamily>>,
-              std::unique_ptr<TextBox<DarkFamily>>>);
+static_assert(!std::is_constructible_v<Panel<LightFamily>, std::unique_ptr<Button<LightFamily>>,
+                                       std::unique_ptr<TextBox<DarkFamily>>>);
 
-template <typename Family>
-std::string_view use_factory(const Factory<Family>* factory) {
+template <typename Family> std::string_view use_factory(const Factory<Family>* factory) {
     Panel<Family> panel(factory->create_button(), factory->create_text_box());
     return panel.render();
 }
 
 int main() {
     std::cout << std::boolalpha;
-    const std::unique_ptr<Factory<LightFamily>> light =
-        std::make_unique<LightFactory>();
-    const std::unique_ptr<Factory<DarkFamily>> dark =
-        std::make_unique<DarkFactory>();
+    const std::unique_ptr<Factory<LightFamily>> light = std::make_unique<LightFactory>();
+    const std::unique_ptr<Factory<DarkFamily>> dark = std::make_unique<DarkFactory>();
     const auto light_family = use_factory(light.get());
     const auto dark_family = use_factory(dark.get());
     std::cout << "different families: " << (light_family != dark_family) << '\n';

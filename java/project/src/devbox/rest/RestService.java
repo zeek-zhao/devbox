@@ -10,30 +10,46 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
 final class RestService implements Api {
-    private final Map<Integer, Item> items = new ConcurrentHashMap<>(); // L1-017-collection-selection
+    private final Map<Integer, Item> items =
+            new ConcurrentHashMap<>(); // L1-017-collection-selection
     private final ReentrantLock transaction = new ReentrantLock();
     private final Counter requests = new Counter();
     private int nextId = 1;
     private volatile boolean ready; // L1-031-volatile-publication
 
     @FunctionalInterface
-    private interface Route { Reply apply(Request request); } // L1-011-functional-interface
+    private interface Route {
+        Reply apply(Request request);
+    } // L1-011-functional-interface
 
-    private final Map<String, Route> routes = Map.of(
-            "GET /healthz", request -> new Text(200, "{\"status\":\"ok\"}", true),
-            "GET /metrics", request -> new Text(200, "requests_total " + requests.value() + "\n", false),
-            "GET /items", request -> new Many(snapshot()),
-            "POST /items", this::create);
+    private final Map<String, Route> routes =
+            Map.of(
+                    "GET /healthz", request -> new Text(200, "{\"status\":\"ok\"}", true),
+                    "GET /metrics",
+                            request ->
+                                    new Text(
+                                            200,
+                                            "requests_total " + requests.value() + "\n",
+                                            false),
+                    "GET /items", request -> new Many(snapshot()),
+                    "POST /items", this::create);
 
     private sealed interface Reply permits One, Many, Text, Failure {}
+
     private record One(int status, Item item) implements Reply {}
+
     private record Many(List<Item> items) implements Reply {
-        Many { items = List.copyOf(items); }
+        Many {
+            items = List.copyOf(items);
+        }
     }
+
     private record Text(int status, String body, boolean json) implements Reply {}
+
     private record Failure(int status, String message) implements Reply {}
 
-    @Override public Result handle(Request request) {
+    @Override
+    public Result handle(Request request) {
         Objects.requireNonNull(request, "request");
         requests.increment();
         transaction.lock();
@@ -53,7 +69,10 @@ final class RestService implements Api {
         }
     }
 
-    @Override public boolean ready() { return ready; }
+    @Override
+    public boolean ready() {
+        return ready;
+    }
 
     private Reply create(Request request) {
         String name = Json.parseName(request.body());
@@ -65,7 +84,8 @@ final class RestService implements Api {
     }
 
     private Reply itemRoute(Request request) {
-        if (request.path().equals("/items") || request.path().equals("/healthz")
+        if (request.path().equals("/items")
+                || request.path().equals("/healthz")
                 || request.path().equals("/metrics")) return new Failure(405, "method not allowed");
         if (!request.path().startsWith("/items/")) return new Failure(404, "route not found");
         String suffix = request.path().substring("/items/".length());
@@ -77,8 +97,13 @@ final class RestService implements Api {
             throw new ValidationException("id out of range", e);
         }
         return switch (Verb.parse(request.method())) {
-            case GET -> find(id).<Reply>map(item -> new One(200, item))
-                    .orElseGet(() -> new Failure(404, "item not found")); // L1-021-optional-fallback
+            case GET ->
+                    find(id).<Reply>map(item -> new One(200, item))
+                            .orElseGet(
+                                    () ->
+                                            new Failure(
+                                                    404,
+                                                    "item not found")); // L1-021-optional-fallback
             case PUT -> {
                 String name = Json.parseName(request.body());
                 if (!items.containsKey(id)) yield new Failure(404, "item not found");
@@ -86,27 +111,38 @@ final class RestService implements Api {
                 items.put(id, item);
                 yield new One(200, item);
             }
-            case DELETE -> items.remove(id) == null
-                    ? new Failure(404, "item not found") : new Text(204, "", true);
+            case DELETE ->
+                    items.remove(id) == null
+                            ? new Failure(404, "item not found")
+                            : new Text(204, "", true);
             case OTHER -> new Failure(405, "method not allowed");
         };
     }
 
     private enum Verb {
-        GET, PUT, DELETE, OTHER;
+        GET,
+        PUT,
+        DELETE,
+        OTHER;
+
         static Verb parse(String method) {
             return switch (method) { // L1-012-enum-switch
                 case "GET" -> GET;
                 case "PUT" -> PUT;
                 case "DELETE" -> DELETE;
-                default -> { yield OTHER; }
+                default -> {
+                    yield OTHER;
+                }
             };
         }
     }
 
-    private Optional<Item> find(int id) { return Optional.ofNullable(items.get(id)); }
+    private Optional<Item> find(int id) {
+        return Optional.ofNullable(items.get(id));
+    }
 
-    @Override public List<Item> snapshot() {
+    @Override
+    public List<Item> snapshot() {
         transaction.lock();
         try {
             List<Item> copy = new ArrayList<>(items.values()); // L1-014-generic-safety
@@ -121,9 +157,15 @@ final class RestService implements Api {
         return switch (reply) { // L1-027-sealed-pattern-switch
             case One one -> json(one.status(), Json.item(one.item()));
             case Many many -> json(200, Json.items(many.items()));
-            case Text text -> new Result(text.status(), text.json()
-                    ? "application/json; charset=utf-8" : "text/plain; charset=utf-8", text.body());
-            case Failure failure -> json(failure.status(), "{\"error\":" + Json.quote(failure.message()) + "}");
+            case Text text ->
+                    new Result(
+                            text.status(),
+                            text.json()
+                                    ? "application/json; charset=utf-8"
+                                    : "text/plain; charset=utf-8",
+                            text.body());
+            case Failure failure ->
+                    json(failure.status(), "{\"error\":" + Json.quote(failure.message()) + "}");
         };
     }
 
@@ -133,7 +175,13 @@ final class RestService implements Api {
 
     private static final class Counter {
         private long count;
-        synchronized void increment() { count = Math.addExact(count, 1); } // L1-030-synchronized-counter
-        synchronized long value() { return count; }
+
+        synchronized void increment() {
+            count = Math.addExact(count, 1);
+        } // L1-030-synchronized-counter
+
+        synchronized long value() {
+            return count;
+        }
     }
 }

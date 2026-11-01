@@ -66,9 +66,7 @@ class Category:
 @lru_cache(maxsize=256)  # L1-032-lru-cache
 def parse_money(text: str) -> int:
     if re.fullmatch(r"[0-9]+(?:\.[0-9]{1,2})?", text) is None:
-        raise DataError(
-            "amount must be a non-negative number with at most two decimals"
-        )
+        raise DataError("amount must be a non-negative number with at most two decimals")
     whole, _, fraction = text.partition(".")
     return int(whole) * 100 + int((fraction + "00")[:2])  # L1-005-index-slice
 
@@ -162,10 +160,7 @@ def render_table(headings: Sequence[str], rows: Iterable[TableRow]) -> str:
     if any(len(row) != len(headings) for row in data):
         raise ValueError("table rows must match headings")
     widths = [max(len(row[i]) for row in data) for i in range(len(headings))]
-    lines = [
-        " | ".join(cell.ljust(width) for cell, width in zip(row, widths))
-        for row in data
-    ]
+    lines = [" | ".join(cell.ljust(width) for cell, width in zip(row, widths)) for row in data]
     lines.insert(1, "-+-".join("-" * width for width in widths))
     assert all(len(line) == len(lines[0]) for line in lines)  # L1-031-assert-invariants
     return "\n".join(lines)

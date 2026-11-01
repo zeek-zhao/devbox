@@ -99,9 +99,7 @@ def self_check() -> str:
 
 
 def run(argv: Sequence[str] | None = None) -> str:
-    parser = argparse.ArgumentParser(
-        description="Clean CSV and print deterministic reports"
-    )
+    parser = argparse.ArgumentParser(description="Clean CSV and print deterministic reports")
     parser.add_argument("--self-check", action="store_true")
     commands = parser.add_subparsers(dest="command")  # L2-007-argparse-cli
     for name in ("clean", "summary", "report"):

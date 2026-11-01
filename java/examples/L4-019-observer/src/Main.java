@@ -10,8 +10,14 @@ public class Main {
         private final List<Observer> listeners = new ArrayList<>();
         private int version;
 
-        void add(Observer observer) { listeners.add(observer); }
-        void remove(Observer observer) { listeners.remove(observer); }
+        void add(Observer observer) {
+            listeners.add(observer);
+        }
+
+        void remove(Observer observer) {
+            listeners.remove(observer);
+        }
+
         void update() {
             version++;
             for (Observer observer : List.copyOf(listeners)) {
@@ -21,13 +27,15 @@ public class Main {
     }
 
     static final class Cache implements Observer {
-        @Override public void updated(int version) {
+        @Override
+        public void updated(int version) {
             System.out.println("cache invalidated: " + version);
         }
     }
 
     static final class Audit implements Observer {
-        @Override public void updated(int version) {
+        @Override
+        public void updated(int version) {
             System.out.println("audit recorded: " + version);
         }
     }

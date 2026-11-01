@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -15,17 +15,23 @@ public class Main {
         try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
             List<Future<TaskResult>> futures = new ArrayList<>();
             for (int value : values) {
-                futures.add(executor.submit(() ->
-                        new TaskResult(value * value, Thread.currentThread().isVirtual())));
+                futures.add(
+                        executor.submit(
+                                () ->
+                                        new TaskResult(
+                                                value * value,
+                                                Thread.currentThread().isVirtual())));
             }
             for (Future<TaskResult> future : futures) {
                 TaskResult result = future.get(5, TimeUnit.SECONDS);
                 results.add(result.value());
                 allVirtual &= result.virtual();
             }
-            Future<Integer> failed = executor.submit(() -> {
-                throw new IllegalArgumentException("fixed failure");
-            });
+            Future<Integer> failed =
+                    executor.submit(
+                            () -> {
+                                throw new IllegalArgumentException("fixed failure");
+                            });
             try {
                 failed.get(5, TimeUnit.SECONDS);
                 throw new IllegalStateException("failed virtual task was accepted");
@@ -45,6 +51,5 @@ public class Main {
         System.out.println("failure-cause: " + failureCause);
     }
 
-    private record TaskResult(int value, boolean virtual) {
-    }
+    private record TaskResult(int value, boolean virtual) {}
 }

@@ -14,7 +14,7 @@ use std::fs;
 use std::io::{self, Write};
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicUsize, Ordering};
-use std::sync::{Arc, Mutex, mpsc};
+use std::sync::{mpsc, Arc, Mutex};
 use std::thread;
 use std::time::Instant;
 
@@ -176,7 +176,8 @@ pub fn run<W: Write>(options: CliOptions, output: &mut W) -> Result<(), AppError
             files.sort();
             let mut lines = Vec::new();
             for path in files {
-                lines.extend(fs::read_to_string(path)?.lines().map(str::to_owned)); // L1-019-iterator-adaptors
+                lines.extend(fs::read_to_string(path)?.lines().map(str::to_owned));
+                // L1-019-iterator-adaptors
             }
             let kind = options.operation;
             let counts = process_lines(lines, kind, options.workers)?;
@@ -272,7 +273,8 @@ fn process_lines(
                         for word in Words::new(&line) {
                             let word = word.to_lowercase(); // L1-027-str-string
                             let count = local.entry(word).or_default();
-                            *count = count.checked_add(1).ok_or(AppError::CountOverflow)?; // L1-004-mutable-borrows
+                            *count = count.checked_add(1).ok_or(AppError::CountOverflow)?;
+                            // L1-004-mutable-borrows
                         }
                     } else {
                         let count = local.entry(line).or_default();
@@ -294,7 +296,8 @@ fn process_lines(
         for partial in receiver {
             for (key, value) in partial {
                 let total = merged.entry(key).or_default();
-                *total = total.checked_add(value).ok_or(AppError::CountOverflow)?; // L1-033-integer-overflow
+                *total = total.checked_add(value).ok_or(AppError::CountOverflow)?;
+                // L1-033-integer-overflow
             }
         }
         for handle in handles {

@@ -30,8 +30,8 @@ public class Main {
         }
         System.out.println("READY");
         System.out.flush();
-        try (BufferedReader input = new BufferedReader(
-                new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
+        try (BufferedReader input =
+                new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
             input.readLine();
         } catch (IOException exception) {
             throw new IllegalStateException("worker handshake failed", exception);
@@ -54,12 +54,19 @@ public class Main {
 
     private static void diagnoseWorker() throws Exception {
         String java = Path.of(System.getProperty("java.home"), "bin", "java").toString();
-        Process child = new ProcessBuilder(java, "-cp", System.getProperty("java.class.path"),
-                Main.class.getName(), "worker").start();
+        Process child =
+                new ProcessBuilder(
+                                java,
+                                "-cp",
+                                System.getProperty("java.class.path"),
+                                Main.class.getName(),
+                                "worker")
+                        .start();
         String lastDump = "";
         try {
-            BufferedReader childOutput = new BufferedReader(
-                    new InputStreamReader(child.getInputStream(), StandardCharsets.UTF_8));
+            BufferedReader childOutput =
+                    new BufferedReader(
+                            new InputStreamReader(child.getInputStream(), StandardCharsets.UTF_8));
             long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
             while (!childOutput.ready() && child.isAlive() && System.nanoTime() < deadline) {
                 Thread.onSpinWait();
@@ -72,14 +79,16 @@ public class Main {
             boolean waiting = false;
             boolean frameFound = false;
             for (int attempt = 0; attempt < 5 && !frameFound; attempt++) {
-                Process diagnostic = new ProcessBuilder(jcmd,
-                        Long.toString(child.pid()), "Thread.print").start();
+                Process diagnostic =
+                        new ProcessBuilder(jcmd, Long.toString(child.pid()), "Thread.print")
+                                .start();
                 if (!diagnostic.waitFor(3, TimeUnit.SECONDS)) {
                     diagnostic.destroyForcibly();
                     throw new IllegalStateException("jcmd Thread.print timed out");
                 }
-                lastDump = new String(diagnostic.getInputStream().readAllBytes(),
-                        StandardCharsets.UTF_8);
+                lastDump =
+                        new String(
+                                diagnostic.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
                 String workerFrames = workerFrames(lastDump);
                 waiting = workerFrames.contains("WAITING");
                 frameFound = workerFrames.contains("parkHere");
@@ -89,8 +98,10 @@ public class Main {
                 throw new IllegalStateException("worker wait frame not found");
             }
 
-            try (BufferedWriter childInput = new BufferedWriter(
-                    new OutputStreamWriter(child.getOutputStream(), StandardCharsets.UTF_8))) {
+            try (BufferedWriter childInput =
+                    new BufferedWriter(
+                            new OutputStreamWriter(
+                                    child.getOutputStream(), StandardCharsets.UTF_8))) {
                 childInput.write("release");
                 childInput.newLine();
             }
