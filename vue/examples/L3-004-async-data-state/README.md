@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 页面状态来自同步固定种子，没有网络请求及 pending/error/empty 数据生命周期，也没有可展示重试的远端数据源。 -->
 
 # L3-004-async-data-state —— Promise 驱动加载、错误与空态
 

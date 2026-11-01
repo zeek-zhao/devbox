@@ -1,0 +1,17 @@
+{
+  "name": "devbox-vue-todo-project",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/server.js",
+  "exports": {
+    ".": "./src/server.js"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "smoke": "bash test/smoke.sh",
+    "perf": "node src/perf/baseline.js"
+  },
+  "dependencies": {
+    "vue": "3.5.44"
+  }
+}

@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 表单只用原生 input、checkbox 和按钮行为，应用没有需要封装的 DOM 聚焦/测量等指令逻辑。 -->
 
 # L2-014-custom-directive —— 观察自定义指令的 SSR 降级
 

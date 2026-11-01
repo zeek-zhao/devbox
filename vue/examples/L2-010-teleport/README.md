@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt todo 界面只有导航、表单和列表，没有弹层或独立 DOM 挂载目标，因此没有内容需要 Teleport 到应用根节点之外。 -->
 
 # L2-010-teleport —— 观察 Teleport 的 SSR 输出与目标内容
 

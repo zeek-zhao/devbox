@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 页面没有需要隔离的故障子组件；全局 errorHandler 记录未处理错误，并不使用 onErrorCaptured 的组件级恢复边界。 -->
 
 # L2-008-error-captured —— 用 onErrorCaptured 捕获子组件错误
 

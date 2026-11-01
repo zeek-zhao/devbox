@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L3-001-proxy-reactivity —— 手写懒代理与 receiver 语义
 
 ## 考点

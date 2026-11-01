@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L2-004-unit-test-harness —— 手写最小断言测试框架
 
 ## 考点

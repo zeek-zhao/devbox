@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L3-005-composable-reuse —— 两组件复用逻辑但隔离状态
 
 ## 考点

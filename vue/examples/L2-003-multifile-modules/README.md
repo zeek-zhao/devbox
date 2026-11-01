@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L2-003-multifile-modules —— 用相对路径组织多文件模块
 
 ## 考点

@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-016-ssr-basic
 
 ## 考点

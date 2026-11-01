@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-013-vfor-key
 
 ## 考点

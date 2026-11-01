@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-018-nexttick
 
 ## 考点

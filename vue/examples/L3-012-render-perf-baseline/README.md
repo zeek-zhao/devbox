@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L3-012-render-perf-baseline —— 一千次真实 SSR 的秒级门槛
 
 ## 考点

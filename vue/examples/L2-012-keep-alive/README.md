@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt todos/about 是轻量静态视图，切换时不持有需要保留的复杂局部状态或昂贵实例，缓存它们没有应用价值。 -->
 
 # L2-012-keep-alive —— 观察 KeepAlive 在 SSR 中直通渲染
 

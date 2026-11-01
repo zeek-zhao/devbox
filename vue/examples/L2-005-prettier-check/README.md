@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt Prettier 只由仓库统一格式化门禁检查，不属于 todo 应用的运行功能或测试逻辑，项目内没有独立格式检查器。 -->
 
 # L2-005-prettier-check —— 将 Prettier 检查接入用例
 

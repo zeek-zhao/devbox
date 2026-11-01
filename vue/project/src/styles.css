@@ -1,0 +1,63 @@
+:root {
+  /* L3-011-theme-tokens: application colors and row spacing are shared CSS tokens. */
+  color-scheme: light;
+  --color-accent: #276749;
+  --color-muted: #52616b;
+  --color-surface: #f3f7f4;
+  --space-row: 0.75rem;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--color-surface);
+  color: #17212b;
+}
+
+.todo-app {
+  max-width: 42rem;
+  margin: 3rem auto;
+  padding: 1.5rem;
+}
+
+nav {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+form,
+.todo-item,
+.todo-item label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-row);
+}
+
+form input {
+  flex: 1;
+}
+
+.todo-list {
+  padding: 0;
+  list-style: none;
+}
+
+.todo-item {
+  justify-content: space-between;
+  padding: var(--space-row) 0;
+}
+
+.todo-item.completed span,
+.remaining,
+.empty {
+  color: var(--color-muted);
+}
+
+.todo-item.completed span {
+  text-decoration: line-through;
+}

@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-011-template-refs
 
 ## 考点

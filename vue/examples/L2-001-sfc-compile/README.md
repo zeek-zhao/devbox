@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 项目组件没有 <script setup> 块，行为由 JavaScript 工厂定义；Vue.compile 只编译模板，不执行 compiler-sfc 的 compileScript。 -->
 
 # L2-001-sfc-compile —— 编译 SFC 中的 setup 脚本
 

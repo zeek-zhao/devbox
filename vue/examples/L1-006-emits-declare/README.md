@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-006-emits-declare
 
 ## 考点

@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # hello —— Vue 3 冒烟用例
 
 ## 考点

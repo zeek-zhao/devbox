@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-017-render-function
 
 ## 考点

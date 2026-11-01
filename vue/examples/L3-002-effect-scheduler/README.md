@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L3-002-effect-scheduler —— 手写依赖收集与微任务批处理
 
 ## 考点

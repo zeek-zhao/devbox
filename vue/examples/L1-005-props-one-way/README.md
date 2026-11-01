@@ -1,5 +1,3 @@
-<!-- coverage: pending -->
-
 # L1-005-props-one-way
 
 ## 考点

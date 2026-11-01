@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 路由切换仅更新当前视图，没有动画设计或 DOM 进入/离开效果，因而没有 Transition 生命周期需要驱动。 -->
 
 # L2-013-transition-hooks —— 验证 SSR 不触发 Transition 钩子
 
