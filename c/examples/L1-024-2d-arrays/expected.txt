@@ -1,0 +1,2 @@
+matrix=48 row=16 stride=16
+pointer-array=24 elements=8
