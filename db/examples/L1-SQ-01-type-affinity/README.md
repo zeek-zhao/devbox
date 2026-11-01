@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-SQ-01-type-affinity · 类型亲和性
 

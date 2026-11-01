@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L4-02-composite-index · 复合索引设计
 

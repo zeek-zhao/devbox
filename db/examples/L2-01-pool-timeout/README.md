@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L2-01-pool-timeout · 连接池与超时
 

@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-SQ-07-json1 · json1 扩展
 

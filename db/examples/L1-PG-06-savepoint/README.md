@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-PG-06-savepoint · 事务与 savepoint
 

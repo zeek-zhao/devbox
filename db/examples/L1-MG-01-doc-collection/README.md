@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-MG-01-doc-collection · 文档与集合
 

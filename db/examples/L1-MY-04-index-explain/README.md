@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-MY-04-index-explain · 索引与执行计划
 

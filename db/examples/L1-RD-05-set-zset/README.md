@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-RD-05-set-zset · 集合与有序集合
 

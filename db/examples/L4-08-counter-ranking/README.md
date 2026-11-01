@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L4-08-counter-ranking · 计数与排行榜
 

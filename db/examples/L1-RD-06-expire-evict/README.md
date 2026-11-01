@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-RD-06-expire-evict · 过期与淘汰
 

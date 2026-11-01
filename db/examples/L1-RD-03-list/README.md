@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-RD-03-list · 链表
 

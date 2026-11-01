@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-SQ-08-vacuum-backup · VACUUM INTO 备份
 

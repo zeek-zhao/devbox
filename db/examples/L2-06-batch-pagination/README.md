@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L2-06-batch-pagination · 批量写入与分页
 

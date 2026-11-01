@@ -1,6 +1,5 @@
 # L2-09-least-privilege · 权限最小化
 
-<!-- coverage: pending -->
 
 ## 考点
 

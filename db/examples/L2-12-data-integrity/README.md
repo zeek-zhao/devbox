@@ -1,6 +1,5 @@
 # L2-12-data-integrity · 数据校验与修复
 
-<!-- coverage: pending -->
 
 ## 考点
 

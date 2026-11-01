@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L4-06-timeseries · 时序数据选型
 

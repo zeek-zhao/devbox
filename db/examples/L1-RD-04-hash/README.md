@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-RD-04-hash · 哈希
 

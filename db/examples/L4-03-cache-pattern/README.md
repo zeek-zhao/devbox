@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L4-03-cache-pattern · 缓存一致性模式
 

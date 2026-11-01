@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L4-05-multi-tenant · 多租户隔离
 

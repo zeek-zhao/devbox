@@ -1,6 +1,5 @@
 # L2-15-db-selection · 多库选型对比
 
-<!-- coverage: pending -->
 
 ## 考点
 

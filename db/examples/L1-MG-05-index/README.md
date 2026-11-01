@@ -1,4 +1,3 @@
-<!-- coverage: pending -->
 
 # L1-MG-05-index · 索引与 explain
 
