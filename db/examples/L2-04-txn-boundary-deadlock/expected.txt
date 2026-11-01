@@ -1,0 +1,3 @@
+deadlock SQLSTATE=40P01
+victim retry=committed
+balances=[(1, 11), (2, 11)]

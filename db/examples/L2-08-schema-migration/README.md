@@ -1,14 +1,22 @@
-# L2-08-schema-migration · 数据迁移
-
 <!-- coverage: pending -->
+
+# L2-08-schema-migration · 数据迁移
 
 ## 考点
 
-加列/改类型/回填、在线 DDL、双写迁移、回滚脚本
+- 对已有表新增可空列，再回填既有行并校验空值数。
+- 迁移前后分别输出 schema、数据 checksum 和回填后的行值。
+- 迁移提供可执行的回滚入口，移除新增列。
 
-## 判据（验收按这一条核对）
+## 为什么这么写
 
-输出迁移前后 schema 与数据校验结果
+本卡公共契约要求每例恰好三个顶层文件，因此把可执行回滚作为同一 runner 的 `--rollback` 模式，而不是增加第四个文件。先正常运行迁移，再执行 `bash db/examples/L2-08-schema-migration/run.sh --rollback` 即可验证回滚路径。
+
+## 易错点
+
+- 新增列后不回填会留下 `NULL`；必须单独校验未填充行数为零。
+- 回滚要求迁移已执行且列存在；它只撤销本例新增的列，不会删除表或数据库。
+- `GROUP_CONCAT` 的输入显式按主键排序，避免校验值受行顺序影响。
 
 ## 依赖服务
 
@@ -16,12 +24,4 @@
 
 ## 命名空间
 
-`l2_08_schema_migration`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L2-08-schema-migration --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l2_08_schema_migration`

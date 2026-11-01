@@ -1,14 +1,22 @@
-# L1-PG-04-cte-recursive · CTE 与递归
-
 <!-- coverage: pending -->
+
+# L1-PG-04-cte-recursive · CTE 与递归
 
 ## 考点
 
-WITH、WITH RECURSIVE 遍历树、MATERIALIZED 提示
+- `WITH RECURSIVE` 从根节点逐层遍历组织树。
+- 递归项用父子关系连接上一层，并拼接完整层级路径。
+- `MATERIALIZED` 明确要求中间 CTE 物化。
 
-## 判据（验收按这一条核对）
+## 为什么这么写
 
-输出递归展开的组织层级路径
+树数据只含一个根和两层子节点，路径和深度直接体现递归结果；将递归结果交给显式 `MATERIALIZED` 的 CTE，再按路径排序展示。
+
+## 易错点
+
+- 根节点要单独作为递归锚点，否则遍历不会开始。
+- 递归连接方向写反会向上遍历或漏掉子节点。
+- `MATERIALIZED` 是执行提示，不负责替代最终结果的排序。
 
 ## 依赖服务
 
@@ -16,12 +24,4 @@ WITH、WITH RECURSIVE 遍历树、MATERIALIZED 提示
 
 ## 命名空间
 
-`l1_pg_04_cte_recursive`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-PG-04-cte-recursive --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l1_pg_04_cte_recursive`

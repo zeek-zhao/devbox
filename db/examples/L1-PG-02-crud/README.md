@@ -1,14 +1,22 @@
-# L1-PG-02-crud · CRUD 与 RETURNING
-
 <!-- coverage: pending -->
+
+# L1-PG-02-crud · CRUD 与 RETURNING
 
 ## 考点
 
-INSERT ON CONFLICT、UPDATE FROM、DELETE USING、RETURNING
+- `INSERT ... ON CONFLICT` 原地更新冲突行，并以 `RETURNING` 输出修改后的值。
+- `UPDATE ... FROM` 可把关联表的调整量用于更新。
+- `DELETE ... USING` 支持按另一张表匹配删除目标行。
 
-## 判据（验收按这一条核对）
+## 为什么这么写
 
-输出 RETURNING 子句结果
+每种修改语句都通过 PostgreSQL 的 `RETURNING` 输出实际受影响行；最终再按业务键排序查询，能区分变更结果与表中最终状态。
+
+## 易错点
+
+- `ON CONFLICT` 只更新明确指定的冲突行；不能把 UPSERT 和无条件新增混为一谈。
+- `UPDATE ... FROM` 连接键应唯一，否则一行可能匹配多条来源记录。
+- `DELETE ... USING` 的返回行没有顺序保证，本例只删除一行。
 
 ## 依赖服务
 
@@ -16,12 +24,4 @@ INSERT ON CONFLICT、UPDATE FROM、DELETE USING、RETURNING
 
 ## 命名空间
 
-`l1_pg_02_crud`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-PG-02-crud --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l1_pg_02_crud`

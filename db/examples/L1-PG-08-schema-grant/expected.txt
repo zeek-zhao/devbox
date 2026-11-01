@@ -1,0 +1,2 @@
+search_path=app
+cross-schema table access=denied

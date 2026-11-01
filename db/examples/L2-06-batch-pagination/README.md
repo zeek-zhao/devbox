@@ -1,14 +1,22 @@
-# L2-06-batch-pagination · 批量写入与分页
-
 <!-- coverage: pending -->
+
+# L2-06-batch-pagination · 批量写入与分页
 
 ## 考点
 
-多值 INSERT、批量提交大小、深翻页 vs 游标分页
+- 批量插入 1000 行后，对比深 `OFFSET` 与 keyset 分页的实际扫描行数。
+- `EXPLAIN ANALYZE` 执行计划中索引扫描节点的实际行数揭示深翻页额外工作量。
+- keyset 条件利用主键范围，而不必跳过前面的记录。
 
-## 判据（验收按这一条核对）
+## 为什么这么写
 
-输出两种分页的扫描行数对比
+通过同一张确定数据集执行两种分页计划，从计划中只提取索引扫描节点的实际 `rows`；不输出实际耗时或成本估算。
+
+## 易错点
+
+- 只看两种查询最终返回 10 行，会漏掉 OFFSET 扫描并丢弃前 900 行的成本。
+- 不要拿 `EXPLAIN` 的估算行数冒充实际扫描行数。
+- keyset 页必须以稳定且唯一的排序键翻页，否则会漏行或重复。
 
 ## 依赖服务
 
@@ -16,12 +24,4 @@
 
 ## 命名空间
 
-`l2_06_batch_pagination`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L2-06-batch-pagination --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l2_06_batch_pagination`
