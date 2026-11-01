@@ -1,11 +1,14 @@
 # 已知问题
 
-> 公开可跟踪的版本。逐条对应 GitHub Issue，状态以 Issue 为准。
-> 分三类：**需要人做**（自动化解决不了）、**开放**（可以做但还没做）、**已知限制**（不改，是取舍）。
+> 分三类：**需要人做**（自动化解决不了）、**开放**（可以做但还没做）、
+> **已知限制**（不改，是取舍）。
+>
+> 前两类已建成 GitHub Issue，**状态以 Issue 为准**；已知限制只记录在本文，不建 Issue
+> ——建了也只会变成一条永远开着的噪音。
 
 ## 需要人做
 
-### KI-01　人工抽检（M2 / M4 遗留）
+### KI-01　人工抽检（M2 / M4 遗留） · [#178](https://github.com/zeek-zhao/devbox/issues/178)
 
 自动化能验「用例跑不跑得过」「覆盖表自不自洽」，验不了「这个用例教的东西对不对」。
 
@@ -16,7 +19,7 @@
 
 **怎么算完成**：抽检记录写进对应 Issue 的评论，问题数 ≤ 2/10 视为通过。
 
-### KI-02　L4 设计模式用例的覆盖策略未定案
+### KI-02　L4 设计模式用例的覆盖策略未定案 · [#179](https://github.com/zeek-zhao/devbox/issues/179)
 
 现状：`go` / `python` / `java` 的 L4 用例以 `coverage: exempt <理由>` 挂在明账上，
 `--strict` 能过，但没有强制它们接入毕业项目。
@@ -31,16 +34,16 @@
 
 ## 开放
 
-### KI-03　Rust / Vue 用例密度偏低
+### KI-03　Rust / Vue 用例密度偏低 · [#180](https://github.com/zeek-zhao/devbox/issues/180)
 
 Rust 51 例、Vue 46 例，其他轨道 74–78 例。不是缺陷，是铺设进度。
 
-### KI-04　`docs/进度看板.html` 是静态快照
+### KI-04　`docs/进度看板.html` 是静态快照 · [#181](https://github.com/zeek-zhao/devbox/issues/181)
 
 数字（608 例 / 9 轨）需要人工同步。可改为从 `examples/` 与 `COVERAGE.md` 生成，
 或干脆删掉看板，只信 `scripts/coverage-check.sh` 的输出。
 
-### KI-05　`hello` 用例不在 `L<层级>-<序号>-<slug>` 命名体系内
+### KI-05　`hello` 用例不在 `L<层级>-<序号>-<slug>` 命名体系内 · [#182](https://github.com/zeek-zhao/devbox/issues/182)
 
 六条轨道各有一个 `hello`，用于验证镜像与 runner 通路，不带难度层级。
 各轨道的 `docs/知识点清单.md` 把它单列在表格之后说明。属于历史命名，改名会破坏
