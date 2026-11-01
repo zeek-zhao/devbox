@@ -6,7 +6,7 @@ devbox 是一个教学型仓库：用可运行用例讲清技术点，再用毕�
 
 | 轨道 | 用例数 | 毕业项目 | 一句话说明 | 镜像层 / 运行环境 |
 |---|---:|---|---|---|
-| C | 78 | PROJ-C（计划新建，尚未落地） | 纯 ISO C17 与 libc，复用 C++ 工具链 | `devbox-cpp` |
+| C | 78 | 带连接池的 HTTP 服务 | 纯 ISO C17 与 libc，复用 C++ 工具链 | `devbox-cpp` |
 | C++ | 77 | 高性能文本索引器 | C++ 工程、并发、索引与性能测量 | `devbox-cpp` |
 | 数据库 | 77 | 带缓存的订单服务 | MySQL、PostgreSQL、MongoDB、Redis、SQLite | 独立 Compose runner：五个数据库服务 + toolbox |
 | Go | 77 | 并发任务网关 | 标准库 HTTP 服务、worker pool 与指标 | `devbox-go` |
@@ -14,7 +14,7 @@ devbox 是一个教学型仓库：用可运行用例讲清技术点，再用毕�
 | Python | 74 | CSV 数据处理与报表 | 标准库 CSV、集合与命令行处理 | `devbox-python` |
 | Rust | 51 | 跨平台 CLI 工具 | 标准库参数解析、线程与基准测量 | `devbox-rust` |
 | Shell | 54 | 部署与巡检工具集 | 严格模式、幂等、并行与 BATS | `devbox-shell` |
-| Vue | 46 | PROJ-VUE（计划新建，尚未落地） | Vue SFC 与 SSR，不使用 Vite | `devbox-vue` |
+| Vue | 46 | SSR 待办应用 | Vue SFC 与 SSR，不使用 Vite | `devbox-vue` |
 
 用例数按各轨道 `examples/` 的直接子目录计数，包含 `hello`（存在时）；C/C++ 共用镜像不代表共用用例目录。镜像映射以 [`images/lang-images.tsv`](images/lang-images.tsv) 为准。
 
@@ -40,7 +40,7 @@ devbox/
 └── docs/                    # 仓库级说明与进度看板
 ```
 
-`examples/` 放逐例可运行的知识点练习；`project/` 放整合练习的毕业项目及覆盖表；`docs/` 放轨道知识资料或仓库级说明。目录只展示仓库中已经存在的部分，C 和 Vue 当前没有 `project/`。
+`examples/` 放逐例可运行的知识点练习；`project/` 放整合练习的毕业项目及覆盖表；`docs/` 放轨道知识资料或仓库级说明。目录只展示仓库中已经存在的部分；九条轨道现在都有 `project/`。
 
 ## 快速开始
 
