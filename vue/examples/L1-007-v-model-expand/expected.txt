@@ -1,0 +1,4 @@
+v-model props: modelValue, onUpdate:modelValue
+manual props: modelValue, onUpdate:modelValue
+v-model html: <p>7</p>
+manual html: <p>7</p>

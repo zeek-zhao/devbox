@@ -1,0 +1,3 @@
+<p class="active" style="color:red;">object</p>
+<p class="base active">array</p>
+<p class="plain">string</p>

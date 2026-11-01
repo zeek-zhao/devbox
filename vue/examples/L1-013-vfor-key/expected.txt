@@ -1,0 +1,2 @@
+keyed: <ul><!--[--><li>a</li><li>b</li><!--]--></ul>
+unkeyed: <ul><!--[--><li>a</li><li>b</li><!--]--></ul>
