@@ -1,0 +1,5 @@
+parent strong: 1
+child strong: 2
+upgrade after drop: false
+strong after drop: 0
+upgrade after final drop: true

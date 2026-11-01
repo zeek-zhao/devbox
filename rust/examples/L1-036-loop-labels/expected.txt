@@ -1,0 +1,2 @@
+loop result: Some((1, 2))
+function result: Some((2, 1))

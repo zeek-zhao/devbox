@@ -1,0 +1,3 @@
+length: 2
+capacity grew: true
+reallocations for growth: 1

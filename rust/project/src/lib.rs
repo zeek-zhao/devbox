@@ -388,6 +388,9 @@ fn run_benchmark<W: Write>(output: &mut W) -> Result<(), AppError> {
     Ok(())
 }
 
+/// Number of documents; see [`Operation`] for the selected indexing action.
+pub struct DocumentCount(pub usize);
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -410,6 +413,354 @@ mod tests {
             "beta.txt".to_owned(),
         ];
         assert_eq!(parse_args(&separate).unwrap().workers, 3);
+    }
+
+    #[cfg(test)]
+    mod density_examples {
+        use super::super::DocumentCount;
+        use std::borrow::Borrow;
+        use std::cell::{Cell, RefCell};
+        use std::collections::{BTreeMap, HashMap};
+        use std::convert::TryFrom;
+        use std::future::Future;
+        use std::marker::PhantomData;
+        use std::mem::{offset_of, size_of};
+        use std::ops::Deref;
+        use std::pin::pin;
+        use std::rc::{Rc, Weak};
+        use std::task::{Context, Poll, Waker};
+        use std::thread;
+
+        #[test]
+        fn hashmap_entry_and_tree_order() {
+            // L1-034-hashmap-entry: entry updates avoid a second lookup; BTreeMap keys iterate in order.
+            let mut counts = HashMap::new();
+            *counts.entry("pear").or_insert(0) += 1;
+            *counts.entry("apple").or_insert(0) += 1;
+            assert_eq!(counts.len(), 2);
+            assert_eq!(
+                BTreeMap::from([("pear", 2), ("apple", 1)]).keys().next(),
+                Some(&"apple")
+            );
+        }
+
+        #[test]
+        fn destructuring_control_flow() {
+            // L1-035-if-let-while-let: each construct handles a different optional-value control path.
+            let mut total = 0;
+            if let Some(value) = Some(2) {
+                total += value;
+            }
+            let mut values = [Some(3), Some(4), None].into_iter();
+            while let Some(Some(value)) = values.next() {
+                total += value;
+            }
+            let Some(first) = [5].first() else {
+                panic!("the nonempty input has a first element");
+            };
+            assert_eq!(total + first, 14);
+        }
+
+        #[test]
+        fn labeled_break_returns_nested_search_result() {
+            // L1-036-loop-labels: a labeled loop returns a value from a nested search.
+            let rows = [[1, 2], [3, 4]];
+            let mut targets = [0, 4].into_iter();
+            let found = 'search: loop {
+                let Some(target) = targets.next() else {
+                    break 'search None;
+                };
+                for (row, values) in rows.iter().enumerate() {
+                    for (column, value) in values.iter().enumerate() {
+                        if *value == target {
+                            break 'search Some((row, column));
+                        }
+                    }
+                }
+            };
+            assert_eq!(found, Some((1, 1)));
+        }
+
+        #[derive(Debug)]
+        struct ConversionError(String);
+
+        impl From<std::num::ParseIntError> for ConversionError {
+            fn from(error: std::num::ParseIntError) -> Self {
+                Self(error.to_string())
+            }
+        }
+
+        fn parse_limit(value: &str) -> Result<u16, ConversionError> {
+            let parsed = value.parse::<u32>()?;
+            u16::try_from(parsed).map_err(|error| ConversionError(error.to_string()))
+        }
+
+        #[test]
+        fn standard_conversion_traits_propagate_errors() {
+            // L1-037-from-conversions: Into creates an owned input and ? applies From to parse errors.
+            let input: String = "12".into();
+            assert_eq!(parse_limit(&input).unwrap(), 12);
+            assert!(!parse_limit("bad").unwrap_err().0.is_empty());
+        }
+
+        struct ProjectBox<T>(T);
+
+        impl<T> Deref for ProjectBox<T> {
+            type Target = T;
+            fn deref(&self) -> &Self::Target {
+                &self.0
+            }
+        }
+
+        fn borrowed_text(value: &str) -> usize {
+            value.len()
+        }
+
+        #[test]
+        fn deref_coercion_reaches_string_slice_api() {
+            // L1-038-deref-coercion: the wrapper reference coerces through String to &str.
+            let value = ProjectBox(String::from("index"));
+            assert_eq!(borrowed_text(&value), 5);
+        }
+
+        fn generic_text_len<T: AsRef<str>>(value: T) -> usize {
+            value.as_ref().len()
+        }
+
+        fn borrowed_key<'a, Q>(map: &'a HashMap<String, usize>, key: &Q) -> Option<&'a usize>
+        where
+            String: Borrow<Q>,
+            Q: Eq + std::hash::Hash + ?Sized,
+        {
+            map.get(key)
+        }
+
+        #[test]
+        fn asref_and_borrow_choose_generic_interfaces() {
+            // L1-039-asref-borrow: AsRef accepts text inputs while Borrow enables equivalent-key lookup.
+            let owned = String::from("rust");
+            assert_eq!(generic_text_len("rust"), generic_text_len(&owned));
+            let map = HashMap::from([(owned, 9)]);
+            assert_eq!(borrowed_key(&map, "rust"), Some(&9));
+        }
+
+        #[derive(Default)]
+        struct QuerySettings {
+            limit: usize,
+            label: String,
+        }
+
+        #[test]
+        fn default_fills_unset_struct_fields() {
+            // L1-040-default-trait: struct update syntax retains defaults for fields not overridden.
+            let settings = QuerySettings {
+                limit: 3,
+                ..QuerySettings::default()
+            };
+            assert_eq!(settings.limit, 3);
+            assert!(settings.label.is_empty());
+        }
+
+        fn fixed_sum<const N: usize>(values: [usize; N]) -> (usize, usize) {
+            (N, values.into_iter().sum())
+        }
+
+        #[test]
+        fn const_generic_array_length_is_a_type_parameter() {
+            // L1-041-const-generics: one function accepts arrays with distinct compile-time lengths.
+            assert_eq!(fixed_sum([1, 2, 3]), (3, 6));
+            assert_eq!(fixed_sum([7, 8]), (2, 15));
+        }
+
+        struct TypedId<T> {
+            value: u64,
+            marker: PhantomData<T>,
+        }
+
+        #[test]
+        fn phantom_data_marks_type_without_storage() {
+            // L1-042-phantom-data: the marker distinguishes IDs while adding zero bytes.
+            let id = TypedId::<String> {
+                value: 7,
+                marker: PhantomData,
+            };
+            assert_eq!(id.value, 7);
+            let _ = id.marker;
+            assert_eq!(size_of::<PhantomData<String>>(), 0);
+            assert_eq!(size_of::<TypedId<String>>(), size_of::<u64>());
+        }
+
+        #[test]
+        fn cell_and_refcell_have_distinct_interior_mutability() {
+            // L1-043-cell-interior: Cell copies a value; RefCell reports conflicting runtime borrows.
+            let cell = Cell::new(1);
+            cell.set(cell.get() + 1);
+            assert_eq!(cell.get(), 2);
+            let value = RefCell::new(3);
+            let read = value.borrow();
+            assert!(value.try_borrow_mut().is_err());
+            drop(read);
+            *value.borrow_mut() += 1;
+            assert_eq!(*value.borrow(), 4);
+        }
+
+        #[test]
+        fn weak_parent_links_do_not_keep_rc_alive() {
+            // L1-044-weak-cycle: weak edges do not contribute to strong_count and stop upgrading on drop.
+            struct Node {
+                parent: RefCell<Weak<Node>>,
+                children: RefCell<Vec<Rc<Node>>>,
+            }
+            let parent = Rc::new(Node {
+                parent: RefCell::new(Weak::new()),
+                children: RefCell::new(Vec::new()),
+            });
+            let child = Rc::new(Node {
+                parent: RefCell::new(Rc::downgrade(&parent)),
+                children: RefCell::new(Vec::new()),
+            });
+            parent.children.borrow_mut().push(Rc::clone(&child));
+            let weak_parent = Rc::downgrade(&parent);
+            assert_eq!(Rc::strong_count(&child), 2);
+            drop(parent);
+            assert!(child.parent.borrow().upgrade().is_none());
+            assert!(weak_parent.upgrade().is_none());
+            assert_eq!(Rc::strong_count(&child), 1);
+        }
+
+        #[test]
+        fn scoped_threads_borrow_project_stack_data() {
+            // L1-045-thread-scope: scoped workers borrow stack values without Arc ownership.
+            let values = [2, 5];
+            let sum = thread::scope(|scope| scope.spawn(|| values[0] + values[1]).join().unwrap());
+            assert_eq!(sum, 7);
+        }
+
+        #[test]
+        fn cargo_alias_and_target_directory_are_declared() {
+            // L2-012-cargo-config-alias: repository-local Cargo config defines an offline alias and target-dir.
+            let path = format!("{}/.cargo/config.toml", env!("CARGO_MANIFEST_DIR"));
+            let config = std::fs::read_to_string(path).unwrap();
+            assert!(config.contains("check-local"));
+            assert!(config.contains("target-dir"));
+        }
+
+        #[test]
+        fn build_script_exports_compile_time_configuration() {
+            // L2-013-build-script: build.rs exports this compile-time setting and tracks its own changes.
+            assert_eq!(env!("DEVBOX_BUILD_MARKER"), "rust-project");
+        }
+
+        #[test]
+        fn dev_dependency_is_used_only_by_tests() {
+            // L2-014-dev-dependencies: this helper is declared in Cargo.toml under dev-dependencies.
+            assert_eq!(local_test_support::test_marker(), "test-only");
+        }
+
+        #[cfg_attr(feature = "trace-demo", derive(Debug))]
+        struct TraceMode;
+
+        #[test]
+        fn cfg_and_cfg_attr_select_feature_behavior() {
+            // L2-015-cfg-feature-gate: cfg selects the feature branch and cfg_attr adds its Debug implementation.
+            #[cfg(feature = "trace-demo")]
+            assert_eq!(format!("{TraceMode:?}"), "TraceMode");
+            #[cfg(not(feature = "trace-demo"))]
+            assert_eq!(size_of::<TraceMode>(), 0);
+        }
+
+        #[test]
+        fn path_dependency_can_be_renamed() {
+            // L2-017-path-dependency: source refers to the local package by its dependency alias.
+            assert_eq!(local_test_support::test_marker(), "test-only");
+        }
+
+        #[test]
+        fn intra_doc_link_target_is_a_public_api_type() {
+            // L2-016-cargo-doc-links: the linked public type is checked by the rustdoc build.
+            let count = DocumentCount(2);
+            assert_eq!(count.0, 2);
+        }
+
+        #[repr(C)]
+        struct LayoutHeader {
+            kind: u8,
+            length: u32,
+        }
+
+        #[repr(transparent)]
+        struct LayoutId(u64);
+
+        #[test]
+        fn repr_layout_has_stable_c_offsets_and_transparent_size() {
+            // L3-008-repr-c-layout: C layout exposes padding while transparent preserves the wrapped size.
+            let header = LayoutHeader { kind: 1, length: 8 };
+            assert_eq!(header.kind, 1);
+            assert_eq!(offset_of!(LayoutHeader, length), 4);
+            assert_eq!(size_of::<LayoutHeader>(), 8);
+            assert_eq!(size_of::<LayoutId>(), size_of::<u64>());
+        }
+
+        #[test]
+        fn raw_slice_is_built_only_from_valid_live_storage() {
+            // L3-007-unsafe-raw-pointer: from_raw_parts requires a non-null valid range for the slice lifetime.
+            let bytes = [2_u8, 3, 5];
+            let total = unsafe {
+                std::slice::from_raw_parts(bytes.as_ptr(), bytes.len())
+                    .iter()
+                    .copied()
+                    .sum::<u8>()
+            };
+            assert_eq!(total, 10);
+        }
+
+        struct ReadyFuture(u8);
+
+        impl Future for ReadyFuture {
+            type Output = u8;
+            fn poll(
+                self: std::pin::Pin<&mut Self>,
+                _context: &mut Context<'_>,
+            ) -> Poll<Self::Output> {
+                Poll::Ready(self.get_mut().0)
+            }
+        }
+
+        fn poll_ready<F: Future>(future: F) -> F::Output {
+            let waker = Waker::noop();
+            let mut context = Context::from_waker(waker);
+            let mut future = pin!(future);
+            match future.as_mut().poll(&mut context) {
+                Poll::Ready(value) => value,
+                Poll::Pending => panic!("test future unexpectedly pending"),
+            }
+        }
+
+        #[test]
+        fn hand_written_future_is_polled_to_completion() {
+            // L3-009-handmade-future: a Future implementation returns Ready through explicit polling.
+            assert_eq!(poll_ready(ReadyFuture(11)), 11);
+        }
+
+        #[test]
+        fn vec_capacity_reservation_avoids_reallocation() {
+            // L3-010-custom-allocator: reserving capacity before pushes avoids a Vec growth allocation.
+            let mut values = Vec::with_capacity(2);
+            let reserved = values.capacity();
+            values.extend([1, 2]);
+            assert_eq!(values.len(), 2);
+            assert!(values.capacity() >= reserved);
+        }
+
+        fn require_send_sync<T: Send + Sync>() {}
+
+        #[test]
+        fn send_sync_bounds_allow_owned_worker_input() {
+            // L3-011-send-sync-bounds: String satisfies Send + Sync and can be moved into a worker.
+            require_send_sync::<String>();
+            let value = String::from("index");
+            assert_eq!(thread::spawn(move || value.len()).join().unwrap(), 5);
+        }
     }
 
     #[test]

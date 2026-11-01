@@ -1,0 +1,2 @@
+length: 3, sum: 10
+length: 2, sum: 30

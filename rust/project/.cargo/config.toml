@@ -1,0 +1,5 @@
+[alias]
+check-local = "check --offline"
+
+[build]
+target-dir = "target"

@@ -1,0 +1,1 @@
+future output: 42

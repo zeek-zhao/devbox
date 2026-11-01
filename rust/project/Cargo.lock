@@ -5,3 +5,10 @@ version = 4
 [[package]]
 name = "devbox-rust-project"
 version = "0.1.0"
+dependencies = [
+ "rust_project_test_support",
+]
+
+[[package]]
+name = "rust_project_test_support"
+version = "0.1.0"

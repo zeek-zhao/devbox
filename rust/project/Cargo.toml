@@ -5,7 +5,7 @@ edition = "2024"
 
 [workspace]
 # L2-010-cargo-workspace
-members = ["."]
+members = [".", "test-support"]
 resolver = "3"
 
 [lib]
@@ -20,3 +20,7 @@ path = "src/main.rs"
 # L2-006-cargo-features
 default = []
 strict-args = []
+trace-demo = []
+
+[dev-dependencies]
+local_test_support = { package = "rust_project_test_support", path = "test-support" }

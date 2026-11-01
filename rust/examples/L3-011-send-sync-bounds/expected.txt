@@ -1,0 +1,3 @@
+String is Send + Sync; worker length: 14
+Rc is single-threaded: true
+negative compile rejected Rc: Send
