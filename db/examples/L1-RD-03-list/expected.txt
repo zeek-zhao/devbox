@@ -1,0 +1,4 @@
+initial=a,b,c,d
+popped=a
+trimmed=b,x,c
+length=3

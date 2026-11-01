@@ -1,0 +1,3 @@
+restored_count=2
+collections=records
+restored_values=10,20

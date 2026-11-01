@@ -1,0 +1,3 @@
+stage=IXSCAN
+nReturned=2
+index_kinds=single,compound,multikey,unique,partial,ttl

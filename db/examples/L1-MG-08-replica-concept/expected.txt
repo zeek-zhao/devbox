@@ -1,0 +1,2 @@
+replica_status=unavailable (NoReplicationEnabled, code=76)
+reason=shared MongoDB runs standalone without --replSet
