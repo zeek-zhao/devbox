@@ -3,6 +3,18 @@
 # 只跑在 215 / CI 上，不参与六门语言的镜像分层。
 # Docker Hub 直连不通，默认走 daocloud 镜像源；要换源用 DB_IMAGE_PREFIX 覆盖。
 # 不挂数据卷：每次 up 都是干净的库，用例自己管自己的命名空间。
+#
+# ★ 本文件是**共享契约**。用例卡不要改它 ——
+#   需要额外实例时用下面已经备好的 profile（multi / cluster / tls），
+#   否则两张卡各加一个服务，合并时必然在这一个文件上打架。
+#   默认 `docker compose up -d` 起的是原来那四个库 + toolbox，行为不变；
+#   加 profile 才会多起实例。
+#
+#   docker compose up -d                      # 默认：mysql / postgres / mongodb / redis
+#   docker compose --profile multi up -d      # 多实例：加 mysql2（主从、分片、双写对比）
+#   docker compose --profile cluster up -d    # Redis 三节点集群
+#   docker compose --profile tls up -d        # 自签 CA + 服务端证书
+# ------------------------------------------------------------------
 name: devbox-db
 
 services:
@@ -72,5 +84,109 @@ services:
     environment:
       MYSQL_PWD: devbox
       PGPASSWORD: devbox
+
+  # ------------------------------------------------------------------
+  # 多实例（--profile multi）
+  # ------------------------------------------------------------------
+  # 第二个 MySQL：主从复制、双写对比、跨库 JOIN 这类用例需要两台。
+  # 与 mysql 的区别只有三处：端口、server-id、开启 binlog。
+  # 不抢 3306，所以两套可以同时起，默认档不受影响。
+  mysql2:
+    image: ${DB_IMAGE_PREFIX:-docker.m.daocloud.io/library/}mysql:8.4
+    profiles: ["multi"]
+    ports:
+      - "127.0.0.1:3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: devbox
+      MYSQL_DATABASE: devbox
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+      - --server-id=2
+      - --log-bin=mysql-bin
+      - --binlog-format=ROW
+      - --gtid-mode=ON
+      - --enforce-gtid-consistency=ON
+      - --slow_query_log=1
+      - --long_query_time=1
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pdevbox"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+
+  # ------------------------------------------------------------------
+  # Redis 三节点集群（--profile cluster）
+  # ------------------------------------------------------------------
+  # cluster-enabled 需要至少 3 主，所以是三台而不是两台。
+  # 端口 6380-6382：默认的 redis 占 6379，互不影响。
+  # 建集群：docker compose exec redis-node1 redis-cli -a devbox --cluster create ...
+  redis-node1: &redis-node
+    image: ${DB_IMAGE_PREFIX:-docker.m.daocloud.io/library/}redis:7-alpine
+    profiles: ["cluster"]
+    command:
+      - redis-server
+      - --requirepass
+      - devbox
+      - --masterauth
+      - devbox
+      - --cluster-enabled
+      - "yes"
+      - --cluster-config-file
+      - nodes.conf
+      - --cluster-node-timeout
+      - "5000"
+      - --appendonly
+      - "yes"
+    ports:
+      - "127.0.0.1:6380:6379"
+      - "127.0.0.1:16380:16379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "devbox", "--no-auth-warning", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+
+  redis-node2:
+    <<: *redis-node
+    ports:
+      - "127.0.0.1:6381:6379"
+      - "127.0.0.1:16381:16379"
+
+  redis-node3:
+    <<: *redis-node
+    ports:
+      - "127.0.0.1:6382:6379"
+      - "127.0.0.1:16383:16379"
+
+  # ------------------------------------------------------------------
+  # TLS（--profile tls）
+  # ------------------------------------------------------------------
+  # 自签 CA + 服务端证书，写进命名卷 db-certs，供需要「真的走 TLS 握手」
+  # 的用例挂载。用 devbox-tool 镜像生成（里面本来就有 openssl），
+  # 不额外拉 alpine，也不依赖外网 apk。
+  certs:
+    image: ${DB_TOOL_IMAGE:-ghcr.io/zeek-zhao/devbox-tool:local}
+    profiles: ["multi", "tls"]
+    entrypoint: ["/bin/bash", "-lc"]
+    command:
+      - |
+        set -euo pipefail
+        mkdir -p /certs && cd /certs
+        if [ -f server-cert.pem ] && [ -f ca.pem ]; then
+          echo "证书已存在，跳过生成"; exit 0
+        fi
+        openssl genrsa -out ca-key.pem 2048 2>/dev/null
+        openssl req -x509 -newkey rsa:2048 -nodes -keyout ca-key.pem -out ca.pem \
+          -days 3650 -subj "/CN=devbox-ca" 2>/dev/null
+        openssl genrsa -out server-key.pem 2048 2>/dev/null
+        openssl req -new -key server-key.pem -out server.csr -subj "/CN=mysql" 2>/dev/null
+        openssl x509 -req -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial \
+          -out server-cert.pem -days 3650 2>/dev/null
+        chmod 644 ./*.pem
+        echo "证书已生成：$(ls ./*.pem)"
     volumes:
-      - ../../:/workspace/db:ro
+      - db-certs:/certs
+
+volumes:
+  db-certs:

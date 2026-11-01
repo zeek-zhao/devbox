@@ -2,7 +2,7 @@
 SHELL := /bin/bash
 TAG ?= latest
 
-.PHONY: help images build-base build-tool build-lang examples coverage lint fmt fmt-check check-docs test-shared check-shared-index sha-modes
+.PHONY: help images build-base build-tool build-lang examples coverage lint fmt fmt-check check-docs test-shared check-shared-index sha-modes pre-merge
 
 help:
 	@echo "make images                 逐层构建全部镜像（需要 docker）"
@@ -17,6 +17,7 @@ help:
 	@echo "make test-shared            跑 shared/ 工具箱自测（宿主缺 bats/jq/yq 时自动进容器）"
 	@echo "make check-shared-index     校验 shared/README.md 的函数索引与代码一致"
 	@echo "make sha-modes              修复脚本可执行位（Windows 上必备）"
+	@echo "make pre-merge BRANCHES='a b'  合并前总闸：本地跑全量，绿了才推 main"
 
 images:
 	bash scripts/build-images.sh --tag $(TAG)
@@ -67,3 +68,9 @@ check-shared-index:
 sha-modes:
 	git ls-files -z '*.sh' | xargs -0 git update-index --chmod=+x
 	git update-index --chmod=+x scripts/*.sh images/scripts/*.sh images/scripts/install/*.sh
+
+# 合并前总闸。PR 阶段不跑 CI（见 docs/02-CI分级.md），所以全量校验只能在这里做。
+# IMAGE_TAG 默认 local（215 上的镜像是 :local），需要时用 IMAGE_TAG=latest 覆盖。
+pre-merge:
+	@test -n "$(BRANCHES)" || { echo "用法: make pre-merge BRANCHES='feat/a feat/b' [PUSH=1]"; exit 2; }
+	IMAGE_TAG=$${IMAGE_TAG:-local} bash scripts/pre-merge.sh --branches $(BRANCHES) $(if $(PUSH),--push,)

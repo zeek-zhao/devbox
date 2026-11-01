@@ -19,12 +19,17 @@ scripts/coverage-check.sh
 scripts/build-images.sh
 # 版本一致性的判定实现，AI 不许自己改松
 scripts/check-version-truth.sh
+# 合并前总闸：它决定「什么算绿」。改松了等于绕过所有门禁
+scripts/pre-merge.sh
+scripts/check-gate-files.sh
 
 # ③ 清单自己（防止「把清单删空」这种绕过）
 scripts/gate-files.txt
 
 # ④ 版本单一真本：改一个版本号会连带改掉所有镜像的内容
 images/versions.env
+# 项目版本号（打 tag 的判据）：full 档会校验它必须等于 tag 去掉 v 前缀
+VERSION
 # 预算和它的判定实现都必须挡在 AI 自动合并之外，否则 AI 可以先把预算调大再"通过"
 images/budgets.tsv
 scripts/budget-check.sh
