@@ -178,7 +178,7 @@ jobs:
       - name: 跑 shared/release 测试
         run: |
           node --version
-          cd shared/release && node --test test/
+          cd shared/release && node --test test/*.test.js
 
   # ------------------------------------------------------------------
   # 镜像重建：直接复用 images.yml，不复制那 200 行。
