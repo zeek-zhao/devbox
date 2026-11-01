@@ -1,0 +1,4 @@
+inputs=5 before-wait=0
+queries=1 last=vue3 ssr
+<p>Results: vue3 ssr</p>
+after-cancel=1

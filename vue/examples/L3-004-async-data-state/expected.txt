@@ -1,0 +1,3 @@
+<p data-state="loading">Loading</p>
+<p data-state="error">Error: offline</p>
+<p data-state="empty">No results</p>

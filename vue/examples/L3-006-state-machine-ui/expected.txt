@@ -1,0 +1,16 @@
+table: idle {"start":"loading"}
+table: loading {"resolve":"done","reject":"error"}
+table: done {"reset":"idle"}
+table: error {"retry":"loading"}
+<p data-state="idle">idle</p>
+rejected: idle + resolve; allowed=start
+transition: idle + start -> loading
+<p data-state="loading">loading</p>
+transition: loading + reject -> error
+<p data-state="error">error</p>
+transition: error + retry -> loading
+<p data-state="loading">loading</p>
+transition: loading + resolve -> done
+<p data-state="done">done</p>
+transition: done + reset -> idle
+<p data-state="idle">idle</p>
