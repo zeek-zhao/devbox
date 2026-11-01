@@ -1,0 +1,3 @@
+shared PostgreSQL TLS: off
+temporary PostgreSQL TLS: verified
+weak password: rejected
