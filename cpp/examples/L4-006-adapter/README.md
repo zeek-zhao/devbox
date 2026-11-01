@@ -1,6 +1,5 @@
 # L4-006-adapter
 
-<!-- coverage: pending -->
 
 ## 考点
 

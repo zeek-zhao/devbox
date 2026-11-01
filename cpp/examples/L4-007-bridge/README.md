@@ -1,6 +1,5 @@
 # L4-007-bridge
 
-<!-- coverage: pending -->
 
 ## 考点
 

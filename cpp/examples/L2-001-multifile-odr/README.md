@@ -1,6 +1,5 @@
 # L2-001-multifile-odr
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L2-01：声明放在受头文件卫士保护的头文件中，定义分布在两个 `.cpp` 翻译单元。

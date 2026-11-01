@@ -1,6 +1,5 @@
 # L4-020-state
 
-<!-- coverage: pending -->
 
 ## 考点
 

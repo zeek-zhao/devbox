@@ -1,6 +1,5 @@
 # L3-001-mmap-files
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L3-01：用 `mmap` 读取文件，并按页大小向上取整映射长度。

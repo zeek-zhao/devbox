@@ -196,6 +196,12 @@ jobs:
       - name: 格式化检查（fmt-check）
         run: TAG="$IMAGE_TAG" bash scripts/fmt.sh --check --lang ${{ matrix.lang }}
 
+      # 格式化检查挂在这里而不是单开一个 job：本 job 已经拉过该语言的镜像，
+      # 单开 job 要把六个镜像（约 10 GB）再拉一遍，纯浪费。
+      # 放在用例之前，格式不达标就先红，不用等 77 个用例跑完。
+      - name: 格式化检查（fmt-check）
+        run: TAG="$IMAGE_TAG" bash scripts/fmt.sh --check --lang ${{ matrix.lang }}
+
       - name: 跑该语言全部用例
         run: bash scripts/run-example.sh ${{ matrix.lang }} --all
 

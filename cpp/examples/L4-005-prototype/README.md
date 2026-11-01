@@ -1,6 +1,5 @@
 # L4-005-prototype
 
-<!-- coverage: pending -->
 
 ## 考点
 

@@ -1,6 +1,5 @@
 # L3-002-thread-synchronization
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L3-02：用互斥锁保护共享状态，并用条件变量完成线程握手。

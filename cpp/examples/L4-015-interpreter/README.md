@@ -1,6 +1,5 @@
 # L4-015-interpreter
 
-<!-- coverage: pending -->
 
 ## 考点
 

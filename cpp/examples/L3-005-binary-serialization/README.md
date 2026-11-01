@@ -1,6 +1,5 @@
 # L3-005-binary-serialization
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L3-05：手工编码固定宽度小端字段，并校验魔数、版本、长度和校验和。

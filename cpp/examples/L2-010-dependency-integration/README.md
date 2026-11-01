@@ -1,6 +1,5 @@
 # L2-010-dependency-integration
 
-<!-- coverage: pending -->
 
 ## 考点
 对应 KP-L2-10：干净配置通过 `find_package(Threads REQUIRED)` 查找依赖，并在目标上链接 `Threads::Threads`。
