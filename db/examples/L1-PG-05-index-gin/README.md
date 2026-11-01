@@ -1,14 +1,22 @@
-# L1-PG-05-index-gin · GIN/GiST 索引
-
 <!-- coverage: pending -->
+
+# L1-PG-05-index-gin · GIN/GiST 索引
 
 ## 考点
 
-GIN 用于 jsonb/数组、部分索引、表达式索引、EXPLAIN ANALYZE
+- GIN 索引可服务于 `jsonb @>` 和数组包含查询。
+- 部分索引只覆盖满足谓词的行，表达式索引需以相同表达式查询。
+- `EXPLAIN ANALYZE` 实际执行查询；输出只保留扫描节点类型，不暴露耗时或估算成本。
 
-## 判据（验收按这一条核对）
+## 为什么这么写
 
-输出 EXPLAIN 是否命中索引
+用固定 1000 行、仅一行匹配的资料降低规划器选择顺序扫描的可能；本例在会话内关闭顺序扫描和普通索引扫描，让四个查询分别展示 GIN、部分及表达式索引的 Bitmap 访问路径。
+
+## 易错点
+
+- 小表或低选择性条件可能合理地选择顺序扫描；这里显式调整规划开关是为了讲解索引路径，不代表生产环境应关闭顺序扫描。
+- `EXPLAIN` 的成本、行数和实际时间不适合作为固定输出，本例过滤后只显示扫描节点。
+- 表达式索引的查询表达式必须匹配索引定义，例如 `lower(email)`。
 
 ## 依赖服务
 
@@ -16,12 +24,4 @@ GIN 用于 jsonb/数组、部分索引、表达式索引、EXPLAIN ANALYZE
 
 ## 命名空间
 
-`l1_pg_05_index_gin`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-PG-05-index-gin --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l1_pg_05_index_gin`

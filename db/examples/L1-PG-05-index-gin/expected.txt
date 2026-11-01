@@ -1,0 +1,12 @@
+jsonb GIN
+Bitmap Heap Scan on docs
+  ->  Bitmap Index Scan on docs_payload_gin
+array GIN
+Bitmap Heap Scan on docs
+  ->  Bitmap Index Scan on docs_tags_gin
+partial index
+Bitmap Heap Scan on docs
+  ->  Bitmap Index Scan on docs_active_id_idx
+expression index
+Bitmap Heap Scan on docs
+  ->  Bitmap Index Scan on docs_email_lower_idx

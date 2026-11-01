@@ -1,27 +1,27 @@
-# L2-05-cache-consistency · 缓存与库一致性
-
 <!-- coverage: pending -->
+
+# L2-05-cache-consistency · 缓存与库一致性
 
 ## 考点
 
-Cache-Aside 删缓存 vs 更新缓存、延迟双删、binlog 订阅
+- Cache-Aside 读线程先读旧值、写线程更新数据库并删缓存时，旧读可能在删除之后回填。
+- 事件同步可以确定性复现并发写后的缓存与数据库不一致。
+- 第二次删除并从数据库回填后，缓存重新收敛到数据库值。
 
-## 判据（验收按这一条核对）
+## 为什么这么写
 
-输出并发写后缓存与库的最终值
+用 Python 线程事件规定“读旧值 → 写库并首次删缓存 → 读线程回填旧值 → 再删并回填新值”的顺序，不靠 `sleep` 猜时序；只清理本例 Redis key。
+
+## 易错点
+
+- 只测试先写库再删缓存、没有交错读写，就不会暴露旧值回填竞态。
+- 首次删缓存之后读线程仍可写入过期值；删除操作本身不保证一致性。
+- 第二次删除必须发生在旧读完成回填后，否则无法清除竞态产生的旧缓存。
 
 ## 依赖服务
 
-`mysql,redis`
+`mysql`, `redis`
 
 ## 命名空间
 
-`l2_05_cache_consistency`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L2-05-cache-consistency --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l2_05_cache_consistency`，Redis key 前缀 `db_l2_05_cache_consistency:`

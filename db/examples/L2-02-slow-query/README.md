@@ -1,27 +1,27 @@
-# L2-02-slow-query · 慢查询定位
-
 <!-- coverage: pending -->
+
+# L2-02-slow-query · 慢查询定位
 
 ## 考点
 
-MySQL slow log、PG pg_stat_statements、Mongo profiler、Redis SLOWLOG
+- PostgreSQL `pg_stat_activity` 可观察正在执行的长查询及其状态。
+- 查询标记可用于从活动会话中准确定位目标语句。
+- 慢查询观测需要独立观察连接，不能在目标查询结束后再找活动状态。
 
-## 判据（验收按这一条核对）
+## 为什么这么写
 
-输出四个库各自抓到的慢语句特征
+选择 `pg_stat_activity` 路径：一个连接运行固定 `pg_sleep` 查询，另一个连接轮询并确认目标语句处于 `active`。共享实例没有通过 `shared_preload_libraries` 预加载 `pg_stat_statements`，因此创建扩展不可用；活动视图不要求改共享配置，也不会只验证一个尚未执行的日志配置。
+
+## 易错点
+
+- `pg_stat_activity` 只呈现当前活动，不是历史统计；本例在目标语句执行期间捕获它。
+- 轮询有总超时，超时会明确失败，不会以缺少观测的成功输出兜底。
+- 输出不包含运行时长或动态 SQL 文本，只报告是否实际捕获到活动查询。
 
 ## 依赖服务
 
-`mysql,postgres,mongodb,redis`
+`postgres`
 
 ## 命名空间
 
-`l2_02_slow_query`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L2-02-slow-query --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l2_02_slow_query`

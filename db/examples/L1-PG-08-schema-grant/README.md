@@ -1,14 +1,22 @@
-# L1-PG-08-schema-grant · schema 与权限
-
 <!-- coverage: pending -->
+
+# L1-PG-08-schema-grant · schema 与权限
 
 ## 考点
 
-CREATE SCHEMA、search_path、GRANT USAGE/ALL
+- `search_path` 是当前会话设置，控制未限定 schema 名称的解析顺序。
+- `USAGE` 允许访问 schema 名称空间，不等于拥有其中表的 `SELECT` 权限。
+- 实际切换到受限角色后，跨 schema 读表应被 PostgreSQL 拒绝。
 
-## 判据（验收按这一条核对）
+## 为什么这么写
 
-输出 search_path 与跨 schema 访问被拒
+每次重建本例数据库和专属角色；同一会话设置并读取 `search_path`，再 `SET ROLE` 执行真实查询并捕获权限异常，避免跨会话断言或只检查权限元数据。
+
+## 易错点
+
+- `SET search_path` 不会持久化到另一个连接。
+- 只授予 schema 的 `USAGE`，而不给表 `SELECT`，访问表仍应失败。
+- 角色名是全局对象，因此运行开始时先删除本例的专属角色。
 
 ## 依赖服务
 
@@ -16,12 +24,4 @@ CREATE SCHEMA、search_path、GRANT USAGE/ALL
 
 ## 命名空间
 
-`l1_pg_08_schema_grant`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-PG-08-schema-grant --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l1_pg_08_schema_grant`

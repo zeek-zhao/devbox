@@ -1,14 +1,21 @@
-# L1-PG-03-window · 窗口函数
-
 <!-- coverage: pending -->
+
+# L1-PG-03-window · 窗口函数
 
 ## 考点
 
-OVER(PARTITION BY/ORDER BY)、ROW_NUMBER vs RANK vs DENSE_RANK
+- `PARTITION BY` 让排名在各队内分别计算。
+- 相同分数时，`ROW_NUMBER` 给出不同序号，`RANK` 留空位，`DENSE_RANK` 不留空位。
+- 窗口排序与最终结果排序是两件事。
 
-## 判据（验收按这一条核对）
+## 为什么这么写
 
-输出三种排名函数在同一数据上的差异
+同一份含并列分数的数据同时计算三种排名，并以队伍、分数和球员名排序；并列组清楚展示三种函数的语义差异。
+
+## 易错点
+
+- 只按分数排序的 `ROW_NUMBER` 在并列行间不保证谁先谁后；本例只比较排名值，并用球员名确定展示顺序。
+- 忘写最终 `ORDER BY` 不会因为窗口内有排序就自动得到稳定的结果集顺序。
 
 ## 依赖服务
 
@@ -16,12 +23,4 @@ OVER(PARTITION BY/ORDER BY)、ROW_NUMBER vs RANK vs DENSE_RANK
 
 ## 命名空间
 
-`l1_pg_03_window`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-PG-03-window --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l1_pg_03_window`

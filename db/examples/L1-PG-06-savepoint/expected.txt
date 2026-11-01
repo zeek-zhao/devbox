@@ -1,0 +1,4 @@
+isolation=repeatable read
+duplicate SQLSTATE=23505
+transaction state SQLSTATE=25P02
+rows after rollback to savepoint=1

@@ -1,27 +1,27 @@
-# L2-07-backup-restore-drill · 备份恢复演练
-
 <!-- coverage: pending -->
+
+# L2-07-backup-restore-drill · 备份恢复演练
 
 ## 考点
 
-mysqldump/pg_dump/mongodump/RDB、恢复校验、RPO/RTO
+- 使用 `pg_dump` 导出专属源数据库，并用 `pg_restore` 恢复到另一个新建数据库。
+- 恢复校验同时比较行数和按业务键排序计算的内容 checksum。
+- 源库和恢复库分开，演练不覆盖原始数据。
 
-## 判据（验收按这一条核对）
+## 为什么这么写
 
-输出恢复后各表行数与源库一致
+在 toolbox 的 `/tmp` 存储本例自定义格式备份，使用三个固定业务键和整数值；恢复后比较 `COUNT(*)` 与 `md5(string_agg(... ORDER BY ...))`，避免只验证 schema 或只数行。
+
+## 易错点
+
+- 不要把备份恢复到源库，否则无法证明备份包含可恢复的数据。
+- `string_agg` 必须显式排序，避免 checksum 因聚合顺序不同而变化。
+- 临时备份文件在退出时清理；源库、目标库均只使用本例命名空间。
 
 ## 依赖服务
 
-`mysql,postgres,mongodb,redis`
+`postgres`
 
 ## 命名空间
 
-`l2_07_backup_restore_drill`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L2-07-backup-restore-drill --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l2_07_backup_restore_drill`，恢复库 `db_l2_07_backup_restore_drill_restore`
