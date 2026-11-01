@@ -1,0 +1,2 @@
+<p lang="en">Hello, Ada! Welcome, Ada.</p>
+<p lang="zh">你好，Ada！欢迎，Ada。</p>

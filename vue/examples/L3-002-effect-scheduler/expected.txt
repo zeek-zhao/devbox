@@ -1,0 +1,3 @@
+before-flush=1 value=0
+batch-effects=1 total=2 value=3
+inactive-dependency-effects=0 value=off
