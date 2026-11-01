@@ -1,0 +1,4 @@
+integer	integer	text	real	integer	integer	integer
+text	integer	text	real	integer	text	text
+strict	integer
+blob-literal	blob

@@ -1,0 +1,4 @@
+concurrent_writer=locked
+journal_mode=wal
+exclusive_begin=acquired
+rows_after_savepoint=1

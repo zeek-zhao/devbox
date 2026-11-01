@@ -1,0 +1,5 @@
+GRANT USAGE ON *.* TO `u_l1_my_06_app`@`%`
+GRANT SELECT ON `db_l1_my_06_user_grant`.* TO `u_l1_my_06_app`@`%`
+GRANT INSERT ON `db_l1_my_06_user_grant`.`records` TO `u_l1_my_06_app`@`%`
+select=readable
+update_denied=1142

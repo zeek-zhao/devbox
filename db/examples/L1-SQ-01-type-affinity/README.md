@@ -1,27 +1,21 @@
-# L1-SQ-01-type-affinity · 类型亲和性
-
 <!-- coverage: pending -->
 
+# L1-SQ-01-type-affinity · 类型亲和性
+
 ## 考点
+- 对同一组文本/整数输入观察 INTEGER、TEXT、REAL、NUMERIC、BLOB 五种亲和性结果。
+- 比较无声明类型列对文本和整数的动态存储类型。
+- 验证 `STRICT` 表及 BLOB 字面量的实际 `typeof`。
 
-五种亲和性、动态类型、STRICT 表、BLOB 存储
+## 为什么这么写
+同时插入文本 `'123'` 和整数 `123`，再读取 SQLite 的 `typeof()`，让亲和性转换体现在实际存储结果中，而不依赖声明推测。
 
-## 判据（验收按这一条核对）
-
-输出同一列存 '123' 与 123 的 typeof 结果
+## 易错点
+- `TEXT` 亲和性会把整数转换成文本，`BLOB`/无类型列则保留输入存储类型。
+- SQLite `STRICT` 表仍允许可无损转换的文本数值写入整数列。
 
 ## 依赖服务
-
 `toolbox`
 
 ## 命名空间
-
-`l1_sq_01_type_affinity`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-SQ-01-type-affinity --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`/tmp/l1-sq-01-type-affinity.db`

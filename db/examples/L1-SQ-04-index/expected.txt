@@ -1,0 +1,6 @@
+covering
+3	0	0	SEARCH sales USING COVERING INDEX idx_sales_category_score (category=?)
+partial
+2	0	0	SEARCH sales USING COVERING INDEX idx_sales_active_category (category=?)
+table-scan
+2	0	0	SCAN sales

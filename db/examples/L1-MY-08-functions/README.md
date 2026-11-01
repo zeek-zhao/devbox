@@ -1,27 +1,21 @@
-# L1-MY-08-functions · 常用函数与冷门功能
-
 <!-- coverage: pending -->
 
+# L1-MY-08-functions · 常用函数与冷门功能
+
 ## 考点
+- 运行字符串、固定字面量日期和 JSON 提取函数并检查结果。
+- 由生成列自动生成规范化字符串，验证 `ON UPDATE CURRENT_TIMESTAMP` 行为。
+- 在 MySQL 8.4 上尝试违反 `CHECK` 的插入并核对约束错误码。
 
-字符串/日期/JSON 函数、生成列、CHECK 约束、ON UPDATE CURRENT_TIMESTAMP
+## 为什么这么写
+生成列和时间戳列都由服务器计算；时间戳只与固定时间比较，不输出环境相关的当前时间。违反约束的插入通过驱动捕获错误码，不把预期失败伪装成成功。
 
-## 判据（验收按这一条核对）
-
-输出函数计算结果与生成列自动值
+## 易错点
+- MySQL 8.4 会执行 `CHECK`，不要沿用旧版本“不支持”的结论。
+- 更新必须改变普通列，`ON UPDATE` 才会触发；生成列不能手工赋值。
 
 ## 依赖服务
-
 `mysql`
 
 ## 命名空间
-
-`l1_my_08_functions`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-MY-08-functions --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l1_my_08_functions`

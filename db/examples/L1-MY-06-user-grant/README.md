@@ -1,27 +1,21 @@
-# L1-MY-06-user-grant · 用户与权限
-
 <!-- coverage: pending -->
 
+# L1-MY-06-user-grant · 用户与权限
+
 ## 考点
+- 为 ID 专属用户授予库级 `SELECT` 和表级 `INSERT`。
+- 通过 `SHOW GRANTS` 核对授权范围。
+- 以实际连接尝试 `UPDATE`，验证未授权操作返回 MySQL 错误码 1142。
 
-CREATE USER、GRANT 库级/表级、REVOKE、SHOW GRANTS
+## 为什么这么写
+权限检查由受限账号真实发起，而不是根据授权语句推断；账号连接同时验证库级读取授权可用。
 
-## 判据（验收按这一条核对）
-
-输出 SHOW GRANTS 结果与越权访问被拒的错误码
+## 易错点
+- 用户名包含用例 ID，且使用 `trap` 在成功或失败退出时删除，避免并行用例冲突。
+- 用 `@'%'` 允许 toolbox 容器连接；只创建 `@'localhost'` 会导致连接身份不匹配。
 
 ## 依赖服务
-
 `mysql`
 
 ## 命名空间
-
-`l1_my_06_user_grant`（用例开始时必须自己清理，保证可重复运行）
-
-## 契约
-
-- `run.sh` 跑在**宿主**上，用 `scripts/lib/common.sh` 里的 `tb` / `mysql_file` / `psql_file` / `redis_file` / `sqlite_file` / `py_file` 进容器
-- stdout 必须确定：显式 `ORDER BY`、不打时间戳、不打耗时
-- 交付前必须自己跑一次 `bash db/scripts/run-example.sh db L1-MY-06-user-grant --update` 生成 `expected.txt`，
-  并**人工确认输出确实体现了上面的考点**（不是「跑通就算」）
-- 完成后把上面的 `coverage: pending` 去掉，或保留 pending 并在 PR 里说明为什么
+`db_l1_my_06_user_grant`

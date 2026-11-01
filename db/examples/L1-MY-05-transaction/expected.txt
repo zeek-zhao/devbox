@@ -1,0 +1,4 @@
+snapshot_first=10
+snapshot_after_commit=10
+current_read=20
+after_rollback=20
