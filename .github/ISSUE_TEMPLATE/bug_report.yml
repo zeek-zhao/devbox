@@ -43,7 +43,7 @@ body:
     id: commit
     attributes:
       label: 出问题的提交
-      description: `git rev-parse --short HEAD` 的输出
+      description: "`git rev-parse --short HEAD` 的输出"
       placeholder: f9cb5b9
     validations:
       required: true

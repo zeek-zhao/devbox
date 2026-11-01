@@ -58,6 +58,6 @@ body:
     id: coverage
     attributes:
       label: 与毕业项目的关系
-      description: 如果这条用例能接入 `project/`，说明接入点；不能接入的话，是否属于 `coverage: exempt`，理由是什么
+      description: "如果这条用例能接入 `project/`，说明接入点；不能接入的话，是否属于 `coverage: exempt`，理由是什么"
     validations:
       required: false
