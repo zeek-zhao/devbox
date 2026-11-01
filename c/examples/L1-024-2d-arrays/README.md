@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 服务只处理字节流，不进行二维数据运算。 -->
 
 # L1-024-2d-arrays —— 对比二维数组与指针数组的实际布局
 

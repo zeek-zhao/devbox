@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L1-020-malloc-free —— 分配、使用并释放动态数组
 

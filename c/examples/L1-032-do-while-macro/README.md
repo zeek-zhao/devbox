@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 项目没有多语句宏，故无需此控制流保护模式。 -->
 
 # L1-032-do-while-macro —— 把多语句宏包装成单条语句
 

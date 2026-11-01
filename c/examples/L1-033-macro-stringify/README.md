@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 路由和诊断不生成预处理器标识符或字符串。 -->
 
 # L1-033-macro-stringify —— 观察字符串化与 token 粘贴的展开时机
 

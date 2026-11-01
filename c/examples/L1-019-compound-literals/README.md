@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L1-019-compound-literals —— 直接构造并传递结构体值
 

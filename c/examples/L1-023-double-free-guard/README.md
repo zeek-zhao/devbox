@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L1-023-double-free-guard —— 释放后置空使重复清理安全
 

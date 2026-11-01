@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 服务不需重解释任何对象表示，加入双关没有协议用途。 -->
 
 # L1-013 —— union 与类型双关
 

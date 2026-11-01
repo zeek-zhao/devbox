@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L1-031-internal-linkage —— 静态文件作用域对象各自拥有状态
 

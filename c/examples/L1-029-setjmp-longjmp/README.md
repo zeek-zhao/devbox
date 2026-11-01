@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 返回值和状态机足以处理服务错误，无非局部跳转需要。 -->
 
 # L1-029-setjmp-longjmp —— 用非局部跳转传递错误状态
 

@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 项目不比较优化级别；此类构建矩阵与服务运行无关。 -->
 
 # L2-020-optimization-consistency —— 比较 O0 与 O2 的定义良好行为
 

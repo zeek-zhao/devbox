@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 两个固定路由不需要可变哈希桶和删除语义。 -->
 
 # L3-005-hash-table-chaining —— 实现可删除的拉链哈希表
 

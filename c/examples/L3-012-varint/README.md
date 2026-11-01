@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 当前文本协议子集不含变长整数编码字段。 -->
 
 # L3-012-varint —— 编解码无符号变长整数
 

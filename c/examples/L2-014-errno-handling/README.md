@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L2-014-errno-handling —— 在失败调用后立即保存 errno
 

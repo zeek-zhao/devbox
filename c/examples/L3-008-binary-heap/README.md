@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 调度顺序由内核事件循环决定，不需优先队列。 -->
 
 # L3-008-binary-heap —— 用数组实现最小二叉堆
 

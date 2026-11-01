@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt Sanitizer 是独立测试工具，不构成 HTTP 服务功能。 -->
 
 # L2-006-asan-bounds —— 用 AddressSanitizer 定位堆缓冲区越界
 

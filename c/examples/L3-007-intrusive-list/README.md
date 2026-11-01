@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt epoll 直接携带客户端指针，无列表遍历任务。 -->
 
 # L3-007-intrusive-list —— 从内嵌节点找回宿主对象
 

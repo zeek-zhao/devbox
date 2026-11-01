@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 请求处理不存在第 k 项选择工作负载。 -->
 
 # L3-019-quickselect —— 用三数取中选择第 k 小元素
 

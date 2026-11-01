@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 调试器调用不属于服务器运行时行为。 -->
 
 # L2-008-gdb-batch-backtrace —— 在无交互模式下检查崩溃调用栈
 

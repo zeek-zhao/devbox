@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 客户端池容量固定，不需要数组扩容或 `realloc`。 -->
 
 # L1-021-calloc-realloc —— 验证清零分配与 realloc 失败语义
 

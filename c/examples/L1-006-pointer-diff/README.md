@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 内存位置使用明确的 `size_t` 偏移，无指针差值需求。 -->
 
 # L1-006 —— ptrdiff_t 与指针相减
 

@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L1-001 —— 基本类型宽度与 sizeof
 

@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L3-003-memory-pool —— 固定大小块的复用
 

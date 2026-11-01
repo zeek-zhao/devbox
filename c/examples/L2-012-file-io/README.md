@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt HTTP 请求应答不要求文件持久化。 -->
 
 # L2-012-file-io —— 往返写读文件并逐字节验证
 

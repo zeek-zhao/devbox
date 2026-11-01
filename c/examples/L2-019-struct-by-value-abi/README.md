@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 大型连接对象按指针传递，无按值 ABI 需求。 -->
 
 # L2-019-struct-by-value-abi —— 按值传递不同大小的结构体
 

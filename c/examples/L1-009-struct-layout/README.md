@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L1-009 —— 结构体大小与 offsetof
 

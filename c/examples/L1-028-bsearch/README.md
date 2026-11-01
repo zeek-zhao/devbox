@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 两条路由顺序扫描比额外排序/查找更直接。 -->
 
 # L1-028-bsearch —— 先排序再进行二分查找
 

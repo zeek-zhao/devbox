@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 服务不进行矩阵运算，分块计算无自然落点。 -->
 
 # L3-020-matrix-blocking —— 分块计算矩阵乘积并校验结果
 

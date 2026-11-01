@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L3-001-alignment —— 验证类型与对象的内存对齐
 

@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 外部输入采用显式运行时检查，不能依赖可移除断言。 -->
 
 # L2-005-assert-ndebug —— 验证 NDEBUG 会移除断言表达式
 

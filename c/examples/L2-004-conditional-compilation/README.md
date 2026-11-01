@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 目标运行平台固定为 Linux，无平台分支实现需要。 -->
 
 # L2-004-conditional-compilation —— 通过编译期开关选择实现
 

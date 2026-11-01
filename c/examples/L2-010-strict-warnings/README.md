@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L2-010-strict-warnings —— 把转换、遮蔽和丢弃限定符变成编译错误
 

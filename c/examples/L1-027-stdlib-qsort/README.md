@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 路由表固定且顺序无关，不需要运行期排序。 -->
 
 # L1-027-stdlib-qsort —— 为结构体数组提供安全比较函数
 

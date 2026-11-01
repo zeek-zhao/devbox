@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+<!-- coverage: exempt 响应尺寸固定且有界，`snprintf` 已能安全构造。 -->
 
 # L3-010-string-builder —— 按倍数扩容构建字符串
 

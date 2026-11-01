@@ -1,4 +1,4 @@
-<!-- coverage: pending -->
+
 
 # L2-016-print-formats —— 核对 printf 的精度、补零与动态宽度
 
