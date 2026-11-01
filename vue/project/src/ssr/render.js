@@ -10,7 +10,7 @@ function createSSRApp(Vue, component, store) {
 }
 
 function renderSSR(app) {
-  // hello: renderToString produces the deterministic HTML consumed by the smoke check.
+  // L0-hello: renderToString produces the deterministic HTML consumed by the smoke check.
   return renderToString(app);
 }
 

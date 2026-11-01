@@ -6,13 +6,13 @@
 #   <lang>/examples/<ID>/
 #     run.sh       必须存在，自己负责编译与运行，只往 stdout 打业务输出
 #     expected.txt 期望输出；规则：逐行精确，忽略行尾空白与首尾空行
-#     README.md    考点说明（阶段 2 铺开时强制，阶段 0 的 hello 可省）
+#     README.md    考点说明（阶段 2 铺开时强制，阶段 0 的 L0-hello 可省）
 #
 # 用法：
-#   scripts/run-example.sh cpp hello
+#   scripts/run-example.sh cpp L0-hello
 #   scripts/run-example.sh go --all
 #   scripts/run-example.sh rust --list
-#   scripts/run-example.sh cpp hello --keep        # 保留容器，便于 docker exec 进去复现
+#   scripts/run-example.sh cpp L0-hello --keep     # 保留容器，便于 docker exec 进去复现
 #   scripts/run-example.sh python --all --update   # 用当前输出重写 expected.txt（仅限新写用例时）
 # ==================================================================
 set -euo pipefail

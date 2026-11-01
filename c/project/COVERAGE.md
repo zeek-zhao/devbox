@@ -2,7 +2,7 @@
 
 | 用例ID | 落点 | 说明 |
 |---|---|---|
-| hello | src/main.c:63 | 自检成功后输出稳定结果，保留轨道最小可运行入口的行为。 |
+| L0-hello | src/main.c:63 | 自检成功后输出稳定结果，保留轨道最小可运行入口的行为。 |
 | L1-001-types-sizes | src/pool/pool.c:39 | 依据池元数据的真实类型分配其正确大小。 |
 | L1-002-integer-promotion | README.md:51 | 请求处理没有窄整数算术，硬加入会制造无关边界。 |
 | L1-003-unsigned-wraparound | README.md:52 | 长度使用有界检查，不需要依赖回绕的协议逻辑。 |

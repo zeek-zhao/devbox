@@ -13,7 +13,8 @@ public final class SelfCheck {
      * @throws AssertionError unexpected response
      */
     public static void run(PrintStream output) {
-        if (Runtime.version().feature() < 21) throw new AssertionError("requires JDK 21"); // hello
+        // L0-hello: anchor for validating the image and runner path.
+        if (Runtime.version().feature() < 21) throw new AssertionError("requires JDK 21");
         Api api = Api.create();
         check(api, output, "GET", "/healthz", "", 200, "{\"status\":\"ok\"}");
         check(

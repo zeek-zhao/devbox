@@ -5,7 +5,7 @@ reasons live in the corresponding example README.
 
 | 用例ID | 落点 | 说明 |
 |---|---|---|
-| hello | src/ssr/render.js:13 | 服务端将 Vue 应用渲染为 HTML，并供 smoke 检查。 |
+| L0-hello | src/ssr/render.js:13 | 服务端将 Vue 应用渲染为 HTML，并供 smoke 检查。 |
 | L1-001-setup-basics | src/components/app-factory.js:31 | 页面 setup 暴露响应式状态和操作。 |
 | L1-002-ref-vs-reactive | src/store/todos.js:5 | 待办列表使用 reactive，草稿使用 ref。 |
 | L1-003-computed-caching | src/store/todos.js:8 | 未完成数量由 computed 从列表派生。 |

@@ -1,7 +1,7 @@
 # C++ 毕业项目：用例覆盖表
 
 本表记录已接入用例及其代码位置，由 `scripts/coverage-check.sh cpp` 校验用例存在性和代码引用。
-当前覆盖 `hello`、35 个 L1、12 个 L2、6 个 L3 和 23 个 L4，共 77 个用例，pending 为 0。
+当前覆盖 `L0-hello`、35 个 L1、12 个 L2、6 个 L3 和 23 个 L4，共 77 个用例，pending 为 0。
 新增落点以类/函数名定位，避免格式化和后续实现调整令行号失效。
 
 ## 怎么加一行
@@ -91,7 +91,7 @@
 | L4-021-strategy | include/index.h:HitOrder、LineOrder、LengthOrder；src/query.cpp:execute_query | 同一请求流程切换按行或稳定按长度排序，先排序再截取条数 |
 | L4-022-template-method | tests/test_query.cpp:TestCase、ParallelCase、SerializationCase | 非虚 run 固定准备→执行→校验；两个真实专题测试复用骨架 |
 | L4-023-visitor | include/index.h:ExpressionVisitor、TermCountVisitor、ExplainVisitor；src/query.cpp:visit | 节点 accept 双分派；统计词数与解释查询两种分析独立于 AST 节点 |
-| hello | src/main.cpp:2 | 保留阶段 0 的基础用例引用 |
+| L0-hello | src/main.cpp:2 | 保留通路验证层的基础用例引用 |
 
 ## 自检
 
@@ -99,7 +99,7 @@ bash scripts/coverage-check.sh cpp
 
 ## pending：用例已落地但项目还没接入
 
-阶段 2 铺开用例时，项目骨架只真实用到 `hello` 一个。用例若还没被 `project/` 引用，
+阶段 2 铺开用例时，项目骨架只真实用到 `L0-hello` 一个。用例若还没被 `project/` 引用，
 就在它自己的 `README.md` 里写一行：
 
 ```markdown

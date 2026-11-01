@@ -56,6 +56,7 @@ static bool selftest_log(void) {
            strcmp(log_at(&log, LOG_CAPACITY - 1U), "message") == 0;
 }
 
+/* L0-hello：镜像与 runner 通路的锚点，原冒烟用例。 */
 static int run_selftest(void) {
     /* L2-018-unit-test-harness: run deterministic checks for pool, arena, HTTP, and logging. */
     if (!selftest_pool() || !selftest_http() || !selftest_log()) {

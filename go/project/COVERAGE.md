@@ -1,13 +1,13 @@
 # Go 毕业项目：用例覆盖表
 
 项目目标：并发任务网关（HTTP 入口 → worker pool → 限流 → Prometheus 指标 → 优雅退出）。
-覆盖 `go/examples/` 的全部 54 个目录（含 hello）。落点相对本目录，
+覆盖 `go/examples/` 的全部 54 个目录（含 `L0-hello`）。落点相对本目录，
 每个 ID 紧邻真实实现或执行该知识点的测试/构建命令；不使用汇总注释自证。
 TCP 测试以 integration build tag 隔离，容器只编译，宿主执行。
 
 | 用例ID | 落点 | 说明 |
 |---|---|---|
-| hello | src/main.go:46 | 运行完整程序的确定性自检入口 |
+| L0-hello | src/main.go:46 | 运行完整程序的确定性自检入口 |
 | L1-001-package-exports | internal/gateway/task.go:33 | 导出的 Task API 被 main 和外部测试包导入 |
 | L1-002-zero-values | internal/gateway/gateway.go:72 | bool、计数器、WaitGroup 使用零值初始化 |
 | L1-003-constants-iota | internal/gateway/task.go:24 | iota 定义状态及固定计数器槽位 |

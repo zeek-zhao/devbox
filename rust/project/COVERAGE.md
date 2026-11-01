@@ -4,7 +4,7 @@
 
 | 用例ID | 落点 | 说明 |
 |---|---|---|
-| hello | src/main.rs:1 | 标准库 CLI 入口与参数所有权传递 |
+| L0-hello | src/main.rs:1 | 标准库 CLI 入口与参数所有权传递 |
 | L1-001-string-move | src/lib.rs:265 | 将拥有所有权的分片移动到 worker 闭包 |
 | L1-002-copy-types | src/lib.rs:60 | Operation 派生 Copy 以便按值重复分派 |
 | L1-003-shared-borrows | src/lib.rs:91 | 参数解析共享借用参数切片 |

@@ -6,7 +6,7 @@
 
 | 用例ID | 落点 | 说明 |
 |---|---|---|
-| hello | tests/test_pipeline.py:436 | 验证 Python 3.12、固定计算与 dataclass 期望对象 |
+| L0-hello | tests/test_pipeline.py:436 | 验证 Python 3.12、固定计算与 dataclass 期望对象 |
 | L1-001-name-object | tests/test_pipeline.py:240 | 重绑定记录列表，旧别名仍保留原对象 |
 | L1-002-mutability-identity | tests/test_pipeline.py:243 | 相等的独立记录列表不具有相同身份 |
 | L1-003-slice-copy | tests/test_pipeline.py:246 | 批次浅拷贝共享内层列表，deepcopy 隔离修改 |

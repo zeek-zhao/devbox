@@ -1,12 +1,12 @@
 # Java REST 服务：用例覆盖表
 
-声明 `java/examples/` 全部 51 个目录（含 hello），无 pending。
+声明 `java/examples/` 全部 51 个目录（含 `L0-hello`），无 pending。
 落点相对于 `java/project/`；每个 ID 在对应操作或紧邻注释上单独标记。
 业务实现、集成断言及构建探针共同覆盖；测试专用 JNI 不参与 runtime 服务。
 
 | 用例ID | 落点 | 说明 |
 |---|---|---|
-| hello | src/devbox/rest/SelfCheck.java:15 | 自检验证 JDK 21，随后直接执行 record DTO 请求序列 |
+| L0-hello | src/devbox/rest/SelfCheck.java:15 | 自检验证 JDK 21，随后直接执行 record DTO 请求序列 |
 | L1-001-reference-values | src/SelfTest.java:110 | DTO 列表别名可见修改，方法内重新绑定不替换调用方引用 |
 | L1-002-identity-equality | src/SelfTest.java:97 | 独立 name 字符串身份不同但内容相等 |
 | L1-003-equality-contract | src/SelfTest.java:105 | 相等 Item 的散列一致，在 HashSet 中去重 |

@@ -44,7 +44,7 @@ func run() (err error) {
 		defer pprof.StopCPUProfile()
 	}
 	if *selfCheck {
-		// hello: execute the complete application and print its checked, stable result.
+		// L0-hello: anchor for validating the image and runner path.
 		if err := checkApplication(*wordMode); err != nil {
 			return err
 		}

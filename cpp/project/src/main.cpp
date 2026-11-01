@@ -1,5 +1,5 @@
 // devbox-cpp 毕业项目：高性能文本索引器
-// 已消费用例: hello
+// L0-hello: 镜像与 runner 通路锚点。
 #include "index.h"
 
 #include <charconv>

@@ -425,7 +425,7 @@ def test_internal_table_invariant():
 
 
 def test_hello_environment():
-    assert sys.version_info[:2] == (3, 12)  # hello
+    assert sys.version_info[:2] == (3, 12)  # L0-hello: image and runner path anchor
     assert sum(range(5)) == 10
     assert (3 * 3 + 4 * 4) ** 0.5 == 5
     assert ExpectedBatch() == ExpectedBatch()

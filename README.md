@@ -25,7 +25,7 @@
 | Shell | 54 | 部署与巡检工具集 | 严格模式、幂等、并行与 BATS | `devbox-shell` |
 | Vue | 46 | SSR 待办应用 | Vue SFC 与 SSR，不使用 Vite | `devbox-vue` |
 
-用例数按各轨道 `examples/` 的直接子目录计数，包含 `hello`（存在时）；C/C++ 共用镜像
+用例数按各轨道 `examples/` 的直接子目录计数，包含 `L0-hello`（存在时）；C/C++ 共用镜像
 不代表共用用例目录。镜像映射以 [`images/lang-images.tsv`](images/lang-images.tsv) 为准。
 
 ## 目录结构

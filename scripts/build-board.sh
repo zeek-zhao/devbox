@@ -61,7 +61,7 @@ def build():
             languages.append(lang)
     if not languages:
         raise ValueError("images/lang-images.tsv 里没有语言行")
-    levels = ("L1", "L2", "L3", "L4")
+    levels = ("L0", "L1", "L2", "L3", "L4")
     results = {}
     # Include every failure status emitted by run-example.sh, not just FAIL.
     pattern = re.compile(
@@ -97,7 +97,7 @@ def build():
                 continue
             key = (lang, case.name)
             known.add(key)
-            match = re.match(r"^(L[1-4])-", case.name)
+            match = re.match(r"^(L[0-4])-", case.name)
             level = match[1] if match else "other"
             row = counts[lang][level]
             row["total"] += 1
@@ -138,10 +138,10 @@ def build():
             row = counts[lang][level]
             if level == "other" and not row["total"]:
                 continue
-            label = level if level != "other" else "其他（如 hello）"
+            label = level if level != "other" else "其他（未分级）"
             cov_rows = sum(
                 (case.startswith(level + "-") if level != "other"
-                 else not re.match(r"^L[1-4]-", case))
+                 else not re.match(r"^L[0-4]-", case))
                 for case in coverage[lang]
             )
             percent = row["passed"] * 100 / row["total"] if row["total"] else 0
@@ -221,7 +221,7 @@ aria-pressed="false">切换主题</button></header>
         '执行完成度 = PASS / 用例总数；pending 是项目覆盖欠债，与 PASS/FAIL 独立，'
         '可以同时为 PASS 和 pending。未执行不计为 PASS 或 FAIL。'
         'COVERAGE 行数不含表头、分隔行和代码块，也不代表代码引用校验已通过。'
-        '总体包含 hello 等非 L1/L2/L3 用例。</p>\n'
+        '总体包含 L0、L4 等非 L1/L2/L3 用例。</p>\n'
     )
     document += "\n".join(sections)
     document += '''

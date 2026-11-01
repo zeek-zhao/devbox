@@ -1,12 +1,12 @@
 # Shell 毕业项目：用例覆盖表
 
-覆盖 `shell/examples/` 全部 54 个目录，含 hello。落点相对 project/，
+覆盖 `shell/examples/` 全部 54 个目录，含 `L0-hello`。落点相对 project/，
 指向实际操作或其紧邻注释。JSON 巡检和短选项由 BATS 执行；
 其余主流程也由 runtime 固定自检执行。
 
 | 用例ID | 落点 | 说明 |
 |---|---|---|
-| hello | src/main.sh:5 | Bash 严格模式与 IFS 基线 |
+| L0-hello | src/main.sh:5 | Bash 严格模式与 IFS 基线 |
 | L1-001-shebang-execution | src/main.sh:2 | shebang 明确选择 Bash |
 | L1-002-variable-expansion | lib/common.sh:82 | 展开服务名与大写配置键 |
 | L1-003-quoting-word-splitting | lib/commands.sh:17 | 引号保护目标路径和参数，支持空格 |
