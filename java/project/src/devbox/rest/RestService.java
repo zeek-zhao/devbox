@@ -14,29 +14,57 @@ final class RestService implements Api {
             new ConcurrentHashMap<>(); // L1-017-collection-selection
     private final ReentrantLock transaction = new ReentrantLock();
     private final Counter requests = new Counter();
+    private final RequestEvents events = new RequestEvents(List.of(requests));
     private int nextId = 1;
     private volatile boolean ready; // L1-031-volatile-publication
 
     @FunctionalInterface
-    private interface Route {
+    interface Route {
         Reply apply(Request request);
     } // L1-011-functional-interface
 
-    private final Map<String, Route> routes =
-            Map.of(
-                    "GET /healthz", request -> new Text(200, "{\"status\":\"ok\"}", true),
-                    "GET /metrics",
-                            request ->
-                                    new Text(
-                                            200,
-                                            "requests_total " + requests.value() + "\n",
-                                            false),
-                    "GET /items", request -> new Many(snapshot()),
-                    "POST /items", this::create);
+    // L4-008-composite: groups and leaves resolve through the same Router interface.
+    private final Router routes =
+            new RouteGroup(
+                    List.of(
+                            new RouteGroup(
+                                    List.of(
+                                            new ExactRoute(
+                                                    "GET",
+                                                    "/healthz",
+                                                    request ->
+                                                            new Text(
+                                                                    200,
+                                                                    "{\"status\":\"ok\"}",
+                                                                    true)),
+                                            new ExactRoute(
+                                                    "GET",
+                                                    "/metrics",
+                                                    request ->
+                                                            new Text(
+                                                                    200,
+                                                                    "requests_total "
+                                                                            + requests.value()
+                                                                            + "\n",
+                                                                    false)))),
+                            new RouteGroup(
+                                    List.of(
+                                            new ExactRoute(
+                                                    "GET",
+                                                    "/items",
+                                                    request -> new Many(snapshot())),
+                                            new ExactRoute("POST", "/items", new CreateRoute()))),
+                            request -> Optional.of(this::itemRoute)));
+    private final Route dispatch =
+            new ValidatedRoute(
+                    request ->
+                            routes.resolve(request)
+                                    .orElseThrow()
+                                    .apply(request)); // L4-021-strategy
 
-    private sealed interface Reply permits One, Many, Text, Failure {}
+    sealed interface Reply permits One, Many, Text, Failure {}
 
-    private record One(int status, Item item) implements Reply {}
+    record One(int status, Item item) implements Reply {}
 
     private record Many(List<Item> items) implements Reply {
         Many {
@@ -44,23 +72,73 @@ final class RestService implements Api {
         }
     }
 
-    private record Text(int status, String body, boolean json) implements Reply {}
+    record Text(int status, String body, boolean json) implements Reply {}
 
-    private record Failure(int status, String message) implements Reply {}
+    record Failure(int status, String message) implements Reply {}
+
+    interface Router {
+        Optional<Route> resolve(Request request);
+    }
+
+    record ExactRoute(String method, String path, Route route) implements Router {
+        @Override
+        public Optional<Route> resolve(Request request) {
+            return method.equals(request.method()) && path.equals(request.path())
+                    ? Optional.of(route)
+                    : Optional.empty();
+        }
+    }
+
+    record RouteGroup(List<Router> children) implements Router {
+        RouteGroup {
+            children = List.copyOf(children);
+        }
+
+        @Override
+        public Optional<Route> resolve(Request request) {
+            for (Router child : children) {
+                Optional<Route> route = child.resolve(request);
+                if (route.isPresent()) return route;
+            }
+            return Optional.empty();
+        }
+    }
+
+    // L4-009-decorator: retain Route's contract while translating input failures.
+    record ValidatedRoute(Route delegate) implements Route {
+        @Override
+        public Reply apply(Request request) {
+            try {
+                return delegate.apply(request);
+            } catch (ValidationException e) {
+                return new Failure(400, e.getMessage());
+            }
+        }
+    }
+
+    @FunctionalInterface
+    interface RequestObserver {
+        void accepted(Request request);
+    }
+
+    // L4-019-observer: request delivery is separate from metric accumulation.
+    record RequestEvents(List<RequestObserver> observers) {
+        RequestEvents {
+            observers = List.copyOf(observers);
+        }
+
+        void publish(Request request) {
+            for (RequestObserver observer : observers) observer.accepted(request);
+        }
+    }
 
     @Override
     public Result handle(Request request) {
         Objects.requireNonNull(request, "request");
-        requests.increment();
+        events.publish(request);
         transaction.lock();
         try {
-            Reply reply;
-            try {
-                Route route = routes.get(request.method() + " " + request.path());
-                reply = route == null ? itemRoute(request) : route.apply(request);
-            } catch (ValidationException e) {
-                reply = new Failure(400, e.getMessage());
-            }
+            Reply reply = dispatch.apply(request);
             Result result = encode(reply);
             ready = true;
             return result;
@@ -74,13 +152,56 @@ final class RestService implements Api {
         return ready;
     }
 
-    private Reply create(Request request) {
-        String name = Json.parseName(request.body());
-        int id = nextId;
-        nextId = Math.addExact(nextId, 1); // L1-006-numeric-boxing
-        Item item = new Item(id, name);
-        items.put(id, item);
-        return new One(201, item);
+    // L4-022-template-method: validate, mutate, then manufacture a success reply.
+    abstract static class NameRoute implements Route {
+        @Override
+        public final Reply apply(Request request) {
+            String name = Json.parseName(request.body());
+            return save(name)
+                    .<Reply>map(this::success)
+                    .orElseGet(() -> new Failure(404, "item not found"));
+        }
+
+        abstract Optional<Item> save(String name);
+
+        abstract Reply success(Item item); // L4-002-factory-method
+    }
+
+    private final class CreateRoute extends NameRoute {
+        @Override
+        Optional<Item> save(String name) {
+            int id = nextId;
+            nextId = Math.addExact(nextId, 1); // L1-006-numeric-boxing
+            Item item = new Item(id, name);
+            items.put(id, item);
+            return Optional.of(item);
+        }
+
+        @Override
+        One success(Item item) {
+            return new One(201, item);
+        }
+    }
+
+    private final class UpdateRoute extends NameRoute {
+        private final int id;
+
+        UpdateRoute(int id) {
+            this.id = id;
+        }
+
+        @Override
+        Optional<Item> save(String name) {
+            if (!items.containsKey(id)) return Optional.empty();
+            Item item = new Item(id, name);
+            items.put(id, item);
+            return Optional.of(item);
+        }
+
+        @Override
+        One success(Item item) {
+            return new One(200, item);
+        }
     }
 
     private Reply itemRoute(Request request) {
@@ -104,13 +225,7 @@ final class RestService implements Api {
                                             new Failure(
                                                     404,
                                                     "item not found")); // L1-021-optional-fallback
-            case PUT -> {
-                String name = Json.parseName(request.body());
-                if (!items.containsKey(id)) yield new Failure(404, "item not found");
-                Item item = new Item(id, name);
-                items.put(id, item);
-                yield new One(200, item);
-            }
+            case PUT -> new UpdateRoute(id).apply(request);
             case DELETE ->
                     items.remove(id) == null
                             ? new Failure(404, "item not found")
@@ -158,23 +273,34 @@ final class RestService implements Api {
             case One one -> json(one.status(), Json.item(one.item()));
             case Many many -> json(200, Json.items(many.items()));
             case Text text ->
-                    new Result(
-                            text.status(),
-                            text.json()
-                                    ? "application/json; charset=utf-8"
-                                    : "text/plain; charset=utf-8",
-                            text.body());
+                    new ResultBuilder()
+                            .status(text.status())
+                            .contentType(
+                                    text.json()
+                                            ? "application/json; charset=utf-8"
+                                            : "text/plain; charset=utf-8")
+                            .body(text.body())
+                            .build();
             case Failure failure ->
                     json(failure.status(), "{\"error\":" + Json.quote(failure.message()) + "}");
         };
     }
 
     private static Result json(int status, String body) {
-        return new Result(status, "application/json; charset=utf-8", body);
+        return new ResultBuilder()
+                .status(status)
+                .contentType("application/json; charset=utf-8")
+                .body(body)
+                .build();
     }
 
-    private static final class Counter {
+    private static final class Counter implements RequestObserver {
         private long count;
+
+        @Override
+        public void accepted(Request request) {
+            increment();
+        }
 
         synchronized void increment() {
             count = Math.addExact(count, 1);

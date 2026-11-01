@@ -1,6 +1,6 @@
 # L4-007-bridge
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 只有一种 HTTP 传输和一种内存存储，Api 已隔离传输边界；没有需要独立扩展并交叉组合的两套实现层级 -->
 
 ## 考点
 

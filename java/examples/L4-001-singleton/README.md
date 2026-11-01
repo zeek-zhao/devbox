@@ -1,6 +1,6 @@
 # L4-001-singleton
 
-<!-- coverage: pending -->
+<!-- coverage: exempt Api.create 必须建立独立内存库；进程全局单例会让测试和同进程服务实例串数据，且没有需唯一实例的可变配置 -->
 
 ## 考点
 

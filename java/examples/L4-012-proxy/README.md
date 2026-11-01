@@ -1,6 +1,6 @@
 # L4-012-proxy
 
-<!-- coverage: pending -->
+<!-- coverage: exempt Api.create 直接拥有本地内存服务，无远程 Api、延迟加载或访问授权目标；HttpExchange 到 DTO 是协议适配而非透明代理 -->
 
 ## 考点
 

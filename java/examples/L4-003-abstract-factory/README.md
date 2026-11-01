@@ -1,6 +1,6 @@
 # L4-003-abstract-factory
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 服务固定使用 JDK HttpServer、内存库和 JSON 协议，不存在需要成套切换的传输/存储产品家族 -->
 
 ## 考点
 

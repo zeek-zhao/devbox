@@ -1,6 +1,6 @@
 # L4-013-chain-of-responsibility
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 请求只选择一个 CRUD 处理器，路由树仅匹配地址；没有可逐级受理、拒绝或传递业务责任的审批/中间件链 -->
 
 ## 考点
 

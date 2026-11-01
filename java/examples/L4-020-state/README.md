@@ -1,6 +1,6 @@
 # L4-020-state
 
-<!-- coverage: pending -->
+<!-- coverage: exempt Item 没有生命周期状态，ready 只是首次请求完成后的单向发布标志；没有随状态改变的多组行为或可逆迁移 -->
 
 ## 考点
 

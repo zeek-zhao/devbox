@@ -1,6 +1,6 @@
 # L4-016-iterator
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 快照直接返回 JDK 不可变 List，现有循环由标准集合迭代器承担；没有隐藏存储布局或自定义游标遍历协议可供实现 -->
 
 ## 考点
 

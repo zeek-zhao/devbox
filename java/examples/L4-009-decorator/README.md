@@ -1,6 +1,5 @@
 # L4-009-decorator
 
-<!-- coverage: pending -->
 
 ## 考点
 

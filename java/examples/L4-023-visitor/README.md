@@ -1,6 +1,6 @@
 # L4-023-visitor
 
-<!-- coverage: pending -->
+<!-- coverage: exempt 业务实体只有一种 Item，无异构对象树；封闭 Reply 已由穷尽模式 switch 编码，不存在需要双分派扩展的实体操作矩阵 -->
 
 ## 考点
 

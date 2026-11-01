@@ -57,3 +57,26 @@
 | L3-004-binary-serialization | src/devbox/rest/Snapshot.java:29 | Data 流定义大端快照，往返与魔数、长度、截断错误测试 |
 | L3-005-counted-benchmark | src/EngineeringTest.java:44 | 实际快照查找预热与校验和，线性 1000 次、二分不超过 10 次 |
 | L3-006-jni-native | src/devbox/tests/NativeChecksum.java:5 | 加载生成头编译的 JNI ID 校验和库，测试缺库与 null 参数失败 |
+| L4-001-singleton | 豁免（用例 README） | Api.create 必须建立独立内存库；进程全局单例会让测试和同进程服务实例串数据，且没有需唯一实例的可变配置 |
+| L4-002-factory-method | src/devbox/rest/RestService.java:NameRoute.success、CreateRoute.success、UpdateRoute.success | 写入模板调用子类工厂制造成功响应，新增返回 201、替换返回 200，主流程不硬编码子类的成功状态 |
+| L4-003-abstract-factory | 豁免（用例 README） | 服务固定使用 JDK HttpServer、内存库和 JSON 协议，不存在需要成套切换的传输/存储产品家族 |
+| L4-004-builder | src/devbox/rest/ResultBuilder.java:status/contentType/body/build；RestService.encode/json | 分步装配不可变 HTTP 响应，提交前检查字段完整性、状态码和 204 空体，JSON 与纯文本分支共用构造约束 |
+| L4-005-prototype | 豁免（用例 README） | Item 是仅含 ID/name 的不可变 record，新建必须由事务分配新 ID；克隆现有实体会复制唯一键，快照直接复制不可变值即可 |
+| L4-006-adapter | src/devbox/rest/HttpApp.java:ExchangeRequestAdapter.read、respond | 把 JDK HttpExchange 的方法、原始路径和有界 UTF-8 请求流适配为 Api.Request，业务路由不依赖网络类型 |
+| L4-007-bridge | 豁免（用例 README） | 只有一种 HTTP 传输和一种内存存储，Api 已隔离传输边界；没有需要独立扩展并交叉组合的两套实现层级 |
+| L4-008-composite | src/devbox/rest/RestService.java:Router、ExactRoute.resolve、RouteGroup.resolve、routes | 管理路由组、资源路由组和精确匹配叶子通过相同接口递归解析；保留组内优先级和末尾 ID/未知路由处理 |
+| L4-009-decorator | src/devbox/rest/RestService.java:ValidatedRoute.apply、dispatch、handle | 包装同一 Route 接口，在所有业务处理算法外统一把领域校验异常转成 400；非校验缺陷继续抛向 HTTP 日志边界 |
+| L4-010-facade | 豁免（用例 README） | 项目已有单一 Api 业务边界，CRUD 不需协调多个独立子系统；JSON 与快照各有固定入口，再增加门面只会转发现有接口 |
+| L4-011-flyweight | 豁免（用例 README） | 每条 Item 仅有唯一 ID 和短 name，无可拆分的昂贵共享内蕴状态；跨实体共享可变对象会破坏不可变快照契约 |
+| L4-012-proxy | 豁免（用例 README） | Api.create 直接拥有本地内存服务，无远程 Api、延迟加载或访问授权目标；HttpExchange 到 DTO 是协议适配而非透明代理 |
+| L4-013-chain-of-responsibility | 豁免（用例 README） | 请求只选择一个 CRUD 处理器，路由树仅匹配地址；没有可逐级受理、拒绝或传递业务责任的审批/中间件链 |
+| L4-014-command | 豁免（用例 README） | 写入在请求事务内立即完成，服务不承诺命令排队、重放或撤销；把请求再包装成命令对象不会提供这些业务语义 |
+| L4-015-interpreter | 豁免（用例 README） | 请求只含固定路径与单字段 JSON，不提供可组合表达式、查询语言或规则 DSL；JSON 字符串解码不是执行语言解释器 |
+| L4-016-iterator | 豁免（用例 README） | 快照直接返回 JDK 不可变 List，现有循环由标准集合迭代器承担；没有隐藏存储布局或自定义游标遍历协议可供实现 |
+| L4-017-mediator | 豁免（用例 README） | HttpApp 单向调用 Api，实体不互相通信；不存在多个对等组件交互网需要中介协调 |
+| L4-018-memento | 豁免（用例 README） | Snapshot 只做可移植编码，服务无恢复或撤销端点，也不保留历史；引入 caretaker 会新增尚未承诺的回滚语义 |
+| L4-019-observer | src/devbox/rest/RestService.java:RequestObserver、RequestEvents.publish、Counter.accepted、handle | 业务入口发布已接收请求，计数订阅者独立累加；400/404 仍计数，HTTP 提前拒绝和 null 不计数，保持 metrics 当前请求语义 |
+| L4-020-state | 豁免（用例 README） | Item 没有生命周期状态，ready 只是首次请求完成后的单向发布标志；没有随状态改变的多组行为或可逆迁移 |
+| L4-021-strategy | src/devbox/rest/RestService.java:Route.apply、dispatch、CreateRoute、routes | 路由解析选择可替换的 Route 算法，健康、指标、快照与新增处理均经统一 apply 调用；新增写入算法不是固定在调度器中 |
+| L4-022-template-method | src/devbox/rest/RestService.java:NameRoute.apply、CreateRoute.save、UpdateRoute.save、itemRoute | 新增和替换共用 final 的解析校验→存储→成功响应骨架，只重写写入和响应钩子，保证无效输入不消耗 ID 或修改实体 |
+| L4-023-visitor | 豁免（用例 README） | 业务实体只有一种 Item，无异构对象树；封闭 Reply 已由穷尽模式 switch 编码，不存在需要双分派扩展的实体操作矩阵 |
