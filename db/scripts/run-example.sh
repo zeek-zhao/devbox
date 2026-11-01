@@ -20,7 +20,7 @@
 set -uo pipefail
 
 DB_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cd "$DB_ROOT"
+cd "$DB_ROOT" || exit 1
 
 MODE=""; UPDATE=0; TIMEOUT="${DB_EXAMPLE_TIMEOUT:-180}"
 POS=()
