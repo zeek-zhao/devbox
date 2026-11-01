@@ -64,6 +64,8 @@ ruff.toml
 # ⑨ 格式化的判定实现本身
 scripts/fmt.sh
 scripts/check-docs.sh
+# 看板一致性判定：改松了（或删掉）看板就能永远「一致」
+scripts/check-board-truth.sh
 
 # ⑩ 语言 -> 镜像层映射：改了它就能让某门语言指向别的镜像，等于换了被测环境
 images/lang-images.tsv

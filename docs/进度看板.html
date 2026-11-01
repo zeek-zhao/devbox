@@ -45,7 +45,7 @@ th { white-space: nowrap; }
   <button id="theme-toggle" type="button" aria-pressed="false">切换主题</button>
 </header>
 <main>
-  <p class="summary">9 条轨道 · 608 个用例 · 7 个已有毕业项目</p>
+  <p class="summary">9 条轨道 · 608 个用例 · 9 个已有毕业项目</p>
   <p class="note">用例数按各轨道 <code>examples/</code> 下的直接子目录计数，包含存在的 hello。层级分布与项目目录状态来自当前 worktree；此看板是目录清单，不代表所有用例均已执行通过。</p>
   <section>
     <h2>轨道与用例分布</h2>
@@ -53,7 +53,7 @@ th { white-space: nowrap; }
       <table>
         <thead><tr><th scope="col">轨道</th><th scope="col">用例数</th><th scope="col">层级分布</th><th scope="col">毕业项目</th><th scope="col">镜像层 / 运行环境</th></tr></thead>
         <tbody>
-          <tr><th scope="row">C</th><td>78</td><td>L1 34 · L2 20 · L3 23 · hello 1</td><td>PROJ-C 计划新建，尚未落地</td><td>devbox-cpp</td></tr>
+          <tr><th scope="row">C</th><td>78</td><td>L1 34 · L2 20 · L3 23 · hello 1</td><td>epoll HTTP server（ISO C17，单线程）</td><td>devbox-cpp</td></tr>
           <tr><th scope="row">C++</th><td>77</td><td>L1 35 · L2 12 · L3 6 · L4 23 · hello 1</td><td>高性能文本索引器</td><td>devbox-cpp</td></tr>
           <tr><th scope="row">数据库</th><td>77</td><td>L1 40 · L2 15 · L3 12 · L4 10</td><td>带缓存的订单服务</td><td>独立 Compose runner：五个数据库服务 + toolbox</td></tr>
           <tr><th scope="row">Go</th><td>77</td><td>L1 35 · L2 12 · L3 6 · L4 23 · hello 1</td><td>并发任务网关</td><td>devbox-go</td></tr>
@@ -61,7 +61,7 @@ th { white-space: nowrap; }
           <tr><th scope="row">Python</th><td>74</td><td>L1 32 · L2 12 · L3 6 · L4 23 · hello 1</td><td>CSV 数据处理与报表</td><td>devbox-python</td></tr>
           <tr><th scope="row">Rust</th><td>51</td><td>L1 33 · L2 11 · L3 6 · hello 1</td><td>跨平台 CLI 工具</td><td>devbox-rust</td></tr>
           <tr><th scope="row">Shell</th><td>54</td><td>L1 35 · L2 12 · L3 6 · hello 1</td><td>部署与巡检工具集</td><td>devbox-shell</td></tr>
-          <tr><th scope="row">Vue</th><td>46</td><td>L1 18 · L2 15 · L3 12 · hello 1</td><td>PROJ-VUE 计划新建，尚未落地</td><td>devbox-vue</td></tr>
+          <tr><th scope="row">Vue</th><td>46</td><td>L1 18 · L2 15 · L3 12 · hello 1</td><td>Vue Todo 待办应用（无打包器）</td><td>devbox-vue</td></tr>
         </tbody>
       </table>
     </div>
@@ -72,18 +72,23 @@ th { white-space: nowrap; }
       <table>
         <thead><tr><th scope="col">阶段</th><th scope="col">范围</th><th scope="col">状态</th><th scope="col">依据</th></tr></thead>
         <tbody>
-          <tr><th scope="row">M1</th><td>镜像、CI、目录骨架与 runner</td><td class="status-done">已完成</td><td>相关基础设施已在仓库历史中落地</td></tr>
-          <tr><th scope="row">M2</th><td>C++ 纵向打通与毕业项目样板</td><td class="status-done">已完成</td><td>C++ L1–L3 用例与项目实现已在仓库中</td></tr>
-          <tr><th scope="row">M3</th><td>其余五门既有语言的 L1–L3 用例与知识点文档</td><td class="status-done">已完成</td><td>对应轨道用例与文档已在仓库中</td></tr>
-          <tr><th scope="row">M4</th><td>既有语言毕业项目、基础设施收尾与看板</td><td class="status-open">未确认</td><td>项目与看板已有提交；未找到阶段验收记录</td></tr>
-          <tr><th scope="row">M5</th><td>阶段范围未在当前文档中定义</td><td class="status-open">未确认</td><td>未找到 M5 的范围或验收记录</td></tr>
+          <tr><th scope="row">M0</th><td>工具链打通：一条用例能从零跑到自动校验</td><td class="status-done">已完成</td><td><code>scripts/run-example.sh</code> + 三文件契约</td></tr>
+          <tr><th scope="row">M1</th><td>镜像体系：9 层镜像都能 <code>docker run</code>，体积在预算内</td><td class="status-done">已完成</td><td><code>images/budgets.tsv</code> 预算检查通过</td></tr>
+          <tr><th scope="row">M2</th><td>C++ 样板：模板质量够复制给其余语言</td><td class="status-done">已完成</td><td>C++ 77 例 + 文本索引器项目</td></tr>
+          <tr><th scope="row">M3</th><td>语言铺开：用例全绿 + 抽查问题率达标</td><td class="status-done">已完成</td><td>608 例全量跑通，失败 0</td></tr>
+          <tr><th scope="row">M4</th><td>项目闭环：9 个项目覆盖落点真实，runtime 能跑</td><td class="status-done">已完成</td><td>9 个 <code>project/</code> 全覆盖，<code>--strict</code> 0 pending</td></tr>
+          <tr><th scope="row">M5</th><td>收尾：文档、看板、镜像 tag 就位</td><td class="status-done">已完成</td><td><code>v0.1.0</code> 已打 tag，<code>VERSION</code> 逐字一致</td></tr>
+          <tr><th scope="row">L4</th><td>设计模式专题：4 门语言的设计模式用例接入毕业项目</td><td class="status-done">已完成</td><td>C++ / Go / Java / Python 各 23 例 L4</td></tr>
+          <tr><th scope="row">OSS</th><td>开源化：许可证、声明、历史清洗、身份门禁、全量 CI</td><td class="status-done">已完成</td><td>Apache-2.0；单一提交身份；33 job 全量</td></tr>
         </tbody>
       </table>
     </div>
   </section>
   <p id="theme-status" class="note" role="status"></p>
 </main>
-<footer>自包含 HTML · 无外部依赖。主题选择保存在当前浏览器。</footer>
+<footer>自包含 HTML · 无外部依赖。主题选择保存在当前浏览器。<br>
+本文件是<strong>手工维护的仓库现状快照</strong>（轨道清单 + 里程碑），数字由 <code>scripts/check-board-truth.sh</code> 在 CI 里校验。<br>
+某一次执行的用例结果看板是另一份东西，由 <code>scripts/build-board.sh</code> 生成到 <code>docs/progress.html</code>（生成物，不入库）。</footer>
 <script>
 (() => {
   const root = document.documentElement;

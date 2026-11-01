@@ -40,8 +40,12 @@ Rust 51 例、Vue 46 例，其他轨道 74–78 例。不是缺陷，是铺设�
 
 ### KI-04　`docs/进度看板.html` 是静态快照 · [#181](https://github.com/zeek-zhao/devbox/issues/181)
 
-数字（608 例 / 9 轨）需要人工同步。可改为从 `examples/` 与 `COVERAGE.md` 生成，
-或干脆删掉看板，只信 `scripts/coverage-check.sh` 的输出。
+用例数与毕业项目数仍由人写，但已不是「靠自觉」：`scripts/check-board-truth.sh`
+在 CI 里比对看板与 `examples/`、`project/` 的实况，不一致即红。
+层级分布、项目名这类描述性内容无法机器判定，仍需人工核对。
+
+另注：`scripts/build-board.sh` 生成的是**某一次执行的用例结果看板**，
+输出到 `docs/progress.html`（生成物，不入库），与本文件不是同一个东西。
 
 ### KI-05　`hello` 用例不在 `L<层级>-<序号>-<slug>` 命名体系内 · [#182](https://github.com/zeek-zhao/devbox/issues/182)
 

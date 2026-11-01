@@ -28,7 +28,7 @@
 #   2) 每门格式化 --check 达标
 #   3) 覆盖表自洽（pending/exempt 明账可数）
 #   4) shared 自测 + README 函数索引
-#   5) 版本真本 + 文档命令
+#   5) 版本真本 + 文档命令 + 看板与实况一致
 #   6) 相对 base 未触碰门禁文件（除 --allow-gate-change）
 #
 # 为什么默认不自动解冲突：
@@ -227,6 +227,7 @@ fi
 
 step "版本真本自洽" bash "$WT/scripts/check-version-truth.sh"
 step "文档命令校验" bash "$WT/scripts/check-docs.sh"
+step "看板与实况一致" bash "$WT/scripts/check-board-truth.sh"
 step "覆盖表自洽"   bash "$WT/scripts/coverage-check.sh"
 step "shared 索引"  bash "$WT/scripts/check-shared-index.sh"
 step "shared 自测"  env TAG="$IMAGE_TAG" bash "$WT/shared/tests/run.sh"

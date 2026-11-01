@@ -9,7 +9,12 @@ if [ "$#" -gt 2 ]; then
 fi
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-OUTPUT="${2:-$ROOT/docs/进度看板.html}"
+# 默认输出刻意不是 docs/进度看板.html：
+# 那个文件是**手工维护的仓库现状快照**（轨道清单 + 里程碑），已入库、受 prettier 管辖；
+# 本脚本产出的是**某一次执行的用例结果看板**，两者内容与生命周期都不同。
+# 早先默认值写成 docs/进度看板.html，跑一次就会把文档覆盖成另一份东西，且 .gitignore
+# 忽略的是 docs/progress.html —— 生成物反而会进工作树。现在两边对齐到 progress.html。
+OUTPUT="${2:-$ROOT/docs/progress.html}"
 export GOFLAGS="-buildvcs=false"
 RESULTS=""
 RUN_STATUS="provided"
@@ -40,12 +45,28 @@ def build():
     else:
         with os.fdopen(3, encoding="utf-8") as stream:
             log = stream.read()
-    languages = ("cpp", "go", "rust", "shell", "python", "java")
-    levels = ("L1", "L2", "L3")
+    # 语言清单不在本脚本里写死：images/lang-images.tsv 是唯一真本。
+    # 早先这里硬编码 6 门，仓库长到 9 轨之后它仍在按 6 门出看板，
+    # 而 c / db / vue 的用例被静默漏掉 —— 看板看起来正常，数字是错的。
+    tsv = root / "images" / "lang-images.tsv"
+    if not tsv.is_file():
+        raise ValueError("缺少语言清单: images/lang-images.tsv")
+    languages = []
+    for line in tsv.read_text(encoding="utf-8").splitlines():
+        line = line.lstrip("\ufeff")
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        lang = line.split("\t")[0].strip()
+        if lang and lang not in languages:
+            languages.append(lang)
+    if not languages:
+        raise ValueError("images/lang-images.tsv 里没有语言行")
+    levels = ("L1", "L2", "L3", "L4")
     results = {}
     # Include every failure status emitted by run-example.sh, not just FAIL.
     pattern = re.compile(
-        r"^(cpp|go|rust|shell|python|java)/([A-Za-z0-9_.-]+)\s+"
+        r"^(" + "|".join(re.escape(lang) for lang in languages) + r")"
+        r"/([A-Za-z0-9_.-]+)\s+"
         r"(PASS|FAIL|MISMATCH|NO-RUNNER|NO-EXPECTED|MISSING)\b"
     )
     for line in log.splitlines():
@@ -76,7 +97,7 @@ def build():
                 continue
             key = (lang, case.name)
             known.add(key)
-            match = re.match(r"^(L[123])-", case.name)
+            match = re.match(r"^(L[1-4])-", case.name)
             level = match[1] if match else "other"
             row = counts[lang][level]
             row["total"] += 1
@@ -120,7 +141,7 @@ def build():
             label = level if level != "other" else "其他（如 hello）"
             cov_rows = sum(
                 (case.startswith(level + "-") if level != "other"
-                 else not re.match(r"^L[123]-", case))
+                 else not re.match(r"^L[1-4]-", case))
                 for case in coverage[lang]
             )
             percent = row["passed"] * 100 / row["total"] if row["total"] else 0
@@ -207,8 +228,9 @@ aria-pressed="false">切换主题</button></header>
 <p class="note" id="theme-status" role="status"></p>
 </main>
 <footer>自包含 HTML · 零 CDN · 系统主题自动适配，手动选择保存在当前浏览器。
-重新生成：bash scripts/build-board.sh [结果日志] [输出路径]（需要 Python 3）。
-不提供日志时执行全部用例，默认 TAG=latest；中间日志仅保留在内存。</footer>
+重新生成：bash scripts/build-board.sh [结果日志] [输出路径]（需要 Python 3，默认写 docs/progress.html）。
+不提供日志时执行全部用例，默认 TAG=latest；中间日志仅保留在内存。<br>
+覆盖范围仅限 <code>images/lang-images.tsv</code> 里的语言轨道；数据库轨道走独立 Compose runner（<code>db/scripts/run-all.sh</code>），不在本看板内。</footer>
 <script>
 (() => {
   const root = document.documentElement;
