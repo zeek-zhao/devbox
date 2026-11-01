@@ -31,11 +31,32 @@ docker cp "$TOOLBOX:$KEY" "$TMP/server.key" >/dev/null
 chmod 755 "$TMP"
 chmod 644 "$TMP/server.crt" "$TMP/server.key"
 docker run -d --name "$NAME" --network devbox-db_default -e POSTGRES_PASSWORD=devbox -v "$TMP:/tls" --entrypoint sh docker.m.daocloud.io/library/postgres:16-alpine -c 'chown postgres:postgres /tls/server.key; chmod 600 /tls/server.key; exec docker-entrypoint.sh postgres -c ssl=on -c ssl_cert_file=/tls/server.crt -c ssl_key_file=/tls/server.key -c shared_preload_libraries=passwordcheck -c password_encryption=scram-sha-256' >/dev/null
+# 等真实服务就绪。这里刻意不是「循环里 break + 循环外单次断言」的写法：
+# 那种写法在 CI 上偶发失败过一次（同一提交前两轮全绿，第三轮红），
+# 而失败现场只有一行 FAIL，看不出容器到底是没起来、起来了又退出、还是只是抖了一下。
+# 三处收紧：
+#   1) 走 TCP（-h 127.0.0.1）而不是默认的 unix socket，避免把 initdb 阶段的
+#      临时服务当成「已就绪」；
+#   2) 要求连续 3 次成功，而不是成功一次就 break —— 服务重启间隙里的一次误判
+#      不该放行，也不该让后面的断言替它背锅；
+#   3) 超时后把容器状态、退出码和日志一起打出来，让下一次失败能自证。
+ready=0
+ok=0
 for _ in $(seq 1 60); do
-  if docker exec "$NAME" pg_isready -U postgres >/dev/null 2>&1; then break; fi
+  if docker exec "$NAME" pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; then
+    ok=$((ok + 1))
+    if [ "$ok" -ge 3 ]; then ready=1; break; fi
+  else
+    ok=0
+  fi
   sleep 1
 done
-docker exec "$NAME" pg_isready -U postgres >/dev/null
+if [ "$ready" -ne 1 ]; then
+  echo "临时 PostgreSQL 60 秒内未稳定就绪。容器状态与日志：" >&2
+  docker inspect -f 'status={{.State.Status}} exit={{.State.ExitCode}}' "$NAME" >&2 || true
+  docker logs "$NAME" 2>&1 | tail -25 >&2 || true
+  die "临时 PostgreSQL 未就绪"
+fi
 docker cp "$TMP/server.crt" "$TOOLBOX:$CRT" >/dev/null
 secure="$(tb psql "host=$NAME user=postgres dbname=postgres sslmode=verify-full sslrootcert=$CRT" -t -A -c 'SELECT ssl FROM pg_stat_ssl WHERE pid=pg_backend_pid()')"
 [ "$secure" = "t" ] || die "临时 PostgreSQL TLS 握手失败"
