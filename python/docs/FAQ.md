@@ -19,7 +19,7 @@ examples: [L0-hello, L2-005-ruff-check, L2-002-pytest-basics]
 A: 主次版本由 `images/versions.env` 的 `${PYTHON_VERSION}` 锁定（当前 3.12 系），补丁号以容器实测为准。一步验证：`docker run --rm ghcr.io/zeek-zhao/devbox-python:${TAG:-latest} python3 --version`。详见 [工具指南](工具指南.md) §1。
 
 ### Q: 语言层和 runtime 层差在哪？为什么 src 不能用 pytest？
-A: `devbox-python` 带完整工具链（ruff/mypy/pytest/uv 等），`devbox-runtime` 只有 `python3-minimal`。所以毕业项目 `src/` 只依赖标准库，开发期验证都放 `tests/`。验证命令：`docker run --rm ghcr.io/zeek-zhao/devbox-runtime:${TAG:-latest} bash -lc 'command -v pip pytest || true'`。详见 [开发指南](开发指南.md) §1。
+A: `devbox-python` 带完整工具链（ruff/mypy/pytest/uv 等），`devbox-runtime` 只有 python3 解释器与最小运行库（实测连 `import json` 都失败），无 pip/ruff/mypy/pytest。所以毕业项目 `src/` 只依赖标准库，构建与测试都在语言层镜像里离线跑。验证命令：`docker run --rm ghcr.io/zeek-zhao/devbox-runtime:${TAG:-latest} python3 -c 'import json'`（实测报 ModuleNotFoundError）。详见 [开发指南](开发指南.md) §1。
 
 ### Q: 容器里能 pip install 吗？
 A: 不能依赖它：用例容器 `--network none` 离线启动，且运行时装的包不进镜像。要加依赖改 `images/scripts/install/python.sh` 走镜像重建。详见 [工具指南](工具指南.md) §4。
