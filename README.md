@@ -2,11 +2,11 @@
 
 [![ci](https://github.com/zeek-zhao/devbox/actions/workflows/ci.yml/badge.svg)](https://github.com/zeek-zhao/devbox/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
-[![用例](https://img.shields.io/badge/用例-608-success.svg)](docs/KNOWN-ISSUES.md)
+[![用例](https://img.shields.io/badge/用例-659-success.svg)](docs/ROADMAP.md)
 [![轨道](https://img.shields.io/badge/轨道-9-informational.svg)](#轨道一览)
 
 用**可运行、可逐字验证**的用例讲清技术点，再用毕业项目把用例里的能力落到真实程序。
-当前 **9 条学习轨道、608 个用例、9 个毕业项目**：8 门编程语言 + 1 条数据库轨道。
+当前 **9 条学习轨道、659 个用例、9 个毕业项目**：8 门编程语言 + 1 条数据库轨道。
 
 每个用例都是一个最小可跑单元：`run.sh` 执行、`expected.txt` 逐行比对。跑不通就是没学会，
 不存在「看懂了但写不出来」的模糊地带。
@@ -118,7 +118,7 @@ bash scripts/fmt.sh --check --lang <轨道>        # 格式化
 bash scripts/pre-merge.sh --base main            # 全量总闸（约 15 分钟）
 ```
 
-流水线对所有触发（`push`、`pull_request`、打 tag）都跑全量：608 个用例 + 8 门格式 +
+流水线对所有触发（`push`、`pull_request`、打 tag）都跑全量：659 个用例 + 8 门格式 +
 覆盖表 + 镜像构建 + 体积预算，单次约 20–25 分钟。仓库是公开的，Actions 分钟数不计量，
 所以不再按场景省测。细节见 [流水线说明](docs/02-流水线.md)。
 
@@ -152,12 +152,12 @@ bash scripts/fmt.sh --check --lang <轨道>
 bash scripts/fmt.sh --list
 ```
 
-宿主已有本地镜像时用 `TAG=local`，否则默认 `TAG=latest`。
+`scripts/run-example.sh` 默认用 `TAG=local`（宿主已构建的本地镜像）；CI 与远端通过 `IMAGE_TAG=latest` 指定 tag，也可用 `TAG=latest` 显式覆盖。
 
 ## 项目现状
 
 - [路线图与里程碑](docs/ROADMAP.md)
-- [已知问题](docs/KNOWN-ISSUES.md)
+- [已知问题与路线图](docs/ROADMAP.md)
 - [开源合规审计](docs/开源合规审计.md)
 - [贡献指南](CONTRIBUTING.md) · [安全策略](SECURITY.md) · [行为准则](CODE_OF_CONDUCT.md)
 
