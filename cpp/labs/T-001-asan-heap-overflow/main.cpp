@@ -9,14 +9,14 @@
 #include <iostream>
 
 int main(int argc, char** argv) {
-    std::cout << "run: start" << std::endl;   // 执行标记：证明二进制真的被跑过（素材 S-06）
+    std::cout << "run: start" << std::endl; // 执行标记：证明二进制真的被跑过（素材 S-06）
     const int leak_size = (argc > 1) ? std::atoi(argv[1]) : 8;
-    char* leaked = new char[leak_size];       // 缺陷 2：从不 delete[]
+    char* leaked = new char[leak_size]; // 缺陷 2：从不 delete[]
     std::memset(leaked, 'A', static_cast<size_t>(leak_size));
 
     const int n = 10;
-    int* buf = new int[n];                    // 40 字节
-    for (int i = 0; i <= n; ++i) {            // 缺陷 1：i == n 越界写 4 字节
+    int* buf = new int[n];         // 40 字节
+    for (int i = 0; i <= n; ++i) { // 缺陷 1：i == n 越界写 4 字节
         buf[i] = i;
     }
     int sum = 0;
@@ -24,6 +24,6 @@ int main(int argc, char** argv) {
         sum += buf[i];
     }
     std::cout << "sum=" << sum << " leak_tag=" << leaked[0] << "\n";
-    delete[] buf;                             // leaked 故意不释放
+    delete[] buf; // leaked 故意不释放
     return 0;
 }
