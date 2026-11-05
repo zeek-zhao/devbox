@@ -36,6 +36,52 @@ cpp/examples/L1-001-string-view/
 - 不要改 `.gitattributes` 的 `eol=lf`。Windows 上开发、Linux 容器里执行，CRLF 会让
   `bash run.sh` 报 `No such file or directory`。
 
+## 怎么写一张能被 AI 执行的卡
+
+M11 起任务卡走 **spec v2**：卡由 `.github/ISSUE_TEMPLATE/agent_task.yml` 表单创建，执行 AI 按卡干活、独立 verifier 判卷。完整规范见 [docs/71-任务卡规范v2](docs/71-任务卡规范v2.md)，派单与批次见 [docs/73-M11并发执行计划](docs/73-M11并发执行计划.md)。
+
+九栏逐栏含义（与表单一一对应）：
+
+| 栏 | 填什么 |
+|---|---|
+| 目标与背景 | 为什么要做这张卡（一句话 + 依据链接） |
+| 验收判据 | 每条**可判定**：给得出命令或机械计数，不写「写清楚、效果好」 |
+| 独占文件 | 本卡允许改动的全部文件（并发安全的关键） |
+| 明确不做 | 边界外的事逐条列，防自动化自行发挥 |
+| 验证命令与期望输出 | 判据对应的可执行命令 |
+| 执行留痕 | run_id / files_changed / commands_run / tests_passed / risk_notes / review_needed 六字段 |
+| 停止规则 | 碰门禁、凭证、范围外、连续两次验证失败 → 停并问人 |
+| 失败与升级路径 | 卡住时去哪、谁接 |
+| 依赖与独立性测试 | 硬前置卡；独立性 = A 卡无需知道 B 卡结论即可完成 |
+
+**三条硬规矩**：
+
+1. **REST API / `gh` 建卡会跳过表单**——正文必须按表单的 `###` 标题镜像构造，否则机器解析不到；
+2. label 无法经 API 随卡带上时须**显式补传**；
+3. `scripts/gate-files.txt` 命中的门禁文件，执行 AI 一律不改（人工批次例外，需 PR 写明理由）。
+
+最小可复制示例（正文骨架，其余照表单栏目展开）：
+
+```markdown
+### 验收判据
+
+- [ ] 新建 docs/NN-xxx.md，frontmatter 七字段齐
+- [ ] `grep -c "明确不做" docs/NN-xxx.md` 输出 ≥ 1
+
+### 独占文件 / 工作区
+
+- docs/NN-xxx.md（唯一改动者）
+
+### 明确不做
+
+- 不改门禁文件与共享状态文档
+- 不代拍 decision / needs-human 事项
+
+### 停止规则
+
+同一验证命令连续两次失败 → 停止并升级维护者。
+```
+
 ## 提交规范
 
 标题用 Conventional Commits：

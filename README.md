@@ -98,6 +98,17 @@ runner 将 `run.sh` 的 stdout 与 `expected.txt` 逐行比较；行尾空白和
 **输出必须确定**：集合输出显式排序，浮点数固定精度，不打印时间戳、随机数、容器 IP 或耗时。
 同一条用例连跑两次必须完全一致——不确定性用例会以随机间隔假红，是最难排查的一类缺陷。
 
+## 排障演练（labs）
+
+除 659 条用例外，各轨道还有**排障演练 lab**（`<lang>/labs/T-NNN-<slug>/`）：埋一个真实故障，用 ASan / valgrind / race detector / shellcheck 等工具真跑排查，配逐行判读文档。规范见 [docs/72-排障演练规范](docs/72-排障演练规范.md)。
+
+**labs 与 examples 的区别**：labs 是排障教学演练，**不计入 659 用例计数**，不进 `examples/`，也不走逐行比对。跑法：
+
+```bash
+bash <lang>/labs/T-001-<slug>/run.sh      # 完整演练流程
+bash <lang>/labs/T-001-<slug>/assert.sh   # 断言：关键诊断行 + 退出码
+```
+
 ## 覆盖表
 
 有毕业项目的轨道在 `project/COVERAGE.md` 声明项目实际覆盖哪些用例，
