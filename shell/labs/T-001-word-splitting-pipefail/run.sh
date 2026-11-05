@@ -15,8 +15,14 @@ mkdir -p "$BUILD"
 norm() { sed -E "s#${TMPDIR:-/tmp}#/TMP#g"; }
 
 pass=0
-step() { echo; echo "=== [step $1] $2 ==="; }
-ok()  { echo "  -> 符合预期"; pass=$((pass+1)); }
+step() {
+  echo
+  echo "=== [step $1] $2 ==="
+}
+ok() {
+  echo "  -> 符合预期"
+  pass=$((pass + 1))
+}
 bad() { echo "  -> 不符合预期：$1" >&2; }
 
 step 1 "shellcheck（静态分析器）：SC2086 把分词缺陷钉到具体行"
@@ -36,8 +42,14 @@ else
 fi
 
 step 2 "对照实验（bash 运行时）：false|true 的退出码在 pipefail 开关两侧不同"
-plain_rc="$(bash -c 'false | true'; echo $?)"
-pf_rc="$(bash -o pipefail -c 'false | true'; echo $?)"
+plain_rc="$(
+  bash -c 'false | true'
+  echo $?
+)"
+pf_rc="$(
+  bash -o pipefail -c 'false | true'
+  echo $?
+)"
 echo "  | 对照实验: false|true → rc=$plain_rc（plain：右侧成功掩盖左侧失败）"
 echo "  | 对照实验: pipefail 开启 → rc=$pf_rc（管道取最右侧非零退出码）"
 if [ "$plain_rc" -eq 0 ] && [ "$pf_rc" -eq 1 ]; then
@@ -47,11 +59,12 @@ else
 fi
 
 step 3 "直跑缺陷脚本：两类症状同框（吞错的 rc=0 + 分词的 No such file）"
-out="$(bash bug.sh 2>&1)"; rc=$?
+out="$(bash bug.sh 2>&1)"
+rc=$?
 echo "$out" | norm | sed 's/^/  | /'
-if [ "$rc" -eq 1 ] && grep -q 'split: start' <<<"$out" \
-  && grep -q 'matched=0 rc=0' <<<"$out" \
-  && grep -q 'No such file or directory' <<<"$out"; then
+if [ "$rc" -eq 1 ] && grep -q 'split: start' <<<"$out" &&
+  grep -q 'matched=0 rc=0' <<<"$out" &&
+  grep -q 'No such file or directory' <<<"$out"; then
   ok
   echo "  (rc=1 来自最后一条 wc：分词后两个参数都不存在；而上面 matched=0 rc=0 说明"
   echo "   管道左侧的失败已被吞——同一个脚本里两种「看不见的错」形态各异)"
@@ -73,8 +86,14 @@ else
 fi
 
 step 5 "pipefail 对照重跑：同一条管道，开了 pipefail 立刻现形"
-pplain="$(bash -c 'grep -c alpha "$1" 2>/dev/null | wc -l >/dev/null' bash "$FIXTURE/missing-deploy.log"; echo $?)"
-ppf="$(bash -o pipefail -c 'grep -c alpha "$1" 2>/dev/null | wc -l >/dev/null' bash "$FIXTURE/missing-deploy.log"; echo $?)"
+pplain="$(
+  bash -c 'grep -c alpha "$1" 2>/dev/null | wc -l >/dev/null' bash "$FIXTURE/missing-deploy.log"
+  echo $?
+)"
+ppf="$(
+  bash -o pipefail -c 'grep -c alpha "$1" 2>/dev/null | wc -l >/dev/null' bash "$FIXTURE/missing-deploy.log"
+  echo $?
+)"
 echo "  | pipefail 对照: 同一条管道 plain → rc=$pplain（吞掉）"
 echo "  | pipefail 对照: pipefail → rc=$ppf（左侧 grep 因文件不存在 rc=2）"
 if [ "$pplain" -eq 0 ] && [ "$ppf" -eq 2 ]; then

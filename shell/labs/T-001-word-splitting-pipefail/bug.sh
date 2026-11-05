@@ -7,8 +7,8 @@
 # 第一步用默认 severity 把它显式打出来。
 work="${TMPDIR:-/tmp}/devbox-shell-T-001-fixture"
 mkdir -p "$work"
-printf 'alpha\nbeta\ngamma\n' > "$work/report final.txt"
-printf 'delta\n' > "$work/notes.md"
+printf 'alpha\nbeta\ngamma\n' >"$work/report final.txt"
+printf 'delta\n' >"$work/notes.md"
 
 echo "split: start" # 执行标记：证明脚本真的被跑过（素材 S-06）
 
