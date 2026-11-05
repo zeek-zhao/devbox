@@ -6,7 +6,7 @@
 #     ghcr.io/zeek-zhao/devbox-cpp:latest bash cpp/labs/T-001-asan-heap-overflow/run.sh
 # 产物只写临时目录，不入库。用法：bash run.sh
 set -uo pipefail
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit
 
 CXX="${CXX:-g++}"
 BUILD="${TMPDIR:-/tmp}/devbox-cpp-T-001-asan-heap-overflow"

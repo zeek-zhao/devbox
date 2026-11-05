@@ -4,7 +4,7 @@
 # ASan 报告原样打到 stdout/stderr（由调用方归一化后再断言）。
 # 构建产物只写临时目录，不入库。用法：bash repro.sh
 set -uo pipefail
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit
 
 CXX="${CXX:-g++}"
 BUILD="${TMPDIR:-/tmp}/devbox-cpp-T-001-asan-heap-overflow"

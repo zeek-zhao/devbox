@@ -3,7 +3,7 @@
 # docs/72 §2 样板扩展版：两段断言——最小复现（ASan 路径）与完整演练（valgrind 路径）。
 # 用法：bash assert.sh ；连跑两次结论必须一致；退出非零 = 红。
 set -uo pipefail
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit
 
 fail=0
 
