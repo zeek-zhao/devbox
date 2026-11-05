@@ -6,3 +6,6 @@ contact_links:
   - name: 使用与学习问题
     url: https://github.com/zeek-zhao/devbox/discussions
     about: 「这个用例为什么这样写」这类问题适合讨论区
+  - name: AI 任务卡 / 派单规范
+    url: https://github.com/zeek-zhao/devbox/blob/main/CONTRIBUTING.md
+    about: 给 AI 派单前先读协作规矩；spec v2 字段见 .github/ISSUE_TEMPLATE/agent_task.yml 与 docs/71、并发批次见 docs/73

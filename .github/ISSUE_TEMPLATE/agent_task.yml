@@ -1,0 +1,179 @@
+name: AI 任务卡（spec v2）
+description: 交给 AI 并发执行的结构化任务简报；字段即验收判据，缺一即不可派单
+title: "[AI-TASK] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **一张卡 = 一个独立完整克隆目录 + 一个 `feat/<issue#>-<slug>` 分支 + 一个 PR。**
+        开工前读 `docs/60-AI工作指南.md`（门禁与协作规矩）和
+        `docs/73-M11并发执行计划.md`（批次、独占文件、合并纪律）。
+
+        注意：REST API 与 `gh issue create` **会跳过本表单**。批量建卡时，正文必须按本表单的
+        `###` 标题镜像构造，否则 verifier 读不出字段；规范真本见
+        `docs/71-任务卡规范v2.md`（M11-W0-01 交付）。标签请按卡类型自行补，本表单不预置。
+
+  - type: input
+    id: card-id
+    attributes:
+      label: 卡编号
+      description: 例如 `M11-W0-01`
+      placeholder: M11-W0-01
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 卡类型
+      options:
+        - docs（文档 / 规范真本）
+        - lab（可执行排障演练）
+        - code（实现）
+        - bug（修复）
+        - verifier（只验不写）
+        - decision（只能人拍板，不派 AI）
+        - needs-human（人工项，不派 AI）
+    validations:
+      required: true
+
+  - type: dropdown
+    id: batch
+    attributes:
+      label: 并发批次
+      options:
+        - W0（规范真本，可并发）
+        - W1（样板，串行）
+        - W2（轨道铺开，可并发）
+        - W3（人工门禁批次，不派 AI）
+        - W4（verifier / 集成回写，串行）
+        - GATE（人工拍板，不派 AI）
+        - 串行（其他）
+    validations:
+      required: true
+
+  - type: input
+    id: checkpoint
+    attributes:
+      label: 检查点
+      description: YYYY-MM-DD；7 天窗口，检查节拍不是考核，到期只标记提醒不自动关
+      placeholder: 2026-11-12
+    validations:
+      required: true
+
+  - type: input
+    id: workspace
+    attributes:
+      label: 工作目录 / 分支
+      description: 完整克隆目录与分支名，两者一一对应
+      placeholder: ~/work/devbox/253-spec-v2/ · feat/253-spec-v2
+    validations:
+      required: true
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: 目标与背景
+      description: 说清要解决什么问题，不要写技术方案；AI 会自己发明方案，边界靠下面几栏约束
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收判据
+      description: 每条都必须可判定，用 `- [ ]` 列出。写「效果良好」「讲清楚」这类不可判定的话等于没写
+      placeholder: |
+        - [ ] 新建 docs/71-任务卡规范v2.md，frontmatter 七字段齐
+        - [ ] 与 agent_task.yml 的字段 id 列一张对照表
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: 独占文件 / 工作区
+      description: 只列本卡允许改的路径；同批其他卡不得碰同一路径
+      placeholder: |
+        - `docs/71-任务卡规范v2.md`
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: 明确不做
+      description: 最容易被省略、也最省返工的一栏。写清「不许顺手改什么」和为什么
+      placeholder: |
+        - 不改 scripts/gate-files.txt 命中的文件（改判定标准要人工评审）
+        - 不改共享状态文档（ROADMAP / 30 / 41 / 12 / 00），由批次集成卡一次回写
+        - 不代拍 decision / needs-human 事项
+    validations:
+      required: true
+
+  - type: textarea
+    id: verify
+    attributes:
+      label: 验证命令与期望输出
+      description: 命令要能在最新 origin/main 上真跑；写清「成功长什么样」
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: trace
+    attributes:
+      label: 执行留痕
+      description: 完成后在 PR 描述贴出；没跑过的写 UNVERIFIED，不许写「已验证」
+      placeholder: |
+        run_id: ...
+        files_changed: ...
+        commands_run: ...
+        tests_passed: ...
+        risk_notes: ...
+        review_needed: ...
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: stop-rules
+    attributes:
+      label: 停止规则
+      description: 碰到哪些情形必须停并问人，而不是自行发挥
+      placeholder: |
+        ① 需要改门禁文件；② 碰到凭证 / 私有路径 / 内网信息；
+        ③ 改动超出独占文件；④ 同一验证命令连续两次失败；⑤ 验收判据有歧义
+    validations:
+      required: true
+
+  - type: textarea
+    id: escalation
+    attributes:
+      label: 失败与升级路径
+      description: 卡住时找谁、交什么材料、下一步是什么
+    validations:
+      required: true
+
+  - type: textarea
+    id: deps
+    attributes:
+      label: 依赖与独立性测试
+      description: 明确回答「本卡能否在不知道同批其他卡结论的前提下完成」；不能就摘出并发组
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: gates
+    attributes:
+      label: 派单前自查
+      options:
+        - label: 已读 `docs/60-AI工作指南.md` 与 `docs/73-M11并发执行计划.md`
+          required: true
+        - label: 基线取最新 `origin/main`，不基于别的 PR 分支
+          required: true
+        - label: 本卡不触碰 `scripts/gate-files.txt` 命中的文件
+          required: true
+        - label: 提交身份为 `zeek.zhao <zeek.zhao@foxmail.com>`，不带 AI 署名尾巴
+          required: true

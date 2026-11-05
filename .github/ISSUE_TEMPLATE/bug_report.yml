@@ -76,6 +76,17 @@ body:
     validations:
       required: true
 
+  - type: textarea
+    id: tried
+    attributes:
+      label: 已经试过的排查命令与输出
+      description: |
+        贴出你为了定位问题跑过的工具命令和它的**真实输出**（不是复述结论）。
+        本仓库正在补排障演练范本，这类实录比一句「查过了」有用得多；没有就留空。
+      render: shell
+    validations:
+      required: false
+
   - type: input
     id: env
     attributes:

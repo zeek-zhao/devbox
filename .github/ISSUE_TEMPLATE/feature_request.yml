@@ -61,3 +61,13 @@ body:
       description: "如果这条用例能接入 `project/`，说明接入点；不能接入的话，是否属于 `coverage: exempt`，理由是什么"
     validations:
       required: false
+
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: 明确不做（建议填）
+      description: |
+        这次建议**不打算改什么**、以及为什么。例如「不动门禁文件」「不改其他轨道」。
+        交给 AI 执行时，这一栏能挡住顺手改判定标准或越界重构；人来做也能少一轮返工。
+    validations:
+      required: false
