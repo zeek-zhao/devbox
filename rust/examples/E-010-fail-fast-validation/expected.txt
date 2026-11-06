@@ -1,0 +1,4 @@
+valid batch: 2 requests applied, ids [1, 2] total 300
+invalid batch rejected before any side effect: invalid id at line 2: `bad`
+empty batch rejected: empty batch
+bad amount rejected: invalid amount at line 2

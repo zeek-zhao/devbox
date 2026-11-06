@@ -1,0 +1,7 @@
+aggregated: 3 ok, 2 failed
+ok row value: 12
+ok row value: 34
+ok row value: 56
+failed: row 1: invalid digit found in string
+failed: row 3: invalid digit found in string
+all-or-nothing short-circuits: true

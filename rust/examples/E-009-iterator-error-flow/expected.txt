@@ -1,0 +1,4 @@
+collect all: true
+try_fold: short-circuited
+ok-only: [2, 4, 8]
+partition: 3 ok, 1 err

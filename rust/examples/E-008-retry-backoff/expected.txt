@@ -1,0 +1,3 @@
+retry: recovered after transient errors, value payload
+broken: no retry on permanent error (schema mismatch)
+policy: retry transient with exponential backoff, fail fast on permanent
