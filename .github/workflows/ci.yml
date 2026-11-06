@@ -372,13 +372,13 @@ jobs:
               continue
             fi
             layer="$(awk -F'\t' -v k="$lang" '$1 == k { print $2; exit }' images/lang-images.tsv)"
-            layer="${layer:-$lang}"
             if [ -z "$layer" ]; then
               # shared 等无镜像层的轨道：runner 直跑（bash/curl/python3 宿主自带），不等待不存在的镜像（#276）
               echo "==> $run_sh (无镜像层映射，runner 直跑)"
               if bash "$run_sh"; then echo "[labs] PASS $run_sh"; else echo "[labs] FAIL $run_sh"; fail=1; fi
               continue
             fi
+            layer="${layer:-$lang}"
             image="ghcr.io/zeek-zhao/devbox-${layer}:${SHA_TAG}"
             echo "==> $run_sh (镜像 $image)"
             if wait_image "$image" && docker run --rm -v "$PWD":/w -w /w -e TAG="$SHA_TAG" "$image" bash -lc "bash $run_sh"; then
