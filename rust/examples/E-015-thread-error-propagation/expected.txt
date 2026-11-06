@@ -1,0 +1,4 @@
+join ok: Ok(Ok(42))
+join err propagated: BadInput(7)
+channel: Ok(Err(BadInput(9)))
+poison recovered: counter 1 (increment before panic survived)

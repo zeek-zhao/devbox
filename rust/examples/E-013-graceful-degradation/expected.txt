@@ -1,0 +1,4 @@
+query `42` -> 42 via primary
+query ` 7 ` -> 7 via replica
+query `gone` -> 0 via default
+unwrap_or_else default: 0

@@ -1,0 +1,8 @@
+row 0: id 1
+row 1: id 2
+row 2: id 0
+row 3: id 4
+metrics: processed=3 warned=1 failed=1
+-- stderr --
+[WARN] row 2: parse failed (invalid digit found in string), degrading to id 0
+[ERROR] row 4: parse failed (invalid digit found in string)
