@@ -5,7 +5,7 @@
 # 这里只要「能跑起来」的最小集合：
 #   C/C++   -> libstdc++6 / libgcc-s1（动态链接产物需要）
 #   Go/Rust -> 静态链接，无需运行时（关掉 CGO 时）
-#   Python  -> python3-minimal
+#   Python  -> python3（注释与实际 apt install 对齐，#227）
 #   Java    -> jre-headless（不是 jdk）
 # 用法：脚本会把编译好的产物 COPY 到 /opt/app/bin
 # ==================================================================
