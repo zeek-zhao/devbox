@@ -1,0 +1,4 @@
+field "age" invalid value -1 -> category=VALIDATION action=reject-input
+op fetch-user failed at attempt 2 -> category=TRANSIENT action=retry
+internal bug in kv-store -> category=INTERNAL action=fail-fast
+taxonomy types=3 VALIDATION=1 TRANSIENT=1 INTERNAL=1

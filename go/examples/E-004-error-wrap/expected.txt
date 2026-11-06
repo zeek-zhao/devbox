@@ -1,0 +1,4 @@
+wrapped text: commit log: write segment: disk full
+unwrap once: write segment: disk full
+wrap %w keeps chain: errors.Is(err, ErrDiskFull)=true
+wrap %v loses chain: errors.Is(err, ErrDiskFull)=false unwrap=nil: true
