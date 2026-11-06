@@ -20,7 +20,7 @@ name: ci
 #
 # 外部 fork 的 PR：
 #   fork PR 拿不到可写的 GITHUB_TOKEN（GitHub 机制），镜像推送必失败，
-#   所以 images job 在 fork PR 上跳过。其余 job（608 例 + 格式 + 覆盖）照常跑。
+#   所以 images job 在 fork PR 上跳过。其余 job（659 例 + 格式 + 覆盖）照常跑。
 #   这是平台约束，不是省测。
 # ==================================================================
 
@@ -327,3 +327,58 @@ jobs:
       packages: write
     uses: ./.github/workflows/images.yml
     secrets: inherit
+
+  # ------------------------------------------------------------------
+  # 排障演练 labs（M11-W3-01 人工批次新增，门禁变更理由见 PR 描述）：
+  # 真跑全部 <lang>/labs/*/run.sh；镜像用本次提交的 sha-<commit> tag（KI-08，不用 :latest），
+  # 由上面 images job 同批构建推送，这里轮询等待（最多 25 分钟）。
+  # db 走 compose（同 examples-db 约定）；对外部镜像源瞬时故障：首次失败留档后
+  # 重试 1 次 + 60s 退避（#264 E3 拍板，不把「重试后绿」显示成一次干净的绿）。
+  # ------------------------------------------------------------------
+  labs:
+    name: 排障演练-labs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 真跑全部 lab
+        env:
+          SHA_TAG: sha-${{ github.sha }}
+        run: |
+          set -uo pipefail
+          fail=0
+          wait_image() { # 等 images job 的 sha 镜像就绪，最多 25 分钟
+            local image="$1" i
+            for i in $(seq 1 50); do
+              if docker manifest inspect "$image" >/dev/null 2>&1; then echo "ready(${i}x30s): $image"; return 0; fi
+              echo "[labs] 等待 sha 镜像 $i/50：$image"; sleep 30
+            done
+            echo "[labs] sha 镜像超时未就绪：$image"; return 1
+          }
+          for run_sh in */labs/*/run.sh; do
+            lang="${run_sh%%/*}"
+            if [ "$lang" = "db" ]; then
+              echo "==> $run_sh (compose)"
+              for attempt in 1 2; do
+                rc=0
+                bash db/scripts/up.sh && bash db/scripts/wait-ready.sh && bash "$run_sh" || rc=$?
+                if [ "$rc" = 0 ]; then echo "[labs] PASS $run_sh"; break; fi
+                echo "[labs] attempt=$attempt 首次/前次失败留档：rc=$rc（上方日志原样保留）"
+                if [ "$attempt" = 2 ]; then echo "[labs] FAIL $run_sh"; fail=1; else
+                  echo "[labs] infra_transient 分类：60s 退避后重试 1 次"; sleep 60
+                  bash db/scripts/down.sh || true
+                fi
+              done
+              bash db/scripts/down.sh || true
+              continue
+            fi
+            layer="$(awk -F'\t' -v k="$lang" '$1 == k { print $2; exit }' images/lang-images.tsv)"
+            layer="${layer:-$lang}"
+            image="ghcr.io/zeek-zhao/devbox-${layer}:${SHA_TAG}"
+            echo "==> $run_sh (镜像 $image)"
+            if wait_image "$image" && docker run --rm -v "$PWD":/w -w /w -e TAG="$SHA_TAG" "$image" bash -lc "bash $run_sh"; then
+              echo "[labs] PASS $run_sh"
+            else
+              echo "[labs] FAIL $run_sh"; fail=1
+            fi
+          done
+          [ "$fail" = 0 ] || exit 1
