@@ -1,0 +1,4 @@
+input=age=30 result=ok
+input=age=-7 result=error code=1 what=age_negative detail="age must be >= 0"
+input=age=999 result=error code=2 what=age_unrealistic detail="age must be <= 150"
+input=name="" result=error code=3 what=name_empty detail="name must be non-empty"

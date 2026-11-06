@@ -1,0 +1,4 @@
+sim=0 matched=NONE outcome=ok
+sim=1 matched=EXACT code=3 outcome=create-default-record
+sim=2 matched=EXACT code=4 outcome=retry-later
+sim=3 matched=FALLBACK code=5 outcome=escalate

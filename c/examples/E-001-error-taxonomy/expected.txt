@@ -1,0 +1,7 @@
+code=0 name=OK category=OK
+code=1 name=INVALID category=USAGE
+code=2 name=RANGE category=USAGE
+code=3 name=NOT_FOUND category=ENVIRONMENT
+code=4 name=TIMEOUT category=ENVIRONMENT
+code=5 name=NO_MEMORY category=INTERNAL
+taxonomy codes=6 usage=2 environment=2 internal=1

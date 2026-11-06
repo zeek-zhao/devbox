@@ -1,0 +1,4 @@
+op=ping     by_code=OK          by_text=UNKNOWN
+op=http-get by_code=NET_TIMEOUT by_text=NET_TIMEOUT
+op=db-txn   by_code=LOCK_STALL  by_text=NET_TIMEOUT
+sentinel_err_is_matches=1
