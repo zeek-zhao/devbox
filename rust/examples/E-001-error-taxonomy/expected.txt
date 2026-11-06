@@ -1,0 +1,4 @@
+recoverable: Err -> fallback port 0
+recoverable: Ok -> port 8080
+unrecoverable: invariant panic caught = true
+taxonomy: recoverable=Result, unrecoverable=panic
