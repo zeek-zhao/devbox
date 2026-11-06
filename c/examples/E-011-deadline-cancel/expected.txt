@@ -1,0 +1,9 @@
+step=1 ok
+step=2 ok
+step=3 ok
+deadline hit after 3 steps
+deadline code=4 completed_steps=3
+step=1 ok
+step=2 ok
+cancel observed at safe point
+cancel code=6 completed_steps=2

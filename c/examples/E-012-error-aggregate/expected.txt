@@ -1,0 +1,5 @@
+worker=0 err=OK
+worker=1 err=TIMEOUT
+worker=2 err=IO
+worker=3 err=TIMEOUT
+summary total=4 ok=1 failed=3 by_code TIMEOUT=2 IO=1

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# 断言：关键诊断行 + 退出码。用法：bash assert.sh
+set -uo pipefail
+cd "$(dirname "$0")"
+
+out="$(bash run.sh 2>&1)"; rc=$?
+
+fail=0
+[ "$rc" -eq 0 ] || { echo "[assert] run.sh 退出码非 0：rc=$rc"; fail=1; }
+grep -q '^worker=0 err=OK$' <<<"$out" || { echo "[assert] 未命中 worker=0 成功行"; fail=1; }
+grep -q '^worker=2 err=IO$' <<<"$out" || { echo "[assert] 未命中 worker=2 IO 错误行"; fail=1; }
+grep -q '^summary total=4 ok=1 failed=3 by_code TIMEOUT=2 IO=1$' <<<"$out" \
+  || { echo "[assert] 未命中聚合汇总行（计数与按码分布）"; fail=1; }
+n="$(grep -c '^worker=' <<<"$out" || true)"
+[ "$n" -eq 4 ] || { echo "[assert] worker 行数期望 4，实际 $n"; fail=1; }
+
+[ "$fail" -eq 0 ] && echo "ASSERT-PASS" || { echo "ASSERT-FAIL"; exit 1; }

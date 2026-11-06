@@ -1,0 +1,4 @@
+[bad ] value=0 error_reported=0 (失败被吞，拿到假数据)
+[bad ] downstream computed=0 (假数据流进下游)
+[good] value=none error_reported=1 code=3 (失败显式暴露)
+[good] downstream aborted=1 (下游被保护，未拿到假数据)
