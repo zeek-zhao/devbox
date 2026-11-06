@@ -1,0 +1,5 @@
+input=123                      app_code=0 errno=0 value=123
+input=99999999999999999999999  app_code=2 errno=34 value=9223372036854775807
+input=12abc                    app_code=1 errno=0 value=12
+map ENOENT=2 -> app_code=3
+map EACCES=13 -> app_code=3

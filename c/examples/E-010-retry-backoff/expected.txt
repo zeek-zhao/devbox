@@ -1,0 +1,6 @@
+flaky attempt=1 code=4 class=retryable backoff_ms=100
+flaky attempt=2 code=4 class=retryable backoff_ms=200
+flaky attempt=3 ok value=42
+flaky attempts_used=3
+strict attempt=1 code=1 give_up=1
+strict attempts_used=1
