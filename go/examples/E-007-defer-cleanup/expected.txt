@@ -1,0 +1,4 @@
+primary first: write: simulated write failure
+cleanup visible: cleanup: simulated close failure
+all good: err==nil=true closed=true
+error path cleanup: steps=[open close] err=job failed
