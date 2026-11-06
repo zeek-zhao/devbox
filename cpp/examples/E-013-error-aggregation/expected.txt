@@ -1,0 +1,7 @@
+bad input: 3 problems
+  - name: must not be empty
+  - port: must be numeric
+  - tags: need at least one
+one problem: 1
+  - port: must be numeric
+valid input: 0 problems

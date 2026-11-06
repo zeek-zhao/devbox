@@ -1,0 +1,5 @@
+INFO #1 event=startup pid=static
+INFO #2 event=index_load docs=100 terms=42
+WARN #3 event=slow_query ms=950 query=join
+ERROR #4 event=index_corrupt offset=16 code=3
+INFO #5 event=shutdown clean=true

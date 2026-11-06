@@ -1,0 +1,11 @@
+attempt 1: transient: connection reset
+attempt 2: transient: connection reset
+attempt 3: ok
+attempt 1: transient: connection reset
+attempt 2: transient: connection reset
+attempt 3: transient: connection reset
+attempt 4: transient: connection reset
+attempt 5: transient: connection reset
+give up: attempts exhausted
+dead attempt 1: permanent: bad request
+dead: give up immediately
