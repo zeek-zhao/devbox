@@ -1,0 +1,4 @@
+antipattern match-by-text: false / correct errors.Is: true
+antipattern swallow: err==nil=true / correct return: err==nil=false
+antipattern double-log: mid-layer logs=1 / correct: log once at boundary
+antipattern panic-control: recovered n=0 / correct err=disk full

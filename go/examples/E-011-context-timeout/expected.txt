@@ -1,0 +1,5 @@
+timeout: err=handle: query: context deadline exceeded
+timeout identity: errors.Is(err, context.DeadlineExceeded)=true
+cancel: err=handle: query: context canceled
+cancel identity: errors.Is(err, context.Canceled)=true
+enough budget: err=<nil>

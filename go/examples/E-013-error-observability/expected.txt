@@ -1,0 +1,3 @@
+level=ERROR msg="request failed" err="service: repo unavailable" op=list-users
+level=ERROR msg="repo failed" layer=service
+observability: errors.Is after logging=true
