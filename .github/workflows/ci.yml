@@ -349,7 +349,7 @@ jobs:
           wait_image() { # 等 images job 的 sha 镜像就绪，最多 25 分钟
             local image="$1" i
             for i in $(seq 1 50); do
-              if docker manifest inspect "$image" >/dev/null 2>&1; then echo "ready("$i"x30s): $image"; return 0; fi
+              if docker manifest inspect "$image" >/dev/null 2>&1; then echo "ready(${i}x30s): $image"; return 0; fi
               echo "[labs] 等待 sha 镜像 $i/50：$image"; sleep 30
             done
             echo "[labs] sha 镜像超时未就绪：$image"; return 1
