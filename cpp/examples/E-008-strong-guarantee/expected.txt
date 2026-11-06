@@ -1,0 +1,5 @@
+before: size=2 first=ada
+failed: storage full
+after: size=2 last=bob
+weak: add done, failure incoming
+weak: size=1 (state already changed)

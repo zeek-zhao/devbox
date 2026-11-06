@@ -1,0 +1,4 @@
+depth 0: build failed
+depth 1: checksum mismatch at offset 16
+plain: plain rethrow, no nest
+plain: no nested exception
