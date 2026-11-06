@@ -1,0 +1,6 @@
+good: value=entry-42
+miss: error=not found
+denied: ok=false
+denied: error=permissions denied
+optional: has=false
+optional: value_or=7

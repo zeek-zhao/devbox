@@ -1,0 +1,12 @@
+acquire conn
+acquire tx
+send: start
+release tx
+release conn
+caught: peer reset
+acquire a
+acquire b
+scope: body done
+release b
+release a
+exit: clean
