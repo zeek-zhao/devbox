@@ -1,0 +1,5 @@
+top context: loading document for search index
+next layer: parsing document id from `seven`
+root cause: invalid digit found in string
+context stack depth: 3
+ok path: id 42
