@@ -11,7 +11,7 @@
 |---|---|
 | 版本 | `v0.1.0`（`VERSION` 与 tag 逐字一致，发版档校验） |
 | 轨道 | 9 条（C / C++ / 数据库 / Go / Java / Python / Rust / Shell / Vue） |
-| 用例 | 659 个（`*/examples/*/run.sh` 实测），全量跑通失败 0 |
+| 用例 | 719 个（`*/examples/*/run.sh` 实测：存量 659 + M11 E 类错误处理示例 60），全量跑通失败 0 |
 | 毕业项目 | 9 个，覆盖表 `--strict` 通过，0 条 `pending` |
 | 格式化 | 8 门语言 `fmt --check` 全达标 |
 | 镜像 | 11 层预算（`images/budgets.tsv`），C 复用 `devbox-cpp`、db 走独立 Compose runner |

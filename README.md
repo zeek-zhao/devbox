@@ -2,11 +2,11 @@
 
 [![ci](https://github.com/zeek-zhao/devbox/actions/workflows/ci.yml/badge.svg)](https://github.com/zeek-zhao/devbox/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
-[![用例](https://img.shields.io/badge/用例-659-success.svg)](docs/ROADMAP.md)
+[![用例](https://img.shields.io/badge/用例-719-success.svg)](docs/ROADMAP.md)
 [![轨道](https://img.shields.io/badge/轨道-9-informational.svg)](#轨道一览)
 
 用**可运行、可逐字验证**的用例讲清技术点，再用毕业项目把用例里的能力落到真实程序。
-当前 **9 条学习轨道、659 个用例、9 个毕业项目**：8 门编程语言 + 1 条数据库轨道。
+当前 **9 条学习轨道、719 个用例、9 个毕业项目**：8 门编程语言 + 1 条数据库轨道。
 
 每个用例都是一个最小可跑单元：`run.sh` 执行、`expected.txt` 逐行比对。跑不通就是没学会，
 不存在「看懂了但写不出来」的模糊地带。
@@ -100,9 +100,9 @@ runner 将 `run.sh` 的 stdout 与 `expected.txt` 逐行比较；行尾空白和
 
 ## 排障演练（labs）
 
-除 659 条用例外，各轨道还有**排障演练 lab**（`<lang>/labs/T-NNN-<slug>/`）：埋一个真实故障，用 ASan / valgrind / race detector / shellcheck 等工具真跑排查，配逐行判读文档。规范见 [docs/72-排障演练规范](docs/72-排障演练规范.md)。
+除 719 条用例外，各轨道还有**排障演练 lab**（`<lang>/labs/T-NNN-<slug>/`）：埋一个真实故障，用 ASan / valgrind / race detector / shellcheck 等工具真跑排查，配逐行判读文档。规范见 [docs/72-排障演练规范](docs/72-排障演练规范.md)。
 
-**labs 与 examples 的区别**：labs 是排障教学演练，**不计入 659 用例计数**，不进 `examples/`，也不走逐行比对。跑法：
+**labs 与 examples 的区别**：labs 是排障教学演练，**不计入 719 用例计数**，不进 `examples/`，也不走逐行比对。跑法：
 
 ```bash
 bash <lang>/labs/T-001-<slug>/run.sh      # 完整演练流程
@@ -129,7 +129,7 @@ bash scripts/fmt.sh --check --lang <轨道>        # 格式化
 bash scripts/pre-merge.sh --base main            # 全量总闸（约 15 分钟）
 ```
 
-流水线对所有触发（`push`、`pull_request`、打 tag）都跑全量：659 个用例 + 8 门格式 +
+流水线对所有触发（`push`、`pull_request`、打 tag）都跑全量：719 个用例 + 8 门格式 +
 覆盖表 + 镜像构建 + 体积预算，单次约 20–25 分钟。仓库是公开的，Actions 分钟数不计量，
 所以不再按场景省测。细节见 [流水线说明](docs/02-流水线.md)。
 
