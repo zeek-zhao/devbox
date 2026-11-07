@@ -20,23 +20,34 @@ typedef struct {
 static worker_result_t results[NWORKERS];
 
 /* 每个 worker 一种结局：0 成功、1 超时、2 IO 错、3 超时（确定性模拟） */
-static void *worker(void *arg) {
+static void* worker(void* arg) {
     int id = (int)(long)arg;
     results[id].worker_id = id;
     switch (id) {
-        case 0:  results[id].code = ERR_OK;      break;
-        case 1:  results[id].code = ERR_TIMEOUT; break;
-        case 2:  results[id].code = ERR_IO;      break;
-        default: results[id].code = ERR_TIMEOUT; break;
+    case 0:
+        results[id].code = ERR_OK;
+        break;
+    case 1:
+        results[id].code = ERR_TIMEOUT;
+        break;
+    case 2:
+        results[id].code = ERR_IO;
+        break;
+    default:
+        results[id].code = ERR_TIMEOUT;
+        break;
     }
     return NULL;
 }
 
-static const char *code_name(int code) {
+static const char* code_name(int code) {
     switch (code) {
-        case ERR_OK:      return "OK";
-        case ERR_TIMEOUT: return "TIMEOUT";
-        case ERR_IO:      return "IO";
+    case ERR_OK:
+        return "OK";
+    case ERR_TIMEOUT:
+        return "TIMEOUT";
+    case ERR_IO:
+        return "IO";
     }
     return "UNKNOWN";
 }
@@ -45,7 +56,7 @@ int main(void) {
     pthread_t threads[NWORKERS];
 
     for (int i = 0; i < NWORKERS; ++i) {
-        pthread_create(&threads[i], NULL, worker, (void *)(long)i);
+        pthread_create(&threads[i], NULL, worker, (void*)(long)i);
     }
     for (int i = 0; i < NWORKERS; ++i) {
         pthread_join(threads[i], NULL);
@@ -66,7 +77,7 @@ int main(void) {
             }
         }
     }
-    printf("summary total=%d ok=%d failed=%d by_code TIMEOUT=%d IO=%d\n",
-           NWORKERS, ok, failed, timeouts, io);
+    printf("summary total=%d ok=%d failed=%d by_code TIMEOUT=%d IO=%d\n", NWORKERS, ok, failed,
+           timeouts, io);
     return 0;
 }

@@ -7,7 +7,7 @@ enum { ERR_OK = 0, ERR_MISSING = 3 };
 
 /* 模拟的配置源：本例固定模拟「打不开」（真实代码里 fopen 返回 NULL + errno=ENOENT，
    转 E-009 的边界映射） */
-static int cfg_open(int *ok) {
+static int cfg_open(int* ok) {
     *ok = 0;
     return -1;
 }
@@ -23,7 +23,7 @@ static int read_number_bad(void) {
 }
 
 /* 正解：失败显式上抛，调用方决定策略 */
-static int read_number_good(int *out) {
+static int read_number_good(int* out) {
     int ok = 1;
     if (cfg_open(&ok) != 0 || !ok) {
         return ERR_MISSING;

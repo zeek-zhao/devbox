@@ -15,7 +15,7 @@ typedef struct {
 
 /* deadline：预算 3 步，操作要跑 5 步 -> 第 4 步前超时 */
 static run_report_t run_with_deadline(int total_steps, int budget) {
-    run_report_t rep = { 0, ERR_OK };
+    run_report_t rep = {0, ERR_OK};
     for (int step = 1; step <= total_steps; ++step) {
         if (rep.done_steps >= budget) {
             rep.code = ERR_TIMEOUT;
@@ -30,7 +30,7 @@ static run_report_t run_with_deadline(int total_steps, int budget) {
 
 /* cancel：跑到第 2 步时外部置位取消标志，worker 在下一个安全点退出 */
 static run_report_t run_with_cancel(int total_steps, int cancel_after) {
-    run_report_t rep = { 0, ERR_OK };
+    run_report_t rep = {0, ERR_OK};
     int cancel_requested = 0;
     for (int step = 1; step <= total_steps; ++step) {
         if (cancel_requested) {
@@ -41,13 +41,13 @@ static run_report_t run_with_cancel(int total_steps, int cancel_after) {
         printf("step=%d ok\n", step);
         rep.done_steps = step;
         if (step == cancel_after) {
-            cancel_requested = 1;   /* 模拟外部线程置位 */
+            cancel_requested = 1; /* 模拟外部线程置位 */
         }
     }
     return rep;
 }
 
-static void report(const char *label, run_report_t rep) {
+static void report(const char* label, run_report_t rep) {
     printf("%s code=%d completed_steps=%d\n", label, rep.code, rep.done_steps);
 }
 
