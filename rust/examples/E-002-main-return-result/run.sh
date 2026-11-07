@@ -12,7 +12,7 @@ echo "ok-exit=$?"
 
 echo "== case: bad-config =="
 set +e
-stderr="$(("$BIN" bad-config) 2>&1 >/dev/null)"
+stderr="$( "$BIN" bad-config) 2>&1 >/dev/null)"
 rc=$?
 set -e
 echo "bad-config-exit=$rc"

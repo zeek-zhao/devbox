@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # 断言：关键诊断行命中 + 退出码符合预期。用法：bash assert.sh
 set -uo pipefail
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit
 
 out="$(bash run.sh 2>&1)"; rc=$?
 
