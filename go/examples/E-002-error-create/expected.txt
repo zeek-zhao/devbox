@@ -1,0 +1,5 @@
+create errors.New: "input empty"
+create fmt.Errorf: "connect 10.0.0.7:5432 attempt 3 failed"
+typed-nil trap: ok case but err!=nil: true
+correct: return nil as error gives err==nil: true
+create custom type: "port 70000 out of range 1..65535"

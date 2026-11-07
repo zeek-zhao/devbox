@@ -1,0 +1,4 @@
+identity: two errors.New with same text identical: false
+identity: wrapped sentinel via errors.Is: true
+as: extracted *ParseError ok=true field="age" line=3
+as: second same-class ok=true field="age" line=9

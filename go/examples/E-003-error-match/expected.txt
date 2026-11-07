@@ -1,0 +1,5 @@
+match ==: wrapped == ErrNotFound: false
+match errors.Is(wrapped, ErrNotFound): true
+match errors.Is(wrapped, ErrQuota): false
+match custom Is: 45-day overdue matches policy(30+): true
+match custom Is: 5-day overdue matches policy(30+): false
