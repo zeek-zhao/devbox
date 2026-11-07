@@ -1,0 +1,9 @@
+opened /tmp/devbox-e009-good.txt
+read_header: processing /tmp/devbox-e009-good.txt
+read_header: done
+closed
+opened /tmp/devbox-e009-bad.txt
+read_header: processing /tmp/devbox-e009-bad.txt
+closed
+bad path: caught bad header
+missing path: caught cannot open /tmp/devbox-e009-missing.txt

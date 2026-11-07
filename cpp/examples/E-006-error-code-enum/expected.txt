@@ -1,0 +1,4 @@
+alpha: ok exit=0
+empty: bad input exit=1
+ghost: not found exit=0
+ghost: raw=4
