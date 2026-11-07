@@ -1,0 +1,4 @@
+fail-fast: config: workers must be positive
+cleanup: release 0 items
+batch: started with 4 workers
+cleanup: release 2 items

@@ -1,0 +1,7 @@
+ANTI swallow: caller saw nothing
+GOOD log: disk full
+GOOD rethrown: disk full
+ANTI slicing: what=rich error
+GOOD ref: what=rich error seq=77
+ANTI vague: failed
+GOOD context: build: open /data/index.bin: errno=2
