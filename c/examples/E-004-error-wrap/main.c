@@ -11,12 +11,12 @@ enum { ERR_OK = 0, ERR_NOT_FOUND = 3 };
 #define MAX_FRAMES 4
 
 typedef struct {
-    int code;        /* 根因码：层层透传，不改写 */
-    char msg[160];   /* 根因消息 + 各层前缀，展示用 */
-    int depth;       /* 已包装层数 */
+    int code;      /* 根因码：层层透传，不改写 */
+    char msg[160]; /* 根因消息 + 各层前缀，展示用 */
+    int depth;     /* 已包装层数 */
 } error_t;
 
-static error_t err_root(int code, const char *msg) {
+static error_t err_root(int code, const char* msg) {
     error_t e;
     e.code = code;
     e.depth = 0;
@@ -26,14 +26,14 @@ static error_t err_root(int code, const char *msg) {
 
 /* 前缀写入用显式长度检查的 memcpy，消息尾部按需截断（前缀优先保完整），
  * 边界手工核算，避开 snprintf 的截断告警与隐藏的溢出路径。 */
-static error_t wrap(error_t e, const char *op) {
+static error_t wrap(error_t e, const char* op) {
     char buf[sizeof e.msg];
     size_t cap = sizeof e.msg;
     size_t off = 0;
 
     size_t plen = strlen(op);
     if (plen > cap - 3) {
-        plen = cap - 3;   /* 预留 ": " 与 NUL */
+        plen = cap - 3; /* 预留 ": " 与 NUL */
     }
     memcpy(buf, op, plen);
     off = plen;
@@ -55,13 +55,13 @@ static error_t wrap(error_t e, const char *op) {
     return e;
 }
 
-static error_t read_config(const char *path) {
+static error_t read_config(const char* path) {
     /* 模拟底层 IO 失败：真实代码里这里是 errno 转换后的错误值（见 E-009） */
     (void)path;
     return err_root(ERR_NOT_FOUND, "open failed");
 }
 
-static error_t load_settings(const char *path) {
+static error_t load_settings(const char* path) {
     error_t e = read_config(path);
     if (e.code != ERR_OK) {
         return wrap(e, "read_config");
@@ -69,7 +69,7 @@ static error_t load_settings(const char *path) {
     return e;
 }
 
-static error_t bootstrap(const char *path) {
+static error_t bootstrap(const char* path) {
     error_t e = load_settings(path);
     if (e.code != ERR_OK) {
         return wrap(e, "load_settings");

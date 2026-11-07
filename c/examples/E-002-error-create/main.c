@@ -9,39 +9,39 @@
  *   - 错误值一经构造不再改写，调用方决定继续传播还是就地处理。 */
 typedef struct {
     int code;
-    const char *what;
-    const char *detail;
+    const char* what;
+    const char* detail;
 } error_t;
 
-static const error_t ERR_NONE = { 0, "ok", "" };
+static const error_t ERR_NONE = {0, "ok", ""};
 
 /* 「抛出」= return 一个填好的错误值。 */
 static error_t validate_age(int age) {
     if (age < 0) {
-        error_t e = { 1, "age_negative", "age must be >= 0" };
+        error_t e = {1, "age_negative", "age must be >= 0"};
         return e;
     }
     if (age > 150) {
-        error_t e = { 2, "age_unrealistic", "age must be <= 150" };
+        error_t e = {2, "age_unrealistic", "age must be <= 150"};
         return e;
     }
     return ERR_NONE;
 }
 
-static error_t validate_name(const char *name) {
+static error_t validate_name(const char* name) {
     if (name == NULL || name[0] == '\0') {
-        error_t e = { 3, "name_empty", "name must be non-empty" };
+        error_t e = {3, "name_empty", "name must be non-empty"};
         return e;
     }
     return ERR_NONE;
 }
 
-static void report(const char *input, error_t e) {
+static void report(const char* input, error_t e) {
     if (e.code == 0) {
         printf("input=%s result=ok\n", input);
     } else {
-        printf("input=%s result=error code=%d what=%s detail=\"%s\"\n",
-               input, e.code, e.what, e.detail);
+        printf("input=%s result=error code=%d what=%s detail=\"%s\"\n", input, e.code, e.what,
+               e.detail);
     }
 }
 

@@ -7,15 +7,30 @@
  *     而不是被当成某个已知码处理。 */
 enum { ERR_OK = 0, ERR_NOT_FOUND = 3, ERR_TIMEOUT = 4, ERR_NO_MEMORY = 5 };
 
-typedef struct { int code; const char *what; } error_t;
+typedef struct {
+    int code;
+    const char* what;
+} error_t;
 
 static error_t fetch_record(int simulate) {
     switch (simulate) {
-        case 1: { error_t e = { ERR_NOT_FOUND, "record missing" };    return e; }
-        case 2: { error_t e = { ERR_TIMEOUT,   "backend slow" };      return e; }
-        case 3: { error_t e = { ERR_NO_MEMORY, "cache alloc failed" }; return e; }
+    case 1: {
+        error_t e = {ERR_NOT_FOUND, "record missing"};
+        return e;
     }
-    { error_t ok = { ERR_OK, "record 42" }; return ok; }
+    case 2: {
+        error_t e = {ERR_TIMEOUT, "backend slow"};
+        return e;
+    }
+    case 3: {
+        error_t e = {ERR_NO_MEMORY, "cache alloc failed"};
+        return e;
+    }
+    }
+    {
+        error_t ok = {ERR_OK, "record 42"};
+        return ok;
+    }
 }
 
 static void handle(int simulate) {
@@ -25,18 +40,15 @@ static void handle(int simulate) {
         return;
     }
     switch (e.code) {
-        case ERR_NOT_FOUND:
-            printf("sim=%d matched=EXACT code=%d outcome=create-default-record\n",
-                   simulate, e.code);
-            break;
-        case ERR_TIMEOUT:
-            printf("sim=%d matched=EXACT code=%d outcome=retry-later\n",
-                   simulate, e.code);
-            break;
-        default:
-            printf("sim=%d matched=FALLBACK code=%d outcome=escalate\n",
-                   simulate, e.code);
-            break;
+    case ERR_NOT_FOUND:
+        printf("sim=%d matched=EXACT code=%d outcome=create-default-record\n", simulate, e.code);
+        break;
+    case ERR_TIMEOUT:
+        printf("sim=%d matched=EXACT code=%d outcome=retry-later\n", simulate, e.code);
+        break;
+    default:
+        printf("sim=%d matched=FALLBACK code=%d outcome=escalate\n", simulate, e.code);
+        break;
     }
 }
 
