@@ -1,0 +1,3 @@
+load: failed what=index file corrupt
+load: path=data/index.bin line=7 code=3
+outer: summary=index file corrupt

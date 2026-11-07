@@ -1,0 +1,5 @@
+fopen missing: errno=2 (No such file or directory)
+after success call errno still reports: No such file or directory
+fopen /dev/null: ok, errno untouched check skipped
+system_error: open missing-dir/file.txt: No such file or directory
+system_error: code=2
