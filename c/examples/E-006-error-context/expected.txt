@@ -1,0 +1,2 @@
+event code=3 op=load_user target=users.json user_id=42 request=GET /profile trace=t-42
+event code=6 op=parse_profile target=body field=age value=abc

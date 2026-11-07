@@ -1,0 +1,16 @@
+-- success path --
+acquire buf
+acquire handle
+acquire lock
+session ready
+release lock
+release handle
+release buf
+open_session rc=0
+-- failure path --
+acquire buf
+acquire handle
+fail at lock
+release handle
+release buf
+open_session rc=8

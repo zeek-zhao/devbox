@@ -1,0 +1,6 @@
+-- reraise path --
+  [mid] observed code=9 re-raising
+[reraise] top sees code=9 -> fail over to replica
+-- swallow path --
+  [mid] observed code=9 but returning 0 (SWALLOWED)
+[swallow] top sees success (code=0)
