@@ -1,0 +1,7 @@
+join: err=shard 1: disk unavailable
+shard 3: auth rejected
+join member disk: errors.Is(joined, ErrDisk)=true
+join member auth: errors.Is(joined, ErrAuth)=true
+join non-member: errors.Is(joined, other)=false
+join single: err=shard 7: disk unavailable
+join empty: err==nil=true
