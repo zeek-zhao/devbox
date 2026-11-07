@@ -1,0 +1,3 @@
+user view: payment PAY-1234 failed
+operator view: PaymentError { reference: "PAY-1234", source: ParseIntError { kind: InvalidDigit } }
+root cause walk: invalid digit found in string

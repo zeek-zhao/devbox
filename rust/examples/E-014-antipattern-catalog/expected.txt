@@ -1,0 +1,6 @@
+anti-1 swallowed: true (error cause destroyed by .ok())
+anti-1 fixed: Err(ParseIntError { kind: InvalidDigit })
+anti-2 stringly-typed: caller matches on message text only (true)
+anti-2 fixed: variant ConfigError::Port matches by type (true)
+anti-3 continue-on-error: total 5 (bad rows silently vanish)
+anti-3 fixed: aborted (invalid digit found in string)
