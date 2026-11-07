@@ -10,7 +10,7 @@ enum { ERR_OK = 0, ERR_NO_MEM = 5, ERR_LOCKED = 8 };
 
 static int open_session(int fail_at_lock) {
     int rc = ERR_OK;
-    char *buf = NULL;    /* 先统一置「未持有」 */
+    char* buf = NULL; /* 先统一置「未持有」 */
     int handle = -1;
     int locked = 0;
 
@@ -21,7 +21,7 @@ static int open_session(int fail_at_lock) {
     }
     printf("acquire buf\n");
 
-    handle = 7;          /* 模拟打开设备句柄 */
+    handle = 7; /* 模拟打开设备句柄 */
     printf("acquire handle\n");
 
     if (fail_at_lock) {

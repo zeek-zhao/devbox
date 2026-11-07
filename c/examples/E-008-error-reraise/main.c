@@ -15,7 +15,7 @@ static int middle_reraise(int backend_up) {
     int rc = fetch_from_backend(backend_up);
     if (rc != ERR_OK) {
         printf("  [mid] observed code=%d re-raising\n", rc);
-        return rc;   /* 重抛：码不变 */
+        return rc; /* 重抛：码不变 */
     }
     return ERR_OK;
 }
@@ -30,7 +30,7 @@ static int middle_swallow(int backend_up) {
     return 0;
 }
 
-static void top(const char *label, int (*mid)(int), int backend_up) {
+static void top(const char* label, int (*mid)(int), int backend_up) {
     int rc = mid(backend_up);
     if (rc == ERR_OK) {
         printf("[%s] top sees success (code=0)\n", label);
