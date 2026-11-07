@@ -1,0 +1,16 @@
+# T-001-external-dependency 期望的关键行（bash run.sh 七步全绿时的输出骨架）。
+# <port> 每次运行必然不同；断言只认「固定前缀 + 状态码 + 稳定诊断串」，
+# 禁止逐字比对整段输出（docs/72 §2）。逐行含义见 WALKTHROUGH.md。
+MOCK-READY port=<port>
+chain①: GET /actions/runs/<id>/jobs → HTTP 200, job id=<job_id>
+chain②: GET /actions/jobs/<id>/logs → HTTP 302
+chain②: Location=http://127.0.0.1:<port>/blob/logs?sig=SIMULATED&se=...
+chain③(坑): 带 Authorization → HTTP 401
+blob: <Code>AuthenticationFailed</Code>
+chain③(修): 不带 Authorization → HTTP 200
+2:... ##[error] Timeout: TLS handshake timeout (registry mirror)
+3:... ##[error] service "toolbox" is not running
+4:... ##[error] 77 个用例 76 个失败
+down: 同样不带 Authorization → HTTP 503（503 = 依赖本体不可用）
+恢复: mode=up 后 → HTTP 200（200 = 是否带凭证与可用性互不相干）
+RUN-PASS：7/7 判定符合预期
