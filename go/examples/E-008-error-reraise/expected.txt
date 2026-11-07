@@ -1,0 +1,4 @@
+swallow: caller sees success=true (cache miss lost)
+log-only: caller sees success=true log="ERROR load: cache miss"
+reraise: err=load: cache miss
+reraise keeps identity: errors.Is(err, ErrCacheMiss)=true

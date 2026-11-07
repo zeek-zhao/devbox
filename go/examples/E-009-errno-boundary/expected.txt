@@ -1,0 +1,6 @@
+boundary text: open /tmp/devbox-e009-missing.conf: no such file or directory
+boundary is PathError: true
+boundary code for missing file: 3
+boundary code for bad number: 2
+boundary code for success: 0
+boundary code for unknown: 70

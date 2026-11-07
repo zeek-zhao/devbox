@@ -1,0 +1,6 @@
+context text: load profile "alice": dial 10.0.0.7:5432: operation timed out
+context keeps identity: errors.Is(err, ErrTimeout)=true
+peel outer: dial 10.0.0.7:5432: operation timed out
+peel inner: operation timed out
+context quotes data: lookup "bobby; drop table users": user not found
+context quotes keeps identity: errors.Is(safe, ErrNotFound)=true

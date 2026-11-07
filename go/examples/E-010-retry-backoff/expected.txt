@@ -1,0 +1,3 @@
+retry success: attempts=3 waited=30ms err=<nil>
+retry non-retryable: attempts=1 waited=0s err=not retryable: quota exceeded
+retry give-up: attempts=4 waited=70ms err=gave up after 4 attempts: rate limited at attempt 4
