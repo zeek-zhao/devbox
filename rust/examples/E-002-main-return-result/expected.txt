@@ -1,0 +1,6 @@
+== case: ok ==
+pipeline finished
+ok-exit=0
+== case: bad-config ==
+bad-config-exit=1
+Error: ConfigError { field: "workers", source: ParseIntError { kind: InvalidDigit } }

@@ -1,0 +1,6 @@
+expect-mode: fixture port 8080 (context attached)
+handled-mode: invalid config -> fallback 0, exit stays 0
+unwrap-mode: exit=101 (101 = panic)
+unwrap-mode: stderr-panicked=yes
+unwrap-mode: backtrace-hint=yes
+unwrap-mode: context-in-message=no

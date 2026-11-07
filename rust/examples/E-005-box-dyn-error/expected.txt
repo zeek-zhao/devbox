@@ -1,0 +1,4 @@
+record 0: id 42
+record 1: malformed -> skip entry
+record 2: parse failure on port -> use default id 0
+heterogeneous errors handled at one boundary: 2
