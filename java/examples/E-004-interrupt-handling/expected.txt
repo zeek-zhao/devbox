@@ -1,0 +1,5 @@
+worker: interrupted during sleep
+worker: flag restored=true
+worker: stopped cooperatively
+main: worker finished, not killed
+rule: catching InterruptedException must restore the flag or exit
