@@ -1,0 +1,4 @@
+source=setup error=setup failed info=setup function
+source=render error=render failed info=render function
+source=async error=async setup failed info=setup function
+taxonomy sync=2 async=1 captured=3

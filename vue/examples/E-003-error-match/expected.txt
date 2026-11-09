@@ -1,0 +1,4 @@
+matched=E_NETWORK action=retry
+matched=E_REQUIRED action=fix-input
+matched=E_RANGE action=fix-input
+matched=plain-error action=report

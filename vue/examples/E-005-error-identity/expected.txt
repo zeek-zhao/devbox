@@ -1,0 +1,4 @@
+identity through chain: same=true
+code survives chain: E_DB_DOWN
+identity after rewrap: same=false
+instanceof after rewrap: false
