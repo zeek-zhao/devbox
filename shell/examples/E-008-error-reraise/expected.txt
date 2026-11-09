@@ -1,0 +1,2 @@
+mode=swallow report=step failed rc=4 exit=0
+mode=reraise report=step failed rc=4 exit=4

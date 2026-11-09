@@ -1,0 +1,2 @@
+right-mode: business exit preserved: 3
+wrong-mode: observed exit=1 (business 3 masked by cleanup)

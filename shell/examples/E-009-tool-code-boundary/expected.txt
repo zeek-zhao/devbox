@@ -1,0 +1,5 @@
+tool=grep raw=0 kind=match action=use-result
+tool=grep raw=1 kind=no-match action=use-default
+tool=grep raw=2 kind=tool-broken action=stop
+tool=diff raw=0 kind=same action=skip-write
+tool=diff raw=1 kind=differ action=write
