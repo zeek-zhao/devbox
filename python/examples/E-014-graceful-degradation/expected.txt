@@ -1,0 +1,5 @@
+primary failed: primary-db: TRANSIENT primary-db offline
+fallback: stale-snapshot (served by cache)
+degradation: failed-sources=1
+no-source: primary-db: TRANSIENT primary-db offline; archive: PERMANENT archive unreadable
+rule: degrade with recorded reasons; fail only when every path is down

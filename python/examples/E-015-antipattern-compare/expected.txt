@@ -1,0 +1,7 @@
+anti-1: kept going (failure swallowed, bug invisible) -> wrong
+fix-1: {"code": "INTERNAL", "message": "disk-full"} -> logged, visible
+anti-2: other (classified by message text) -> wrong
+fix-2: INTERNAL (classified by type) -> stable
+anti-3: caught (wrong: bare except also swallows Ctrl-C)
+fix-3: escaped to caller (right: Ctrl-C not swallowed)
+rule: never swallow silently; classify by type; let BaseException escape

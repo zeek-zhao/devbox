@@ -1,0 +1,4 @@
+deadline-hit: TimeoutError after 0.05s
+deadline-class: TIMEOUT -> action=cancel-and-report
+fast-path: got done
+rule: every wait has a deadline; timeouts are classified, never ignored
