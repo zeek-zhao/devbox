@@ -1,0 +1,6 @@
+attempt 1 failed: TRANSIENT connect-refused
+attempt 2 failed: TRANSIENT connect-refused
+attempt 3 ok: got payload-7
+backoff: delays=10,20ms -> 2 retries before success
+no-retry: ValidationException rejected immediately (age must be a positive integer)
+rule: retry only TRANSIENT errors, back off exponentially, cap the attempts

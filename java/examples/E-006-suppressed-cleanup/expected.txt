@@ -1,0 +1,3 @@
+manual-finally: surfaced=IllegalStateException suppressed-count=0 (business error masked by close failure)
+twr: surfaced=BusinessError suppressed=[IllegalStateException]
+rule: cleanup failure must not mask the original error
