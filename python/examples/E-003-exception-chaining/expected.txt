@@ -1,0 +1,3 @@
+implicit: type=RuntimeError cause=None context=ValueError
+explicit: type=RuntimeError cause=ValueError context=ValueError
+bare-reraise: same-object=True cause=None
