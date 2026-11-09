@@ -1,0 +1,4 @@
+antipattern=swallow-error bad=exit0 good=exit1
+antipattern=unquoted-split bad=words=2 good=words=1
+antipattern=pipe-middle-fail bad=exit0 good=exit1
+antipattern=error-on-stdout bad=pipeline-lines=1 good=pipeline-lines=0

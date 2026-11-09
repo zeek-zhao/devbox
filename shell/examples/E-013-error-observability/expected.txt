@@ -1,0 +1,5 @@
+deploy result: ok=3 failed=1
+step=build status=ok rc=0 reason=none
+step=download status=failed rc=3 reason=network
+step=test status=ok rc=0 reason=none
+step=publish status=ok rc=0 reason=none

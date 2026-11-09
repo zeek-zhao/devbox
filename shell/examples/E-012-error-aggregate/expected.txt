@@ -1,0 +1,7 @@
+item=alpha status=ok
+item=beta status=failed rc=3
+item=gamma status=failed rc=2
+item=delta status=ok
+aggregate failed=2 passed=2
+batch exit: 1
+failed list: beta(rc=3) gamma(rc=2)

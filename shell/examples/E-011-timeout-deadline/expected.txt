@@ -1,0 +1,3 @@
+fast task: rc=0 kind=completed
+hung task: rc=3 kind=timeout
+deadline enforced: true
