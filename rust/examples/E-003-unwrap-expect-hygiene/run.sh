@@ -9,7 +9,7 @@ rustc --edition=2021 -O -D warnings main.rs -o "$BIN"
 "$BIN" good
 
 set +e
-stderr="$( "$BIN" unwrap-bad) 2>&1 >/dev/null)"
+stderr="$("$BIN" unwrap-bad 2>&1 >/dev/null)"
 rc=$?
 set -e
 
