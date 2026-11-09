@@ -1,0 +1,3 @@
+mode=swallow: parent-saw=true app-reports=0
+mode=passthrough: parent-saw=true app-reports=1 first=leaf boom
+mode=reraise: parent-saw=true app-reports=2 first=wrapped: leaf boom

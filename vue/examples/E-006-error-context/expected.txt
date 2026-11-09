@@ -1,0 +1,3 @@
+message=leaf boom
+context path=Root > Mid > Leaf
+path depth=3
