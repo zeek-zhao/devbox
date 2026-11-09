@@ -1,0 +1,5 @@
+record 1: ok
+record 2: errors=2 name-empty age-negative
+record 3: errors=1 age-out-of-range
+record 4: errors=2 field-missing:name field-missing:age
+aggregate: bad=3 errors=5 -> report all, then reject

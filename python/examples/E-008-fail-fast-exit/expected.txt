@@ -1,0 +1,5 @@
+protocol: usage=2 data=1 success=0
+usage-error -> exit=2
+data-error -> exit=1
+success: limit=10 accepted -> exit=0
+rule: fail at the boundary with a typed exit code, not deep inside
