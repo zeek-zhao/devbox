@@ -1,0 +1,6 @@
+doc-1: ok
+doc-2: FAILED ValidationException (schema mismatch)
+doc-3: ok
+doc-4: FAILED TransientException (storage busy)
+aggregate: ok=2 failed=2 -> collect all failures before deciding
+rule: per-task failures are recorded, then reported once
