@@ -1,0 +1,2 @@
+chain: deploy -> download -> fetch-artifact
+preserved exit code: 22

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# 断言：关键诊断行 + 退出码。用法：bash assert.sh
+set -uo pipefail
+cd "$(dirname "$0")" || exit
+
+out="$(bash run.sh 2>&1)"
+rc=$?
+
+fail=0
+if [ "$rc" -ne 0 ]; then
+  echo "[assert] run.sh 退出码非 0：rc=$rc"
+  fail=1
+fi
+grep -qF -e 'code=2 name=USAGE category=usage' <<<"$out" || {
+  echo '[assert] 未命中 USAGE -> usage 分类行'
+  fail=1
+}
+grep -qF -e 'code=4 name=NO_TOOL category=environment' <<<"$out" || {
+  echo '[assert] 未命中 NO_TOOL -> environment 分类行'
+  fail=1
+}
+grep -qF -e 'code=5 name=ASSERT_BROKEN category=internal' <<<"$out" || {
+  echo '[assert] 未命中 ASSERT_BROKEN -> internal 分类行'
+  fail=1
+}
+grep -qF -e 'taxonomy codes=5 usage=1 environment=2 internal=1' <<<"$out" || {
+  echo '[assert] 未命中分类汇总行'
+  fail=1
+}
+n="$(grep -c '^code=' <<<"$out" || true)"
+if [ "$n" -ne 5 ]; then
+  echo "[assert] code= 行数期望 5，实际 $n"
+  fail=1
+fi
+
+if [ "$fail" -eq 0 ]; then
+  echo 'ASSERT-PASS'
+else
+  echo 'ASSERT-FAIL'
+  exit 1
+fi

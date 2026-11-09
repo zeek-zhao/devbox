@@ -1,0 +1,3 @@
+rc=0 classified=hit action=use-result
+rc=1 classified=no-match action=use-default
+rc=2 classified=probe-broken action=stop

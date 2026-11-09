@@ -1,0 +1,3 @@
+main.sh: validate-name: name is empty
+rc=2
+rc=0

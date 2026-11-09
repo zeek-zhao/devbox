@@ -1,0 +1,6 @@
+code=0 name=OK category=OK
+code=2 name=USAGE category=usage
+code=3 name=NO_INPUT category=environment
+code=4 name=NO_TOOL category=environment
+code=5 name=ASSERT_BROKEN category=internal
+taxonomy codes=5 usage=1 environment=2 internal=1
