@@ -1,0 +1,4 @@
+runs=2 cleanups=1 (invalidation cleanup ran)
+scope stopped: runs=2 cleanups=2
+cleanup on invalidation: true
+cleanup on stop: true

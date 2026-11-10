@@ -1,0 +1,4 @@
+sync render error: info=render function
+async setup error: info=setup function
+detached promise error: app-saw=false caught-by-catch=true
+boundary covered=3 of 3 with explicit catch
