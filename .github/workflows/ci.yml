@@ -347,6 +347,8 @@ jobs:
     name: 排障演练-labs
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    needs: [probe, images]
+    if: always() && needs.probe.outputs.ready == 'true' && (needs.images.result == 'success' || needs.images.result == 'skipped')
     steps:
       - uses: actions/checkout@v4
       - name: 真跑全部 lab
@@ -355,39 +357,6 @@ jobs:
         run: |
           set -uo pipefail
           fail=0
-          # ---- 整批镜像等待：按 layer 去重 + 全局 25min 预算，不再逐 lab 各等 25 分钟 ----
-          WAIT_BUDGET=1500
-          deadline=$((SECONDS + WAIT_BUDGET))
-          declare -A SEEN=() READY=()
-          layers=()
-          for run_sh in */labs/*/run.sh; do
-            lang="${run_sh%%/*}"
-            [ "$lang" = "db" ] && continue
-            layer="$(awk -F'\t' -v k="$lang" '$1 == k { print $2; exit }' images/lang-images.tsv)"
-            [ -z "$layer" ] && continue
-            layer="${layer:-$lang}"
-            if [ -z "${SEEN[$layer]:-}" ]; then
-              SEEN[$layer]=1
-              READY[$layer]=0
-              layers+=("$layer")
-            fi
-          done
-          for layer in "${layers[@]}"; do
-            image="$REGISTRY/devbox-${layer}:${SHA_TAG}"
-            while true; do
-              if docker manifest inspect "$image" >/dev/null 2>&1; then
-                READY[$layer]=1
-                echo "[labs] ready: $image"
-                break
-              fi
-              if (( SECONDS >= deadline )); then
-                echo "[labs] image_not_ready：整批等待 ${WAIT_BUDGET}s 超时，$image 未就绪（images job 可能被 skip）"
-                break 2
-              fi
-              echo "[labs] 等待 $image（剩余 $((deadline - SECONDS))s）"
-              sleep 30
-            done
-          done
           for run_sh in */labs/*/run.sh; do
             lang="${run_sh%%/*}"
             if [ "$lang" = "db" ]; then
@@ -415,11 +384,6 @@ jobs:
             layer="${layer:-$lang}"
             image="$REGISTRY/devbox-${layer}:${SHA_TAG}"
             echo "==> $run_sh (镜像 $image)"
-            if [ "${READY[$layer]:-0}" != "1" ]; then
-              echo "[labs] FAIL $run_sh（image_not_ready：整批等待已超时，不再逐 lab 空等）"
-              fail=1
-              continue
-            fi
             if docker run --rm -v "$PWD":/w -w /w -e TAG="$SHA_TAG" "$image" bash -lc "bash $run_sh"; then
               echo "[labs] PASS $run_sh"
             else
