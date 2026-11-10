@@ -1,0 +1,5 @@
+lbyl-hit: got 3
+lbyl-miss: default
+eafp-hit: got 3
+eafp-miss: default
+verdict: EAFP collapses check and use into one step, closing the check-then-use window

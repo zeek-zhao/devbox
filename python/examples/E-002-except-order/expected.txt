@@ -1,0 +1,4 @@
+specific-first: ValueError: invalid literal for int() with base 10: 'x'
+tuple-catch: KeyError: 'missing'
+fallback-last: Exception: RuntimeError: boom
+order-rule: except clauses are tried top-down, subclass handlers go first

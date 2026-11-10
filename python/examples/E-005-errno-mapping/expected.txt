@@ -1,0 +1,5 @@
+real-missing: errno=2 type=FileNotFoundError category=MISSING action=create-or-skip
+denied: errno=13 type=PermissionError category=DENIED action=stop-and-report
+transient: errno=11 type=BlockingIOError category=TRANSIENT action=retry
+io: errno=5 type=OSError category=UNKNOWN action=fail-fast
+mapping: errno values are the stable interface; subclasses are the built-in mapping
