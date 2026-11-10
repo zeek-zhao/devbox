@@ -1,0 +1,7 @@
+stmt_timeout err=3024 class=timeout action=shrink
+lock_timeout err=1205 class=timeout retryable=yes
+victim_txn_alive id2=100
+blocker_committed=yes
+b_rolled_back=yes
+retry ok id=1 bal=100
+retry ok id=2 bal=100

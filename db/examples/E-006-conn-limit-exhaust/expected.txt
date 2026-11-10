@@ -1,0 +1,7 @@
+lease conn=1 ok
+lease conn=2 ok
+lease_exceeded err=1226 class=capacity action=shed
+release conn=1 freed=yes
+retry lease ok=yes
+pool_active=2
+log_rows=2

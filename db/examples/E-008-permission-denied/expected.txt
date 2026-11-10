@@ -1,0 +1,5 @@
+select_ok rows=1
+insert_denied err=1142 class=permission retryable=no
+grant_fixed insert_ok=1
+revoked err=1142 closed=yes
+no_db_access err=1044 class=permission retryable=no

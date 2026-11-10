@@ -1,0 +1,7 @@
+utf8_write hex=E4BDA0E5A5BD char_len=2
+latin1_write client_encode_fail=yes
+mojibake_stored hex=C3A4C2BDC2A0C3A5C2A5C2BD
+mojibake_read body='ä½\xa0å¥½' char_len=6
+latin1_read_loss body='??' char_len=2
+column_latin1 err=1366 class=charset retryable=no
+fixed roundtrip=yes hex_match=yes
