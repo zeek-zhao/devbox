@@ -1,0 +1,4 @@
+race_commit err=1062 action=adopt_existing
+adopted sku=widget-b qty=1
+race_rollback loser_ok=yes
+upsert_concurrent qty=110 lost_update=no

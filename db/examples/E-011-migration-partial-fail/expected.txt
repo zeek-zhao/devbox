@@ -1,0 +1,6 @@
+migration_failed err=1072 rollback_done=yes
+partial_applied last_login_column=yes
+backfill_committed=0
+rerun backfill_committed=2
+version_recorded=1
+duplicate_column err=1060 handled=idempotent

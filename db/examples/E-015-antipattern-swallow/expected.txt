@@ -1,0 +1,5 @@
+antipattern id=1 bal=70 id=2 bal=100
+antipattern sum=170 lost=30 reported=no
+handled err=1264 rollback=yes reported=yes
+handled id=1 bal=100 id=2 bal=100
+handled sum=200 lost=0 consistent=yes
