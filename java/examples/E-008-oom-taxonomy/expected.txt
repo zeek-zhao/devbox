@@ -1,0 +1,5 @@
+oom-triggered: java.lang.OutOfMemoryError caught
+oom-kind: heap-exhaustion -> action=raise-heap-or-fix-leak
+soe-triggered: java.lang.StackOverflowError caught
+soe-kind: call-depth -> action=fix-recursion
+taxonomy: fatal errors are classified by trigger, not by message text

@@ -1,0 +1,5 @@
+assert-enabled: true
+internal-invariant: AssertionError caught (assertions guard internal bugs)
+null-contract: NullPointerException: id is required
+public-api: IllegalArgumentException: amount must be positive
+rule: assert for internal invariants, typed exceptions for API contracts

@@ -1,0 +1,4 @@
+{"code": "TRANSIENT", "level": "ERROR", "message": "db unavailable", "seq": 1}
+{"code": "VALIDATION", "level": "ERROR", "message": "field age must be a positive integer", "seq": 2}
+{"code": "NONE", "level": "INFO", "message": "handled 2 errors, service up", "seq": 3}
+rule: one JSON per line; error class is a field, not a message prefix
