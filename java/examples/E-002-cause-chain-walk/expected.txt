@@ -1,0 +1,5 @@
+top: ImportException: import doc-7 failed
+layer-2 cause: StorageException: read path docs/7
+root cause: java.io.IOException: sector unreadable
+chain-depth: 3
+rule: wrap at boundaries, keep the cause, walk to the root

@@ -1,0 +1,4 @@
+handler: caught IllegalStateException from worker-1
+executor-no-get: future held the failure, nothing surfaced
+executor-get: ExecutionException caused by IllegalStateException
+rule: every thread gets a handler or every future is observed

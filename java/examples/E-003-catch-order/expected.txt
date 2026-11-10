@@ -1,0 +1,5 @@
+specific-first: FileNotFoundException caught: docs/7 missing
+parent-catch: IOException caught: pipe broken
+union-catch: FileNotFoundException caught by union handler
+union-then-parent: IOException caught by parent handler
+order-rule: subclass handlers must precede their base class
