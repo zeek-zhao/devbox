@@ -1,0 +1,8 @@
+rows_before_savepoint=2
+violation err=1062 rollback_to=sp1
+rows_after_rollback_to=2
+rows_final=3
+pg_violation err=23505 class=constraint
+pg_after_error err=25P02 class=aborted_txn
+pg_without_savepoint rows_committed=0
+pg_with_savepoint rows_committed=2

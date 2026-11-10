@@ -1,0 +1,6 @@
+deadlock err=1213 victim=b retryable=yes
+a_committed=yes
+retry attempt=2 ok=yes
+final id=1 balance=85
+final id=2 balance=70
+final id=3 balance=95

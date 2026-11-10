@@ -1,0 +1,7 @@
+snapshot_read_a=100
+snapshot_read_b=100
+final_value=105
+expected_value=115
+lost_update=yes
+for_update_timeout err=1205 class=contention retryable=yes
+retry_final=125

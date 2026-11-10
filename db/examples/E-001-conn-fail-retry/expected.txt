@@ -1,0 +1,8 @@
+attempt=1 err=2003 class=environment retryable=yes
+attempt=2 err=2003 class=environment retryable=yes
+attempt=3 err=2003 class=environment retryable=yes
+retry_budget_exhausted=yes
+bad_password err=1045 class=credentials retryable=no
+connect_ok=1
+log_rows=4
+log_success=1

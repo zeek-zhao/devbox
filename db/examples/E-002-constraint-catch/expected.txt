@@ -1,0 +1,6 @@
+dup_email err=1062 class=unique retryable=no
+negative_age err=3819 class=check retryable=no
+orphan_order err=1452 class=foreign_key retryable=no
+valid_order ok=1
+delete_parent err=1451 class=foreign_key retryable=no
+insert_ok rows=1
