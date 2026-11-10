@@ -1,0 +1,2 @@
+uncaught: ZeroDivisionError: division by zero
+boundary: unexpected errors are logged once, process keeps running

@@ -1,0 +1,5 @@
+bad-message: ParseError('oops') (no context: caller guesses)
+contract: bad: field=False value=False action=False
+good-message: field 'amount' got 'abc' expected integer (act: fix input)
+contract: good: field=True value=True action=True
+rule: messages carry field, value, expectation; secrets stay out
