@@ -1,0 +1,7 @@
+count rows=5 amount_non_null=2
+distinct_region=2
+north_sum=100
+south_sum_is_null=yes south_sum_coalesced=0
+eq_null_matches=0 is_null_matches=2
+avg_amount=150
+not_in_trap=0 not_in_fixed=3
