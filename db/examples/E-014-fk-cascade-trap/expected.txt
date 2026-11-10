@@ -1,0 +1,4 @@
+delete_parent err=1451 class=foreign_key action=handle_children
+explicit_two_step orders_left=0 customer_gone=yes
+cascade_delete invoices_before=2 invoices_after=0 silent_loss=yes
+customers_left=0

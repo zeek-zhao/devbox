@@ -1,0 +1,3 @@
+tail_marker good=yes bad=no
+corrupt_restore stmts_done=17 err=1064 detected=yes
+good_restore rows=3 checksum_match=yes
