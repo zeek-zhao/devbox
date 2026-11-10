@@ -1,0 +1,6 @@
+layer=inner code=7 message=missing-config
+layer=middle code=7 message=missing-config
+layer=entry code=7 message=missing-config
+layer=swallowed code=0 message=missing-config
+transparent chain: identity preserved
+swallowing: identity broken (code 7 -> 0)
