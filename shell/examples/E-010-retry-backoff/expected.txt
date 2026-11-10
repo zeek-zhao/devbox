@@ -1,0 +1,3 @@
+retry success: attempts=3 waited=30ms
+retry non-retryable: attempts=1 waited=0ms
+retry give-up: attempts=4 waited=70ms
