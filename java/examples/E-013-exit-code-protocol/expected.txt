@@ -1,0 +1,6 @@
+protocol: usage=2 data=1 success=0
+rule: map error classes to exit codes once, at the boundary
+probe-usage-exit: 2
+probe-data-exit: 1
+probe: ok -> exit 0
+probe-ok-exit: 0

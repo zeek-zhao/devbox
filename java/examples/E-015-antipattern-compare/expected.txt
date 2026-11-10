@@ -1,0 +1,5 @@
+anti-1: swallowed (bug invisible) -> wrong
+fix-1: {"code": "TRANSIENT", "message": "storage busy", "type": "TransientException"} -> logged, visible
+anti-2: other (classified by message text) -> wrong
+fix-2: TRANSIENT (classified by type) -> stable
+rule: never swallow silently; classify by type; log one structured line

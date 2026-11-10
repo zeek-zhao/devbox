@@ -1,0 +1,6 @@
+deadlock-detected: true
+deadlocked-threads: worker-1,worker-2
+fix-1: crossed
+fix-2: crossed
+fix-run: completed without deadlock (uniform lock order)
+rule: uniform lock order kills cycles; tryLock with timeout is the fallback
