@@ -1,0 +1,5 @@
+wrapped=component Page: load card failed
+cause level1=component Card: parse payload failed
+cause level2=SyntaxError
+cause is SyntaxError=true
+chain depth=3
