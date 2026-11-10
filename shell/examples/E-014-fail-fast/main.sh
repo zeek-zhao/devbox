@@ -32,7 +32,9 @@ do_work() {
 main() {
   local rc=0
   # 场景一：前置校验拦住缺失的 API 地址，一行工作都没跑。
+  # shellcheck disable=SC2034  # 经 validate_all 间接展开读取
   ENV_API_URL=''
+  # shellcheck disable=SC2034  # 经 validate_all 间接展开读取
   ENV_TOKEN='token-1'
   work_done=0
   validate_all || rc=$?
@@ -47,6 +49,7 @@ main() {
   fi
   printf 'mode=fail-fast env-ok: rc=%d work_done=%d\n' "$rc" "$work_done"
   # 对照：不做校验直接开工，撞在半路。
+  # shellcheck disable=SC2034  # 经 validate_all 间接展开读取
   ENV_API_URL=''
   work_done=0
   rc=0
