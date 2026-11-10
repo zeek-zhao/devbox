@@ -1,0 +1,5 @@
+source=a status=fulfilled value=payload-a
+source=b status=rejected reason=E_OFFLINE
+source=c status=rejected reason=E_QUOTA
+aggregate ok=1 failed=2
+failed reasons=E_OFFLINE,E_QUOTA

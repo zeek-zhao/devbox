@@ -1,0 +1,3 @@
+antipattern=destructuring bad=1 good=2
+antipattern=mutate-prop bad=parent=99 good=parent-with-copy=1
+antipattern=swallowed-promise bad=recorded=0 good=recorded=1

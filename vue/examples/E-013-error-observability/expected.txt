@@ -1,0 +1,3 @@
+report component=Card message=boom info=render function
+report component=Page message=async blew info=setup function
+reports=2 fields=3 (component, message, info)

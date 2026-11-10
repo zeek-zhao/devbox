@@ -1,0 +1,3 @@
+load fast: result=data
+load hung: result=E_TIMEOUT after 50ms
+deadline conversions=1
