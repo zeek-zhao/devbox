@@ -1,0 +1,7 @@
+open: a
+open: b
+fail: boom
+close: b
+close: a
+caught: boom
+suppress: continued after optional cleanup failure

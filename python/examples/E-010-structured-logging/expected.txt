@@ -1,0 +1,3 @@
+{"code": "TRANSIENT", "level": "ERROR", "message": "database unavailable"}
+{"code": "VALIDATION", "level": "ERROR", "message": "field age must be a positive integer"}
+{"code": "NONE", "level": "INFO", "message": "handled 2 errors, service up"}
