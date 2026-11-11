@@ -33,7 +33,6 @@
 #   --pretty               JSON 缩进输出（需 python3）
 set -u
 
-PROG="$(basename "$0")"
 usage() { sed -n '2,40p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
 
 log_file="" run_id="" head_sha="" job="" step="" exit_code=""
@@ -62,12 +61,10 @@ if [ "$log_file" != "-" ] && [ ! -f "$log_file" ]; then
   exit 1
 fi
 
-for v in "$force"; do
-  case "$v" in
-    ""|infra_transient|real_regression|flaky_test) ;;
-    *) echo "ERROR: --force 只接受三分类枚举值" >&2; exit 2 ;;
-  esac
-done
+case "$force" in
+  ""|infra_transient|real_regression|flaky_test) ;;
+  *) echo "ERROR: --force 只接受三分类枚举值" >&2; exit 2 ;;
+esac
 
 U="UNVERIFIED"
 [ -n "$run_id" ] || run_id="$U"
