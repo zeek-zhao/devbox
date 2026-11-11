@@ -33,7 +33,7 @@ last_verified: 2026-11-12
 - status 词表**只用** `draft` / `reviewed` / `verified`（[75-文档健康规范](75-文档健康规范.md)
   状态机；无 frontmatter 的篇一律按 `draft` 计入，不得发明「未标注」等第四态）。
 
-## 2. 顶层 docs/（33 篇）
+## 2. 顶层 docs/（34 篇）
 
 | 文档 | 说明 | status |
 |---|---|---|
@@ -56,6 +56,7 @@ last_verified: 2026-11-12
 | [71-任务卡规范v2](71-任务卡规范v2.md) | 任务卡规范 v2（agent_task 表单的规范真本） | draft |
 | [72-排障演练规范](72-排障演练规范.md) | 排障演练规范（可执行 lab） | draft |
 | [73-M11并发执行计划](73-M11并发执行计划.md) | M11 并发执行计划（文档增强 v2） | reviewed |
+| [74-M11验收报告](74-M11验收报告.md) | M11 验收报告（独立 verifier 交叉复核） | draft |
 | [75-文档健康规范](75-文档健康规范.md) | 文档健康规范（frontmatter owner 与保鲜） | draft |
 | [76-M11派单状态](76-M11派单状态.md) | M11 派单状态表（coordinator 元卡） | draft |
 | [78-CI失败分类规范](78-CI失败分类规范.md) | CI 失败分类规范（infra_transient / real_regression / flaky_test） | draft |
