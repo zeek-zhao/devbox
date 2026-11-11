@@ -1,0 +1,29 @@
+{
+  "spec_version": "v2",
+  "rubric_version": "m11-rubric-1",
+  "model": "UNVERIFIED",
+  "session_id": "delegated-subagent (child of session-503fc2d7-0279-48ca-90c1-9b566c0b8e63, independent calibration run)",
+  "run_id": "m11-calib-20261112",
+  "head_sha": "078d789952891786380a239a28d862c53d869a5b",
+  "commands": [
+    {"cmd": "bash scripts/check-docs.sh", "exit_code": 0},
+    {"cmd": "grep -c '^| E-' go/docs/知识点清单.md", "exit_code": 0},
+    {"cmd": "bash scripts/check-error-examples.sh", "exit_code": 0},
+    {"cmd": "bash scripts/check-error-examples.sh --lang go", "exit_code": 0},
+    {"cmd": "bash -n scripts/check-error-examples.sh", "exit_code": 0},
+    {"cmd": "/tmp/calib337 反向测试：删除 java/examples/E-001-exception-taxonomy/README.md 后重跑", "exit_code": 1},
+    {"cmd": "TAG=latest scripts/run-example.sh go E-011-context-timeout（rubric B 抽测）", "exit_code": 0}
+  ],
+  "assertions": [
+    "card_323: check-docs rc=0 / E 行数=15 / 四篇文档存在 / E ID 全部真实 → pass",
+    "card_337: 全轨 rc=0 / --lang go rc=0 / bash -n rc=0 / 反向测试捕获 FAIL java/E-001-exception-taxonomy → pass",
+    "rubric A=5：E-011 deadline vs cancel 判别闭环成立，实测命令输出与判据逐字一致",
+    "rubric B=5：排查手册 §2 共 15 节四件套齐，判据为可对照输出字符串",
+    "rubric C=5：抽查 E-011/E-004/E-012 三行 ID/判据/锚点与清单 §E 一致",
+    "备注（不影响评分）：go/docs/错误处理指南.md frontmatter examples 未含正文实际覆盖的 E-004/006/007/008/009/012/013/014/015（仅 6 个 E 例）"
+  ],
+  "classification": "pass",
+  "unverified": ["model（子会话模型标识未暴露给本会话）"],
+  "owner": "zeek.zhao <zeek.zhao@foxmail.com>",
+  "reviewed_at": "UNVERIFIED"
+}

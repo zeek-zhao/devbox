@@ -1,0 +1,31 @@
+{
+  "spec_version": "v2",
+  "rubric_version": "m11-rubric-1",
+  "model": "UNVERIFIED",
+  "session_id": "session-503fc2d7-0279-48ca-90c1-9b566c0b8e63",
+  "run_id": "m11v-271-20261112",
+  "head_sha": "078d789952891786380a239a28d862c53d869a5b",
+  "commands": [
+    {
+      "cmd": "test -f CONTRIBUTING.md",
+      "exit_code": 0
+    },
+    {
+      "cmd": "test -f README.md",
+      "exit_code": 0
+    },
+    {
+      "cmd": "grep -n 'zeek.zhao' CONTRIBUTING.md",
+      "exit_code": 0
+    }
+  ],
+  "assertions": [
+    "规则判据全过（存在性/frontmatter/契约 grep），详见 docs/74-M11验收报告.md §2"
+  ],
+  "classification": "pass",
+  "unverified": [
+    "model（implementer 会话模型不可回溯）"
+  ],
+  "owner": "zeek.zhao <zeek.zhao@foxmail.com>",
+  "reviewed_at": "UNVERIFIED"
+}

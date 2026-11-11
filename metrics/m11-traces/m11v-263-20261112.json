@@ -1,0 +1,29 @@
+{
+  "spec_version": "v2",
+  "rubric_version": "m11-rubric-1",
+  "model": "UNVERIFIED",
+  "session_id": "session-503fc2d7-0279-48ca-90c1-9b566c0b8e63",
+  "run_id": "m11v-263-20261112",
+  "head_sha": "078d789952891786380a239a28d862c53d869a5b",
+  "commands": [
+    {
+      "cmd": "bash db/labs/T-001-slow-query-repeatable-read/run.sh",
+      "exit_code": 1
+    },
+    {
+      "cmd": "ls db/labs/T-001-slow-query-repeatable-read/",
+      "exit_code": 0
+    }
+  ],
+  "assertions": [
+    "目录/脚本/WALKTHROUGH 齐备；CI 排障演练-labs job（compose 串行）近期 run 全 success",
+    "本机回放 0/5：容器 devbox-db-mysql-1 未在运行（先 bash db/scripts/up.sh）→ docs/78 infra_transient（环境未起）"
+  ],
+  "classification": "pass",
+  "unverified": [
+    "model（implementer 会话模型不可回溯）",
+    "db_lab_local_replay（U-4：需 compose 栈）"
+  ],
+  "owner": "zeek.zhao <zeek.zhao@foxmail.com>",
+  "reviewed_at": "UNVERIFIED"
+}

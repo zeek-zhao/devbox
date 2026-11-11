@@ -1,0 +1,24 @@
+{
+  "spec_version": "v2",
+  "rubric_version": "m11-rubric-1",
+  "model": "UNVERIFIED",
+  "session_id": "session-503fc2d7-0279-48ca-90c1-9b566c0b8e63",
+  "run_id": "m11v-264-20261112",
+  "head_sha": "078d789952891786380a239a28d862c53d869a5b",
+  "commands": [
+    {
+      "cmd": "grep -n 'SHA_TAG: sha-' .github/workflows/ci.yml",
+      "exit_code": 0
+    }
+  ],
+  "assertions": [
+    "labs job 使用 sha-<commit> 镜像 tag（KI-08），#264 注释修正已随卡合入 main",
+    "needs-human 卡由维护者执行并合入（docs/76 状态 merged）"
+  ],
+  "classification": "pass",
+  "unverified": [
+    "model（implementer 会话模型不可回溯）"
+  ],
+  "owner": "zeek.zhao <zeek.zhao@foxmail.com>",
+  "reviewed_at": "UNVERIFIED"
+}
