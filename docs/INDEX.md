@@ -33,7 +33,7 @@ last_verified: 2026-11-12
 - status 词表**只用** `draft` / `reviewed` / `verified`（[75-文档健康规范](75-文档健康规范.md)
   状态机；无 frontmatter 的篇一律按 `draft` 计入，不得发明「未标注」等第四态）。
 
-## 2. 顶层 docs/（30 篇）
+## 2. 顶层 docs/（33 篇）
 
 | 文档 | 说明 | status |
 |---|---|---|
@@ -65,6 +65,9 @@ last_verified: 2026-11-12
 | [82-错误码与错误结构](82-错误码与错误结构.md) | 错误码与错误结构（How-to / 契约） | draft |
 | [83-排障总入口](83-排障总入口.md) | 排障总入口（How-to） | draft |
 | [84-文档地图](84-文档地图.md) | 文档地图（Reference） | draft |
+| [85-CI增强规格](85-CI增强规格.md) | CI 增强规格（给 #264 的施工图） | draft |
+| [86-度量口径](86-度量口径.md) | 86 度量口径（仓库资产侧六指标） | draft |
+| [87-CI失败取证规范](87-CI失败取证规范.md) | CI 失败取证规范（日志下载、artifact 留档与 step summary） | draft |
 | [ROADMAP](ROADMAP.md) | 路线图与里程碑 | draft |
 | [开源合规审计](开源合规审计.md) | 开源合规审计报告 | draft |
 
