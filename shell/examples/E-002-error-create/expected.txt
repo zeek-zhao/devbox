@@ -1,3 +1,4 @@
 main.sh: validate-name: name is empty
 rc=2
 rc=0
+antipattern=diagnostic-channel bad=stdout good=stderr

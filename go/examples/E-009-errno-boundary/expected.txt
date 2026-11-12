@@ -4,3 +4,4 @@ boundary code for missing file: 3
 boundary code for bad number: 2
 boundary code for success: 0
 boundary code for unknown: 70
+antipattern=error-text-match bad=false good=true

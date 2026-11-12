@@ -2,3 +2,4 @@ fail-fast normal: n=16 err=<nil>
 fail-fast recovered: n=0 err=parse roman "xyz": symbol table missing "x": programmer bug: invariant violated
 fail-fast policy: unrecoverable -> exit(70) (simulated)
 fail-fast boundary: panic converted, errors.Is(err, ErrInvariant)=true
+antipattern=swallow-invariant bad=zero-without-error good=ErrInvariant

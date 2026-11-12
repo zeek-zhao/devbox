@@ -82,6 +82,35 @@ jobs:
         run: bash scripts/check-error-examples.sh
 
   # ------------------------------------------------------------------
+  # README 结构覆盖：只给渐进迁移提供 WARN 与基线，不阻断合并（#399 / D-10）
+  # ------------------------------------------------------------------
+  readme-structure:
+    name: README 结构覆盖（advisory）
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: 采集逐轨覆盖并写入摘要
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          bash scripts/check-readme-structure.sh 2>&1 | tee /tmp/readme-structure.txt
+          checker_rc=${PIPESTATUS[0]}
+          {
+            echo '## README 结构覆盖（advisory）'
+            echo
+            echo '本报告只用于观察历史 README 的渐进迁移；缺段不会阻断合并。'
+            echo
+            echo '```text'
+            cat /tmp/readme-structure.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit "$checker_rc"
+
+  # ------------------------------------------------------------------
   # 静态检查：不依赖镜像，最快，失败信息最直接
   # ------------------------------------------------------------------
   static:

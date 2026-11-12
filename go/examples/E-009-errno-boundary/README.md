@@ -2,14 +2,17 @@
 
 <!-- coverage: exempt Go 轨 E 段错误处理专题示例（E-009 边界转换与错误码），面向错误处理教学，不接入毕业项目；排查指引将收录于 go/docs/排查手册.md 错误处理章（该章由 M11-DOC-go 卡统一落盘，先以本指向登记） -->
 
-## 现象
+## 考点
 
-标准库调用失败后，程序要么直接 `panic`、要么 `os.Exit(1)` 一刀切——调用方
-（脚本、调度器）无法区分「文件不存在」（该初始化）和「权限拒绝」（该报障）；
-另一头，代码里散落 `strings.Contains(err.Error(), "no such file")` 的判定，
-换个系统/locale 就失效。
+标准库错误通常同时携带包级 sentinel（如 `fs.ErrNotExist`）和包装类型（如 `*fs.PathError`）。在系统边界用 `errors.Is/As` 解码，再映射为稳定的应用错误码；不要让上层依赖错误文本。
 
-## 复现命令
+## 易错点
+
+- `strings.Contains(err.Error(), "not exist")` 把给人看的诊断文本当成程序契约，换系统或 locale 就可能失效。
+- 所有失败统一映射成 exit 1，会让调用方无法区分可自动恢复与需人工介入的错误。
+- 真跑对照用一个稳定构造的权限错误：文本中不含固定英文短语时，字符串匹配得到 `false`，而 `errors.Is` 仍能识别 `fs.ErrPermission`。
+
+## 复现
 
 ```bash
 TAG=latest bash scripts/run-example.sh go E-009-errno-boundary
@@ -18,23 +21,8 @@ docker run --rm -v "$PWD":/work -w /work/go/examples/E-009-errno-boundary \
   ghcr.io/zeek-zhao/devbox-go:latest bash assert.sh
 ```
 
-## 期望输出
+逐行输出应与 `expected.txt` 一致：缺失文件被识别为 `*fs.PathError` 并映射为码 3；非法数字映射为 2；成功为 0；未知错误兜底为 70。
 
-与 expected.txt 逐行一致：os.ReadFile 报出的标准库诊断文本、errors.As 取出
-*fs.PathError、fs.ErrNotExist→码 3、*strconv.NumError→码 2、成功→0、
-未知兜底→70。
+## 延伸
 
-## 为什么这样处理
-
-- 标准库的错误约定是「包级 sentinel（fs.ErrNotExist）+ 包装类型
-  （*fs.PathError）」：sentinel 答「是什么原因」，包装类型答「在哪个文件、
-  哪个操作」。用 errors.Is/As 解码，而不是解析错误文本。
-- 在系统边界把解码结果映射成稳定的错误码（退出码、gRPC code 等）：
-  上游只依赖码表，不依赖错误文本，码表稳定即契约稳定。
-
-## 反例
-
-- `strings.Contains(err.Error(), "not exist")`：文本是给人看的诊断，不是
-  契约，任何一端改写即断。
-- 一切失败都 exit 1：调用方无法区分可自动恢复与需人工介入的失败。
-- 忽略未知错误类别就归入已知类别：宁可给「未知」单独一个兜底码。
+错误文本适合诊断人类，错误类型与 sentinel 才适合作为稳定机器接口。在系统边界集中解码一次，之后的业务逻辑只依赖自己的错误码表。

@@ -2,13 +2,17 @@
 
 <!-- coverage: exempt Go 轨 E 段错误处理专题示例（E-014 不可恢复与快速失败），面向错误处理教学，不接入毕业项目；排查指引将收录于 go/docs/排查手册.md 错误处理章（该章由 M11-DOC-go 卡统一落盘，先以本指向登记） -->
 
-## 现象
+## 考点
 
-不变量被破坏后程序选择「带病运行」：符号表缺了条目就当 0 继续算，错误结果
-一路写进存储；或者相反——库函数随手 panic 穿透三层调用栈，把可预期的坏输入
-放大成整个进程崩溃，谁也不知道该在哪一层接。
+库内部 panic 可以暴露程序员不变量错误；库边界应 recover 一次并用 `%w` 转为带 sentinel 的 error，进程边界再决定快速失败。对上契约是 `ErrInvariant`，不是 panic 文本。
 
-## 复现命令
+## 易错点
+
+- 到处 `defer recover()` 会把 bug 吞掉，程序可能以未定义状态继续运行。
+- goroutine 的 panic 无法由其他 goroutine recover；试图跨 goroutine 接住会导致进程崩溃。
+- 真跑对照：同一不变量 panic 被吞掉后返回零结果且无错误，错误路径表现为 `zero-without-error`；在库边界 recover 并包装后，`errors.Is` 能识别 `ErrInvariant`。样例只把结果作为 stdout 期望数据，不让 panic 或业务错误逃逸成 CI 失败。
+
+## 复现
 
 ```bash
 TAG=latest bash scripts/run-example.sh go E-014-fail-fast
@@ -17,23 +21,9 @@ docker run --rm -v "$PWD":/work -w /work/go/examples/E-014-fail-fast \
   ghcr.io/zeek-zhao/devbox-go:latest bash assert.sh
 ```
 
-## 期望输出
+逐行输出应与 `expected.txt` 一致：正常输入得到 n=16；不变量破坏后边界 recover 转为 error，策略层模拟快速失败；`errors.Is` 确认错误身份是 `ErrInvariant`。
 
-与 expected.txt 逐行一致：正常输入 n=16、不变量破坏时边界 recover 转成
-带 sentinel 的 error（n=0，进程不崩）、策略层按 sentinel 判定后快速失败
-（打印代替真实 exit(70)）、errors.Is 确认契约是 ErrInvariant 而非 panic 文本。
+## 延伸
 
-## 为什么这样处理
-
-- 分层分工：库内部 panic 表达「这不该发生」（程序员 bug，立即暴露优于带病
-  运行）；库边界 recover 一次、转成 `fmt.Errorf(..., %w, ErrInvariant)`，
-  panic 文本只是诊断细节，对上契约是 sentinel。进程边界对不可恢复错误
-  快速失败（log.Fatal / 非零退出），宁可停止服务也不产出坏数据。
-- recover 必须配 `%w` 转换：只 recover 不转换等于把 panic 换成静默。
-
-## 反例
-
-- 到处 `defer recover()` 当兜底：bug 被到处吞，程序以未定义状态继续跑。
-- 在 goroutine 里指望别人 recover：goroutine 的 panic 无法被其他 goroutine
-  接住，进程必崩。
-- 对不变量错误「先记日志继续跑」：坏数据落库的代价远大于一次快速失败。
+- recover 只应放在明确的库边界；转换时用 `%w` 保留机器可判定的身份。
+- 对不可恢复错误，进程边界宁可快速失败，也不要把坏结果继续写入存储。

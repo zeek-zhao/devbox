@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"os"
 	"strconv"
+	"strings"
 )
 
 // 边界转换与错误码：标准库的错误约定是「包级 sentinel + 包装类型」
@@ -18,6 +19,11 @@ const (
 	codeNotFound = 3
 	codeUnknown  = 70
 )
+
+type stablePermissionError struct{}
+
+func (stablePermissionError) Error() string { return "open config failed" }
+func (stablePermissionError) Unwrap() error { return fs.ErrPermission }
 
 func readConfig(path string) error {
 	_, err := os.ReadFile(path)
@@ -57,4 +63,9 @@ func main() {
 	// 5) 成功与未知兜底
 	fmt.Printf("boundary code for success: %d\n", exitCodeFor(nil))
 	fmt.Printf("boundary code for unknown: %d\n", exitCodeFor(errors.New("mystery")))
+
+	permissionErr := stablePermissionError{}
+	badPermissionCheck := strings.Contains(permissionErr.Error(), "permission denied")
+	goodPermissionCheck := errors.Is(permissionErr, fs.ErrPermission)
+	fmt.Printf("antipattern=error-text-match bad=%t good=%t\n", badPermissionCheck, goodPermissionCheck)
 }

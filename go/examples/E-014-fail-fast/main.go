@@ -37,6 +37,17 @@ func parseRomanSafe(s string) (n int, err error) {
 	return parseRoman(s), nil
 }
 
+// badParseRoman swallows an invariant panic and reports a plausible zero result.
+// This models the wrong behavior without letting a panic escape the sample process.
+func badParseRoman(s string) (n int, err error) {
+	defer func() {
+		if recover() != nil {
+			n, err = 0, nil
+		}
+	}()
+	return parseRoman(s), nil
+}
+
 func main() {
 	// 1) 正常输入
 	n, err := parseRomanSafe("XVI")
@@ -54,4 +65,16 @@ func main() {
 	// 4) 边界转换后契约仍可判定
 	fmt.Printf("fail-fast boundary: panic converted, errors.Is(err, ErrInvariant)=%t\n",
 		errors.Is(err, ErrInvariant))
+
+	badN, badErr := badParseRoman("xyz")
+	_, goodErr := parseRomanSafe("xyz")
+	badValue := "zero-without-error"
+	goodValue := "other-error"
+	if badN != 0 || badErr != nil {
+		badValue = "unexpected"
+	}
+	if errors.Is(goodErr, ErrInvariant) {
+		goodValue = "ErrInvariant"
+	}
+	fmt.Printf("antipattern=swallow-invariant bad=%s good=%s\n", badValue, goodValue)
 }

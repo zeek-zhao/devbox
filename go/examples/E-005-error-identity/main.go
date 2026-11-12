@@ -46,4 +46,9 @@ func main() {
 	var pe2 *ParseError
 	ok2 := errors.As(err2, &pe2)
 	fmt.Printf("as: second same-class ok=%t field=%q line=%d\n", ok2, pe2.Field, pe2.Line)
+
+	badIdentity := errors.New("unauthorized")
+	goodIdentity := fmt.Errorf("auth: %w", ErrUnauthorized)
+	fmt.Printf("antipattern=error-identity bad=%t good=%t\n",
+		errors.Is(badIdentity, ErrUnauthorized), errors.Is(goodIdentity, ErrUnauthorized))
 }

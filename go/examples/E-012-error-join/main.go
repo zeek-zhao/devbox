@@ -78,4 +78,14 @@ func main() {
 
 	// 无失败：Join 返回 nil，调用方零分支
 	fmt.Printf("join empty: err==nil=%t\n", errors.Join() == nil)
+
+	// Same failures: early return observes only the first; aggregation observes both.
+	firstOnly := 0
+	for _, shardErr := range errs {
+		if shardErr != nil {
+			firstOnly = 1
+			break
+		}
+	}
+	fmt.Printf("antipattern=first-error-return bad=%d good=%d\n", firstOnly, len(errs))
 }

@@ -41,6 +41,17 @@ observe() {
 main() {
   observe validate_name ''
   observe validate_name devbox
+
+  # Observe the wrong and right channel choices without failing the sample.
+  bad_diagnostic() { printf '%s\n' 'validate-name: name is empty'; }
+  good_diagnostic() { printf '%s\n' 'validate-name: name is empty' >&2; }
+  bad_stream="$(bad_diagnostic 2>/dev/null)"
+  good_stream="$(good_diagnostic 2>&1 >/dev/null)"
+  [ -n "$bad_stream" ] && [ -n "$good_stream" ] || {
+    echo "unexpected diagnostic stream routing" >&2
+    return 1
+  }
+  printf 'antipattern=diagnostic-channel bad=stdout good=stderr\n'
 }
 
 main "$@"
