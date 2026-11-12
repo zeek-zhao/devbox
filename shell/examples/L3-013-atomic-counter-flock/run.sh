@@ -9,13 +9,14 @@ echo 0 >"$WORK/counter"
 touch "$WORK/lock"
 
 bump() {
-  local i
-  for i in $(seq 1 20); do
+  local n=0
+  while ((n < 20)); do
     (
       flock 9
       c="$(cat "$WORK/counter")"
       echo $((c + 1)) >"$WORK/counter"
     ) 9>"$WORK/lock"
+    n=$((n + 1))
   done
 }
 
