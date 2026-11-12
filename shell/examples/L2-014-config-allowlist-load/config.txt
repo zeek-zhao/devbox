@@ -1,0 +1,5 @@
+server=db.internal
+port=5432
+retries=3
+# comment line
+root_shell=/bin/bash

@@ -1,6 +1,6 @@
 # Shell 毕业项目：用例覆盖表
 
-覆盖 `shell/examples/` 全部 54 个目录，含 `L0-hello`。落点相对 project/，
+覆盖 `shell/examples/` 全部 71 个目录，含 `L0-hello`。落点相对 project/，
 指向实际操作或其紧邻注释。JSON 巡检和短选项由 BATS 执行；
 其余主流程也由 runtime 固定自检执行。
 
@@ -60,3 +60,20 @@
 | L3-004-sha256-integrity | lib/commands.sh:74 | 验证固定 SHA256SUMS，篡改会失败 |
 | L3-005-globstar-recursion | lib/commands.sh:59 | **/*.txt 递归匹配，额外深层文件导致巡检失败 |
 | L3-006-signal-cleanup | lib/common.sh:27 | INT/TERM 退出码触发 EXIT 回收进程组和临时目录 |
+| L2-013-log-level-filtering | lib/advanced.sh:6 | 按级别路由日志，error 恒走 stderr |
+| L2-014-config-allowlist-load | lib/advanced.sh:17 | 白名单键导出，其余整行拒绝 |
+| L2-015-dry-run-plan-apply | lib/advanced.sh:39 | 计划态只输出不落盘 |
+| L2-016-resume-state-marker | lib/advanced.sh:50 | 状态文件断点续跑，重跑只补缺失步 |
+| L2-017-path-hygiene-deps | lib/advanced.sh:63 | 依赖前置检查，缺失即列名失败 |
+| L2-018-worker-pool-wait-n | lib/advanced.sh:75 | worker 池 wait 逐个回收成败 |
+| L2-019-manifest-install-uninstall | lib/advanced.sh:94 | 清单驱动安装/卸载，清单外不动 |
+| L2-020-log-rotation-size | lib/advanced.sh:111 | 写满轮转并保留 N 份历史 |
+| L3-007-process-group-setsid | lib/advanced.sh:138 | setsid 会话整组终止无残留 |
+| L3-008-ulimit-resource-obs | lib/advanced.sh:161 | -f 超限触发 SIGXFSZ 且截断 |
+| L3-009-umask-file-perms | lib/advanced.sh:170 | 077/022 掩码的文件目录权限落点 |
+| L3-010-symlink-handling | lib/advanced.sh:179 | 链接解析、悬空检测与重链恢复 |
+| L3-011-xargs-parallel-placeholder | lib/advanced.sh:192 | xargs 并行与占位符、排序稳定 |
+| L3-012-proc-substitution-fifo | lib/advanced.sh:200 | 进程替换 diff 与 FIFO 交接 |
+| L3-013-atomic-counter-flock | lib/advanced.sh:213 | flock 锁内读改写计数不丢 |
+| L3-014-custom-signal-ipc | lib/advanced.sh:235 | USR1/USR2 逐条确认不合并 |
+| L3-015-flavor-detection | lib/advanced.sh:268 | GNU/BusyBox 口味探测与 GNU 写法断言 |

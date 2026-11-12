@@ -1,0 +1,1 @@
+manifest=install-3 uninstall-3 extra-untouched

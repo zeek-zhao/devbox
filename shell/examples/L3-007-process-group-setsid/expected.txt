@@ -1,0 +1,1 @@
+pgroup=killed members=3 remaining=0

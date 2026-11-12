@@ -206,5 +206,6 @@ EXPECTED
   cmp -- "$fixture/expected.tsv" "$fixture/checks.tsv"
   # L3-002-streaming-text-processing
   awk -F '\t' '$2 == "PASS" {n++} END {printf "checks=%d\n", n}' "$fixture/checks.tsv"
+  advanced_self_check
   printf 'self-check OK\n'
 }

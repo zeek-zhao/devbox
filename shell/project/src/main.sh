@@ -10,6 +10,8 @@ ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$ROOT/lib/common.sh"
 # shellcheck source=../lib/commands.sh
 source "$ROOT/lib/commands.sh"
+# shellcheck source=../lib/advanced.sh
+source "$ROOT/lib/advanced.sh"
 
 # L1-004-positional-parameters
 main "$@"

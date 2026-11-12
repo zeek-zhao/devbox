@@ -2,11 +2,11 @@
 
 [![ci](https://github.com/zeek-zhao/devbox/actions/workflows/ci.yml/badge.svg)](https://github.com/zeek-zhao/devbox/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
-[![用例](https://img.shields.io/badge/用例-804-success.svg)](docs/ROADMAP.md)
+[![用例](https://img.shields.io/badge/用例-821-success.svg)](docs/ROADMAP.md)
 [![轨道](https://img.shields.io/badge/轨道-9-informational.svg)](#轨道一览)
 
 用**可运行、可逐字验证**的用例讲清技术点，再用毕业项目把用例里的能力落到真实程序。
-当前 **10 条轨道（9 条学习轨道 + 1 条 shared 工具箱）、804 个 examples 目录（659 存量用例 + 135 个 E 类错误处理示例 + 10 个排障演练）、9 个毕业项目**：8 门编程语言 + 1 条数据库轨道 + 1 条工具箱轨道。
+当前 **10 条轨道（9 条学习轨道 + 1 条 shared 工具箱）、821 个 examples 目录（659 存量用例 + 135 个 E 类错误处理示例 + 10 个排障演练 + 17 个 shell 轨补齐用例）、9 个毕业项目**：8 门编程语言 + 1 条数据库轨道 + 1 条工具箱轨道。
 
 每个用例都是一个最小可跑单元：`run.sh` 执行、`expected.txt` 逐行比对。跑不通就是没学会，
 不存在「看懂了但写不出来」的模糊地带。
@@ -100,9 +100,9 @@ runner 将 `run.sh` 的 stdout 与 `expected.txt` 逐行比较；行尾空白和
 
 ## 排障演练（labs，已迁入 examples/）
 
-804 个 examples 目录中有 **10 个排障演练**（`<lang>/examples/T-NNN-<slug>/`，2026-11-12 由 `<lang>/labs/` 迁入）：埋一个真实故障，用 ASan / valgrind / race detector / shellcheck 等工具真跑排查，配逐行判读文档。规范见 [docs/72-排障演练规范](docs/72-排障演练规范.md)。
+821 个 examples 目录中有 **10 个排障演练**（`<lang>/examples/T-NNN-<slug>/`，2026-11-12 由 `<lang>/labs/` 迁入）：埋一个真实故障，用 ASan / valgrind / race detector / shellcheck 等工具真跑排查，配逐行判读文档。规范见 [docs/72-排障演练规范](docs/72-排障演练规范.md)。
 
-**演练与普通用例的区别**：演练计入 examples 目录计数（804 口径），但不走 `expected.txt` 逐行比对——`scripts/run-example.sh --all` 显式跳过 `T-*` 前缀，由 `ci.yml` 的 labs job 独占真跑；每个目录带 README 的 `coverage: exempt`。跑法：
+**演练与普通用例的区别**：演练计入 examples 目录计数（821 口径），但不走 `expected.txt` 逐行比对——`scripts/run-example.sh --all` 显式跳过 `T-*` 前缀，由 `ci.yml` 的 labs job 独占真跑；每个目录带 README 的 `coverage: exempt`。跑法：
 
 ```bash
 bash <lang>/examples/T-001-<slug>/run.sh      # 完整演练流程
@@ -129,7 +129,7 @@ bash scripts/fmt.sh --check --lang <轨道>        # 格式化
 bash scripts/pre-merge.sh --base main            # 全量总闸（约 15 分钟）
 ```
 
-流水线对所有触发（`push`、`pull_request`、打 tag）都跑全量：794 个用例 + 10 个排障演练（共 804 个 examples 目录）+ 8 门格式 +
+流水线对所有触发（`push`、`pull_request`、打 tag）都跑全量：811 个用例 + 10 个排障演练（共 821 个 examples 目录）+ 8 门格式 +
 覆盖表 + 镜像构建 + 体积预算，单次约 20–25 分钟。仓库是公开的，Actions 分钟数不计量，
 所以不再按场景省测。细节见 [流水线说明](docs/02-流水线.md)。
 

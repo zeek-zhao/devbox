@@ -1,0 +1,1 @@
+config=loaded keys=3 rejected=root_shell
