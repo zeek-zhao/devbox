@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# TEST-392: deliberate failure for artifact-name verification (reverted after test)
+exit 1
 # ==================================================================
 # 用例 runner —— 全部 330 个用例的唯一入口
 # ------------------------------------------------------------------
