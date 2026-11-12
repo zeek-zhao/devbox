@@ -57,7 +57,7 @@ last_verified: 2026-11-11
 
 | lab | 故障形态 | 入口 | 判读文档 |
 |---|---|---|---|
-| T-001-word-splitting-pipefail | 词分割 × 管道中段吞错的组合故障 | `shell/labs/T-001-word-splitting-pipefail/run.sh` | [WALKTHROUGH.md](../labs/T-001-word-splitting-pipefail/WALKTHROUGH.md) |
+| T-001-word-splitting-pipefail | 词分割 × 管道中段吞错的组合故障 | `shell/examples/T-001-word-splitting-pipefail/run.sh` | [WALKTHROUGH.md](../examples/T-001-word-splitting-pipefail/WALKTHROUGH.md) |
 
 lab 独立于 `examples/`（不进用例计数）；演练规范真本 [docs/72](../../docs/72-排障演练规范.md)。
 

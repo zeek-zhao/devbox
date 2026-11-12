@@ -45,7 +45,8 @@ if [ "${#POS[@]}" -gt 1 ]; then echo "多余的参数: ${POS[1]}" >&2; exit 2; f
 ex_dir="$DB_ROOT/examples"
 [ -d "$ex_dir" ] || { echo "找不到 $ex_dir" >&2; exit 2; }
 
-list_all() { find "$ex_dir" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort; }
+# 2026-11-12 #390：演练目录 T-* 由 labs job 专跑，不进 db 用例 --all 的比对契约
+list_all() { find "$ex_dir" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sed '/^T-/d' | sort; }
 
 norm() { sed -e 's/[[:space:]]*$//' "$1" | sed -e '/./,$!d' | tac | sed -e '/./,$!d' | tac; }
 

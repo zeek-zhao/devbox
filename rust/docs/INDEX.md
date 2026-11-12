@@ -57,7 +57,7 @@ last_verified: 2026-11-11
 
 | lab | 故障形态 | 入口 | 判读文档 |
 |---|---|---|---|
-| T-001-borrow-trait-conflict | 编译期拒绝：E0119 coherence 掩蔽 E0502 借用冲突，双缺陷 | `rust/labs/T-001-borrow-trait-conflict/run.sh` | [WALKTHROUGH.md](../labs/T-001-borrow-trait-conflict/WALKTHROUGH.md) |
+| T-001-borrow-trait-conflict | 编译期拒绝：E0119 coherence 掩蔽 E0502 借用冲突，双缺陷 | `rust/examples/T-001-borrow-trait-conflict/run.sh` | [WALKTHROUGH.md](../examples/T-001-borrow-trait-conflict/WALKTHROUGH.md) |
 
 lab 独立于 `examples/`（不进用例计数）；演练规范真本 [docs/72](../../docs/72-排障演练规范.md)。
 

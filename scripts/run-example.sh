@@ -62,7 +62,11 @@ host_path() {
 
 examples_for() {
   local lang="$1"
-  find "$lang/examples" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' 2>/dev/null | sort
+  # 2026-11-12 #390：排障演练已迁入 examples/T-001-*，由 ci.yml labs job 专跑。
+  # 演练目录不满足「expected.txt 逐行比对」契约（docs/72 禁止逐字比对诊断输出），
+  # 因此用例 runner 显式跳过 T-* 前缀。判定不放宽：普通用例仍逐个全跑。
+  find "$lang/examples" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' 2>/dev/null \
+    | sed '/^T-/d' | sort
 }
 
 run_one() {

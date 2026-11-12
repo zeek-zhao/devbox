@@ -8,3 +8,4 @@ python	Python	CSV 数据处理与报表	devbox-python
 rust	Rust	跨平台 CLI 工具	devbox-rust
 shell	Shell	部署与巡检工具集	devbox-shell
 vue	Vue	Vue Todo 待办应用（无打包器）	devbox-vue
+shared	Shared 工具箱	无（工具箱轨道，不设毕业项目）	宿主 runner（无镜像层，labs job 直跑）

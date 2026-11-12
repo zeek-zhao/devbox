@@ -58,7 +58,7 @@ last_verified: 2026-11-11
 
 | lab | 场景 | 判读文档 |
 |---|---|---|
-| [T-001-deadlock-oom](../labs/T-001-deadlock-oom/WALKTHROUGH.md) | 死锁互等闭环 + 小堆 OOM：jcmd/jstack/top/javac 交叉验证 | `java/labs/T-001-deadlock-oom/WALKTHROUGH.md` |
+| [T-001-deadlock-oom](../examples/T-001-deadlock-oom/WALKTHROUGH.md) | 死锁互等闭环 + 小堆 OOM：jcmd/jstack/top/javac 交叉验证 | `java/examples/T-001-deadlock-oom/WALKTHROUGH.md` |
 
 ## 4. 「我要查 X」反查示例
 
@@ -68,7 +68,7 @@ last_verified: 2026-11-11
 - 我要查镜像/版本/环境变量 → [工程参考](工程参考.md) §2、§4。
 - 我要跑某个用例 → `TAG=latest scripts/run-example.sh java <ID>`（契约见
   [工程参考](工程参考.md) §3）。
-- 我要做一个排障演练 → [T-001 WALKTHROUGH](../labs/T-001-deadlock-oom/WALKTHROUGH.md)，
+- 我要做一个排障演练 → [T-001 WALKTHROUGH](../examples/T-001-deadlock-oom/WALKTHROUGH.md)，
   规范见 [docs/72](../../docs/72-排障演练规范.md)。
 - 我有小疑问 → [FAQ](FAQ.md)；查不到的入口在各篇「相关」节与
   [docs/ROADMAP](../../docs/ROADMAP.md) KI 段。

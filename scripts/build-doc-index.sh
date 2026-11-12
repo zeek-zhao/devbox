@@ -185,7 +185,7 @@ last_verified: 2026-11-12
 | E 类 | E 行专有：该 E 例覆盖的错误处理主题（对应 [81 §3](81-错误处理四模型与分类法.md) 五分类）；非 E 行填 `—` | `<track>/docs/知识点清单.md` §E 行 |
 | 清单锚点 | 知识点清单中的行锚点（KP 编号或 E-ID） | `<track>/docs/知识点清单.md` |
 | 指南节 | 讲解该知识点的指南文档（文件级；节号仅在有明确锚时写） | `<track>/docs/` 各指南 |
-| lab | 关联的排障演练 lab（`<track>/labs/T-001-*`）；无则 `—` | `labs/` 目录 |
+| lab | 关联的排障演练 lab（`<track>/examples/T-001-*`）；无则 `—` | `examples/` 目录 |
 | 排查命令 | 可原样粘贴的复现命令 | `TAG=latest scripts/run-example.sh <轨道> <用例ID>` |
 | coverage 状态 | `covered`（默认）/ `pending` / `exempt <原因>` | 该用例 `README.md` 的 `coverage:` 声明（[scripts/coverage-check.sh](../scripts/coverage-check.sh) 判定） |
 
@@ -198,7 +198,7 @@ last_verified: 2026-11-12
 |---|---|---|---|---|---|---|---|---|
 | L1-001-package-exports | go | L1 | — | [KP-GO-L1-01](../go/docs/知识点清单.md) | [go/docs/实践指南.md](../go/docs/实践指南.md) §2（最小可运行示例） | — | `TAG=latest scripts/run-example.sh go L1-001-package-exports` | covered |
 | L2-001-local-module-replace | go | L2 | — | [KP-GO-L2-01](../go/docs/知识点清单.md) | [go/docs/实践指南.md](../go/docs/实践指南.md)（frontmatter `examples` 含此 ID） | — | `TAG=latest scripts/run-example.sh go L2-001-local-module-replace` | covered |
-| E-011-context-timeout | go | E | 超时与取消（transient/system 边界） | [E-011-context-timeout](../go/docs/知识点清单.md) | [go/docs/排查手册.md](../go/docs/排查手册.md) §2.11 · [go/docs/错误处理指南.md](../go/docs/错误处理指南.md) §2.6 | [T-001-goroutine-leak](../go/labs/T-001-goroutine-leak/WALKTHROUGH.md) | `TAG=latest scripts/run-example.sh go E-011-context-timeout` | covered |
+| E-011-context-timeout | go | E | 超时与取消（transient/system 边界） | [E-011-context-timeout](../go/docs/知识点清单.md) | [go/docs/排查手册.md](../go/docs/排查手册.md) §2.11 · [go/docs/错误处理指南.md](../go/docs/错误处理指南.md) §2.6 | [T-001-goroutine-leak](../go/examples/T-001-goroutine-leak/WALKTHROUGH.md) | `TAG=latest scripts/run-example.sh go E-011-context-timeout` | covered |
 
 > 样例判据：3 个 ID 均对应真实目录（`go/examples/L1-001-package-exports`、
 > `go/examples/L2-001-local-module-replace`、`go/examples/E-011-context-timeout`）；
@@ -206,8 +206,8 @@ last_verified: 2026-11-12
 
 ## 3. 保鲜契约：脚本生成，禁手写全量
 
-- 9 轨共 794 个用例（存量 659 + E 类 135，[ROADMAP](ROADMAP.md) 口径）。
-  任何 **659→794 之后**的增量（新增轨、新增 E 例、新增 lab）都按本节契约进入本索引。
+- 10 轨共 804 个 examples 目录（存量 659 + E 类 135 + 演练 10，[ROADMAP](ROADMAP.md) 口径）。
+  任何 **659→804 之后**的增量（新增轨、新增 E 例、新增演练）都按本节契约进入本索引。
 - 全量行**只能由脚本生成**（M12-CI 的 `build-doc-index.sh`，issue #339 交付后生效；
   交付前新行由对应任务卡按 §1 字段表生成并在 issue 留核验输出）。
 - 禁止手写全量清单来「补齐」——手写必然腐烂：ID 改名、coverage 翻转、
@@ -303,7 +303,7 @@ last_verified: 2026-11-11
 
 | lab | 场景 | 判读文档 |
 |---|---|---|
-| [T-001-oob-double-free](../labs/T-001-oob-double-free/WALKTHROUGH.md) | 堆越界 + 双重释放：ASan（含 recover）/ valgrind / gdb 三工具交叉验证 | `c/labs/T-001-oob-double-free/WALKTHROUGH.md` |
+| [T-001-oob-double-free](../examples/T-001-oob-double-free/WALKTHROUGH.md) | 堆越界 + 双重释放：ASan（含 recover）/ valgrind / gdb 三工具交叉验证 | `c/examples/T-001-oob-double-free/WALKTHROUGH.md` |
 
 ## 4. 「我要查 X」反查示例
 
@@ -313,7 +313,7 @@ last_verified: 2026-11-11
 - 我要查镜像/版本/环境变量 → [工程参考](工程参考.md) §2、§4。
 - 我要跑某个用例 → `TAG=latest scripts/run-example.sh c <ID>`（契约见
   [工程参考](工程参考.md) §3）。
-- 我要做一个排障演练 → [T-001 WALKTHROUGH](../labs/T-001-oob-double-free/WALKTHROUGH.md)，
+- 我要做一个排障演练 → [T-001 WALKTHROUGH](../examples/T-001-oob-double-free/WALKTHROUGH.md)，
   规范见 [docs/72](../../docs/72-排障演练规范.md)。
 - 我有小疑问 → [FAQ](FAQ.md)；查不到的入口在各篇「相关」节与
   [docs/ROADMAP](../../docs/ROADMAP.md) KI 段。
@@ -380,7 +380,7 @@ last_verified: 2026-11-11
 
 | lab | 场景 | 判读文档 |
 |---|---|---|
-| [T-001-asan-heap-overflow](../labs/T-001-asan-heap-overflow/WALKTHROUGH.md) | 堆越界 + 泄漏：ASan / valgrind / gdb 三工具交叉验证 | `cpp/labs/T-001-asan-heap-overflow/WALKTHROUGH.md` |
+| [T-001-asan-heap-overflow](../examples/T-001-asan-heap-overflow/WALKTHROUGH.md) | 堆越界 + 泄漏：ASan / valgrind / gdb 三工具交叉验证 | `cpp/examples/T-001-asan-heap-overflow/WALKTHROUGH.md` |
 
 ## 4. 「我要查 X」反查示例
 
@@ -390,7 +390,7 @@ last_verified: 2026-11-11
 - 我要查镜像/版本/环境变量 → [工程参考](工程参考.md) §2、§4。
 - 我要跑某个用例 → `TAG=latest scripts/run-example.sh cpp <ID>`（契约见
   [工程参考](工程参考.md) §3）。
-- 我要做一个排障演练 → [T-001 WALKTHROUGH](../labs/T-001-asan-heap-overflow/WALKTHROUGH.md)，
+- 我要做一个排障演练 → [T-001 WALKTHROUGH](../examples/T-001-asan-heap-overflow/WALKTHROUGH.md)，
   规范见 [docs/72](../../docs/72-排障演练规范.md)。
 - 我有小疑问 → [FAQ](FAQ.md)；查不到的入口在各篇「相关」节与
   [docs/ROADMAP](../../docs/ROADMAP.md) KI 段。
@@ -456,7 +456,7 @@ last_verified: 2026-11-12
 
 | lab | 故障形态 | 入口 | 判读文档 |
 |---|---|---|---|
-| T-001-goroutine-leak | goroutine 泄漏：无超时/无取消的阻塞等待 | `go/labs/T-001-goroutine-leak/run.sh` | [WALKTHROUGH.md](../labs/T-001-goroutine-leak/WALKTHROUGH.md) |
+| T-001-goroutine-leak | goroutine 泄漏：无超时/无取消的阻塞等待 | `go/examples/T-001-goroutine-leak/run.sh` | [WALKTHROUGH.md](../examples/T-001-goroutine-leak/WALKTHROUGH.md) |
 
 lab 独立于 `examples/`（不进用例计数）；演练规范真本 [docs/72](../../docs/72-排障演练规范.md)。
 
@@ -535,7 +535,7 @@ last_verified: 2026-11-11
 
 | lab | 故障形态 | 入口 | 判读文档 |
 |---|---|---|---|
-| T-001-borrow-trait-conflict | 编译期拒绝：E0119 coherence 掩蔽 E0502 借用冲突，双缺陷 | `rust/labs/T-001-borrow-trait-conflict/run.sh` | [WALKTHROUGH.md](../labs/T-001-borrow-trait-conflict/WALKTHROUGH.md) |
+| T-001-borrow-trait-conflict | 编译期拒绝：E0119 coherence 掩蔽 E0502 借用冲突，双缺陷 | `rust/examples/T-001-borrow-trait-conflict/run.sh` | [WALKTHROUGH.md](../examples/T-001-borrow-trait-conflict/WALKTHROUGH.md) |
 
 lab 独立于 `examples/`（不进用例计数）；演练规范真本 [docs/72](../../docs/72-排障演练规范.md)。
 
@@ -614,7 +614,7 @@ last_verified: 2026-11-11
 
 | lab | 故障形态 | 入口 | 判读文档 |
 |---|---|---|---|
-| T-001-word-splitting-pipefail | 词分割 × 管道中段吞错的组合故障 | `shell/labs/T-001-word-splitting-pipefail/run.sh` | [WALKTHROUGH.md](../labs/T-001-word-splitting-pipefail/WALKTHROUGH.md) |
+| T-001-word-splitting-pipefail | 词分割 × 管道中段吞错的组合故障 | `shell/examples/T-001-word-splitting-pipefail/run.sh` | [WALKTHROUGH.md](../examples/T-001-word-splitting-pipefail/WALKTHROUGH.md) |
 
 lab 独立于 `examples/`（不进用例计数）；演练规范真本 [docs/72](../../docs/72-排障演练规范.md)。
 
@@ -693,7 +693,7 @@ last_verified: 2026-11-11
 
 | lab | 故障形态 | 入口 | 判读文档 |
 |---|---|---|---|
-| T-001-venv-mix-mutable-default | venv 混用 × 可变默认值的复合故障 | `python/labs/T-001-venv-mix-mutable-default/run.sh` | [WALKTHROUGH.md](../labs/T-001-venv-mix-mutable-default/WALKTHROUGH.md) |
+| T-001-venv-mix-mutable-default | venv 混用 × 可变默认值的复合故障 | `python/examples/T-001-venv-mix-mutable-default/run.sh` | [WALKTHROUGH.md](../examples/T-001-venv-mix-mutable-default/WALKTHROUGH.md) |
 
 lab 独立于 `examples/`（不进用例计数）；演练规范真本 [docs/72](../../docs/72-排障演练规范.md)。
 
@@ -773,7 +773,7 @@ last_verified: 2026-11-11
 
 | lab | 场景 | 判读文档 |
 |---|---|---|
-| [T-001-deadlock-oom](../labs/T-001-deadlock-oom/WALKTHROUGH.md) | 死锁互等闭环 + 小堆 OOM：jcmd/jstack/top/javac 交叉验证 | `java/labs/T-001-deadlock-oom/WALKTHROUGH.md` |
+| [T-001-deadlock-oom](../examples/T-001-deadlock-oom/WALKTHROUGH.md) | 死锁互等闭环 + 小堆 OOM：jcmd/jstack/top/javac 交叉验证 | `java/examples/T-001-deadlock-oom/WALKTHROUGH.md` |
 
 ## 4. 「我要查 X」反查示例
 
@@ -783,7 +783,7 @@ last_verified: 2026-11-11
 - 我要查镜像/版本/环境变量 → [工程参考](工程参考.md) §2、§4。
 - 我要跑某个用例 → `TAG=latest scripts/run-example.sh java <ID>`（契约见
   [工程参考](工程参考.md) §3）。
-- 我要做一个排障演练 → [T-001 WALKTHROUGH](../labs/T-001-deadlock-oom/WALKTHROUGH.md)，
+- 我要做一个排障演练 → [T-001 WALKTHROUGH](../examples/T-001-deadlock-oom/WALKTHROUGH.md)，
   规范见 [docs/72](../../docs/72-排障演练规范.md)。
 - 我有小疑问 → [FAQ](FAQ.md)；查不到的入口在各篇「相关」节与
   [docs/ROADMAP](../../docs/ROADMAP.md) KI 段。
@@ -850,7 +850,7 @@ last_verified: 2026-11-11
 
 | lab | 场景 | 判读文档 |
 |---|---|---|
-| [T-001-props-reactivity-env](../labs/T-001-props-reactivity-env/WALKTHROUGH.md) | Vue 解构 props 丢响应性 + 生产环境变量内联：运行时挂载观测 / effect 隔离 / 产物静态分析交叉验证 | `vue/labs/T-001-props-reactivity-env/WALKTHROUGH.md` |
+| [T-001-props-reactivity-env](../examples/T-001-props-reactivity-env/WALKTHROUGH.md) | Vue 解构 props 丢响应性 + 生产环境变量内联：运行时挂载观测 / effect 隔离 / 产物静态分析交叉验证 | `vue/examples/T-001-props-reactivity-env/WALKTHROUGH.md` |
 
 ## 4. 「我要查 X」反查示例
 
@@ -860,7 +860,7 @@ last_verified: 2026-11-11
 - 我要查镜像/版本/环境变量 → [工程参考](工程参考.md) §2、§4。
 - 我要跑某个用例 → `TAG=latest scripts/run-example.sh vue <ID>`（契约见
   [工程参考](工程参考.md) §3）。
-- 我要做一个排障演练 → [T-001 WALKTHROUGH](../labs/T-001-props-reactivity-env/WALKTHROUGH.md)，
+- 我要做一个排障演练 → [T-001 WALKTHROUGH](../examples/T-001-props-reactivity-env/WALKTHROUGH.md)，
   规范见 [docs/72](../../docs/72-排障演练规范.md)。
 - 我有小疑问 → [FAQ](FAQ.md)；查不到的入口在各篇「相关」节与
   [docs/ROADMAP](../../docs/ROADMAP.md) KI 段。
@@ -927,7 +927,7 @@ last_verified: 2026-11-11
 
 | lab | 场景 | 判读文档 |
 |---|---|---|
-| [T-001-slow-query-repeatable-read](../labs/T-001-slow-query-repeatable-read/WALKTHROUGH.md) | MySQL 慢查询定位与可重复读快照读（EXPLAIN / Handler 计数器 / 双会话时序） | `db/labs/T-001-slow-query-repeatable-read/WALKTHROUGH.md` |
+| [T-001-slow-query-repeatable-read](../examples/T-001-slow-query-repeatable-read/WALKTHROUGH.md) | MySQL 慢查询定位与可重复读快照读（EXPLAIN / Handler 计数器 / 双会话时序） | `db/examples/T-001-slow-query-repeatable-read/WALKTHROUGH.md` |
 
 ## 4. 「我要查 X」反查示例
 
@@ -935,7 +935,7 @@ last_verified: 2026-11-11
 - 我手上有个故障 → [排查手册](排查手册.md)按症状找节；慢查询/隔离级别走 §3 路由。
 - 我要起五库栈 / 跑用例 → `db/README.md`（`up.sh` + `wait-ready.sh`；
   `bash db/scripts/run-example.sh db <ID>`）。
-- 我要做一个排障演练 → [T-001 WALKTHROUGH](../labs/T-001-slow-query-repeatable-read/WALKTHROUGH.md)，
+- 我要做一个排障演练 → [T-001 WALKTHROUGH](../examples/T-001-slow-query-repeatable-read/WALKTHROUGH.md)，
   规范见 [docs/72](../../docs/72-排障演练规范.md)。
 - 我要查跨语言的通用开发流程 → [docs/13-通用开发指南](../../docs/13-通用开发指南.md)
   （db 轨的 G2 明确不做，由 T0 真本承接）。

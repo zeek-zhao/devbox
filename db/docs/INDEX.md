@@ -58,7 +58,7 @@ last_verified: 2026-11-11
 
 | lab | 场景 | 判读文档 |
 |---|---|---|
-| [T-001-slow-query-repeatable-read](../labs/T-001-slow-query-repeatable-read/WALKTHROUGH.md) | MySQL 慢查询定位与可重复读快照读（EXPLAIN / Handler 计数器 / 双会话时序） | `db/labs/T-001-slow-query-repeatable-read/WALKTHROUGH.md` |
+| [T-001-slow-query-repeatable-read](../examples/T-001-slow-query-repeatable-read/WALKTHROUGH.md) | MySQL 慢查询定位与可重复读快照读（EXPLAIN / Handler 计数器 / 双会话时序） | `db/examples/T-001-slow-query-repeatable-read/WALKTHROUGH.md` |
 
 ## 4. 「我要查 X」反查示例
 
@@ -66,7 +66,7 @@ last_verified: 2026-11-11
 - 我手上有个故障 → [排查手册](排查手册.md)按症状找节；慢查询/隔离级别走 §3 路由。
 - 我要起五库栈 / 跑用例 → `db/README.md`（`up.sh` + `wait-ready.sh`；
   `bash db/scripts/run-example.sh db <ID>`）。
-- 我要做一个排障演练 → [T-001 WALKTHROUGH](../labs/T-001-slow-query-repeatable-read/WALKTHROUGH.md)，
+- 我要做一个排障演练 → [T-001 WALKTHROUGH](../examples/T-001-slow-query-repeatable-read/WALKTHROUGH.md)，
   规范见 [docs/72](../../docs/72-排障演练规范.md)。
 - 我要查跨语言的通用开发流程 → [docs/13-通用开发指南](../../docs/13-通用开发指南.md)
   （db 轨的 G2 明确不做，由 T0 真本承接）。

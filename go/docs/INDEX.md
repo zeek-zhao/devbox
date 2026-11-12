@@ -57,7 +57,7 @@ last_verified: 2026-11-12
 
 | lab | 故障形态 | 入口 | 判读文档 |
 |---|---|---|---|
-| T-001-goroutine-leak | goroutine 泄漏：无超时/无取消的阻塞等待 | `go/labs/T-001-goroutine-leak/run.sh` | [WALKTHROUGH.md](../labs/T-001-goroutine-leak/WALKTHROUGH.md) |
+| T-001-goroutine-leak | goroutine 泄漏：无超时/无取消的阻塞等待 | `go/examples/T-001-goroutine-leak/run.sh` | [WALKTHROUGH.md](../examples/T-001-goroutine-leak/WALKTHROUGH.md) |
 
 lab 独立于 `examples/`（不进用例计数）；演练规范真本 [docs/72](../../docs/72-排障演练规范.md)。
 

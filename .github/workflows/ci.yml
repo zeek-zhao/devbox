@@ -329,9 +329,11 @@ jobs:
     secrets: inherit
 
   # ------------------------------------------------------------------
-  # 排障演练 labs（M11-W3-01 人工批次新增，门禁变更理由见 PR 描述）：
-  # 真跑全部 <lang>/labs/*/run.sh；镜像用本次提交的 sha-<commit> tag（KI-08，不用 :latest），
-  # 由上面 images job 同批构建推送。
+  # 排障演练 labs（M11-W3-01 人工批次新增；2026-11-12 #390 维护者授权改路径）：
+  # 真跑全部 <lang>/examples/T-*/run.sh——演练已由 <lang>/labs/ 迁入 examples/，
+  # 由本 job 独占真跑，用例 runner 的 --all 已显式跳过 T-* 前缀。
+  # 门禁变更理由：路径迁移是本卡目的本身，判定松紧不变（不新增/删除任何被跑对象）。
+  # 镜像用本次提交的 sha-<commit> tag（KI-08，不用 :latest），由上面 images job 同批构建推送。
   #
   # 等待策略（2026-11-07 修，见 PR 描述）：整批按 layer 去重、共用 1500s（25min）全局预算，
   # 与「单个 lab 等待上限」一致，够 images.yml 并行构建 11 层镜像；超时即判 image_not_ready 并失败。
@@ -357,7 +359,7 @@ jobs:
         run: |
           set -uo pipefail
           fail=0
-          for run_sh in */labs/*/run.sh; do
+          for run_sh in */examples/T-*/run.sh; do
             lang="${run_sh%%/*}"
             if [ "$lang" = "db" ]; then
               echo "==> $run_sh (compose)"

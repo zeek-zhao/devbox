@@ -58,7 +58,7 @@ last_verified: 2026-11-11
 
 | lab | 场景 | 判读文档 |
 |---|---|---|
-| [T-001-props-reactivity-env](../labs/T-001-props-reactivity-env/WALKTHROUGH.md) | Vue 解构 props 丢响应性 + 生产环境变量内联：运行时挂载观测 / effect 隔离 / 产物静态分析交叉验证 | `vue/labs/T-001-props-reactivity-env/WALKTHROUGH.md` |
+| [T-001-props-reactivity-env](../examples/T-001-props-reactivity-env/WALKTHROUGH.md) | Vue 解构 props 丢响应性 + 生产环境变量内联：运行时挂载观测 / effect 隔离 / 产物静态分析交叉验证 | `vue/examples/T-001-props-reactivity-env/WALKTHROUGH.md` |
 
 ## 4. 「我要查 X」反查示例
 
@@ -68,7 +68,7 @@ last_verified: 2026-11-11
 - 我要查镜像/版本/环境变量 → [工程参考](工程参考.md) §2、§4。
 - 我要跑某个用例 → `TAG=latest scripts/run-example.sh vue <ID>`（契约见
   [工程参考](工程参考.md) §3）。
-- 我要做一个排障演练 → [T-001 WALKTHROUGH](../labs/T-001-props-reactivity-env/WALKTHROUGH.md)，
+- 我要做一个排障演练 → [T-001 WALKTHROUGH](../examples/T-001-props-reactivity-env/WALKTHROUGH.md)，
   规范见 [docs/72](../../docs/72-排障演练规范.md)。
 - 我有小疑问 → [FAQ](FAQ.md)；查不到的入口在各篇「相关」节与
   [docs/ROADMAP](../../docs/ROADMAP.md) KI 段。
