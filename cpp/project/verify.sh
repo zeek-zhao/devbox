@@ -26,9 +26,18 @@ check() {
 }
 
 USE_DOCKER=0
+IMAGE_OK=0
 if command -v docker >/dev/null 2>&1 && docker image inspect "$IMAGE" >/dev/null 2>&1; then
+  IMAGE_OK=1
+fi
+if [ "$IMAGE_OK" -eq 1 ]; then
   USE_DOCKER=1
   printf '[info] 镜像内运行：%s\n' "$IMAGE" >&2
+elif [ "${CI:-}" = "true" ]; then
+  # CI 上镜像必须由本 job 显式拉取（#394）：静默回退宿主会让工具链版本失真，
+  # 判据就失去意义（runner 的 javac 11 会如实 fail release 21，看起来像项目坏了）。
+  IMAGE_MISSING=1
+  printf '[fail] CI 环境下镜像不可用：%s（本 job 应先 docker/login-action + 拉取镜像）\n' "$IMAGE" >&2
 else
   printf '[warn] 无 docker 或镜像不在本地：%s，回退宿主环境\n' "$IMAGE" >&2
 fi
@@ -38,6 +47,10 @@ in_container() {
   docker run --rm -v "$ROOT:/src:ro" "$IMAGE" bash -c "$1"
 }
 run_step() {
+  if [ "${IMAGE_MISSING:-0}" -eq 1 ]; then
+    printf '[fail] 跳过：CI 下镜像不可用，不允许回退宿主环境\n' >&2
+    return 1
+  fi
   if [ "$USE_DOCKER" -eq 1 ]; then
     in_container "set -uo pipefail; [ -d /tmp/p ] || cp -a /src /tmp/p; cd /tmp/p; $1"
   else

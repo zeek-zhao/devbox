@@ -27,11 +27,24 @@ check() {
 
 check "project/run.sh 存在" test -f "$ROOT/run.sh"
 
+# 栈未就绪时自行拉起（CI 里没有外部前置；本地已起则 up.sh 幂等）。
+# 纪律：不掩盖失败——拉起失败就把原因原样打出来，交给下面的判定。
 ready_ok=0
 if bash db/scripts/wait-ready.sh >"$WORK/ready.log" 2>&1; then
   ready_ok=1
 else
-  tail -10 "$WORK/ready.log"
+  printf '[info] 栈未就绪，执行 db/scripts/up.sh 拉起\n' >&2
+  if bash db/scripts/up.sh >"$WORK/up.log" 2>&1; then
+    if bash db/scripts/wait-ready.sh >"$WORK/ready.log" 2>&1; then
+      ready_ok=1
+    else
+      printf '[info] up.sh 成功但 wait-ready 仍失败\n' >&2
+      tail -10 "$WORK/ready.log" >&2
+    fi
+  else
+    printf '[info] up.sh 失败\n' >&2
+    tail -20 "$WORK/up.log" >&2
+  fi
 fi
 check "五库栈就绪（wait-ready.sh）" test "$ready_ok" -eq 1
 

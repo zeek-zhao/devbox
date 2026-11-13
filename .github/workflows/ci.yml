@@ -56,9 +56,19 @@ jobs:
     name: 毕业项目验证
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    needs: [probe, images]
+    if: always() && needs.probe.outputs.ready == 'true' && (needs.images.result == 'success' || needs.images.result == 'skipped')
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - name: 登录镜像仓库
+        uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: 汇总 9 轨毕业项目（D-7）
+        env:
+          TAG: sha-${{ github.sha }}
         run: |
           set -o pipefail
           bash scripts/verify-projects.sh 2>&1 | tee /tmp/verify-projects.txt
