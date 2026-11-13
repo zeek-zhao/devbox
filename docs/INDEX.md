@@ -88,7 +88,7 @@ last_verified: 2026-11-12
 | python | [FAQ](../python/docs/FAQ.md) · [INDEX](../python/docs/INDEX.md) · [实践指南](../python/docs/实践指南.md) · [工具指南](../python/docs/工具指南.md) · [工程参考](../python/docs/工程参考.md) · [开发指南](../python/docs/开发指南.md) · [排查手册](../python/docs/排查手册.md) · [清单自检](../python/docs/清单自检.md) · [知识点清单](../python/docs/知识点清单.md) · [错误处理指南](../python/docs/错误处理指南.md) · [问题指南](../python/docs/问题指南.md) |
 | java | [FAQ](../java/docs/FAQ.md) · [INDEX](../java/docs/INDEX.md) · [实践指南](../java/docs/实践指南.md) · [工具指南](../java/docs/工具指南.md) · [工程参考](../java/docs/工程参考.md) · [开发指南](../java/docs/开发指南.md) · [排查手册](../java/docs/排查手册.md) · [清单自检](../java/docs/清单自检.md) · [知识点清单](../java/docs/知识点清单.md) · [错误处理指南](../java/docs/错误处理指南.md) · [问题指南](../java/docs/问题指南.md) |
 | vue | [FAQ](../vue/docs/FAQ.md) · [INDEX](../vue/docs/INDEX.md) · [实践指南](../vue/docs/实践指南.md) · [工具指南](../vue/docs/工具指南.md) · [工程参考](../vue/docs/工程参考.md) · [开发指南](../vue/docs/开发指南.md) · [排查手册](../vue/docs/排查手册.md) · [用例编写规范](../vue/docs/用例编写规范.md) · [知识点清单](../vue/docs/知识点清单.md) · [错误处理指南](../vue/docs/错误处理指南.md) · [问题指南](../vue/docs/问题指南.md) |
-| db | [INDEX](../db/docs/INDEX.md) · [实践指南](../db/docs/实践指南.md) · [排查手册](../db/docs/排查手册.md) · [知识点清单](../db/docs/知识点清单.md) · [问题指南](../db/docs/问题指南.md) |
+| db | [INDEX](../db/docs/INDEX.md) · [实践指南](../db/docs/实践指南.md) · [工程参考](../db/docs/工程参考.md) · [开发指南](../db/docs/开发指南.md) · [排查手册](../db/docs/排查手册.md) · [知识点清单](../db/docs/知识点清单.md) · [问题指南](../db/docs/问题指南.md) |
 
 ### 死链核验
 

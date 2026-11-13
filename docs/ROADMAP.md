@@ -13,6 +13,7 @@
 | 轨道 | 9 条（C / C++ / 数据库 / Go / Java / Python / Rust / Shell / Vue） |
 | 用例 | 821 个 examples 目录（`*/examples/*/run.sh` 实测：存量 659 + M11 E 类 135（9 轨 × 15）+ 排障演练 10（10 轨 × 1）+ shell 轨补齐 17（`#396`），2026-11-12 `#390` 迁入）），全量跑通失败 0 |
 | 毕业项目 | 9 个，覆盖表 `--strict` 通过，0 条 `pending` |
+| 毕业项目可运行率（D-7） | 9/9（`#394` 起；`bash scripts/verify-projects.sh`，口径见 [86](86-度量口径.md) D-7） |
 | 格式化 | 8 门语言 `fmt --check` 全达标 |
 | 镜像 | 11 层预算（`images/budgets.tsv`），C 复用 `devbox-cpp`、db 走独立 Compose runner |
 | 流水线 | 全量 job：702 例（语言轨道，含 E 类 120）+ 92 例（db，含 E 类 15）+ 10 个排障演练（labs job 独占）+ 8 门格式 + 覆盖 + 镜像构建 + 体积预算 |

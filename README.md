@@ -55,6 +55,34 @@ devbox/
 
 ## 快速开始
 
+### 五分钟第一次跑通
+
+只想要「跑通一个例子」这一件事，按下面三条命令走（不需要先读任何文档）：
+
+```bash
+git clone https://github.com/zeek-zhao/devbox.git && cd devbox
+TAG=latest bash scripts/run-example.sh go E-001-error-taxonomy
+# 期望：PASS（该例的 expected.txt 与程序输出逐行一致）
+```
+
+`run-example.sh` 会自己拉取对应语言镜像；`TAG=latest` 用本地/最近构建的镜像，
+CI 里用 `TAG=sha-<commit>` 固定版本。想看全量：
+
+```bash
+TAG=latest bash scripts/run-example.sh go --all
+```
+
+> **注意**：`--all` 只跑**用例**，会跳过以 `T-` 开头的排障演练目录（共 10 个）。
+> 演练由 CI 的 `排障演练-labs` job 独占真跑（见 [docs/72](docs/72-排障演练规范.md)）。
+
+想知道自己走的这条路有没有断（文档链接、三件套、清单、真跑），跑：
+
+```bash
+bash scripts/check-reader-path.sh
+# 期望：读者路径：7 步，失败 0 步
+```
+
+
 镜像已发布到 GHCR，直接用就行：
 
 ```bash

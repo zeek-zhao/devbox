@@ -52,6 +52,41 @@ jobs:
   # 三层索引是脚本生成物，手改会与实况漂移。本 job 只校验、不生成——
   # 失败时按提示本地跑 `bash scripts/build-doc-index.sh` 后提交生成物。
   # ------------------------------------------------------------------
+  verify-projects:
+    name: 毕业项目验证
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - name: 汇总 9 轨毕业项目（D-7）
+        run: |
+          set -o pipefail
+          bash scripts/verify-projects.sh 2>&1 | tee /tmp/verify-projects.txt
+          {
+            echo "## 毕业项目可运行率（D-7）"
+            echo '```'
+            cat /tmp/verify-projects.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: 读者路径完整性（D-8，advisory）
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          bash scripts/check-reader-path.sh 2>&1 | tee /tmp/reader-path.txt
+          {
+            echo "## 读者路径（D-8）"
+            echo '```'
+            cat /tmp/reader-path.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  link-check:
+    name: 文档链接检查
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - name: 检查 Markdown 相对链接（#393）
+        run: bash scripts/check-links.sh
   docs-index:
     name: 文档索引保鲜
     runs-on: ubuntu-24.04
@@ -81,6 +116,33 @@ jobs:
       - name: E 类示例契约
         run: bash scripts/check-error-examples.sh
 
+  # ------------------------------------------------------------------
+  # 层配比可见性：9 轨 L1–L4 分布对照 [70,85]，WARN 不阻断（#398 / D-9）
+  # ------------------------------------------------------------------
+  layer-ratio:
+    name: 层配比（advisory）
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - name: 采集层配比并写入摘要
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          bash scripts/check-layer-ratio.sh 2>&1 | tee /tmp/layer-ratio.txt
+          checker_rc=${PIPESTATUS[0]}
+          {
+            echo "### 层配比（D-9 · advisory）"
+            echo
+            echo '```'
+            cat /tmp/layer-ratio.txt
+            echo '```'
+            echo
+            echo "checker exit: ${checker_rc}（advisory，不阻断合并）"
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 0
   # ------------------------------------------------------------------
   # README 结构覆盖：只给渐进迁移提供 WARN 与基线，不阻断合并（#399 / D-10）
   # ------------------------------------------------------------------
