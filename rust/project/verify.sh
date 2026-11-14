@@ -27,8 +27,11 @@ check() {
 
 USE_DOCKER=0
 IMAGE_OK=0
-if command -v docker >/dev/null 2>&1 && docker image inspect "$IMAGE" >/dev/null 2>&1; then
-  IMAGE_OK=1
+if command -v docker >/dev/null 2>&1; then
+  # 本地没有就先 pull（CI 上镜像永远不在本地，attempt2 run 43372723028 实测教训：
+  # labs job 显式 docker pull 所以绿，本 job 没拉就全轨「镜像不可用」）。
+  docker image inspect "$IMAGE" >/dev/null 2>&1 || docker pull "$IMAGE" >/dev/null 2>&1
+  docker image inspect "$IMAGE" >/dev/null 2>&1 && IMAGE_OK=1
 fi
 if [ "$IMAGE_OK" -eq 1 ]; then
   USE_DOCKER=1
