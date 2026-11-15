@@ -115,6 +115,6 @@ A: 多半是绕过了统一入口导致口径漂移。宿主用
 - **工具怎么调 / 是否预装**：[工具指南](工具指南.md)；排查类长问题等 Rust 轨道
   G3 问题指南（M8 建成）承接，先按工具指南 §2 的定位命令走。
 - **runner / CI / 门禁 / 提交 / 发版**：`docs/13-通用开发指南.md`（T0 单一真本）。
-- **已知坑登记**：`docs/ROADMAP.md` 的 KI 段、`docs/40-问题清单.md`。
+- **已知坑登记**：`docs/ROADMAP.md` 的 KI 段、`docs/archive/40-问题清单.md`。
 - **上游文档**：镜像内 `rustup doc`、`cargo doc --open`（同 `${RUST_TOOLCHAIN}`
   版本，最可靠口径）；再查不到带 `--keep` 现场去 GitHub issue 搜索 / 提 issue。

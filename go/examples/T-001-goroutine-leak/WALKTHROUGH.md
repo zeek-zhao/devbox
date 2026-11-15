@@ -13,7 +13,7 @@ verified_env: devbox-go:latest（go 1.27.3 linux/amd64）
 # WALKTHROUGH · T-001-goroutine-leak
 
 > 依据 [docs/72 排障演练规范](../../../../docs/72-排障演练规范.md) §4 编写；D1 拍板见
-> [docs/73 §11](../../../../docs/73-M11并发执行计划.md)。所有输出均为 2026-11-06 在
+> [docs/73 §11](../../../../docs/archive/73-M11并发执行计划.md)。所有输出均为 2026-11-06 在
 > devbox-go 容器内真跑所得（地址/goroutine 编号已按规范归一化，无内网信息）。
 >
 > 与样板 cpp/examples/T-001-asan-heap-overflow 的差异点：Go 轨道没有 valgrind/gdb 这类
@@ -304,9 +304,9 @@ on Linux）。`run.sh` 连跑 3 次（含 assert.sh 内两次）均 RUN-PASS 5/5
 - **类型②实验**：§1/§4 全部现象均为 2026-11-06 在 devbox-go 容器内真跑所得，
   复现命令即 §1 与 `repro.sh`；输出已按 docs/72 §2 归一化（`0x` 地址 → `0xADDR`、
   goroutine 编号 → `G`），不含内网信息。
-- **来源：S-07**（docs/24-G3素材池.md）：「CI 全绿 ≠ 教学质量达标」的 Go 变体——
+- **来源：S-07**（docs/archive/24-G3素材池.md）：「CI 全绿 ≠ 教学质量达标」的 Go 变体——
   §1 症状一（vet 全绿但双缺陷在场）、run.sh step 1（健康对照）与 §5.1 POE 点
   （程序安静退出 ≠ 没有缺陷）都是该素材的应用。
-- **来源：S-06**（docs/24-G3素材池.md）：「镜像探测失败被误读为代码问题」——
+- **来源：S-06**（docs/archive/24-G3素材池.md）：「镜像探测失败被误读为代码问题」——
   §2 检查 1、§3 Q0 分支（标记行缺失 → 先证二进制真的被执行过）与 §4.0 的
   -buildvcs 环境坑判读都遵循该素材的纪律。

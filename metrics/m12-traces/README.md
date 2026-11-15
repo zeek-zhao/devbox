@@ -2,7 +2,7 @@
 
 > 口径真本：[docs/80-M12度量规范](../../docs/80-M12度量规范.md)（#275）§2。本目录一 run 一文件，
 > 文件名即 `run_id`（`<run-id>.json`）。schema 与 M11 verifier 的 `metrics/m11-traces/<run-id>.json`
-> 同构（[docs/73](../../docs/73-M11并发执行计划.md) §6），在其五要素之上补
+> 同构（[docs/73](../../docs/archive/73-M11并发执行计划.md) §6），在其五要素之上补
 > `rubric_version`、`classification`、`reviewed_at`。
 
 ## 最小 schema

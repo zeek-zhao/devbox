@@ -1,7 +1,7 @@
 # 文档死链白名单（#393 · M13-DOC-01）
 #
 # 格式：<文件>:<行>:<链接原文>   —— 与本脚本输出的 `文件:行 -> 链接` 一一对应。
-# 每一条都必须在 docs/79-文档健康清单.md §4 找到对应登记（判据 3）。
+# 每一条都必须在 docs/archive/79-文档健康清单.md §4 找到对应登记（判据 3）。
 #
 # 登记口径：
 #   A 类（11 处）= 演练 WALKTHROUGH 多跳一级，docs/79 §4 A 行登记；
@@ -16,10 +16,10 @@
 # --- A 类：演练 WALKTHROUGH 多跳一级（11 处） ---
 c/examples/T-001-oob-double-free/WALKTHROUGH.md:15:../../../../docs/72-排障演练规范.md
 cpp/examples/T-001-asan-heap-overflow/WALKTHROUGH.md:15:../../../../docs/72-排障演练规范.md
-cpp/examples/T-001-asan-heap-overflow/WALKTHROUGH.md:16:../../../../docs/73-M11并发执行计划.md
+cpp/examples/T-001-asan-heap-overflow/WALKTHROUGH.md:16:../../../../docs/archive/73-M11并发执行计划.md
 db/examples/T-001-slow-query-repeatable-read/WALKTHROUGH.md:15:../../../../docs/72-排障演练规范.md
 go/examples/T-001-goroutine-leak/WALKTHROUGH.md:15:../../../../docs/72-排障演练规范.md
-go/examples/T-001-goroutine-leak/WALKTHROUGH.md:16:../../../../docs/73-M11并发执行计划.md
+go/examples/T-001-goroutine-leak/WALKTHROUGH.md:16:../../../../docs/archive/73-M11并发执行计划.md
 java/examples/T-001-deadlock-oom/WALKTHROUGH.md:15:../../../../docs/72-排障演练规范.md
 python/examples/T-001-venv-mix-mutable-default/WALKTHROUGH.md:15:../../../../docs/72-排障演练规范.md
 rust/examples/T-001-borrow-trait-conflict/WALKTHROUGH.md:15:../../../../docs/72-排障演练规范.md
@@ -39,11 +39,11 @@ shell/docs/FAQ.md:71:../40-问题清单.md
 
 # --- 误报：正文/模板占位，docs/79 §4 明确写为误报（2 处） ---
 go/examples/L1-024-generic-functions/README.md:10:nil
-docs/79-文档健康清单.md:161:nil
-docs/79-文档健康清单.md:161:link
+docs/archive/79-文档健康清单.md:161:nil
+docs/archive/79-文档健康清单.md:161:link
 
 # --- 新增：2026-11-13 首次全量扫描暴露（3 处，见 docs/79 §4 新增行） ---
 docs/00-文档总览.md:108:78-CI失败分类与重试纪律.md
-docs/74-M11验收报告.md:23:78-CI失败分类与重试纪律.md
-docs/74-M11验收报告.md:192:78-CI失败分类与重试纪律.md
-shell/examples/T-001-word-splitting-pipefail/WALKTHROUGH.md:16:../../../../docs/73-M11并发执行计划.md
+docs/archive/74-M11验收报告.md:23:78-CI失败分类与重试纪律.md
+docs/archive/74-M11验收报告.md:192:78-CI失败分类与重试纪律.md
+shell/examples/T-001-word-splitting-pipefail/WALKTHROUGH.md:16:../../../../docs/archive/73-M11并发执行计划.md

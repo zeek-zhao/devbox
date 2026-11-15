@@ -72,5 +72,5 @@ lab 独立于 `examples/`（不进用例计数）；演练规范真本 [docs/72]
 - 轨道内：[FAQ](FAQ.md) → [问题指南](问题指南.md) → [排查手册](排查手册.md)；
 - 仓库级：[docs/13-通用开发指南](../../docs/13-通用开发指南.md)（T0 动线）、
   [docs/ROADMAP.md](../../docs/ROADMAP.md) KI 段（已登记问题）、
-  [docs/24-G3素材池](../../docs/24-G3素材池.md)（排查素材纪律）；
+  [docs/24-G3素材池](../../docs/archive/24-G3素材池.md)（排查素材纪律）；
 - 仍查不到：到仓库 issue 搜索关键词（现象原文），搜不到再提新 issue。

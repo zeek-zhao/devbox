@@ -107,6 +107,6 @@ gofmt 门禁语义见 L2-002-gofmt-vet。详见 [工具指南](工具指南.md) 
 - **工具怎么调 / 是否预装**：[工具指南](工具指南.md)；本篇答不了的排查类问题等
   Go 轨道 G3 问题指南（M8 建成）承接，先按工具指南 §2 的定位命令走。
 - **runner / CI / 门禁 / 提交 / 发版**：`docs/13-通用开发指南.md`（T0 单一真本）。
-- **已知坑登记**：`docs/ROADMAP.md` 的 KI 段、`docs/40-问题清单.md`。
+- **已知坑登记**：`docs/ROADMAP.md` 的 KI 段、`docs/archive/40-问题清单.md`。
 - **上游文档**：镜像内 `go doc <包>`、`go help <命令>` 是与 `${GO_VERSION}` 同版本的
   最可靠口径；再查不到带 `--keep` 现场去 GitHub issue 搜索 / 提 issue。

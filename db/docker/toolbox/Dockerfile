@@ -24,9 +24,12 @@ RUN set -eux; \
     rm -rf /var/lib/apt/lists/*
 
 # 驱动：Mongo 没有稳定的 CLI 客户端包，统一用 pymongo；其余也用驱动做复杂断言
+# 驱动依赖唯一来源：db/project/requirements.txt（版本锁定，2026-11-15 审计收口）
+COPY project/requirements.txt /tmp/requirements.txt
+
 RUN pip3 install --break-system-packages --no-cache-dir \
       -i https://pypi.tuna.tsinghua.edu.cn/simple \
-      pymysql psycopg2-binary redis pymongo
+      -r /tmp/requirements.txt
 
 WORKDIR /workspace/db
 CMD ["sleep", "infinity"]

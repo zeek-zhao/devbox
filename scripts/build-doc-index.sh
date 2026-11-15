@@ -24,13 +24,22 @@ set -euo pipefail
 
 CHECK=0
 [ "${1:-}" = "--check" ] && CHECK=1
-[ $# -gt 1 ] && { echo "用法: $0 [--check]" >&2; exit 2; }
+[ $# -gt 1 ] && {
+  echo "用法: $0 [--check]" >&2
+  exit 2
+}
 
 ROOT=$(git rev-parse --show-toplevel)
 TMP=""
-cleanup() { [ -n "$TMP" ] && rm -rf "$TMP"; return 0; }
+cleanup() {
+  [ -n "$TMP" ] && rm -rf "$TMP"
+  return 0
+}
 trap cleanup EXIT
-if [ "$CHECK" = 1 ]; then TMP=$(mktemp -d); DEST="$TMP"; else DEST="$ROOT"; fi
+if [ "$CHECK" = 1 ]; then
+  TMP=$(mktemp -d)
+  DEST="$TMP"
+else DEST="$ROOT"; fi
 
 TRACKS="c cpp go rust shell python java vue db"
 
@@ -49,7 +58,8 @@ gen_top_rows() {
     title=$(fm_field "$f" title)
     if [ -z "$title" ]; then title=$(awk '/^# /{sub(/^# /,""); print; exit}' "$f"); fi
     [ -z "$title" ] && title=（无标题）
-    status=$(fm_field "$f" status); [ -z "$status" ] && status=draft
+    status=$(fm_field "$f" status)
+    [ -z "$status" ] && status=draft
     printf '| [%s](%s.md) | %s | %s |\n' "$name" "$name" "$title" "$status"
   done < <(printf '%s\n' "$ROOT"/docs/*.md | LC_ALL=C sort | grep -vE '/(INDEX|INDEX-by-example)\.md$')
 }
@@ -61,9 +71,9 @@ gen_track_rows() {
     rows=$(for f in "$ROOT/$t"/docs/*.md; do
       name=$(basename "$f" .md)
       case "$name" in
-        FAQ) p=01;; INDEX) p=02;; 实践指南) p=03;; 工具指南) p=04;; 工程参考) p=05;;
-        开发指南) p=06;; 排查手册) p=07;; 清单自检|用例编写规范) p=08;;
-        知识点清单) p=09;; 错误处理指南) p=10;; 问题指南) p=11;; *) p=99;;
+        FAQ) p=01 ;; INDEX) p=02 ;; 实践指南) p=03 ;; 工具指南) p=04 ;; 工程参考) p=05 ;;
+        开发指南) p=06 ;; 排查手册) p=07 ;; 清单自检 | 用例编写规范) p=08 ;;
+        知识点清单) p=09 ;; 错误处理指南) p=10 ;; 问题指南) p=11 ;; *) p=99 ;;
       esac
       printf '%s %s\n' "$p" "$name"
     done | LC_ALL=C sort)
@@ -77,11 +87,11 @@ gen_site_index() {
   local n
   n=$(printf '%s\n' "$ROOT"/docs/*.md | LC_ALL=C sort | grep -cvE '/(INDEX|INDEX-by-example)\.md$')
   {
-  cat <<'__BDI_EOF_SITE_HEAD__'
+    cat <<'__BDI_EOF_SITE_HEAD__'
 ---
 title: 全站文档索引（INDEX）
 date: 2026-11-12
-status: draft
+status: reviewed
 scope: docs/ 顶层与 9 轨 docs/ 的全量索引 / 仅文档
 owner: zeek.zhao <zeek.zhao@foxmail.com>
 last_verified: 2026-11-12
@@ -108,20 +118,20 @@ last_verified: 2026-11-12
 | 文档名 | 仓库相对路径（相对本文件所在 `docs/`） | — |
 | 说明 | 该文档 frontmatter 的 `title`；无 frontmatter 取首个 `# ` 标题 | 「（无标题）」 |
 | status | 该文档 frontmatter 的 `status` | `draft` |
-| 本文件 status | 本文件 frontmatter 的 `status` | `draft` |
-
-- status 词表**只用** `draft` / `reviewed` / `verified`（[75-文档健康规范](75-文档健康规范.md)
+| 本文件 status | 本文件 frontmatter 的 `status` | `reviewed`（模板内固定） |
+| 本文件 status | 本文件 frontmatter 的 `status`（模板内固定 `reviewed`） | `reviewed` |
+- status 词表**只用** `draft` / `reviewed` / `verified`（[75-文档健康规范](archive/75-文档健康规范.md)
   状态机；无 frontmatter 的篇一律按 `draft` 计入，不得发明「未标注」等第四态）。
 
 __BDI_EOF_SITE_HEAD__
-  printf '## 2. 顶层 docs/（%d 篇）\n\n' "$n"
-  cat <<'__BDI_EOF_SITE_SEC2_HEADER__'
+    printf '## 2. 顶层 docs/（%d 篇）\n\n' "$n"
+    cat <<'__BDI_EOF_SITE_SEC2_HEADER__'
 | 文档 | 说明 | status |
 |---|---|---|
 __BDI_EOF_SITE_SEC2_HEADER__
-  gen_top_rows
-  printf '\n'
-  cat <<'__BDI_EOF_SITE_SEC3_HEAD__'
+    gen_top_rows
+    printf '\n'
+    cat <<'__BDI_EOF_SITE_SEC3_HEAD__'
 ## 3. 各轨 docs/
 
 > 每轨一行的全量文件索引；轨内文件集因轨而异（如实列出，不凑齐）。
@@ -129,8 +139,8 @@ __BDI_EOF_SITE_SEC2_HEADER__
 | 轨道 | 文件 |
 |---|---|
 __BDI_EOF_SITE_SEC3_HEAD__
-  gen_track_rows
-  cat <<'__BDI_EOF_SITE_TAIL__'
+    gen_track_rows
+    cat <<'__BDI_EOF_SITE_TAIL__'
 
 ### 死链核验
 
@@ -149,18 +159,18 @@ grep -oE '\]\((\.\./[a-z]+/docs/[^)]+|[A-Za-z0-9_.-]+\.md)\)' docs/INDEX.md \
 ## 4. 相关
 
 - [84-文档地图](84-文档地图.md)：同一批文档的四象限视图
-- [75-文档健康规范](75-文档健康规范.md)：status 词表与保鲜规则的真本
+- [75-文档健康规范](archive/75-文档健康规范.md)：status 词表与保鲜规则的真本
 - [INDEX-by-example](INDEX-by-example.md)：按用例 ID 反查（另一维度）
 __BDI_EOF_SITE_TAIL__
-  } > "$DEST/docs/INDEX.md"
+  } >"$DEST/docs/INDEX.md"
 }
 
 gen_byexample() {
-  cat <<'__BDI_EOF_TPL_BYEXAMPLE__' > "$DEST/docs/INDEX-by-example.md"
+  cat <<'__BDI_EOF_TPL_BYEXAMPLE__' >"$DEST/docs/INDEX-by-example.md"
 ---
 title: 按用例反查索引（INDEX-by-example）
 date: 2026-11-12
-status: draft
+status: reviewed
 scope: 从用例 ID 反查清单锚点 / 指南节 / lab / 排查命令 / 仅文档
 owner: zeek.zhao <zeek.zhao@foxmail.com>
 last_verified: 2026-11-12
@@ -242,7 +252,7 @@ main() {
   for t in $TRACKS; do mkdir -p "$DEST/$t/docs"; done
   gen_site_index
   gen_byexample
-  cat <<'__BDI_EOF_TPL_c__' > "$DEST/c/docs/INDEX.md"
+  cat <<'__BDI_EOF_TPL_c__' >"$DEST/c/docs/INDEX.md"
 ---
 track: c
 guide: reference       # Diátaxis reference（轨道索引）；M11-DOC 新增文档类型，不在 docs/11 §1 的 G1..G5 五类之列
@@ -319,7 +329,7 @@ last_verified: 2026-11-11
   [docs/ROADMAP](../../docs/ROADMAP.md) KI 段。
 __BDI_EOF_TPL_c__
 
-  cat <<'__BDI_EOF_TPL_cpp__' > "$DEST/cpp/docs/INDEX.md"
+  cat <<'__BDI_EOF_TPL_cpp__' >"$DEST/cpp/docs/INDEX.md"
 ---
 track: cpp
 guide: reference       # Diátaxis reference（轨道索引）；M11-DOC 新增文档类型，不在 docs/11 §1 的 G1..G5 五类之列
@@ -396,7 +406,7 @@ last_verified: 2026-11-11
   [docs/ROADMAP](../../docs/ROADMAP.md) KI 段。
 __BDI_EOF_TPL_cpp__
 
-  cat <<'__BDI_EOF_TPL_go__' > "$DEST/go/docs/INDEX.md"
+  cat <<'__BDI_EOF_TPL_go__' >"$DEST/go/docs/INDEX.md"
 ---
 track: go
 guide: G4
@@ -471,11 +481,11 @@ lab 独立于 `examples/`（不进用例计数）；演练规范真本 [docs/72]
 - 轨道内：[FAQ](FAQ.md) → [问题指南](问题指南.md) → [排查手册](排查手册.md)；
 - 仓库级：[docs/13-通用开发指南](../../docs/13-通用开发指南.md)（T0 动线）、
   [docs/ROADMAP.md](../../docs/ROADMAP.md) KI 段（已登记问题）、
-  [docs/24-G3素材池](../../docs/24-G3素材池.md)（排查素材纪律）；
+  [docs/24-G3素材池](../../docs/archive/24-G3素材池.md)（排查素材纪律）；
 - 仍查不到：到仓库 issue 搜索关键词（现象原文），搜不到再提新 issue。
 __BDI_EOF_TPL_go__
 
-  cat <<'__BDI_EOF_TPL_rust__' > "$DEST/rust/docs/INDEX.md"
+  cat <<'__BDI_EOF_TPL_rust__' >"$DEST/rust/docs/INDEX.md"
 ---
 track: rust
 guide: G4
@@ -550,11 +560,11 @@ lab 独立于 `examples/`（不进用例计数）；演练规范真本 [docs/72]
 - 轨道内：[FAQ](FAQ.md) → [问题指南](问题指南.md) → [排查手册](排查手册.md)；
 - 仓库级：[docs/13-通用开发指南](../../docs/13-通用开发指南.md)（T0 动线）、
   [docs/ROADMAP.md](../../docs/ROADMAP.md) KI 段（已登记问题）、
-  [docs/24-G3素材池](../../docs/24-G3素材池.md)（排查素材纪律）；
+  [docs/24-G3素材池](../../docs/archive/24-G3素材池.md)（排查素材纪律）；
 - 仍查不到：到仓库 issue 搜索关键词（现象原文），搜不到再提新 issue。
 __BDI_EOF_TPL_rust__
 
-  cat <<'__BDI_EOF_TPL_shell__' > "$DEST/shell/docs/INDEX.md"
+  cat <<'__BDI_EOF_TPL_shell__' >"$DEST/shell/docs/INDEX.md"
 ---
 track: shell
 guide: G4
@@ -629,11 +639,11 @@ lab 独立于 `examples/`（不进用例计数）；演练规范真本 [docs/72]
 - 轨道内：[FAQ](FAQ.md) → [问题指南](问题指南.md) → [排查手册](排查手册.md)；
 - 仓库级：[docs/13-通用开发指南](../../docs/13-通用开发指南.md)（T0 动线）、
   [docs/ROADMAP.md](../../docs/ROADMAP.md) KI 段（已登记问题）、
-  [docs/24-G3素材池](../../docs/24-G3素材池.md)（排查素材纪律）；
+  [docs/24-G3素材池](../../docs/archive/24-G3素材池.md)（排查素材纪律）；
 - 仍查不到：到仓库 issue 搜索关键词（现象原文），搜不到再提新 issue。
 __BDI_EOF_TPL_shell__
 
-  cat <<'__BDI_EOF_TPL_python__' > "$DEST/python/docs/INDEX.md"
+  cat <<'__BDI_EOF_TPL_python__' >"$DEST/python/docs/INDEX.md"
 ---
 track: python
 guide: G4
@@ -708,11 +718,11 @@ lab 独立于 `examples/`（不进用例计数）；演练规范真本 [docs/72]
 - 轨道内：[FAQ](FAQ.md) → [问题指南](问题指南.md) → [排查手册](排查手册.md)；
 - 仓库级：[docs/13-通用开发指南](../../docs/13-通用开发指南.md)（T0 动线）、
   [docs/ROADMAP.md](../../docs/ROADMAP.md) KI 段（已登记问题）、
-  [docs/24-G3素材池](../../docs/24-G3素材池.md)（排查素材纪律）；
+  [docs/24-G3素材池](../../docs/archive/24-G3素材池.md)（排查素材纪律）；
 - 仍查不到：到仓库 issue 搜索关键词（现象原文），搜不到再提新 issue。
 __BDI_EOF_TPL_python__
 
-  cat <<'__BDI_EOF_TPL_java__' > "$DEST/java/docs/INDEX.md"
+  cat <<'__BDI_EOF_TPL_java__' >"$DEST/java/docs/INDEX.md"
 ---
 track: java
 guide: reference       # Diátaxis reference（轨道索引）；M11-DOC 新增文档类型，不在 docs/11 §1 的 G1..G5 五类之列
@@ -789,7 +799,7 @@ last_verified: 2026-11-11
   [docs/ROADMAP](../../docs/ROADMAP.md) KI 段。
 __BDI_EOF_TPL_java__
 
-  cat <<'__BDI_EOF_TPL_vue__' > "$DEST/vue/docs/INDEX.md"
+  cat <<'__BDI_EOF_TPL_vue__' >"$DEST/vue/docs/INDEX.md"
 ---
 track: vue
 guide: reference       # Diátaxis reference（轨道索引）；M11-DOC 新增文档类型，不在 docs/11 §1 的 G1..G5 五类之列
@@ -866,7 +876,7 @@ last_verified: 2026-11-11
   [docs/ROADMAP](../../docs/ROADMAP.md) KI 段。
 __BDI_EOF_TPL_vue__
 
-  cat <<'__BDI_EOF_TPL_db__' > "$DEST/db/docs/INDEX.md"
+  cat <<'__BDI_EOF_TPL_db__' >"$DEST/db/docs/INDEX.md"
 ---
 track: db
 guide: reference       # Diátaxis reference（轨道索引）；M11-DOC 新增文档类型，不在 docs/11 §1 的 G1..G5 五类之列
@@ -945,9 +955,9 @@ __BDI_EOF_TPL_db__
   if [ "$CHECK" = 1 ]; then
     local rc=0 rel
     for rel in docs/INDEX.md docs/INDEX-by-example.md \
-               c/docs/INDEX.md cpp/docs/INDEX.md go/docs/INDEX.md rust/docs/INDEX.md \
-               shell/docs/INDEX.md python/docs/INDEX.md java/docs/INDEX.md vue/docs/INDEX.md \
-               db/docs/INDEX.md; do
+      c/docs/INDEX.md cpp/docs/INDEX.md go/docs/INDEX.md rust/docs/INDEX.md \
+      shell/docs/INDEX.md python/docs/INDEX.md java/docs/INDEX.md vue/docs/INDEX.md \
+      db/docs/INDEX.md; do
       if ! cmp -s "$ROOT/$rel" "$DEST/$rel"; then
         echo "DRIFT: $rel 与仓库实况不一致（运行 bash scripts/build-doc-index.sh 重生成）"
         diff -u "$ROOT/$rel" "$DEST/$rel" | sed -n '2,12p' || true

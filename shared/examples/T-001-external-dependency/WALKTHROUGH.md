@@ -188,7 +188,7 @@ curl 7.81.0，Linux 6.8）。`run.sh` 连跑 3 次均 RUN-PASS 7/7、退出 0；
 
 ## 8. 素材来源
 
-- **类型①**（仓库已登记的已知问题）：[docs/73 §9](../../../docs/73-M11并发执行计划.md)
+- **类型①**（仓库已登记的已知问题）：[docs/73 §9](../../../docs/archive/73-M11并发执行计划.md)
   「已踩过的坑」——CI run 42009114733（纯文档提交却「用例-db」全红），真实根因
   `docker.m.daocloud.io` TLS handshake timeout，同 job run 41938551949 success；
   取证链三步与「第二次请求不带 Authorization」纪律即出自该节。

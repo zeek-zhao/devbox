@@ -1,7 +1,7 @@
 ---
 title: 按用例反查索引（INDEX-by-example）
 date: 2026-11-12
-status: draft
+status: reviewed
 scope: 从用例 ID 反查清单锚点 / 指南节 / lab / 排查命令 / 仅文档
 owner: zeek.zhao <zeek.zhao@foxmail.com>
 last_verified: 2026-11-12

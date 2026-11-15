@@ -12,7 +12,7 @@
     }
   ],
   "assertions": [
-    "规则判据全过（存在性/frontmatter/契约 grep），详见 docs/74-M11验收报告.md §2"
+    "规则判据全过（存在性/frontmatter/契约 grep），详见 docs/archive/74-M11验收报告.md §2"
   ],
   "classification": "pass",
   "unverified": [

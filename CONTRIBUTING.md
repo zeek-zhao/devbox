@@ -38,7 +38,7 @@ cpp/examples/L1-001-string-view/
 
 ## 怎么写一张能被 AI 执行的卡
 
-M11 起任务卡走 **spec v2**：卡由 `.github/ISSUE_TEMPLATE/agent_task.yml` 表单创建，执行 AI 按卡干活、独立 verifier 判卷。完整规范见 [docs/71-任务卡规范v2](docs/71-任务卡规范v2.md)，派单与批次见 [docs/73-M11并发执行计划](docs/73-M11并发执行计划.md)。
+M11 起任务卡走 **spec v2**：卡由 `.github/ISSUE_TEMPLATE/agent_task.yml` 表单创建，执行 AI 按卡干活、独立 verifier 判卷。完整规范见 [docs/71-任务卡规范v2](docs/archive/71-任务卡规范v2.md)，派单与批次见 [docs/73-M11并发执行计划](docs/archive/73-M11并发执行计划.md)。
 
 九栏逐栏含义（与表单一一对应）：
 

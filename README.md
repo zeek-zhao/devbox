@@ -3,10 +3,11 @@
 [![ci](https://github.com/zeek-zhao/devbox/actions/workflows/ci.yml/badge.svg)](https://github.com/zeek-zhao/devbox/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![用例](https://img.shields.io/badge/用例-821-success.svg)](docs/ROADMAP.md)
-[![轨道](https://img.shields.io/badge/轨道-9-informational.svg)](#轨道一览)
+[![轨道](https://img.shields.io/badge/轨道-10-informational.svg)](#轨道一览)
 
 用**可运行、可逐字验证**的用例讲清技术点，再用毕业项目把用例里的能力落到真实程序。
-当前 **10 条轨道（9 条学习轨道 + 1 条 shared 工具箱）、821 个 examples 目录（659 存量用例 + 135 个 E 类错误处理示例 + 10 个排障演练 + 17 个 shell 轨补齐用例）、9 个毕业项目**：8 门编程语言 + 1 条数据库轨道 + 1 条工具箱轨道。
+当前 **10 条轨道 / 821 个 examples 目录 / 9 个毕业项目**——口径真本（构成明细）只在
+[docs/ROADMAP.md](docs/ROADMAP.md)，本 README 不再自留数字拆解。
 
 每个用例都是一个最小可跑单元：`run.sh` 执行、`expected.txt` 逐行比对。跑不通就是没学会，
 不存在「看懂了但写不出来」的模糊地带。
@@ -65,8 +66,8 @@ TAG=latest bash scripts/run-example.sh go E-001-error-taxonomy
 # 期望：PASS（该例的 expected.txt 与程序输出逐行一致）
 ```
 
-`run-example.sh` 会自己拉取对应语言镜像；`TAG=latest` 用本地/最近构建的镜像，
-CI 里用 `TAG=sha-<commit>` 固定版本。想看全量：
+`run-example.sh` 会自己拉取对应语言镜像；镜像 tag 约定见下文「用本地镜像还是发布镜像」——
+`TAG=latest` 用 CI 发布的镜像、`TAG=local` 用本地构建的镜像，CI 里用 `TAG=sha-<commit>` 固定版本。想看全量：
 
 ```bash
 TAG=latest bash scripts/run-example.sh go --all
@@ -180,7 +181,8 @@ bash scripts/pre-merge.sh --base main            # 全量总闸（约 15 分钟�
 
 `VERSION` 是项目版本真本；`images/versions.env` 是镜像依赖版本真本。两者物理隔离、
 用途不同：不要把依赖版本写进项目版本文件，也不要把项目版本混入镜像依赖清单。
-发版时 `full` 档会校验 `VERSION` 与 tag 逐字一致。
+发版时 `full` 档会校验 `VERSION` 与 tag 逐字一致。2026-11-15 起版本链路已收口：
+`v0.1.0` 已真实打 tag 并发布 GitHub Release（此前只有 VERSION 与描述，tag/Release 缺位）。
 
 ## 格式化
 
@@ -195,8 +197,8 @@ bash scripts/fmt.sh --list
 
 ## 项目现状
 
-- [路线图与里程碑](docs/ROADMAP.md)
-- [已知问题与路线图](docs/ROADMAP.md)
+- [路线图与里程碑（唯一权威登记处）](docs/ROADMAP.md)
+- [变更日志](CHANGELOG.md)
 - [开源合规审计](docs/开源合规审计.md)
 - [贡献指南](CONTRIBUTING.md) · [安全策略](SECURITY.md) · [行为准则](CODE_OF_CONDUCT.md)
 

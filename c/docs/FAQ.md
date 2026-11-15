@@ -88,9 +88,9 @@ A: 多半是 clang-format 版本失配——`${CLANG_FORMAT_MAJOR}` 必须与 `$
 
 1. **本仓库已知限制**：`docs/ROADMAP.md` 的 `KI-*` 段（如 `:latest` 标签并发污染
    `KI-08`、非 root 运行 `KI-07`），已定案的不重复建 issue。
-2. **仓库级指南**：`docs/60-AI工作指南.md`（门禁、真本、提交身份）与
+2. **仓库级指南**：`docs/archive/60-AI工作指南.md`（门禁、真本、提交身份）与
    `docs/01-镜像体系.md`（分层与 tag 口径）。
 3. **上游文档**：gcc/clang 官方手册、gdb/valgrind 官方文档——本指南只写本工程口径，
    语言与工具的通用语义以上游为准，且不在此复述语法（语法归 L1 用例）。
-4. **issue 搜索**：先搜仓库 issue 再提新单；`docs/40-问题清单.md` 的 `Q-*` 编号
+4. **issue 搜索**：先搜仓库 issue 再提新单；`docs/archive/40-问题清单.md` 的 `Q-*` 编号
    已定案的结论也在里面。

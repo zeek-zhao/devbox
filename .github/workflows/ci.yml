@@ -92,7 +92,7 @@ jobs:
 
   link-check:
     name: 文档链接检查
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
       - name: 检查 Markdown 相对链接（#393）
@@ -530,7 +530,7 @@ jobs:
   # ------------------------------------------------------------------
   labs:
     name: 排障演练-labs
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     needs: [probe, images]
     if: always() && needs.probe.outputs.ready == 'true' && (needs.images.result == 'success' || needs.images.result == 'skipped')

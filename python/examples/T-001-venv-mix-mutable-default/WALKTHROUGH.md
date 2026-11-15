@@ -13,7 +13,7 @@ verified_env: devbox-python:latest（Python 3.12.3 / pip 24.0 / ruff 0.17.4）
 # WALKTHROUGH · T-001-venv-mix-mutable-default
 
 > 依据 [docs/72 排障演练规范](../../../docs/72-排障演练规范.md) §4 编写；D1 拍板见
-> [docs/73 §11](../../../docs/73-M11并发执行计划.md)。所有输出均为 2026-11-06 在
+> [docs/73 §11](../../../docs/archive/73-M11并发执行计划.md)。所有输出均为 2026-11-06 在
 > devbox-python 容器内真跑所得（容器内临时构建目录已归一化为 `<BUILD>`，无内网信息）。
 > `<BUILD>` = 容器内 `${TMPDIR:-/tmp}/devbox-python-T-001-venv-mix-mutable-default`。
 
@@ -256,7 +256,7 @@ ruff 0.17.4，Docker on Linux）。`run.sh` 连跑 2 次、`assert.sh` 连跑 2 
 
 ## 9. 素材来源
 
-- **来源：S-13**（docs/24-G3素材池.md）：虚拟环境串味——§1 症状一/二、§2 三条只读检查、
+- **来源：S-13**（docs/archive/24-G3素材池.md）：虚拟环境串味——§1 症状一/二、§2 三条只读检查、
   §3 决策树 Q3'/Q4、§4.2 的 `myproj.__file__` 铁证均按该素材的现场与检查清单落地；
 - **类型②实验**：§1 症状三、§4.3、§4.4、§4.5 与 §6 全部现象为 2026-11-06 在
   devbox-python 容器内真跑所得，复现命令即 §1 与 `repro.sh`；输出已归一化

@@ -2,7 +2,7 @@
 PR 描述请回答三件事：为什么改、怎么验的、影响谁。
 「改了什么」由 diff 说明，不用重复。
 spec v2 起新增四段（执行留痕 / UNVERIFIED / verifier 结论 / spec 版本），
-规范见 docs/71-任务卡规范v2.md 与 docs/75-文档健康规范.md。
+规范见 docs/archive/71-任务卡规范v2.md 与 docs/archive/75-文档健康规范.md。
 -->
 
 ## 动机

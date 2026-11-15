@@ -6,7 +6,7 @@
 #   - 跳过外链（http/https/mailto/ftp）、锚点（#…）、绝对路径（/…）；
 #   - 目标去掉 #锚点 与 ?查询串后再 test -e（相对当前 md 所在目录，也接受相对仓库根）；
 #   - 白名单 docs/link-check-baseline.txt 里登记的「已知历史问题」不算红
-#     （每行 `<文件>:<行>:<链接>`，与 docs/79 §4 的登记一一对应）。
+#     （每行 `<文件>:<行>:<链接>`，登记源见 docs/archive/79-文档健康清单.md §4 与 docs/archive/README.md；docs/archive/** 下的文件不扫描。）
 #
 # 退出码：0 = 无白名单外死链；1 = 有死链（逐行打印 `文件:行 -> 目标 (缺失)`）。
 # 零外部依赖：只用 bash + git + awk/sed/grep/coreutils。
@@ -28,6 +28,9 @@ missing=0
 checked=0
 while IFS= read -r file; do
   [ -n "$file" ] || continue
+  case "$file" in
+    docs/archive/*) continue ;; # 归档冻结（ISO 15289 过程稿），链接不追溯检查
+  esac
   while IFS=$'\t' read -r lineno target; do
     [ -n "${target:-}" ] || continue
     case "$target" in

@@ -1,4 +1,7 @@
-pymysql
-psycopg2-binary
-redis
-pymongo
+# db 轨 toolbox 镜像的 Python 驱动依赖（唯一来源）
+# toolbox Dockerfile 以 `pip3 install -r` 安装本文件；改版本只改这里。
+# 版本 = 2026-11-15 审计收口时按「docker build db/docker/toolbox 后 pip3 show」实测锁定。
+pymysql==1.2.4
+psycopg2-binary==2.9.13
+redis==8.1.0
+pymongo==4.19.0
